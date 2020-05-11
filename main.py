@@ -10,6 +10,8 @@ import sys
 import math
 
 class App(Gtk.Application):
+    MIN_GRID_SPACING = 15 # in pixels
+
     def __init__(self):
         Gtk.Application.__init__(self,
                                   application_id="io.github.alexhuntley.plots",
@@ -17,45 +19,60 @@ class App(Gtk.Application):
     
     def draw(self, da, ctx):
         w, h = da.get_allocated_width(), da.get_allocated_height()
-        
-        xs = np.linspace(-self.x_offset-w/2/self.scale,-self.x_offset+w/2/self.scale,w*4)
-        ys = self.expr(xs)
-        
-        ctx.set_source_rgb(0, 0, 0)
+
         ctx.set_line_join(cairo.LINE_JOIN_ROUND)
 
         ctx.translate(w/2, h/2)
         ctx.scale(self.scale, self.scale)
         ctx.translate(self.x_offset, self.y_offset)
         ctx.set_line_width(max(ctx.device_to_user_distance(1, 1)))
-        #ctx.move_to(xs[0], -ys[0])
-        skipped = False
-        for x, y in zip(xs, ys):
-            if np.isfinite(y):
-                if skipped:
-                    ctx.move_to(x, -y)
-                ctx.line_to(x, -y)
-                skipped = False
-            else:
-                skipped = True
-            
-
-        ctx.stroke()
-        
-        ctx.set_source_rgb(.6, .6, .6)
+        # bounds of the view
         x1, y1 = ctx.device_to_user(0, 0)
         x2, y2 = ctx.device_to_user(w+100, h+100)
+        
+        # Grid
+        ctx.set_source_rgb(.8, .8, .8)
+        min_spacing_horizontal = (x2-x1)*App.MIN_GRID_SPACING/w
+        #min_spacing_vertical = (y2-y1)*App.MIN_GRID_SPACING/h
+        spacing_horizontal = pow(10, math.ceil(math.log10(min_spacing_horizontal)))
+        x0 = round(x1, -math.ceil(math.log10(min_spacing_horizontal)))
+        for i in range(math.ceil(w/App.MIN_GRID_SPACING)):
+            ctx.move_to(x0 + i*spacing_horizontal, y1)
+            ctx.line_to(x0 + i*spacing_horizontal, y2)
+        ctx.stroke()
+
+        # Axes
+        ctx.set_source_rgb(.6, .6, .6)
         ctx.move_to(x1, 0)
         ctx.line_to(x2, 0)
         ctx.stroke()
         ctx.move_to(0, y1)
         ctx.line_to(0, y2)
         ctx.stroke()
+
+        ctx.set_source_rgb(.8, 0, 0)
+        xs = np.linspace(-self.x_offset-w/2/self.scale,-self.x_offset+w/2/self.scale,w*4)
+        ys = self.expr(xs)
+        mask = np.logical_and(-ys > y1, -ys < y2)
+        mask[:-1] = np.logical_or(mask[:-1], mask[1:])
+        mask[1:] = np.logical_or(mask[1:], mask[:-1])
+        mask = np.logical_and(mask, np.isfinite(ys))
+
+        skipped = False
+        for x, y, m in zip(xs, ys, mask):
+            if m:
+                if skipped:
+                    ctx.move_to(x, -y)
+                ctx.line_to(x, -y)
+                skipped = False
+            else:
+                skipped = True
+        ctx.stroke()
     
     def do_activate(self):
         self.scale = 50 # in pixels per unit
         x = sympy.symbols('x')
-        self.expr = sympy.lambdify(x, 'ln(x)', 'numpy')
+        self.expr = sympy.lambdify(x, 'sin(tan(x))', 'numpy')
         self.x_offset, self.y_offset = 0, 0
         self.ix, self.iy = 0, 0
         self.win = Gtk.ApplicationWindow()
