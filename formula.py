@@ -5,7 +5,6 @@ from gi.repository import Gtk, Gdk, cairo, Pango, PangoCairo
 from enum import Enum
 
 desc = Pango.font_description_from_string("Latin Modern Math 20")
-DEFAULT_ASCENT = 10
 DEBUG = False
 dpi = PangoCairo.font_map_get_default().get_resolution()
 CURSOR_WIDTH = 1
@@ -35,7 +34,7 @@ class Editor(Gtk.DrawingArea):
         if DEBUG:
             print(Gdk.keyval_name(event.keyval))
         char = chr(Gdk.keyval_to_unicode(event.keyval))
-        if char.isalnum() or char in "+-*.":
+        if char.isalnum() or char in "+-*.=!":
             translation = str.maketrans("-*", "−×")
             self.cursor.insert(Atom(char.translate(translation)))
             self.queue_draw()
@@ -355,7 +354,6 @@ class ElementList(Element):
     def convert_specials(self, cursor):
         l, r = self.atoms_at_cursor()
         atoms = self.elements[l:r]
-        print(atoms)
         names = string_to_names(self.atoms_to_string(atoms))
 
         # find index of first difference - it will be stored in i
@@ -372,10 +370,8 @@ class ElementList(Element):
             elem.index_in_parent = l + j
         new_elems[i].handle_cursor(cursor, Direction.RIGHT)
 
-
-
 def string_to_names(string):
-    regex = r"asinh|acosh|atanh|sinh|cosh|tanh|asin|acos|atan|sin|cos|tan|exp|sqrt|."
+    regex = r"asinh|acosh|atanh|sinh|cosh|tanh|asin|acos|atan|sin|cos|tan|exp|log|ln|sqrt|."
     names = re.findall(regex, string)
     return names
 
@@ -421,8 +417,6 @@ class OperatorAtom(BaseAtom):
     h_spacing = 2
 
     def __init__(self, name, parent=None):
-        if False:# name not in self.allowed_names:
-            raise ValueError("Operator name {!r} not allowed".format(name))
         super().__init__(name, parent=parent)
 
     @classmethod
