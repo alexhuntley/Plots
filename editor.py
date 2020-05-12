@@ -7,31 +7,13 @@ import sys
 
 from formula import *
 
-test_expr = ElementList([Paren('('), Atom('a'), Paren(')'), Atom('b'), Atom('c'), Expt([Atom('dasdlaksjdkl')]),
-                         Paren('('),
-                         Frac([Radical([Frac([Atom('b')], [Atom('c')]), Atom('y')], [Atom('3')])], [Atom('cab'), Radical([Atom('ab')])]),
-                         Paren(')')])
-
-class Editor(Gtk.DrawingArea):
-    def __init__ (self):
-        super().__init__()
-
-    def do_draw_cb(self, widget, ctx):
-        scale = 2
-        ctx.scale(scale, scale)
-        test_expr.compute_metrics(ctx)
-        ctx.translate(0, test_expr.ascent)
-        test_expr.draw(ctx)
-        self.set_size_request(test_expr.width*scale,
-                              (test_expr.ascent + test_expr.descent)*scale)
-
-
 def destroy(window):
     Gtk.main_quit()
 
 def main():
     window = Gtk.Window()
     window.set_title("Hello World")
+    window.set_events(window.get_events() | Gdk.EventMask.KEY_PRESS_MASK)
 
     app = Editor()
 
