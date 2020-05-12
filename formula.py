@@ -6,6 +6,7 @@ desc = Pango.font_description_from_string("Latin Modern Math 20")
 DEFAULT_ASCENT = 10
 DEBUG = False
 dpi = PangoCairo.font_map_get_default().get_resolution()
+CURSOR_WIDTH = 1
 
 class Editor(Gtk.DrawingArea):
     def __init__ (self):
@@ -52,6 +53,7 @@ class Cursor():
         self.owner = new_parent
 
     def handle_movement(self, direction):
+        print(self.owner)
         self.owner.handle_cursor(self, direction)
 
 def italify_string(s):
@@ -78,6 +80,8 @@ class Element():
     Implementations must provide ascent, descent
     and width properties, compute_metrics(ctx, prev_ascent) and draw(ctx)."""
 
+    wants_cursor = True
+
     def __init__(self, parent):
         self.parent = parent
         self.index_in_parent = None
@@ -92,7 +96,7 @@ class Element():
             stack[-1].descent = max(self.descent, stack[-1].descent)
 
     def draw(self, ctx):
-        if DEBUG or self.has_cursor:
+        if DEBUG:
             ctx.set_line_width(0.5)
             ctx.set_source_rgba(1, 0, 1 if self.has_cursor else 0, 0.6)
             ctx.rectangle(0, -self.ascent, self.width, self.ascent + self.descent)
@@ -107,11 +111,8 @@ class Element():
         if direction is Direction.NONE or not self.has_cursor:
             cursor.reparent(self)
             self.has_cursor = True
-        else:
-            if self.parent:
-                self.parent.handle_cursor(cursor, direction, self)
-            else:
-                print(self)
+        elif self.parent:
+            self.parent.handle_cursor(cursor, direction, self)
 
     def parent_handle_cursor(self, cursor, direction):
         if self.parent:
@@ -121,6 +122,7 @@ class ElementList(Element):
     def __init__(self, elements=None, parent=None):
         super().__init__(parent)
         self.elements = elements or []
+        self.cursor_pos = 0
         for e in self.elements:
             e.parent = self
 
@@ -135,51 +137,70 @@ class ElementList(Element):
             self.width += e.width
             metric_ctx.prev_ascent = e.ascent
 
-    def draw_cursor(self, ctx):
-        ctx.set_source_rgb(0, 0, 0)
-        ctx.move_to(0, 0)
-        ctx.rel_line_to(0, -DEFAULT_ASCENT)
-        ctx.rel_move_to(0, DEFAULT_ASCENT)
-        ctx.stroke()
+    def draw_cursor(self, ctx, ascent, descent):
+        if self.has_cursor:
+            ctx.set_source_rgb(0, 0, 0)
+            ctx.set_line_width(max(ctx.device_to_user_distance(CURSOR_WIDTH, CURSOR_WIDTH)))
+            ctx.move_to(0, descent-2)
+            ctx.line_to(0, -ascent+2)
+            ctx.move_to(0, 0)
+            ctx.stroke()
 
     def draw(self, ctx):
         super().draw(ctx)
         ctx.save()
         ctx.move_to(0,0)
-        self.cursor_pos = 2
         for i, e in enumerate(self.elements):
             ctx.move_to(0, 0)
+            ctx.save()
             e.draw(ctx)
+            ctx.restore()
             if i == self.cursor_pos:
-                self.draw_cursor(ctx)
+                ascent, descent = e.ascent, e.descent
+                if self.cursor_pos > 0:
+                    ascent = max(ascent, self.elements[i-1].ascent)
+                    descent = max(descent, self.elements[i-1].descent)
+                self.draw_cursor(ctx, ascent, descent)
             ctx.translate(e.width, 0)
         if self.cursor_pos == len(self.elements):
-            self.draw_cursor(ctx)
+            self.draw_cursor(ctx, self.elements[-1].ascent, self.elements[-1].descent)
         ctx.restore()
+
+    def move_cursor_to(self, cursor, index):
+        cursor.reparent(self)
+        self.has_cursor = True
+        self.cursor_pos = index
 
     def handle_cursor(self, cursor, direction, giver=None):
         if (direction is Direction.UP or direction is Direction.DOWN) and self.parent and giver:
             self.parent.handle_cursor(cursor, direction, giver=self)
         elif giver:
-            i = giver.index_in_parent
             if direction is Direction.LEFT:
-                if i > 0:
-                    self.elements[i-1].handle_cursor(cursor, direction)
-                elif self.parent:
-                    self.parent.handle_cursor(cursor, direction, self)
+                self.move_cursor_to(cursor, giver.index_in_parent)
             elif direction is Direction.RIGHT:
-                if i < len(self.elements) - 1:
-                    self.elements[i+1].handle_cursor(cursor, direction)
-                elif self.parent:
-                    self.parent.handle_cursor(cursor, direction, self)
-            elif self.parent:
-                self.parent.handle_cursor(cursor, direction, self)
+                self.move_cursor_to(cursor, giver.index_in_parent+1)
+        elif self.has_cursor:
+            i = self.cursor_pos
+            if direction is Direction.LEFT and i > 0:
+                if self.elements[i - 1].wants_cursor:
+                    self.elements[i - 1].handle_cursor(cursor, direction)
+                else:
+                    self.move_cursor_to(cursor, i - 1)
+            elif direction is Direction.RIGHT and i < len(self.elements):
+                if self.elements[i].wants_cursor:
+                    self.elements[i].handle_cursor(cursor, direction)
+                else:
+                    self.move_cursor_to(cursor, i+1)
+            else:
+                self.parent_handle_cursor(cursor, direction)
         elif direction is Direction.LEFT:
-            self.elements[-1].handle_cursor(cursor, direction)
+            self.move_cursor_to(cursor, len(self.elements))
         else:
-            self.elements[0].handle_cursor(cursor, direction)
+            self.move_cursor_to(cursor, 0)
 
 class Atom(Element):
+    wants_cursor = False
+
     def __init__(self, name, parent=None):
         super().__init__(parent)
         self.name = name
@@ -331,6 +352,8 @@ class Radical(Element):
             self.radicand.handle_cursor(cursor, direction)
 
 class Paren(Element):
+    wants_cursor = False
+
     def __init__(self, char, parent=None):
         super().__init__(parent)
         if len(char) != 1:
