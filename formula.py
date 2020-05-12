@@ -14,22 +14,22 @@ class Editor(Gtk.DrawingArea):
     def __init__ (self):
         super().__init__()
         self.cursor = Cursor()
-        self.test_expr = ElementList([Paren('('), Radical([]), OperatorAtom('sin'), Atom('a'), Paren(')'), Atom('b'), Atom('c'), Expt([Atom('dasdlaksjdkl')]),
+        self.expr = ElementList([Paren('('), Radical([]), OperatorAtom('sin'), Atom('a'), Paren(')'), Atom('b'), Atom('c'), Expt([Atom('dasdlaksjdkl')]),
              Paren('('),
              Frac([Radical([Frac([Atom('b')], [Atom('c')]), Atom('y')], [Atom('3')])], [Atom('cab'), Radical([Atom('ab')])]),
              Paren(')')])
-        self.test_expr.elements[1].handle_cursor(self.cursor, Direction.NONE)
+        self.expr.elements[1].handle_cursor(self.cursor, Direction.NONE)
         self.props.can_focus = True
         self.connect("key-press-event", self.on_key_press)
 
     def do_draw_cb(self, widget, ctx):
         scale = 2
         ctx.scale(scale, scale)
-        self.test_expr.compute_metrics(ctx, MetricContext(self.cursor))
-        ctx.translate(0, self.test_expr.ascent)
-        self.test_expr.draw(ctx)
-        self.set_size_request(self.test_expr.width*scale,
-                              (self.test_expr.ascent + self.test_expr.descent)*scale)
+        self.expr.compute_metrics(ctx, MetricContext(self.cursor))
+        ctx.translate(0, self.expr.ascent)
+        self.expr.draw(ctx)
+        self.set_size_request(self.expr.width*scale,
+                              (self.expr.ascent + self.expr.descent)*scale)
 
     def on_key_press(self, widget, event):
         if DEBUG:
@@ -122,7 +122,6 @@ def deitalify_char(c):
     return c
 
 def deitalify_string(s):
-    print('deitalify', s)
     return "".join(deitalify_char(c) for c in s)
 
 class Direction(Enum):
@@ -330,7 +329,9 @@ class ElementList(Element):
             del self.elements[self.cursor_pos:self.cursor_pos + n]
         else:
             right = []
-        self.insert(cls.make_greedily(left, right))
+        new = cls.make_greedily(left, right)
+        self.insert(new, cursor)
+        new.handle_cursor(cursor, Direction.LEFT)
 
     def atoms_at_cursor(self):
         l = self.cursor_pos
@@ -434,15 +435,16 @@ class OperatorAtom(BaseAtom):
 class Expt(Element):
     greedy_insert_right = True
     greedy_insert_left = False
+    h_spacing = 0
+    exponent_scale = 0.7
 
     def __init__(self, exponent=None, parent=None):
         super().__init__(parent)
         self.exponent = ElementList(exponent, self)
-        self.exponent_scale = 0.8
 
     def compute_metrics(self, ctx, metric_ctx):
         self.exponent.compute_metrics(ctx, metric_ctx)
-        self.child_shift = -self.exponent.descent*self.exponent_scale - metric_ctx.prev.ascent//2 # -ve y is up
+        self.child_shift = -self.exponent.descent*self.exponent_scale - metric_ctx.prev.ascent + 14 # -ve y is up
         self.width = self.exponent.width*self.exponent_scale
         self.ascent = self.exponent.ascent*self.exponent_scale - self.child_shift
         self.descent = max(0, metric_ctx.prev.descent,
