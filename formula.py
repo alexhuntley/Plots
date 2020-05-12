@@ -1,3 +1,5 @@
+import re
+from itertools import count
 from collections import namedtuple
 from gi.repository import Gtk, Gdk, cairo, Pango, PangoCairo
 from enum import Enum
@@ -113,12 +115,14 @@ def italify_string(s):
 def deitalify_char(c):
     if c == 'ℎ':
         return 'h'
-    if c.islower():
+    if 0x1d44e <= ord(c) < 0x1d44e + 26:
         return chr(ord(c) - 0x1d44e + 0x61)
-    if c.isupper():
+    if 0x1d434 <= ord(c) < 0x1d434 + 26:
         return chr(ord(c) - 0x1d434 + 0x41)
+    return c
 
 def deitalify_string(s):
+    print('deitalify', s)
     return "".join(deitalify_char(c) for c in s)
 
 class Direction(Enum):
@@ -331,13 +335,13 @@ class ElementList(Element):
     def atoms_at_cursor(self):
         l = self.cursor_pos
         while l - 1 >= 0:
-            if isinstance(self.elements[l-1], Atom):
+            if isinstance(self.elements[l-1], BaseAtom):
                 l -= 1
             else:
                 break
         r = self.cursor_pos
         while r < len(self.elements):
-            if isinstance(self.elements[r], Atom):
+            if isinstance(self.elements[r], BaseAtom):
                 r += 1
             else:
                 break
@@ -348,28 +352,39 @@ class ElementList(Element):
         return "".join(deitalify_string(atom.name) for atom in atoms)
 
     def convert_specials(self, cursor):
-        # This all depends on atoms being only one char long...
         l, r = self.atoms_at_cursor()
-        elems = self.elements[l:r]
-        print(elems)
-        res = any_special_sequences_in_string(self.atoms_to_string(elems))
-        if res:
-            new, i, j = res
-            new.parent = self
-            new.index_in_parent = l+i
-            self.elements[l+i:l+j] = [new]
-            #self.cursor_pos = l + i + 1
-            new.handle_cursor(cursor, Direction.RIGHT)
+        atoms = self.elements[l:r]
+        print(atoms)
+        names = string_to_names(self.atoms_to_string(atoms))
 
-def any_special_sequences_in_string(string):
-    specials = {'sqrt'} | OperatorAtom.allowed_names
-    for name in specials:
-        i = string.find(name)
-        if i != -1:
-            if name in OperatorAtom.allowed_names:
-                return OperatorAtom(name), i, i+len(name)
-            elif name == 'sqrt':
-                return Radical([]), i, i+len(name)
+        # find index of first difference - it will be stored in i
+        for i, name, atom in zip(count(), names, atoms):
+            if name != deitalify_string(atom.name):
+                break
+        else:
+            return
+
+        new_elems = [name_to_element(name) for name in names]
+        self.elements[l:r] = new_elems
+        for j, elem in enumerate(new_elems):
+            elem.parent = self
+            elem.index_in_parent = l + j
+        new_elems[i].handle_cursor(cursor, Direction.RIGHT)
+
+
+
+def string_to_names(string):
+    regex = r"asinh|acosh|atanh|sinh|cosh|tanh|asin|acos|atan|sin|cos|tan|exp|sqrt|."
+    names = re.findall(regex, string)
+    return names
+
+def name_to_element(name):
+    if name == 'sqrt':
+        return Radical([])
+    elif len(name) == 1:
+        return Atom(name)
+    else:
+        return OperatorAtom(name)
 
 class BaseAtom(Element):
     wants_cursor = False
@@ -403,10 +418,9 @@ class Atom(BaseAtom):
 
 class OperatorAtom(BaseAtom):
     h_spacing = 2
-    allowed_names = {'sin', 'cos', 'tan', 'exp'}
 
     def __init__(self, name, parent=None):
-        if name not in self.allowed_names:
+        if False:# name not in self.allowed_names:
             raise ValueError("Operator name {!r} not allowed".format(name))
         super().__init__(name, parent=parent)
 
