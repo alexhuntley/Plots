@@ -30,7 +30,8 @@ class Editor(Gtk.DrawingArea):
                               (self.test_expr.ascent + self.test_expr.descent)*scale)
 
     def on_key_press(self, widget, event):
-        print(Gdk.keyval_name(event.keyval))
+        if DEBUG:
+            print(Gdk.keyval_name(event.keyval))
         char = chr(Gdk.keyval_to_unicode(event.keyval))
         if char.isalnum() or char in "+-*.":
             translation = str.maketrans("-*", "−×")
@@ -93,10 +94,10 @@ class Cursor():
         self.owner.backspace(self)
 
     def insert(self, element):
-        self.owner.insert(element)
+        self.owner.insert(element, self)
 
     def greedy_insert(self, cls):
-        self.owner.greedy_insert(cls)
+        self.owner.greedy_insert(cls, self)
 
 def italify_string(s):
     def italify_char(c):
@@ -108,6 +109,17 @@ def italify_string(s):
             return chr(ord(c) - 0x41 + 0x1d434)
         return c
     return "".join(italify_char(c) for c in s)
+
+def deitalify_char(c):
+    if c == 'ℎ':
+        return 'h'
+    if c.islower():
+        return chr(ord(c) - 0x1d44e + 0x61)
+    if c.isupper():
+        return chr(ord(c) - 0x1d434 + 0x41)
+
+def deitalify_string(s):
+    return "".join(deitalify_char(c) for c in s)
 
 class Direction(Enum):
     UP = Gdk.KEY_Up
@@ -276,12 +288,13 @@ class ElementList(Element):
                 self.elements[old.index_in_parent] = new
                 new.parent = self
 
-    def insert(self, element):
+    def insert(self, element, cursor):
         self.elements.insert(self.cursor_pos, element)
         self.cursor_pos += 1
         element.parent = self
+        self.convert_specials(cursor)
 
-    def greedy_insert(self, cls):
+    def greedy_insert(self, cls, cursor):
         if self.cursor_pos > 0 and cls.greedy_insert_left:
             paren_level = 0
             for n, e in enumerate(self.elements[self.cursor_pos-1::-1]):
@@ -315,6 +328,49 @@ class ElementList(Element):
             right = []
         self.insert(cls.make_greedily(left, right))
 
+    def atoms_at_cursor(self):
+        l = self.cursor_pos
+        while l - 1 >= 0:
+            if isinstance(self.elements[l-1], Atom):
+                l -= 1
+            else:
+                break
+        r = self.cursor_pos
+        while r < len(self.elements):
+            if isinstance(self.elements[r], Atom):
+                r += 1
+            else:
+                break
+        return l, r
+
+    @staticmethod
+    def atoms_to_string(atoms):
+        return "".join(deitalify_string(atom.name) for atom in atoms)
+
+    def convert_specials(self, cursor):
+        # This all depends on atoms being only one char long...
+        l, r = self.atoms_at_cursor()
+        elems = self.elements[l:r]
+        print(elems)
+        res = any_special_sequences_in_string(self.atoms_to_string(elems))
+        if res:
+            new, i, j = res
+            new.parent = self
+            new.index_in_parent = l+i
+            self.elements[l+i:l+j] = [new]
+            #self.cursor_pos = l + i + 1
+            new.handle_cursor(cursor, Direction.RIGHT)
+
+def any_special_sequences_in_string(string):
+    specials = {'sqrt'} | OperatorAtom.allowed_names
+    for name in specials:
+        i = string.find(name)
+        if i != -1:
+            if name in OperatorAtom.allowed_names:
+                return OperatorAtom(name), i, i+len(name)
+            elif name == 'sqrt':
+                return Radical([]), i, i+len(name)
+
 class BaseAtom(Element):
     wants_cursor = False
     h_spacing = 0
@@ -342,8 +398,24 @@ class Atom(BaseAtom):
     def __init__(self, name, parent=None):
         super().__init__(italify_string(name), parent=parent)
 
+    def __repr__(self):
+        return "Atom({!r})".format(self.name)
+
 class OperatorAtom(BaseAtom):
     h_spacing = 2
+    allowed_names = {'sin', 'cos', 'tan', 'exp'}
+
+    def __init__(self, name, parent=None):
+        if name not in self.allowed_names:
+            raise ValueError("Operator name {!r} not allowed".format(name))
+        super().__init__(name, parent=parent)
+
+    @classmethod
+    def any_in_string(cls, string):
+        for name in cls.allowed_names:
+            i = string.find(name)
+            if i != -1:
+                return name, i
 
 class Expt(Element):
     greedy_insert_right = True
