@@ -8,21 +8,76 @@ desc = Pango.font_description_from_string("Latin Modern Math 20")
 DEBUG = False
 dpi = PangoCairo.font_map_get_default().get_resolution()
 CURSOR_WIDTH = 1
+GREEK_LETTERS = {
+    'Alpha': 'Α',
+    'Beta': 'Β',
+    'Chi': 'Χ',
+    'Delta': 'Δ',
+    'Epsilon': 'Ε',
+    'Eta': 'Η',
+    'Gamma': 'Γ',
+    'Iota': 'Ι',
+    'Kappa': 'Κ',
+    'Lambda': 'Λ',
+    'Mu': 'Μ',
+    'Nu': 'Ν',
+    'Omega': 'Ω',
+    'Omicron': 'Ο',
+    'Phi': 'Φ',
+    'Pi': 'Π',
+    'Psi': 'Ψ',
+    'Rho': 'Ρ',
+    'Sigma': 'Σ',
+    'Tau': 'Τ',
+    'Theta': 'Θ',
+    'Upsilon': 'Υ',
+    'Xi': 'Ξ',
+    'Zeta': 'Ζ',
+    'alpha': 'α',
+    'beta': 'β',
+    'chi': 'χ',
+    'delta': 'δ',
+    'epsilon': 'ε',
+    'eta': 'η',
+    'gamma': 'γ',
+    'iota': 'ι',
+    'kappa': 'κ',
+    'lambda': 'λ',
+    'mu': 'μ',
+    'nu': 'ν',
+    'omega': 'ω',
+    'omicron': 'ο',
+    'phi': 'φ',
+    'pi': 'π',
+    'psi': 'ψ',
+    'rho': 'ρ',
+    'sigma': 'σ',
+    'tau': 'τ',
+    'theta': 'θ',
+    'upsilon': 'υ',
+    'xi': 'ξ',
+    'zeta': 'ζ'
+}
+GREEK_REGEXES = GREEK_LETTERS.copy()
+GREEK_REGEXES['(?<![EUeu])psi'] = GREEK_REGEXES.pop('psi')
 
 class Editor(Gtk.DrawingArea):
     def __init__ (self):
         super().__init__()
         self.cursor = Cursor()
-        self.expr = ElementList([Paren('('), Radical([]), OperatorAtom('sin'), Atom('a'), Paren(')'), Atom('b'), Atom('c'), Expt([Atom('dasdlaksjdkl')]),
+        self.test_expr = ElementList([Paren('('), Radical([]), OperatorAtom('sin'), Atom('a'), Paren(')'), Atom('b'), Atom('c'), Expt([Atom('d')]),
              Paren('('),
-             Frac([Radical([Frac([Atom('b')], [Atom('c')]), Atom('y')], [Atom('3')])], [Atom('cab'), Radical([Atom('ab')])]),
+             Frac([Radical([Frac([Atom('b')], [Atom('c')]), Atom('y')], [Atom('3')])], [Atom('c'), Radical([Atom('a')])]),
              Paren(')')])
-        self.expr.elements[1].handle_cursor(self.cursor, Direction.NONE)
+        self.expr = ElementList()
+        self.expr.handle_cursor(self.cursor, Direction.NONE)
         self.props.can_focus = True
         self.connect("key-press-event", self.on_key_press)
+        self.connect('draw', self.do_draw_cb)
+
 
     def do_draw_cb(self, widget, ctx):
-        scale = 2
+        scale = 1
         ctx.scale(scale, scale)
         self.expr.compute_metrics(ctx, MetricContext(self.cursor))
         ctx.translate(0, self.expr.ascent)
@@ -34,8 +89,17 @@ class Editor(Gtk.DrawingArea):
         if DEBUG:
             print(Gdk.keyval_name(event.keyval))
         char = chr(Gdk.keyval_to_unicode(event.keyval))
-        if char.isalnum() or char in "+-*.=!":
+        if char.isalnum():
+            self.cursor.insert(Atom(char))
+            self.queue_draw()
+            return
+        if char in "+-*=":
             translation = str.maketrans("-*", "−×")
+            self.cursor.insert(BinaryOperatorAtom(char.translate(translation)))
+            self.queue_draw()
+            return
+        if char in "!'.":
+            translation = str.maketrans("'", "′")
             self.cursor.insert(Atom(char.translate(translation)))
             self.queue_draw()
             return
@@ -44,7 +108,11 @@ class Editor(Gtk.DrawingArea):
             self.queue_draw()
             return
         if event.keyval == Gdk.KEY_BackSpace:
-            self.cursor.backspace()
+            self.cursor.backspace(Direction.LEFT)
+            self.queue_draw()
+            return
+        if event.keyval == Gdk.KEY_Delete:
+            self.cursor.backspace(Direction.RIGHT)
             self.queue_draw()
             return
         if event.keyval == Gdk.KEY_slash:
@@ -59,6 +127,7 @@ class Editor(Gtk.DrawingArea):
             direction = Direction(event.keyval)
             self.cursor.handle_movement(direction)
             self.queue_draw()
+            return
         except ValueError:
             pass
 
@@ -91,8 +160,8 @@ class Cursor():
     def handle_movement(self, direction):
         self.owner.handle_cursor(self, direction)
 
-    def backspace(self):
-        self.owner.backspace(self)
+    def backspace(self, direction):
+        self.owner.backspace(self, direction=direction)
 
     def insert(self, element):
         self.owner.insert(element, self)
@@ -104,10 +173,15 @@ def italify_string(s):
     def italify_char(c):
         if c == 'h':
             return 'ℎ'
-        if c.islower():
+        # lowercase latin
+        if c.islower() and c.isascii():
             return chr(ord(c) - 0x61 + 0x1d44e)
-        if c.isupper():
+        # uppercase latin
+        if c.isupper() and c.isascii():
             return chr(ord(c) - 0x41 + 0x1d434)
+        # lowercase greek (n.b. don't italify uppers)
+        if 0x3b1 <= ord(c) < 0x3b1 + 18:
+            return chr(ord(c) - 0x3b1 + 0x1d6fc)
         return c
     return "".join(italify_char(c) for c in s)
 
@@ -165,7 +239,7 @@ class Element():
             ctx.set_source_rgba(1, 0, 1 if self.has_cursor else 0, 0.6)
             ctx.rectangle(0, -self.ascent, self.width, self.ascent + self.descent)
             ctx.stroke()
-            ctx.set_source_rgba(0,0,0)
+        ctx.set_source_rgba(0,0,0)
         ctx.move_to(0,0)
 
     def lose_cursor(self):
@@ -176,7 +250,7 @@ class Element():
             cursor.reparent(self)
             self.has_cursor = True
         elif self.parent:
-            self.parent.handle_cursor(cursor, direction, self)
+            self.parent_handle_cursor(cursor, direction)
 
     def parent_handle_cursor(self, cursor, direction):
         if self.parent:
@@ -189,6 +263,9 @@ class ElementList(Element):
         self.cursor_pos = 0
         for e in self.elements:
             e.parent = self
+
+    def __len__(self):
+        return len(self.elements)
 
     def compute_metrics(self, ctx, metric_ctx):
         self.ascent = self.descent = self.width = 0
@@ -220,6 +297,7 @@ class ElementList(Element):
         with saved(ctx):
             ctx.move_to(0,0)
             for i, e in enumerate(self.elements):
+                ctx.move_to(0,0)
                 if i == self.cursor_pos:
                     ascent, descent = e.ascent, e.descent
                     if self.cursor_pos > 0:
@@ -230,6 +308,7 @@ class ElementList(Element):
                 ctx.translate(e.h_spacing, 0)
                 with saved(ctx):
                     e.draw(ctx)
+                ctx.move_to(0,0)
                 ctx.translate(e.width + e.h_spacing, 0)
             if self.cursor_pos == len(self.elements) > 0:
                 self.draw_cursor(ctx, self.elements[-1].ascent, self.elements[-1].descent)
@@ -249,6 +328,8 @@ class ElementList(Element):
                 self.move_cursor_to(cursor, giver.index_in_parent)
             elif direction is Direction.RIGHT:
                 self.move_cursor_to(cursor, giver.index_in_parent+1)
+            else:
+                self.move_cursor_to(cursor, 0)
         elif self.has_cursor:
             i = self.cursor_pos
             if direction is Direction.LEFT and i > 0:
@@ -268,24 +349,33 @@ class ElementList(Element):
         else:
             self.move_cursor_to(cursor, 0)
 
-    def backspace(self, cursor, caller=None):
-        if self.cursor_pos > 0:
-            target = self.elements[self.cursor_pos-1]
+    def backspace(self, cursor, caller=None, direction=Direction.LEFT):
+        if not self.has_cursor:
+            self.handle_cursor(cursor, direction)
+        if direction is Direction.LEFT:
+            shift = -1
+        elif direction is Direction.RIGHT:
+            shift = 0
+        if self.cursor_pos + shift in range(len(self.elements)):
+            target = self.elements[self.cursor_pos + shift]
             if target.wants_cursor:
-                target.handle_cursor(cursor, Direction.LEFT, self)
-                target.backspace(cursor, self)
+                target.handle_cursor(cursor, direction, self)
+                target.backspace(cursor, self, direction=direction)
             else:
-                self.cursor_pos -= 1
+                self.cursor_pos += shift
                 del self.elements[self.cursor_pos]
         elif self.parent:
-            self.parent.backspace(cursor, self)
+            self.parent.backspace(cursor, self, direction=direction)
 
-    def replace(self, old, new):
+    def replace(self, old, new, cursor_offset=None):
         if old.parent is self:
             if isinstance(new, ElementList):
                 self.elements[old.index_in_parent:old.index_in_parent+1] = new.elements
-                for e in new.elements:
+                for i, e in enumerate(new.elements):
                     e.parent = self
+                    e.index_in_parent = old.index_in_parent + i
+                if self.has_cursor and cursor_offset is not None:
+                    self.cursor_pos = old.index_in_parent + cursor_offset
             else:
                 self.elements[old.index_in_parent] = new
                 new.parent = self
@@ -297,7 +387,7 @@ class ElementList(Element):
         self.convert_specials(cursor)
 
     def greedy_insert(self, cls, cursor):
-        if self.cursor_pos > 0 and cls.greedy_insert_left:
+        if self.cursor_pos > 0 and cls.greedy_insert_left and isinstance(self.elements[self.cursor_pos-1], (Paren, Atom, Expt)):
             paren_level = 0
             for n, e in enumerate(self.elements[self.cursor_pos-1::-1]):
                 if isinstance(e, Paren):
@@ -305,6 +395,8 @@ class ElementList(Element):
                         paren_level -= 1
                     else:
                         paren_level += 1
+                if isinstance(e, Expt):
+                    continue
                 if paren_level <= 0:
                     break
             n += 1
@@ -313,7 +405,7 @@ class ElementList(Element):
             self.cursor_pos -= n
         else:
             left = []
-        if self.cursor_pos < len(self.elements) and cls.greedy_insert_right:
+        if self.cursor_pos < len(self.elements) and cls.greedy_insert_right and isinstance(self.elements[self.cursor_pos], (Paren, Atom, Expt)):
             paren_level = 0
             for n, e in enumerate(self.elements[self.cursor_pos:]):
                 if isinstance(e, Paren):
@@ -321,6 +413,8 @@ class ElementList(Element):
                         paren_level += 1
                     else:
                         paren_level -= 1
+                if isinstance(e, Expt):
+                    continue
                 if paren_level <= 0:
                     break
             n += 1
@@ -371,7 +465,8 @@ class ElementList(Element):
         new_elems[i].handle_cursor(cursor, Direction.RIGHT)
 
 def string_to_names(string):
-    regex = r"asinh|acosh|atanh|sinh|cosh|tanh|asin|acos|atan|sin|cos|tan|exp|log|ln|sqrt|."
+    regex = r"asinh|acosh|atanh|sinh|cosh|tanh|asin|acos|atan|sin|cos|tan|exp|log|ln|lg|sqrt|."
+    regex = "|".join(GREEK_REGEXES) + "|" + regex
     names = re.findall(regex, string)
     return names
 
@@ -380,8 +475,24 @@ def name_to_element(name):
         return Radical([])
     elif len(name) == 1:
         return Atom(name)
+    elif name in GREEK_LETTERS:
+        return Atom(GREEK_LETTERS[name])
     else:
         return OperatorAtom(name)
+
+class Text:
+    def __init__(self, text, ctx):
+        self.layout = PangoCairo.create_layout(ctx)
+        self.layout.set_text(text)
+        self.layout.set_font_description(desc)
+        self.width, self.height = self.layout.get_pixel_size()
+        self.ascent = self.layout.get_baseline()/Pango.SCALE
+        self.descent = self.height - self.ascent
+
+    def draw(self, ctx):
+        ctx.move_to(0, -self.ascent)
+        PangoCairo.show_layout(ctx, self.layout)
+        ctx.move_to(0, 0)
 
 class BaseAtom(Element):
     wants_cursor = False
@@ -392,19 +503,13 @@ class BaseAtom(Element):
         self.name = name
 
     def compute_metrics(self, ctx, metric_ctx):
-        self.layout = PangoCairo.create_layout(ctx)
-        self.layout.set_text(self.name)
-        self.layout.set_font_description(desc)
-        self.width, self.height = self.layout.get_pixel_size()
-        self.baseline = self.layout.get_baseline()//Pango.SCALE
-        self.ascent = self.baseline
-        self.descent = self.height - self.baseline
+        self.layout = Text(self.name, ctx)
+        self.width, self.ascent, self.descent = self.layout.width, self.layout.ascent, self.layout.descent
         super().compute_metrics(ctx, metric_ctx)
 
     def draw(self, ctx):
         super().draw(ctx)
-        ctx.move_to(0, -self.baseline)
-        PangoCairo.show_layout(ctx, self.layout)
+        self.layout.draw(ctx)
 
 class Atom(BaseAtom):
     def __init__(self, name, parent=None):
@@ -413,11 +518,16 @@ class Atom(BaseAtom):
     def __repr__(self):
         return "Atom({!r})".format(self.name)
 
-class OperatorAtom(BaseAtom):
-    h_spacing = 2
-
+class BinaryOperatorAtom(BaseAtom):
     def __init__(self, name, parent=None):
         super().__init__(name, parent=parent)
+        if name == "=":
+            self.h_spacing = 6
+        else:
+            self.h_spacing = 4
+
+class OperatorAtom(BaseAtom):
+    h_spacing = 2
 
     @classmethod
     def any_in_string(cls, string):
@@ -458,16 +568,17 @@ class Expt(Element):
         else:
             self.exponent.handle_cursor(cursor, direction)
 
-    def backspace(self, cursor, caller):
+    def backspace(self, cursor, caller, direction=Direction.LEFT):
         if self.parent and caller is self.exponent:
-            self.parent.replace(self, self.exponent)
-            self.parent_handle_cursor(cursor, Direction.LEFT)
+            self.parent.handle_cursor(cursor, Direction.NONE)
+            self.parent.replace(self, self.exponent, cursor_offset=0 if direction == Direction.LEFT else len(self.exponent.elements))
         elif caller is self.parent is not None:
-            self.exponent.backspace(cursor, self)
+            self.exponent.backspace(cursor, self, direction=direction)
 
     @classmethod
     def make_greedily(cls, left, right):
         return cls(exponent=right)
+
 class Frac(Element):
     vertical_separation = 4
     greedy_insert_right = greedy_insert_left = True
@@ -517,20 +628,25 @@ class Frac(Element):
         elif giver is self.numerator or giver is self.denominator:
             self.parent.handle_cursor(cursor, direction, self)
         else:
-            if direction is Direction.UP:
+            if direction is Direction.UP or self.numerator.elements and not self.denominator.elements:
                 self.denominator.handle_cursor(cursor, direction)
             else:
                 self.numerator.handle_cursor(cursor, direction)
 
-    def backspace(self, cursor, caller):
+    def backspace(self, cursor, caller, direction=Direction.LEFT):
         if self.parent and (caller is self.numerator or caller is self.denominator):
-            temp = ElementList()
-            temp.elements = self.numerator.elements + self.denominator.elements
-            self.parent.replace(self, temp)
-            #self.denominator.elements[0].handle_cursor(cursor, Direction.LEFT)
-            self.parent_handle_cursor(cursor, Direction.LEFT)
+            temp = ElementList(self.numerator.elements + self.denominator.elements)
+            self.parent.handle_cursor(cursor, Direction.NONE)
+            if direction is Direction.LEFT and caller is self.numerator:
+                offset = 0
+            elif direction is Direction.LEFT and caller is self.denominator \
+                 or direction is Direction.RIGHT and caller is self.numerator:
+                offset = len(self.numerator)
+            else:
+                offset = len(self.numerator) + len(self.denominator)
+            self.parent.replace(self, temp, cursor_offset=offset)
         elif caller is self.parent is not None:
-            self.numerator.backspace(cursor, self)
+            self.denominator.backspace(cursor, self, direction=direction)
 
     @classmethod
     def make_greedily(cls, left, right):
@@ -582,12 +698,12 @@ class Radical(Element):
         else:
             self.radicand.handle_cursor(cursor, direction)
 
-    def backspace(self, cursor, caller):
+    def backspace(self, cursor, caller, direction=Direction.LEFT):
         if caller is self.radicand and self.parent:
-            self.parent.replace(self, self.radicand)
-            self.parent_handle_cursor(cursor, Direction.LEFT)
+            self.parent_handle_cursor(cursor, Direction.NONE)
+            self.parent.replace(self, self.radicand, cursor_offset=0 if direction is Direction.LEFT else len(self.radicand))
         elif caller is self.parent is not None:
-            self.radicand.backspace(cursor, self)
+            self.radicand.backspace(cursor, self, direction=direction)
 
 class Paren(Element):
     wants_cursor = False
@@ -635,5 +751,3 @@ class Paren(Element):
             ctx.translate(0, -self.ascent/scale_factor-extents.ink_rect.y)
             ctx.move_to(0, 0)
             PangoCairo.show_layout(ctx, self.layout)
-
-test_frac = ElementList([Atom('a'), Frac([Atom('b')], [Atom('c')])])

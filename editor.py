@@ -5,21 +5,20 @@ from gi.repository import Gtk, Gdk, cairo, Pango, PangoCairo
 import math
 import sys
 
-from formula import *
+from formula import Editor
 
 def destroy(window):
     Gtk.main_quit()
 
 def main():
     window = Gtk.Window()
-    window.set_title("Hello World")
+    window.set_title("Formula Editor")
     window.set_events(window.get_events() | Gdk.EventMask.KEY_PRESS_MASK)
 
     app = Editor()
 
     window.add(app)
 
-    app.connect('draw', app.do_draw_cb)
     window.connect_after('destroy', destroy)
     window.show_all()
     Gtk.main()
