@@ -1,13 +1,13 @@
 import re
 from itertools import count
 from collections import namedtuple
-from gi.repository import Gtk, Gdk, cairo, Pango, PangoCairo
+from gi.repository import GLib, Gtk, Gdk, cairo, Pango, PangoCairo
 from enum import Enum
 
 desc = Pango.font_description_from_string("Latin Modern Math 20")
 DEBUG = False
 dpi = PangoCairo.font_map_get_default().get_resolution()
-CURSOR_WIDTH = 1
+
 GREEK_LETTERS = {
     'Alpha': 'Α',
     'Beta': 'Β',
@@ -74,18 +74,35 @@ class Editor(Gtk.DrawingArea):
         self.props.can_focus = True
         self.connect("key-press-event", self.on_key_press)
         self.connect('draw', self.do_draw_cb)
-
+        self.blink_source = None
+        self.restart_blink_sequence()
 
     def do_draw_cb(self, widget, ctx):
         scale = 1
+        ctx.translate(4,4) # a bit of padding
         ctx.scale(scale, scale)
         self.expr.compute_metrics(ctx, MetricContext(self.cursor))
         ctx.translate(0, self.expr.ascent)
-        self.expr.draw(ctx)
+        self.expr.draw(ctx, self.cursor)
         self.set_size_request(self.expr.width*scale,
                               (self.expr.ascent + self.expr.descent)*scale)
 
+    def blink_cursor_cb(self):
+        self.cursor.visible = not self.cursor.visible
+        self.queue_draw()
+        return True
+
+    def restart_blink_sequence(self):
+        self.cursor.visible = True
+        if self.blink_source:
+            GLib.source_remove(self.blink_source)
+        def cb():
+            self.blink_source = GLib.timeout_add(Cursor.BLINK_DELAY, self.blink_cursor_cb)
+            return False
+        self.blink_source = GLib.timeout_add(Cursor.BLINK_DELAY, self.blink_cursor_cb)
+
     def on_key_press(self, widget, event):
+        self.restart_blink_sequence()
         if DEBUG:
             print(Gdk.keyval_name(event.keyval))
         char = chr(Gdk.keyval_to_unicode(event.keyval))
@@ -149,8 +166,12 @@ class MetricContext():
         self.cursor = cursor
 
 class Cursor():
+    WIDTH = 1
+    BLINK_DELAY = 600
+
     def __init__(self):
         self.owner = None
+        self.visible = True
 
     def reparent(self, new_parent):
         if self.owner:
@@ -208,7 +229,7 @@ class Element():
     """Abstract class describing an element of an equation.
 
     Implementations must provide ascent, descent
-    and width properties, compute_metrics(ctx, metric_ctx) and draw(ctx)."""
+    and width properties, compute_metrics(ctx, metric_ctx) and draw(ctx, cursor)."""
 
     wants_cursor = True
     h_spacing = 2
@@ -219,11 +240,8 @@ class Element():
         self.has_cursor = False
 
     def font_metrics(self, ctx):
-        font = PangoCairo.font_map_get_default().load_font(PangoCairo.create_context(ctx), desc)
-        FontMetrics = namedtuple('FontMetrics', ['ascent', 'descent', 'width'])
-        m = font.get_metrics()
-        sf = (dpi/72.0) / Pango.SCALE
-        return FontMetrics(m.get_ascent()*sf, m.get_descent()*sf, m.get_approximate_digit_width()*sf)
+        text = Text("x", ctx)
+        return text
 
     def compute_metrics(self, ctx, metric_ctx):
         """To be run at the end of overriding methods, if they
@@ -233,7 +251,7 @@ class Element():
             stack[-1].ascent = max(self.ascent, stack[-1].ascent)
             stack[-1].descent = max(self.descent, stack[-1].descent)
 
-    def draw(self, ctx):
+    def draw(self, ctx, cursor):
         if DEBUG:
             ctx.set_line_width(0.5)
             ctx.set_source_rgba(1, 0, 1 if self.has_cursor else 0, 0.6)
@@ -283,17 +301,17 @@ class ElementList(Element):
             self.descent = self.font_metrics(ctx).descent
             self.width = self.font_metrics(ctx).width
 
-    def draw_cursor(self, ctx, ascent, descent):
-        if self.has_cursor:
+    def draw_cursor(self, ctx, ascent, descent, cursor):
+        if self.has_cursor and cursor.visible:
             ctx.set_source_rgb(0, 0, 0)
-            ctx.set_line_width(max(ctx.device_to_user_distance(CURSOR_WIDTH, CURSOR_WIDTH)))
+            ctx.set_line_width(max(ctx.device_to_user_distance(Cursor.WIDTH, Cursor.WIDTH)))
             ctx.move_to(0, descent-2)
             ctx.line_to(0, -ascent+2)
             ctx.move_to(0, 0)
             ctx.stroke()
 
-    def draw(self, ctx):
-        super().draw(ctx)
+    def draw(self, ctx, cursor):
+        super().draw(ctx, cursor)
         with saved(ctx):
             ctx.move_to(0,0)
             for i, e in enumerate(self.elements):
@@ -303,17 +321,17 @@ class ElementList(Element):
                     if self.cursor_pos > 0:
                         ascent = max(ascent, self.elements[i-1].ascent)
                         descent = max(descent, self.elements[i-1].descent)
-                    self.draw_cursor(ctx, ascent, descent)
+                    self.draw_cursor(ctx, ascent, descent, cursor)
                 ctx.move_to(0, 0)
                 ctx.translate(e.h_spacing, 0)
                 with saved(ctx):
-                    e.draw(ctx)
+                    e.draw(ctx, cursor)
                 ctx.move_to(0,0)
                 ctx.translate(e.width + e.h_spacing, 0)
             if self.cursor_pos == len(self.elements) > 0:
-                self.draw_cursor(ctx, self.elements[-1].ascent, self.elements[-1].descent)
+                self.draw_cursor(ctx, self.elements[-1].ascent, self.elements[-1].descent, cursor)
             elif not self.elements:
-                self.draw_cursor(ctx, self.ascent, self.descent)
+                self.draw_cursor(ctx, self.ascent, self.descent, cursor)
 
     def move_cursor_to(self, cursor, index):
         cursor.reparent(self)
@@ -343,6 +361,7 @@ class ElementList(Element):
                 else:
                     self.move_cursor_to(cursor, i+1)
             else:
+                self.lose_cursor()
                 self.parent_handle_cursor(cursor, direction)
         elif direction is Direction.LEFT:
             self.move_cursor_to(cursor, len(self.elements))
@@ -399,10 +418,13 @@ class ElementList(Element):
                     continue
                 if paren_level <= 0:
                     break
-            n += 1
-            left = self.elements[self.cursor_pos - n:self.cursor_pos]
-            del self.elements[self.cursor_pos - n:self.cursor_pos]
-            self.cursor_pos -= n
+            if paren_level < 0:
+                left = []
+            else:
+                n += 1
+                left = self.elements[self.cursor_pos - n:self.cursor_pos]
+                del self.elements[self.cursor_pos - n:self.cursor_pos]
+                self.cursor_pos -= n
         else:
             left = []
         if self.cursor_pos < len(self.elements) and cls.greedy_insert_right and isinstance(self.elements[self.cursor_pos], (Paren, Atom, Expt)):
@@ -417,9 +439,12 @@ class ElementList(Element):
                     continue
                 if paren_level <= 0:
                     break
-            n += 1
-            right = self.elements[self.cursor_pos:self.cursor_pos + n]
-            del self.elements[self.cursor_pos:self.cursor_pos + n]
+            if paren_level < 0:
+                right = []
+            else:
+                n += 1
+                right = self.elements[self.cursor_pos:self.cursor_pos + n]
+                del self.elements[self.cursor_pos:self.cursor_pos + n]
         else:
             right = []
         new = cls.make_greedily(left, right)
@@ -507,8 +532,8 @@ class BaseAtom(Element):
         self.width, self.ascent, self.descent = self.layout.width, self.layout.ascent, self.layout.descent
         super().compute_metrics(ctx, metric_ctx)
 
-    def draw(self, ctx):
-        super().draw(ctx)
+    def draw(self, ctx, cursor):
+        super().draw(ctx, cursor)
         self.layout.draw(ctx)
 
 class Atom(BaseAtom):
@@ -555,12 +580,12 @@ class Expt(Element):
                            self.exponent.descent*self.exponent_scale + self.child_shift)
         super().compute_metrics(ctx, metric_ctx)
 
-    def draw(self, ctx):
-        super().draw(ctx)
+    def draw(self, ctx, cursor):
+        super().draw(ctx, cursor)
         with saved(ctx):
             ctx.translate(0, self.child_shift)
             ctx.scale(self.exponent_scale, self.exponent_scale)
-            self.exponent.draw(ctx)
+            self.exponent.draw(ctx, cursor)
 
     def handle_cursor(self, cursor, direction, giver=None):
         if giver is self.exponent:
@@ -601,8 +626,8 @@ class Frac(Element):
             self.vertical_separation//2 - self.bar_height
         super().compute_metrics(ctx, metric_ctx)
 
-    def draw(self, ctx):
-        super().draw(ctx)
+    def draw(self, ctx, cursor):
+        super().draw(ctx, cursor)
         with saved(ctx):
             ctx.translate(0, -self.bar_height)
             ctx.move_to(0,0)
@@ -613,12 +638,11 @@ class Frac(Element):
             with saved(ctx):
                 ctx.translate(self.width//2 - self.numerator.width//2,
                               -self.vertical_separation//2 - self.numerator.descent)
-                self.numerator.draw(ctx)
+                self.numerator.draw(ctx, cursor)
             with saved(ctx):
                 ctx.translate(self.width//2 - self.denominator.width//2,
                               self.vertical_separation//2 + self.denominator.ascent)
-                self.denominator.draw(ctx)
-
+                self.denominator.draw(ctx, cursor)
 
     def handle_cursor(self, cursor, direction, giver=None):
         if giver is self.numerator and direction is Direction.DOWN:
@@ -671,8 +695,8 @@ class Radical(Element):
         self.descent = self.radicand.descent
         super().compute_metrics(ctx, metric_ctx)
 
-    def draw(self, ctx):
-        super().draw(ctx)
+    def draw(self, ctx, cursor):
+        super().draw(ctx, cursor)
         extents = self.symbol.get_pixel_extents()
         symbol_size = extents.ink_rect.height
         scale_factor = max(1, (self.ascent + self.descent)/symbol_size)
@@ -690,7 +714,7 @@ class Radical(Element):
         ctx.rel_line_to(self.radicand.width, 0)
         ctx.stroke()
         ctx.move_to(0,0)
-        self.radicand.draw(ctx)
+        self.radicand.draw(ctx, cursor)
 
     def handle_cursor(self, cursor, direction, giver=None):
         if giver is self.radicand:
@@ -741,8 +765,8 @@ class Paren(Element):
             self.descent = match.descent
             super().compute_metrics(ctx, metric_ctx)
 
-    def draw(self, ctx):
-        super().draw(ctx)
+    def draw(self, ctx, cursor):
+        super().draw(ctx, cursor)
         extents = self.layout.get_pixel_extents()
         symbol_size = extents.ink_rect.height
         scale_factor = max(1, (self.ascent + self.descent)/symbol_size)
