@@ -1,0 +1,67 @@
+* Formula editor
+** New features
+*** DONE Greek letters (including pi)
+*** Logarithms with a base subscript
+**** Just make a general subscript class?
+*** Subscripts
+**** How would they interact with Expt?
+*** Sums
+*** Products
+*** Integrals
+*** Derivatives
+*** Radicals with an actually visible index
+**** UI? Desmos uses 'nthroot' keyword
+**** Still need normal square root with no index
+*** Absolute value
+*** DONE Delete key
+*** Mouse
+*** Selection - via both keyboard and mouse
+**** by finding common ancestor ElementList?
+*** Copy and paste
+**** Save and restore of equations - related to copy and paste?
+**** Could store equations as LaTeX, like Desmos does (at least for copy + paste)
+***** Would require conversion to and from LaTeX
+**** Might want to use other format, more pythonic perhaps, since integrals in LaTeX a bit ambiguous
+***** Sympy compatibility?
+*** More international input
+*** Keyboard shortcuts (like Geogebra, (maybe) Emacs)
+*** DONE Make cursor blink
+*** Vectors and matrices
+** Refactoring
+*** DONE Make formula editor empty by default (but probably still keep a test expression somehow for debugging)
+*** Separate classes for numbers and binary operators instead of just using Atom
+**** DONE Give binary operators more spacing
+*** Separate left and right (and top and bottom?) spacing (primarily for Expt)
+**** Is this actually necessary?
+*** Make number atoms coalesce?
+**** Probably not worth the effort. What advantage does it bring?
+*** Remove code duplication for displaying text by using Text
+**** Make Paren a subclass of BaseAtom?
+*** Split formula.py into separate files
+**** Is formula.py really too big? The individual classes aren't really reusable so maybe it doesn't make sense to make them into separate packages.
+*** DONE Get Element.font_metrics to give better bounds (use an actual Pango layout? ...like in BaseAtom)
+*** Use own copy of font instead of system's
+*** Add tests
+*** Add type checking/asserts/make everything more robust
+*** Add documentation
+* Graphing
+** via OpenGL (is this definitely faster? offer a cpu calculation option as well?)
+** Complex numbers?
+** 3D?
+** Parametric
+** Implicit
+** Inequalities
+** Polar
+** Data/stats?
+** Tables of values?
+** Discrete distributions? Discrete functions? Piecewise functions?
+** Vectors? Vector calculus?
+** Matrices? Linear algebra?
+** Physical constants?
+** Angle units?
+* New name - Graphene?
+* Icon
+* Make the formula editor into a separate widget library
+** Make a standalone formula editor?
+*** LaTeX output
+** Make a scientific calculator?
