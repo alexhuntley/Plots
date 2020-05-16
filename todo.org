@@ -27,6 +27,7 @@
 *** Keyboard shortcuts (like Geogebra, (maybe) Emacs)
 *** DONE Make cursor blink
 *** Vectors and matrices
+*** Make Paren stretch more nicely (especially square and curly braces)
 ** Refactoring
 *** DONE Make formula editor empty by default (but probably still keep a test expression somehow for debugging)
 *** Separate classes for numbers and binary operators instead of just using Atom

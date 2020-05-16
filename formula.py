@@ -272,6 +272,7 @@ class Element():
 
     def parent_handle_cursor(self, cursor, direction):
         if self.parent:
+            self.lose_cursor()
             self.parent.handle_cursor(cursor, direction, self)
 
 class ElementList(Element):
@@ -361,7 +362,6 @@ class ElementList(Element):
                 else:
                     self.move_cursor_to(cursor, i+1)
             else:
-                self.lose_cursor()
                 self.parent_handle_cursor(cursor, direction)
         elif direction is Direction.LEFT:
             self.move_cursor_to(cursor, len(self.elements))
@@ -517,7 +517,6 @@ class Text:
     def draw(self, ctx):
         ctx.move_to(0, -self.ascent)
         PangoCairo.show_layout(ctx, self.layout)
-        ctx.move_to(0, 0)
 
 class BaseAtom(Element):
     wants_cursor = False
