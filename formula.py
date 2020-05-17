@@ -65,7 +65,7 @@ BINARY_OPERATORS = ("+", "-", "*", "=")
 
 class Editor(Gtk.DrawingArea):
     padding = 4
-    def __init__ (self):
+    def __init__(self):
         super().__init__()
         self.cursor = Cursor()
         self.test_expr = ElementList([Paren('('), Radical([]), OperatorAtom('sin'), Atom('a'), Paren(')'), Atom('b'), Atom('c'), Expt([Atom('d')]),
@@ -142,7 +142,8 @@ class Editor(Gtk.DrawingArea):
             return
         try:
             direction = Direction(event.keyval)
-            self.cursor.handle_movement(direction)
+            select = bool(event.state & Gdk.ModifierType.SHIFT_MASK)
+            self.cursor.handle_movement(direction, select=select)
             self.queue_draw()
             return
         except ValueError:
@@ -173,6 +174,11 @@ class Cursor():
         self.owner = None
         self.visible = True
         self.pos = 0
+        self.secondary_pos = None
+        self.secondary_owner = None
+        self.selecting = False
+        self.selection_bounds = None
+        self.selection_ancestor = None
 
     def reparent(self, new_parent, position):
         self.owner = new_parent
@@ -180,7 +186,18 @@ class Cursor():
         if position < 0:
             self.pos = len(self.owner.elements) + position + 1
 
-    def handle_movement(self, direction):
+    def cancel_selection(self):
+        self.secondary_pos, self.secondary_owner = None, None
+        self.selection_bounds, self.selection_ancestor = None, None
+        self.selecting = False
+
+    def handle_movement(self, direction, select=False):
+        if select and not self.selecting:
+            self.secondary_pos, self.secondary_owner = self.pos, self.owner
+        elif not select:
+            self.cancel_selection()
+        self.selecting = select
+
         shift = 0 if direction.displacement() == 1 else -1
 
         def go_to_parent():
@@ -211,14 +228,60 @@ class Cursor():
                     self.pos = new_pos
         except IndexError:
             go_to_parent()
+        if self.selecting:
+            self.selection_bounds, self.selection_ancestor = self.calculate_selection()
+
+    def calculate_selection(self):
+        if not self.secondary_owner:
+            return None
+        primary_ancestors = self.ancestors(self.owner)
+        secondary_ancestors = self.ancestors(self.secondary_owner)
+        for i, l in enumerate(primary_ancestors):
+            if l in secondary_ancestors:
+                common_ancestor = l
+                j = secondary_ancestors.index(l)
+                break
+        if i > 0:
+            primary_ancestor_index = primary_ancestors[i-1].parent.index_in_parent
+        else:
+            primary_ancestor_index = self.pos
+        if j > 0:
+            secondary_ancestor_index = secondary_ancestors[j-1].parent.index_in_parent
+        else:
+            secondary_ancestor_index = self.secondary_pos
+        if i > 0 and primary_ancestor_index >= secondary_ancestor_index:
+            primary_ancestor_index += 1
+        if j > 0 and secondary_ancestor_index >= primary_ancestor_index:
+            secondary_ancestor_index += 1
+        left = min(primary_ancestor_index, secondary_ancestor_index)
+        right = max(primary_ancestor_index, secondary_ancestor_index)
+        return range(left, right), common_ancestor
+
+    @staticmethod
+    def ancestors(elementlist):
+        l = elementlist
+        res = [l]
+        while l.parent:
+            l = l.parent.parent
+            res.append(l)
+        return res
 
     def backspace(self, direction):
-        self.owner.backspace(self, direction=direction)
+        if self.selecting:
+            del self.selection_ancestor.elements[self.selection_bounds.start:self.selection_bounds.stop]
+            self.reparent(self.selection_ancestor, self.selection_bounds.start)
+            self.cancel_selection()
+        else:
+            self.owner.backspace(self, direction=direction)
 
     def insert(self, element):
+        if self.selecting:
+            self.backspace(None)
         self.owner.insert(element, self)
 
     def greedy_insert(self, cls):
+        if self.selecting:
+            self.backspace(None)
         self.owner.greedy_insert(cls, self)
 
 def italify_string(s):
@@ -308,6 +371,13 @@ class Element():
             ctx.set_source_rgba(1, 0, 1 if cursor.owner is self else 0, 0.6)
             ctx.rectangle(0, -self.ascent, self.width, self.ascent + self.descent)
             ctx.stroke()
+        if cursor.selecting and self.parent is cursor.selection_ancestor and \
+           self.index_in_parent in cursor.selection_bounds:
+            ctx.set_line_width(0.5)
+            ctx.set_source_rgba(0.3, 0.3, 1, 0.2)
+            ctx.rectangle(-self.h_spacing, -self.ascent,
+                          self.width + self.h_spacing, self.ascent + self.descent)
+            ctx.fill()
         ctx.set_source_rgba(0,0,0)
         ctx.move_to(0,0)
 
@@ -337,6 +407,9 @@ class ElementList(Element):
 
     def __len__(self):
         return len(self.elements)
+
+    def __repr__(self):
+        return "ElementList({!r})".format(self.elements)
 
     def compute_metrics(self, ctx, metric_ctx):
         self.ascent = self.descent = self.width = 0
@@ -426,10 +499,15 @@ class ElementList(Element):
                 self.elements[old.index_in_parent] = new
                 new.parent = self
 
+    def update_children(self):
+        for i, e in enumerate(self.elements):
+            e.parent = self
+            e.index_in_parent = i
+
     def insert(self, element, cursor):
         self.elements.insert(cursor.pos, element)
         cursor.pos += 1
-        element.parent = self
+        self.update_children()
         self.convert_specials(cursor)
 
     def greedy_insert(self, cls, cursor):

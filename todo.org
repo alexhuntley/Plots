@@ -15,7 +15,7 @@
 *** Absolute value
 *** DONE Delete key
 *** Mouse
-*** Selection - via both keyboard and mouse
+*** DONE Selection via keyboard
 **** by finding common ancestor ElementList?
 *** Copy and paste
 **** Save and restore of equations - related to copy and paste?
@@ -27,7 +27,8 @@
 *** Keyboard shortcuts (like Geogebra, (maybe) Emacs)
 *** DONE Make cursor blink
 *** Vectors and matrices
-*** Make Paren stretch more nicely (especially square and curly braces)
+*** DONE Make Paren stretch more nicely (especially square and curly braces)
+*** Better kerning for Atoms
 ** Refactoring
 *** DONE Make formula editor empty by default (but probably still keep a test expression somehow for debugging)
 *** Separate classes for numbers and binary operators instead of just using Atom
@@ -42,6 +43,7 @@
 **** Is formula.py really too big? The individual classes aren't really reusable so maybe it doesn't make sense to make them into separate packages.
 *** DONE Get Element.font_metrics to give better bounds (use an actual Pango layout? ...like in BaseAtom)
 *** Use own copy of font instead of system's
+**** Doesn't seem possible
 *** Add tests
 *** Add type checking/asserts/make everything more robust
 *** Add documentation
