@@ -62,6 +62,7 @@ GREEK_REGEXES = GREEK_LETTERS.copy()
 GREEK_REGEXES['(?<![EUeu])psi'] = GREEK_REGEXES.pop('psi')
 
 class Editor(Gtk.DrawingArea):
+    padding = 4
     def __init__ (self):
         super().__init__()
         self.cursor = Cursor()
@@ -78,14 +79,14 @@ class Editor(Gtk.DrawingArea):
         self.restart_blink_sequence()
 
     def do_draw_cb(self, widget, ctx):
+        ctx.translate(self.padding, self.padding) # a bit of padding
         scale = 2
-        ctx.translate(4,4) # a bit of padding
         ctx.scale(scale, scale)
         self.expr.compute_metrics(ctx, MetricContext(self.cursor))
         ctx.translate(0, self.expr.ascent)
         self.expr.draw(ctx, self.cursor)
-        self.set_size_request(self.expr.width*scale,
-                              (self.expr.ascent + self.expr.descent)*scale)
+        self.set_size_request(self.expr.width*scale + 2*self.padding,
+                              (self.expr.ascent + self.expr.descent)*scale + 2*self.padding)
 
     def blink_cursor_cb(self):
         self.cursor.visible = not self.cursor.visible
@@ -175,8 +176,6 @@ class Cursor():
         self.pos = 0
 
     def reparent(self, new_parent, position):
-        if self.owner:
-            self.owner.lose_cursor()
         self.owner = new_parent
         self.pos = position
         if position < 0:
@@ -281,16 +280,14 @@ class Direction(Enum):
 class Element():
     """Abstract class describing an element of an equation.
 
-    Implementations must provide ascent, descent
+    Implementations must provide parent, index_in_parent, lists, ascent, descent,
     and width properties, compute_metrics(ctx, metric_ctx) and draw(ctx, cursor)."""
 
-    wants_cursor = True
     h_spacing = 2
 
     def __init__(self, parent):
         self.parent = parent
         self.index_in_parent = None
-        self.has_cursor = False
         self.lists = []
 
     def font_metrics(self, ctx):
@@ -309,26 +306,11 @@ class Element():
     def draw(self, ctx, cursor):
         if DEBUG:
             ctx.set_line_width(0.5)
-            ctx.set_source_rgba(1, 0, 1 if self.has_cursor else 0, 0.6)
+            ctx.set_source_rgba(1, 0, 1 if cursor.owner is self else 0, 0.6)
             ctx.rectangle(0, -self.ascent, self.width, self.ascent + self.descent)
             ctx.stroke()
         ctx.set_source_rgba(0,0,0)
         ctx.move_to(0,0)
-
-    def lose_cursor(self):
-        self.has_cursor = False
-
-    def handle_cursor(self, cursor, direction, giver=None):
-        if self.wants_cursor and (direction is Direction.NONE or not self.has_cursor):
-            cursor.reparent(self)
-            self.has_cursor = True
-        elif self.parent:
-            self.parent_handle_cursor(cursor, direction)
-
-    def parent_handle_cursor(self, cursor, direction):
-        if self.parent:
-            self.lose_cursor()
-            self.parent.handle_cursor(cursor, direction, self)
 
     def get_next_child(self, direction, previous=None):
         try:
@@ -350,7 +332,6 @@ class ElementList(Element):
     def __init__(self, elements=None, parent=None):
         super().__init__(parent)
         self.elements = elements or []
-        self.cursor_pos = 0
         for i, e in enumerate(self.elements):
             e.parent = self
             e.index_in_parent = i
@@ -390,7 +371,7 @@ class ElementList(Element):
                 ctx.move_to(0,0)
                 if i == cursor.pos:
                     ascent, descent = e.ascent, e.descent
-                    if self.cursor_pos > 0:
+                    if cursor.pos > 0:
                         ascent = max(ascent, self.elements[i-1].ascent)
                         descent = max(descent, self.elements[i-1].descent)
                     self.draw_cursor(ctx, ascent, descent, cursor)
@@ -404,11 +385,6 @@ class ElementList(Element):
                 self.draw_cursor(ctx, self.elements[-1].ascent, self.elements[-1].descent, cursor)
             elif not self.elements:
                 self.draw_cursor(ctx, self.ascent, self.descent, cursor)
-
-    def move_cursor_to(self, cursor, index):
-        cursor.reparent(self, index)
-        self.has_cursor = True
-        self.cursor_pos = index
 
     def backspace(self, cursor, caller=None, direction=Direction.LEFT):
         if self is not cursor.owner:
@@ -458,7 +434,7 @@ class ElementList(Element):
         self.convert_specials(cursor)
 
     def greedy_insert(self, cls, cursor):
-        if cursor.pos > 0 and cls.greedy_insert_left and isinstance(self.elements[self.cursor_pos-1], (Paren, Atom, Expt)):
+        if cursor.pos > 0 and cls.greedy_insert_left and isinstance(self.elements[cursor.pos-1], (Paren, Atom, Expt)):
             paren_level = 0
             for n, e in enumerate(self.elements[cursor.pos-1::-1]):
                 if isinstance(e, Paren):
