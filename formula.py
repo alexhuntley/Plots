@@ -172,14 +172,47 @@ class Cursor():
     def __init__(self):
         self.owner = None
         self.visible = True
+        self.pos = 0
 
-    def reparent(self, new_parent):
+    def reparent(self, new_parent, position):
         if self.owner:
             self.owner.lose_cursor()
         self.owner = new_parent
+        self.pos = position
+        if position < 0:
+            self.pos = len(self.owner.elements) + position + 1
 
     def handle_movement(self, direction):
-        self.owner.handle_cursor(self, direction)
+        shift = 0 if direction.displacement() == 1 else -1
+
+        def go_to_parent():
+            if self.owner.parent:
+                new_list = self.owner.parent.get_next_child(direction, self.owner)
+                if new_list is not None:
+                    self.owner = new_list
+                    self.pos = len(self.owner) if direction.end() == -1 else 0
+                else:
+                    self.pos = self.owner.parent.index_in_parent + shift + 1
+                    self.owner = self.owner.parent.parent
+
+        if direction.vertical():
+            go_to_parent()
+            return
+        adj_idx = self.pos + shift
+        try:
+            if adj_idx < 0:
+                raise IndexError
+            adj = self.owner.elements[adj_idx]
+            child_list = adj.get_next_child(direction)
+            if child_list is not None:
+                self.owner = child_list
+                self.pos = len(self.owner) if direction.end() == -1 else 0
+            else:
+                new_pos = self.pos + direction.displacement()
+                if new_pos in range(len(self.owner.elements) + 1):
+                    self.pos = new_pos
+        except IndexError:
+            go_to_parent()
 
     def backspace(self, direction):
         self.owner.backspace(self, direction=direction)
@@ -225,6 +258,26 @@ class Direction(Enum):
     RIGHT = Gdk.KEY_Right
     NONE = 0
 
+    def displacement(self):
+        if self is self.UP or self is self.LEFT:
+            return -1
+        elif self is self.DOWN or self is self.RIGHT:
+            return 1
+        else:
+            return 0
+
+    def end(self):
+        return -1 if self.displacement() == -1 else 0
+
+    def vertical(self):
+        if self is self.UP or self is self.DOWN:
+            return True
+        else:
+            return False
+
+    def horizontal(self):
+        return not self.vertical()
+
 class Element():
     """Abstract class describing an element of an equation.
 
@@ -238,6 +291,7 @@ class Element():
         self.parent = parent
         self.index_in_parent = None
         self.has_cursor = False
+        self.lists = []
 
     def font_metrics(self, ctx):
         text = Text("x", ctx)
@@ -276,6 +330,22 @@ class Element():
             self.lose_cursor()
             self.parent.handle_cursor(cursor, direction, self)
 
+    def get_next_child(self, direction, previous=None):
+        try:
+            previous_idx = self.lists.index(previous)
+            new_idx = previous_idx + direction.displacement()
+            if new_idx in range(len(self.lists)):
+                return self.lists[new_idx]
+            else:
+                return None
+        except ValueError:
+            child_idx = -1 if direction.displacement() == -1 else 0
+            if self.lists:
+                return self.lists[child_idx]
+            else:
+                return None
+
+
 class ElementList(Element):
     def __init__(self, elements=None, parent=None):
         super().__init__(parent)
@@ -305,7 +375,7 @@ class ElementList(Element):
             self.width = self.font_metrics(ctx).width
 
     def draw_cursor(self, ctx, ascent, descent, cursor):
-        if self.has_cursor and cursor.visible:
+        if cursor.owner is self and cursor.visible:
             ctx.set_source_rgb(0, 0, 0)
             ctx.set_line_width(max(ctx.device_to_user_distance(Cursor.WIDTH, Cursor.WIDTH)))
             ctx.move_to(0, descent-2)
@@ -318,7 +388,7 @@ class ElementList(Element):
         with saved(ctx):
             for i, e in enumerate(self.elements):
                 ctx.move_to(0,0)
-                if i == self.cursor_pos:
+                if i == cursor.pos:
                     ascent, descent = e.ascent, e.descent
                     if self.cursor_pos > 0:
                         ascent = max(ascent, self.elements[i-1].ascent)
@@ -330,13 +400,13 @@ class ElementList(Element):
                     e.draw(ctx, cursor)
                 ctx.move_to(0,0)
                 ctx.translate(e.width + e.h_spacing, 0)
-            if self.cursor_pos == len(self.elements) > 0:
+            if cursor.pos == len(self.elements) > 0:
                 self.draw_cursor(ctx, self.elements[-1].ascent, self.elements[-1].descent, cursor)
             elif not self.elements:
                 self.draw_cursor(ctx, self.ascent, self.descent, cursor)
 
     def move_cursor_to(self, cursor, index):
-        cursor.reparent(self)
+        cursor.reparent(self, index)
         self.has_cursor = True
         self.cursor_pos = index
 
@@ -370,46 +440,56 @@ class ElementList(Element):
             self.move_cursor_to(cursor, 0)
 
     def backspace(self, cursor, caller=None, direction=Direction.LEFT):
-        if not self.has_cursor:
-            self.handle_cursor(cursor, direction)
+        if self is not cursor.owner:
+            cursor.reparent(self, direction.end())
         if direction is Direction.LEFT:
             shift = -1
         elif direction is Direction.RIGHT:
             shift = 0
-        if self.cursor_pos + shift in range(len(self.elements)):
-            target = self.elements[self.cursor_pos + shift]
-            if target.wants_cursor:
-                target.handle_cursor(cursor, direction, self)
-                target.backspace(cursor, self, direction=direction)
+        if cursor.pos + shift in range(len(self.elements)):
+            target = self.elements[cursor.pos + shift]
+            child = target.get_next_child(direction)
+            if child is not None:
+                cursor.reparent(child, direction.end())
+                child.backspace(cursor, direction=direction)
             else:
-                self.cursor_pos += shift
-                del self.elements[self.cursor_pos]
+                cursor.pos += shift
+                del self.elements[cursor.pos]
         elif self.parent:
-            self.parent.backspace(cursor, self, direction=direction)
+            self.dissolve_parent(cursor)
 
-    def replace(self, old, new, cursor_offset=None):
+    def dissolve_parent(self, cursor):
+        concatenation = []
+        cursor_offset = 0
+        for elementlist in self.parent.lists:
+            if elementlist is self:
+                cursor_offset = len(concatenation)
+            concatenation.extend(elementlist.elements)
+        self.parent.parent.replace(self.parent, ElementList(concatenation), cursor, cursor_offset)
+
+    def replace(self, old, new, cursor, cursor_offset=0):
         if old.parent is self:
             if isinstance(new, ElementList):
                 self.elements[old.index_in_parent:old.index_in_parent+1] = new.elements
                 for i, e in enumerate(new.elements):
                     e.parent = self
                     e.index_in_parent = old.index_in_parent + i
-                if self.has_cursor and cursor_offset is not None:
-                    self.cursor_pos = old.index_in_parent + cursor_offset
+                if cursor_offset is not None:
+                    cursor.reparent(self, old.index_in_parent + cursor_offset)
             else:
                 self.elements[old.index_in_parent] = new
                 new.parent = self
 
     def insert(self, element, cursor):
-        self.elements.insert(self.cursor_pos, element)
-        self.cursor_pos += 1
+        self.elements.insert(cursor.pos, element)
+        cursor.pos += 1
         element.parent = self
         self.convert_specials(cursor)
 
     def greedy_insert(self, cls, cursor):
-        if self.cursor_pos > 0 and cls.greedy_insert_left and isinstance(self.elements[self.cursor_pos-1], (Paren, Atom, Expt)):
+        if cursor.pos > 0 and cls.greedy_insert_left and isinstance(self.elements[self.cursor_pos-1], (Paren, Atom, Expt)):
             paren_level = 0
-            for n, e in enumerate(self.elements[self.cursor_pos-1::-1]):
+            for n, e in enumerate(self.elements[cursor.pos-1::-1]):
                 if isinstance(e, Paren):
                     if e.left:
                         paren_level -= 1
@@ -423,14 +503,14 @@ class ElementList(Element):
                 left = []
             else:
                 n += 1
-                left = self.elements[self.cursor_pos - n:self.cursor_pos]
-                del self.elements[self.cursor_pos - n:self.cursor_pos]
-                self.cursor_pos -= n
+                left = self.elements[cursor.pos - n:cursor.pos]
+                del self.elements[cursor.pos - n:cursor.pos]
+                cursor.pos -= n
         else:
             left = []
-        if self.cursor_pos < len(self.elements) and cls.greedy_insert_right and isinstance(self.elements[self.cursor_pos], (Paren, Atom, Expt)):
+        if cursor.pos < len(self.elements) and cls.greedy_insert_right and isinstance(self.elements[cursor.pos], (Paren, Atom, Expt)):
             paren_level = 0
-            for n, e in enumerate(self.elements[self.cursor_pos:]):
+            for n, e in enumerate(self.elements[cursor.pos:]):
                 if isinstance(e, Paren):
                     if e.left:
                         paren_level += 1
@@ -444,22 +524,22 @@ class ElementList(Element):
                 right = []
             else:
                 n += 1
-                right = self.elements[self.cursor_pos:self.cursor_pos + n]
-                del self.elements[self.cursor_pos:self.cursor_pos + n]
+                right = self.elements[cursor.pos:cursor.pos + n]
+                del self.elements[cursor.pos:cursor.pos + n]
         else:
             right = []
         new = cls.make_greedily(left, right)
         self.insert(new, cursor)
-        new.handle_cursor(cursor, Direction.LEFT)
+        cursor.reparent(new.get_next_child(Direction.LEFT), 0)
 
-    def atoms_at_cursor(self):
-        l = self.cursor_pos
+    def atoms_at_cursor(self, cursor):
+        l = cursor.pos
         while l - 1 >= 0:
             if isinstance(self.elements[l-1], BaseAtom):
                 l -= 1
             else:
                 break
-        r = self.cursor_pos
+        r = cursor.pos
         while r < len(self.elements):
             if isinstance(self.elements[r], BaseAtom):
                 r += 1
@@ -472,7 +552,7 @@ class ElementList(Element):
         return "".join(deitalify_string(atom.name) for atom in atoms)
 
     def convert_specials(self, cursor):
-        l, r = self.atoms_at_cursor()
+        l, r = self.atoms_at_cursor(cursor)
         atoms = self.elements[l:r]
         names = string_to_names(self.atoms_to_string(atoms))
 
@@ -488,7 +568,8 @@ class ElementList(Element):
         for j, elem in enumerate(new_elems):
             elem.parent = self
             elem.index_in_parent = l + j
-        new_elems[i].handle_cursor(cursor, Direction.RIGHT)
+        cursor.reparent(self, new_elems[i].index_in_parent)
+        cursor.handle_movement(Direction.RIGHT)
 
 def string_to_names(string):
     regex = r"asinh|acosh|atanh|sinh|cosh|tanh|asin|acos|atan|sin|cos|tan|exp|log|ln|lg|sqrt|."
@@ -578,6 +659,7 @@ class Expt(Element):
     def __init__(self, exponent=None, parent=None):
         super().__init__(parent)
         self.exponent = ElementList(exponent, self)
+        self.lists = [self.exponent]
 
     def compute_metrics(self, ctx, metric_ctx):
         self.exponent.compute_metrics(ctx, metric_ctx)
@@ -595,19 +677,6 @@ class Expt(Element):
             ctx.scale(self.exponent_scale, self.exponent_scale)
             self.exponent.draw(ctx, cursor)
 
-    def handle_cursor(self, cursor, direction, giver=None):
-        if giver is self.exponent:
-            self.parent.handle_cursor(cursor, direction, self)
-        else:
-            self.exponent.handle_cursor(cursor, direction)
-
-    def backspace(self, cursor, caller, direction=Direction.LEFT):
-        if self.parent and caller is self.exponent:
-            self.parent.handle_cursor(cursor, Direction.NONE)
-            self.parent.replace(self, self.exponent, cursor_offset=0 if direction == Direction.LEFT else len(self.exponent.elements))
-        elif caller is self.parent is not None:
-            self.exponent.backspace(cursor, self, direction=direction)
-
     @classmethod
     def make_greedily(cls, left, right):
         return cls(exponent=right)
@@ -620,6 +689,7 @@ class Frac(Element):
         super().__init__(parent)
         self.numerator = ElementList(numerator, self)
         self.denominator = ElementList(denominator, self)
+        self.lists = [self.numerator, self.denominator]
 
     def compute_metrics(self, ctx, metric_ctx):
         self.numerator.compute_metrics(ctx, metric_ctx)
@@ -652,34 +722,6 @@ class Frac(Element):
                               self.vertical_separation//2 + self.denominator.ascent)
                 self.denominator.draw(ctx, cursor)
 
-    def handle_cursor(self, cursor, direction, giver=None):
-        if giver is self.numerator and direction is Direction.DOWN:
-            self.denominator.handle_cursor(cursor, direction)
-        elif giver is self.denominator and direction is Direction.UP:
-            self.numerator.handle_cursor(cursor, direction)
-        elif giver is self.numerator or giver is self.denominator:
-            self.parent.handle_cursor(cursor, direction, self)
-        else:
-            if direction is Direction.UP or self.numerator.elements and not self.denominator.elements:
-                self.denominator.handle_cursor(cursor, direction)
-            else:
-                self.numerator.handle_cursor(cursor, direction)
-
-    def backspace(self, cursor, caller, direction=Direction.LEFT):
-        if self.parent and (caller is self.numerator or caller is self.denominator):
-            temp = ElementList(self.numerator.elements + self.denominator.elements)
-            self.parent.handle_cursor(cursor, Direction.NONE)
-            if direction is Direction.LEFT and caller is self.numerator:
-                offset = 0
-            elif direction is Direction.LEFT and caller is self.denominator \
-                 or direction is Direction.RIGHT and caller is self.numerator:
-                offset = len(self.numerator)
-            else:
-                offset = len(self.numerator) + len(self.denominator)
-            self.parent.replace(self, temp, cursor_offset=offset)
-        elif caller is self.parent is not None:
-            self.denominator.backspace(cursor, self, direction=direction)
-
     @classmethod
     def make_greedily(cls, left, right):
         return cls(numerator=left, denominator=right)
@@ -690,6 +732,7 @@ class Radical(Element):
         self.radicand = ElementList(radicand, self)
         self.index = ElementList(index, self)
         self.overline_space = 4
+        self.lists = [self.radicand]
 
     def compute_metrics(self, ctx, metric_ctx):
         self.radicand.compute_metrics(ctx, metric_ctx)
@@ -723,19 +766,6 @@ class Radical(Element):
         ctx.stroke()
         ctx.move_to(0,0)
         self.radicand.draw(ctx, cursor)
-
-    def handle_cursor(self, cursor, direction, giver=None):
-        if giver is self.radicand:
-            self.parent_handle_cursor(cursor, direction)
-        else:
-            self.radicand.handle_cursor(cursor, direction)
-
-    def backspace(self, cursor, caller, direction=Direction.LEFT):
-        if caller is self.radicand and self.parent:
-            self.parent_handle_cursor(cursor, Direction.NONE)
-            self.parent.replace(self, self.radicand, cursor_offset=0 if direction is Direction.LEFT else len(self.radicand))
-        elif caller is self.parent is not None:
-            self.radicand.backspace(cursor, self, direction=direction)
 
 class Paren(Element):
     wants_cursor = False
