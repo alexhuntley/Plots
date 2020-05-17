@@ -78,7 +78,7 @@ class Editor(Gtk.DrawingArea):
         self.restart_blink_sequence()
 
     def do_draw_cb(self, widget, ctx):
-        scale = 1
+        scale = 2
         ctx.translate(4,4) # a bit of padding
         ctx.scale(scale, scale)
         self.expr.compute_metrics(ctx, MetricContext(self.cursor))
@@ -595,7 +595,13 @@ class Text:
         self.width, self.height = self.layout.get_pixel_size()
         self.ascent = self.layout.get_baseline()/Pango.SCALE
         self.descent = self.height - self.ascent
-        self.ink_rect, self.logical_rect = self.layout.get_pixel_extents()
+
+        # Have to do this because get_pixel_extents returns integer pixels,
+        # which are not precise enough
+        self.ink_rect, self.logical_rect = self.layout.get_extents()
+        for attr in ("x", "y", "width", "height"):
+            setattr(self.ink_rect, attr, getattr(self.ink_rect, attr)/Pango.SCALE)
+            setattr(self.logical_rect, attr, getattr(self.logical_rect, attr)/Pango.SCALE)
 
     def draw_at_baseline(self, ctx):
         ctx.move_to(0, -self.ascent)
@@ -830,14 +836,17 @@ class Paren(Element):
                 ctx.scale(self.shrink,self.shrink)
                 self.top.draw(ctx)
             with saved(ctx):
-                ctx.translate(0, self.descent - self.bot.ink_rect.y*self.shrink - self.bot.ink_rect.height*self.shrink)
+                ctx.translate(0, self.descent)
                 ctx.move_to(0,0)
                 ctx.scale(self.shrink,self.shrink)
+                ctx.translate(0, -self.bot.ink_rect.y - self.bot.ink_rect.height)
+                ctx.move_to(0,0)
                 self.bot.draw(ctx)
             with saved(ctx):
                 scale_factor = max(1, (self.ascent + self.descent)/self.mid.ink_rect.height)
+                ctx.translate(0, -self.ascent)
                 ctx.scale(1, self.scale_factor)
-                ctx.translate(0, -self.ascent/self.scale_factor-self.mid.ink_rect.y)
+                ctx.translate(0, -self.mid.ink_rect.y)
                 ctx.scale(self.shrink,1)
                 ctx.move_to(0, 0)
                 self.mid.draw(ctx)
