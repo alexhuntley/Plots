@@ -60,6 +60,8 @@ GREEK_LETTERS = {
 }
 GREEK_REGEXES = GREEK_LETTERS.copy()
 GREEK_REGEXES['(?<![EUeu])psi'] = GREEK_REGEXES.pop('psi')
+FUNCTIONS = ("asinh", "acosh", "atanh", "sinh", "cosh", "tanh", "asin", "acos", "atan", "sin", "cos", "tan", "exp", "log", "ln", "lg")
+BINARY_OPERATORS = ("+", "-", "*", "=")
 
 class Editor(Gtk.DrawingArea):
     padding = 4
@@ -97,9 +99,6 @@ class Editor(Gtk.DrawingArea):
         self.cursor.visible = True
         if self.blink_source:
             GLib.source_remove(self.blink_source)
-        def cb():
-            self.blink_source = GLib.timeout_add(Cursor.BLINK_DELAY, self.blink_cursor_cb)
-            return False
         self.blink_source = GLib.timeout_add(Cursor.BLINK_DELAY, self.blink_cursor_cb)
 
     def on_key_press(self, widget, event):
@@ -111,7 +110,7 @@ class Editor(Gtk.DrawingArea):
             self.cursor.insert(Atom(char))
             self.queue_draw()
             return
-        if char in "+-*=":
+        if char in BINARY_OPERATORS:
             translation = str.maketrans("-*", "−×")
             self.cursor.insert(BinaryOperatorAtom(char.translate(translation)))
             self.queue_draw()
@@ -519,14 +518,18 @@ class ElementList(Element):
         cursor.handle_movement(Direction.RIGHT)
 
 def string_to_names(string):
-    regex = r"asinh|acosh|atanh|sinh|cosh|tanh|asin|acos|atan|sin|cos|tan|exp|log|ln|lg|sqrt|."
-    regex = "|".join(GREEK_REGEXES) + "|" + regex
+    regex = r"sqrt|."
+    regex = "|".join(GREEK_REGEXES) + "|" + "|".join(FUNCTIONS) + "|" + regex
     names = re.findall(regex, string)
     return names
 
 def name_to_element(name):
     if name == 'sqrt':
         return Radical([])
+    elif name in FUNCTIONS:
+        return OperatorAtom(name)
+    elif name in BINARY_OPERATORS:
+        return BinaryOperatorAtom(name)
     elif len(name) == 1:
         return Atom(name)
     elif name in GREEK_LETTERS:
