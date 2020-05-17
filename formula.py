@@ -250,6 +250,7 @@ class Element():
         if stack:
             stack[-1].ascent = max(self.ascent, stack[-1].ascent)
             stack[-1].descent = max(self.descent, stack[-1].descent)
+            stack[-1].compute_stretch()
 
     def draw(self, ctx, cursor):
         if DEBUG:
@@ -280,8 +281,9 @@ class ElementList(Element):
         super().__init__(parent)
         self.elements = elements or []
         self.cursor_pos = 0
-        for e in self.elements:
+        for i, e in enumerate(self.elements):
             e.parent = self
+            e.index_in_parent = i
 
     def __len__(self):
         return len(self.elements)
@@ -314,7 +316,6 @@ class ElementList(Element):
     def draw(self, ctx, cursor):
         super().draw(ctx, cursor)
         with saved(ctx):
-            ctx.move_to(0,0)
             for i, e in enumerate(self.elements):
                 ctx.move_to(0,0)
                 if i == self.cursor_pos:
@@ -513,10 +514,18 @@ class Text:
         self.width, self.height = self.layout.get_pixel_size()
         self.ascent = self.layout.get_baseline()/Pango.SCALE
         self.descent = self.height - self.ascent
+        self.ink_rect, self.logical_rect = self.layout.get_pixel_extents()
 
-    def draw(self, ctx):
+    def draw_at_baseline(self, ctx):
         ctx.move_to(0, -self.ascent)
         PangoCairo.show_layout(ctx, self.layout)
+
+    def draw(self, ctx):
+        self.update()
+        PangoCairo.show_layout(ctx, self.layout)
+
+    def update(self):
+        self.layout.context_changed()
 
 class BaseAtom(Element):
     wants_cursor = False
@@ -533,7 +542,7 @@ class BaseAtom(Element):
 
     def draw(self, ctx, cursor):
         super().draw(ctx, cursor)
-        self.layout.draw(ctx)
+        self.layout.draw_at_baseline(ctx)
 
 class Atom(BaseAtom):
     def __init__(self, name, parent=None):
@@ -731,6 +740,7 @@ class Radical(Element):
 class Paren(Element):
     wants_cursor = False
     h_spacing = 0
+    shrink = 0.7
 
     def __init__(self, char, parent=None):
         super().__init__(parent)
@@ -743,34 +753,67 @@ class Paren(Element):
         else:
             raise ValueError("{!r} is not a valid paren".format(char))
         self.char = char
+        self.match = None
 
     def compute_metrics(self, ctx, metric_ctx):
-        self.layout = PangoCairo.create_layout(ctx)
-        self.layout.set_text(self.char)
-        self.layout.set_font_description(desc)
-        self.width, self.height = self.layout.get_pixel_size()
-        self.baseline = self.layout.get_baseline()//Pango.SCALE
-        self.ascent = self.baseline
-        self.descent = self.height - self.baseline
+        self.text = Text(self.char, ctx)
+        if self.char == "[":
+            self.top, self.mid, self.bot = [Text(c, ctx) for c in "⎡⎢⎣"]
+        elif self.char == "]":
+            self.top, self.mid, self.bot = [Text(c, ctx) for c in "⎤⎥⎦"]
+
+        self.width, self.ascent, self.descent = self.text.width, self.text.ascent, self.text.descent
 
         if self.left:
             metric_ctx.paren_stack.append(self)
         else:
             if metric_ctx.paren_stack:
-                match = metric_ctx.paren_stack.pop()
+                self.match = metric_ctx.paren_stack.pop()
             else:
-                match = metric_ctx.prev
-            self.ascent = match.ascent
-            self.descent = match.descent
+                self.match = metric_ctx.prev
+            self.ascent = self.match.ascent
+            self.descent = self.match.descent
             super().compute_metrics(ctx, metric_ctx)
+        self.compute_stretch()
+
+    def compute_stretch(self):
+        self.scale_factor = max(1, (self.ascent + self.descent)/self.text.ink_rect.height)
+        if self.scale_factor > 1.5 and self.char in "[]":
+            self.stretch = True
+            self.scale_factor = max(1, (self.ascent + self.descent)/self.mid.height)
+            self.width = self.mid.width*self.shrink
+            self.h_spacing = 0
+            if isinstance(self.match, Paren) and self.match.char in "[]":
+                self.match.stretch = True
+                self.match.scale_factor = self.scale_factor
+                self.match.width = self.width
+                self.match.h_spacing = self.h_spacing
+        else:
+            self.stretch = False
 
     def draw(self, ctx, cursor):
         super().draw(ctx, cursor)
-        extents = self.layout.get_pixel_extents()
-        symbol_size = extents.ink_rect.height
-        scale_factor = max(1, (self.ascent + self.descent)/symbol_size)
-        with saved(ctx):
-            ctx.scale(1, scale_factor)
-            ctx.translate(0, -self.ascent/scale_factor-extents.ink_rect.y)
-            ctx.move_to(0, 0)
-            PangoCairo.show_layout(ctx, self.layout)
+        if self.stretch:
+            with saved(ctx):
+                ctx.translate(0, -self.ascent - self.top.ink_rect.y*self.shrink)
+                ctx.move_to(0,0)
+                ctx.scale(self.shrink,self.shrink)
+                self.top.draw(ctx)
+            with saved(ctx):
+                ctx.translate(0, self.descent - self.bot.ink_rect.y*self.shrink - self.bot.ink_rect.height*self.shrink)
+                ctx.move_to(0,0)
+                ctx.scale(self.shrink,self.shrink)
+                self.bot.draw(ctx)
+            with saved(ctx):
+                scale_factor = max(1, (self.ascent + self.descent)/self.mid.ink_rect.height)
+                ctx.scale(1, self.scale_factor)
+                ctx.translate(0, -self.ascent/self.scale_factor-self.mid.ink_rect.y)
+                ctx.scale(self.shrink,1)
+                ctx.move_to(0, 0)
+                self.mid.draw(ctx)
+        else:
+            with saved(ctx):
+                ctx.scale(1, self.scale_factor)
+                ctx.translate(0, -self.ascent/self.scale_factor-self.text.ink_rect.y)
+                ctx.move_to(0, 0)
+                self.text.draw(ctx)
