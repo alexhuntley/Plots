@@ -70,7 +70,7 @@ class Editor(Gtk.DrawingArea):
              Frac([Radical([Frac([Atom('b')], [Atom('c')]), Atom('y')], [Atom('3')])], [Atom('c'), Radical([Atom('a')])]),
              Paren(')')])
         self.expr = ElementList()
-        self.expr.handle_cursor(self.cursor, Direction.NONE)
+        self.cursor.reparent(self.expr, 0)
         self.props.can_focus = True
         self.connect("key-press-event", self.on_key_press)
         self.connect('draw', self.do_draw_cb)
@@ -409,35 +409,6 @@ class ElementList(Element):
         cursor.reparent(self, index)
         self.has_cursor = True
         self.cursor_pos = index
-
-    def handle_cursor(self, cursor, direction, giver=None):
-        if (direction is Direction.UP or direction is Direction.DOWN) and self.parent and giver:
-            self.parent.handle_cursor(cursor, direction, giver=self)
-        elif giver:
-            if direction is Direction.LEFT:
-                self.move_cursor_to(cursor, giver.index_in_parent)
-            elif direction is Direction.RIGHT:
-                self.move_cursor_to(cursor, giver.index_in_parent+1)
-            else:
-                self.move_cursor_to(cursor, 0)
-        elif self.has_cursor:
-            i = self.cursor_pos
-            if direction is Direction.LEFT and i > 0:
-                if self.elements[i - 1].wants_cursor:
-                    self.elements[i - 1].handle_cursor(cursor, direction)
-                else:
-                    self.move_cursor_to(cursor, i - 1)
-            elif direction is Direction.RIGHT and i < len(self.elements):
-                if self.elements[i].wants_cursor:
-                    self.elements[i].handle_cursor(cursor, direction)
-                else:
-                    self.move_cursor_to(cursor, i+1)
-            else:
-                self.parent_handle_cursor(cursor, direction)
-        elif direction is Direction.LEFT:
-            self.move_cursor_to(cursor, len(self.elements))
-        else:
-            self.move_cursor_to(cursor, 0)
 
     def backspace(self, cursor, caller=None, direction=Direction.LEFT):
         if self is not cursor.owner:
