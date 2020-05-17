@@ -396,6 +396,9 @@ class Element():
             else:
                 return None
 
+    @property
+    def height(self):
+        return self.ascent + self.descent
 
 class ElementList(Element):
     def __init__(self, elements=None, parent=None):
@@ -596,7 +599,7 @@ class ElementList(Element):
         cursor.handle_movement(Direction.RIGHT)
 
 def string_to_names(string):
-    regex = r"sqrt|."
+    regex = r"sum|sqrt|."
     regex = "|".join(GREEK_REGEXES) + "|" + "|".join(FUNCTIONS) + "|" + regex
     names = re.findall(regex, string)
     return names
@@ -604,6 +607,8 @@ def string_to_names(string):
 def name_to_element(name):
     if name == 'sqrt':
         return Radical([])
+    elif name == 'sum':
+        return Sum()
     elif name in FUNCTIONS:
         return OperatorAtom(name)
     elif name in BINARY_OPERATORS:
@@ -616,34 +621,41 @@ def name_to_element(name):
         return OperatorAtom(name)
 
 class Text:
-    def __init__(self, text, ctx):
+    def __init__(self, text, ctx, scale=1):
+        self.scale = scale
+        sf = scale/Pango.SCALE
         self.layout = PangoCairo.create_layout(ctx)
         self.layout.set_text(text)
         self.layout.set_font_description(desc)
-        self.width, self.height = self.layout.get_pixel_size()
-        self.ascent = self.layout.get_baseline()/Pango.SCALE
+        self.width, self.height = self.layout.get_size()
+        self.width *= sf
+        self.height *= sf
+        self.ascent = self.layout.get_baseline()*sf
         self.descent = self.height - self.ascent
 
         # Have to do this because get_pixel_extents returns integer pixels,
         # which are not precise enough
         self.ink_rect, self.logical_rect = self.layout.get_extents()
         for attr in ("x", "y", "width", "height"):
-            setattr(self.ink_rect, attr, getattr(self.ink_rect, attr)/Pango.SCALE)
-            setattr(self.logical_rect, attr, getattr(self.logical_rect, attr)/Pango.SCALE)
+            setattr(self.ink_rect, attr, getattr(self.ink_rect, attr)*sf)
+            setattr(self.logical_rect, attr, getattr(self.logical_rect, attr)*sf)
 
     def draw_at_baseline(self, ctx):
-        ctx.move_to(0, -self.ascent)
-        PangoCairo.show_layout(ctx, self.layout)
+        with saved(ctx):
+            ctx.move_to(0, -self.ascent)
+            ctx.scale(self.scale, self.scale)
+            PangoCairo.show_layout(ctx, self.layout)
 
     def draw(self, ctx):
-        self.update()
-        PangoCairo.show_layout(ctx, self.layout)
+        with saved(ctx):
+            ctx.scale(self.scale, self.scale)
+            self.update()
+            PangoCairo.show_layout(ctx, self.layout)
 
     def update(self):
         self.layout.context_changed()
 
 class BaseAtom(Element):
-    wants_cursor = False
     h_spacing = 0
 
     def __init__(self, name, parent=None):
@@ -771,28 +783,25 @@ class Radical(Element):
     def compute_metrics(self, ctx, metric_ctx):
         self.radicand.compute_metrics(ctx, metric_ctx)
         self.index.compute_metrics(ctx, metric_ctx)
-        self.symbol = PangoCairo.create_layout(ctx)
-        self.symbol.set_text("√")
-        self.symbol.set_font_description(desc)
-        self.width = self.radicand.width + self.symbol.get_pixel_size().width
-        self.ascent = max(self.symbol.get_baseline()//Pango.SCALE,
+        self.symbol = Text("√", ctx)
+        self.width = self.radicand.width + self.symbol.width
+        self.ascent = max(self.symbol.ascent,
                           self.radicand.ascent + self.overline_space)
         self.descent = self.radicand.descent
         super().compute_metrics(ctx, metric_ctx)
 
     def draw(self, ctx, cursor):
         super().draw(ctx, cursor)
-        extents = self.symbol.get_pixel_extents()
-        symbol_size = extents.ink_rect.height
+        symbol_size = self.symbol.ink_rect.height
         scale_factor = max(1, (self.ascent + self.descent)/symbol_size)
         with saved(ctx):
             ctx.translate(0, -self.ascent)
             ctx.scale(1, scale_factor)
-            ctx.translate(0, -extents.ink_rect.y)
+            ctx.translate(0, -self.symbol.ink_rect.y)
             ctx.move_to(0, 0)
-            PangoCairo.show_layout(ctx, self.symbol)
+            self.symbol.draw(ctx)
 
-        ctx.translate(self.symbol.get_pixel_size().width, 0)
+        ctx.translate(self.symbol.width, 0)
         ctx.set_source_rgb(0,0,0)
         ctx.set_line_width(1)
         ctx.move_to(0, -self.ascent + ctx.get_line_width())
@@ -802,7 +811,6 @@ class Radical(Element):
         self.radicand.draw(ctx, cursor)
 
 class Paren(Element):
-    wants_cursor = False
     h_spacing = 0
     shrink = 0.7
 
@@ -884,3 +892,36 @@ class Paren(Element):
                 ctx.translate(0, -self.ascent/self.scale_factor-self.text.ink_rect.y)
                 ctx.move_to(0, 0)
                 self.text.draw(ctx)
+
+class Sum(Element):
+    child_scale = 0.7
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+        self.top = ElementList([], self)
+        self.bottom = ElementList([], self)
+        self.lists = [self.top, self.bottom]
+
+    def compute_metrics(self, ctx, metric_ctx):
+        self.symbol = Text("∑", ctx, scale=1.5)
+        self.top.compute_metrics(ctx, metric_ctx)
+        self.bottom.compute_metrics(ctx, metric_ctx)
+        self.width = max(self.symbol.width, self.top.width*self.child_scale,
+                         self.bottom.width*self.child_scale)
+        self.ascent = self.symbol.ascent + self.child_scale*self.top.height
+        self.descent = self.symbol.descent + self.child_scale*self.bottom.height
+        super().compute_metrics(ctx, metric_ctx)
+
+    def draw(self, ctx, cursor):
+        with saved(ctx):
+            ctx.translate(self.width/2 - self.symbol.width/2, 0)
+            self.symbol.draw_at_baseline(ctx)
+        with saved(ctx):
+            ctx.translate(self.width/2, -self.symbol.ascent)
+            ctx.scale(self.child_scale, self.child_scale)
+            ctx.translate(-self.top.width/2, -self.top.descent)
+            self.top.draw(ctx, cursor)
+        with saved(ctx):
+            ctx.translate(self.width/2, self.symbol.descent)
+            ctx.scale(self.child_scale, self.child_scale)
+            ctx.translate(-self.bottom.width/2, self.bottom.ascent)
+            self.bottom.draw(ctx, cursor)
