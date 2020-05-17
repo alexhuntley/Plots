@@ -557,7 +557,7 @@ class ElementList(Element):
             right = []
         new = cls.make_greedily(left, right)
         self.insert(new, cursor)
-        cursor.reparent(new.get_next_child(Direction.LEFT), 0)
+        cursor.reparent(new.get_next_child(Direction.LEFT if left else Direction.RIGHT), 0)
 
     def atoms_at_cursor(self, cursor):
         l = cursor.pos
@@ -599,7 +599,7 @@ class ElementList(Element):
         cursor.handle_movement(Direction.RIGHT)
 
 def string_to_names(string):
-    regex = r"sum|sqrt|."
+    regex = r"sum|prod|sqrt|."
     regex = "|".join(GREEK_REGEXES) + "|" + "|".join(FUNCTIONS) + "|" + regex
     names = re.findall(regex, string)
     return names
@@ -609,6 +609,8 @@ def name_to_element(name):
         return Radical([])
     elif name == 'sum':
         return Sum()
+    elif name == 'prod':
+        return Sum(char="∏")
     elif name in FUNCTIONS:
         return OperatorAtom(name)
     elif name in BINARY_OPERATORS:
@@ -895,20 +897,24 @@ class Paren(Element):
 
 class Sum(Element):
     child_scale = 0.7
-    def __init__(self, parent=None):
+    bottom_padding = 4
+
+    def __init__(self, parent=None, char="∑"):
         super().__init__(parent=parent)
         self.top = ElementList([], self)
         self.bottom = ElementList([], self)
         self.lists = [self.top, self.bottom]
+        self.char = char
 
     def compute_metrics(self, ctx, metric_ctx):
-        self.symbol = Text("∑", ctx, scale=1.5)
+        self.symbol = Text(self.char, ctx, scale=1.5)
         self.top.compute_metrics(ctx, metric_ctx)
         self.bottom.compute_metrics(ctx, metric_ctx)
         self.width = max(self.symbol.width, self.top.width*self.child_scale,
                          self.bottom.width*self.child_scale)
         self.ascent = self.symbol.ascent + self.child_scale*self.top.height
-        self.descent = self.symbol.descent + self.child_scale*self.bottom.height
+        self.descent = self.symbol.descent + \
+            self.child_scale*self.bottom.height + self.bottom_padding
         super().compute_metrics(ctx, metric_ctx)
 
     def draw(self, ctx, cursor):
@@ -921,7 +927,7 @@ class Sum(Element):
             ctx.translate(-self.top.width/2, -self.top.descent)
             self.top.draw(ctx, cursor)
         with saved(ctx):
-            ctx.translate(self.width/2, self.symbol.descent)
+            ctx.translate(self.width/2, self.symbol.descent + self.bottom_padding)
             ctx.scale(self.child_scale, self.child_scale)
             ctx.translate(-self.bottom.width/2, self.bottom.ascent)
             self.bottom.draw(ctx, cursor)
