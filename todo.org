@@ -5,8 +5,8 @@
 **** Just make a general subscript class?
 *** Subscripts
 **** How would they interact with Expt?
-*** Sums
-*** Products
+*** DONE Sums
+*** DONE Products
 *** Integrals
 *** Derivatives
 *** Radicals with an actually visible index
@@ -14,7 +14,7 @@
 **** Still need normal square root with no index
 *** Absolute value
 *** DONE Delete key
-*** Mouse
+*** DONE Mouse
 *** DONE Selection via keyboard
 **** by finding common ancestor ElementList?
 *** Copy and paste
@@ -24,11 +24,16 @@
 **** Might want to use other format, more pythonic perhaps, since integrals in LaTeX a bit ambiguous
 ***** Sympy compatibility?
 *** More international input
-*** Keyboard shortcuts (like Geogebra, (maybe) Emacs)
+*** Keyboard shortcuts (maybe like Geogebra, Emacs)
+**** Home, End, Ctrl-A, Ctrl-Z, Ctrl-Shift-Z (probably should be handled by app, not widget)
+*** Undo
+**** Have to make deep copies on each change?
 *** DONE Make cursor blink
 *** Vectors and matrices
 *** DONE Make Paren stretch more nicely (especially square and curly braces)
 *** Better kerning for Atoms
+*** Need to convert equations to and from text/other representations (sympy?)
+**** Generic tree walking/tree building somehow??
 ** Refactoring
 *** DONE Make formula editor empty by default (but probably still keep a test expression somehow for debugging)
 *** Separate classes for numbers and binary operators instead of just using Atom

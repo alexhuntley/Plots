@@ -79,16 +79,19 @@ class Editor(Gtk.DrawingArea):
         self.connect('draw', self.do_draw_cb)
         self.connect("button-press-event", self.on_button_press)
         self.connect("realize", self.on_realise)
+        self.connect("motion-notify-event", self.on_pointer_move)
         self.blink_source = None
         self.restart_blink_sequence()
 
     def do_draw_cb(self, widget, ctx):
+        widget_transform = ctx.get_matrix()
+        widget_transform.invert()
         ctx.translate(self.padding, self.padding) # a bit of padding
-        scale = 2
+        scale = 1
         ctx.scale(scale, scale)
         self.expr.compute_metrics(ctx, MetricContext(self.cursor))
         ctx.translate(0, self.expr.ascent)
-        self.expr.draw(ctx, self.cursor)
+        self.expr.draw(ctx, self.cursor, widget_transform)
         self.set_size_request(self.expr.width*scale + 2*self.padding,
                               (self.expr.ascent + self.expr.descent)*scale + 2*self.padding)
 
@@ -98,7 +101,8 @@ class Editor(Gtk.DrawingArea):
         return True
 
     def restart_blink_sequence(self):
-        self.cursor.visible = True
+        if not self.cursor.visible:
+            self.cursor.visible = True
         if self.blink_source:
             GLib.source_remove(self.blink_source)
         self.blink_source = GLib.timeout_add(Cursor.BLINK_DELAY, self.blink_cursor_cb)
@@ -150,9 +154,29 @@ class Editor(Gtk.DrawingArea):
             return
         except ValueError:
             pass
+        self.queue_draw()
+
+    def element_at(self, x, y):
+        e = self.expr
+        while True:
+            for c in e.children():
+                if c.contains_device_point(x, y):
+                    e = c
+                    break
+            else:
+                return e, e.half_containing(x, y)
 
     def on_button_press(self, widget, event):
-        print(event.x, event.y)
+        element, direction = self.element_at(event.x, event.y)
+        self.cursor.mouse_select(element, direction, drag=False)
+        self.restart_blink_sequence()
+        self.queue_draw()
+
+    def on_pointer_move(self, widget, event):
+        element, direction = self.element_at(event.x, event.y)
+        self.cursor.mouse_select(element, direction, drag=True)
+        self.restart_blink_sequence()
+        self.queue_draw()
 
     def on_realise(self, widget):
         w = self.get_window()
@@ -160,6 +184,7 @@ class Editor(Gtk.DrawingArea):
                      Gdk.EventMask.KEY_PRESS_MASK | \
                      Gdk.EventMask.BUTTON_PRESS_MASK | \
                      Gdk.EventMask.BUTTON_MOTION_MASK)
+        w.set_cursor(Gdk.Cursor.new_from_name(Gdk.Display.get_default(), "text"))
 
 class saved():
     def __init__(self, ctx):
@@ -191,6 +216,7 @@ class Cursor():
         self.selecting = False
         self.selection_bounds = None
         self.selection_ancestor = None
+        self.selection_rgba = [0.5, 0.5, 1, 0.6]
 
     def reparent(self, new_parent, position):
         self.owner = new_parent
@@ -202,6 +228,28 @@ class Cursor():
         self.secondary_pos, self.secondary_owner = None, None
         self.selection_bounds, self.selection_ancestor = None, None
         self.selecting = False
+
+    def mouse_select(self, element, direction, drag=False):
+        if drag:
+            if not self.selecting:
+                self.secondary_pos = self.pos
+                self.secondary_owner = self.owner
+                self.selecting = True
+        else:
+            self.cancel_selection()
+        if not isinstance(element, ElementList):
+            pos = element.index_in_parent
+            element = element.parent
+            if direction is Direction.RIGHT:
+                pos += 1
+        else:
+            if direction is Direction.LEFT:
+                pos = 0
+            else:
+                pos = -1
+        self.reparent(element, pos)
+        if self.selecting:
+            self.selection_bounds, self.selection_ancestor = self.calculate_selection()
 
     def handle_movement(self, direction, select=False):
         if select and not self.selecting:
@@ -355,7 +403,7 @@ class Element():
     """Abstract class describing an element of an equation.
 
     Implementations must provide parent, index_in_parent, lists, ascent, descent,
-    and width properties, compute_metrics(ctx, metric_ctx) and draw(ctx, cursor)."""
+    and width properties, compute_metrics(ctx, metric_ctx) and draw(ctx, cursor, widget_transform)."""
 
     h_spacing = 2
 
@@ -363,6 +411,10 @@ class Element():
         self.parent = parent
         self.index_in_parent = None
         self.lists = []
+        self.default_list = None
+
+    def children(self):
+        return self.lists
 
     def font_metrics(self, ctx):
         text = Text("x", ctx)
@@ -377,7 +429,7 @@ class Element():
             stack[-1].descent = max(self.descent, stack[-1].descent)
             stack[-1].compute_stretch()
 
-    def draw(self, ctx, cursor):
+    def draw(self, ctx, cursor, widget_transform):
         if DEBUG:
             ctx.set_line_width(0.5)
             ctx.set_source_rgba(1, 0, 1 if cursor.owner is self else 0, 0.6)
@@ -385,11 +437,12 @@ class Element():
             ctx.stroke()
         if cursor.selecting and self.parent is cursor.selection_ancestor and \
            self.index_in_parent in cursor.selection_bounds:
-            ctx.set_line_width(0.5)
-            ctx.set_source_rgba(0.3, 0.3, 1, 0.2)
+            ctx.set_source_rgba(*cursor.selection_rgba)
             ctx.rectangle(-self.h_spacing, -self.ascent,
-                          self.width + self.h_spacing, self.ascent + self.descent)
+                          self.width + 2*self.h_spacing, self.ascent + self.descent)
             ctx.fill()
+        self.top_left = widget_transform.transform_point(*ctx.user_to_device(-self.h_spacing, -self.ascent))
+        self.bottom_right = widget_transform.transform_point(*ctx.user_to_device(self.width + self.h_spacing, self.descent))
         ctx.set_source_rgba(0,0,0)
         ctx.move_to(0,0)
 
@@ -408,6 +461,17 @@ class Element():
             else:
                 return None
 
+    def contains_device_point(self, x, y):
+        return self.top_left[0] <= x <= self.bottom_right[0] and \
+            self.top_left[1] <= y <= self.bottom_right[1]
+
+    def half_containing(self, x, y):
+        x_mid = (self.bottom_right[0] + self.top_left[0])/2
+        if x < x_mid:
+            return Direction.LEFT
+        else:
+            return Direction.RIGHT
+
     @property
     def height(self):
         return self.ascent + self.descent
@@ -425,6 +489,9 @@ class ElementList(Element):
 
     def __repr__(self):
         return "ElementList({!r})".format(self.elements)
+
+    def children(self):
+        return self.elements
 
     def compute_metrics(self, ctx, metric_ctx):
         self.ascent = self.descent = self.width = 0
@@ -451,8 +518,8 @@ class ElementList(Element):
             ctx.move_to(0, 0)
             ctx.stroke()
 
-    def draw(self, ctx, cursor):
-        super().draw(ctx, cursor)
+    def draw(self, ctx, cursor, widget_transform):
+        super().draw(ctx, cursor, widget_transform)
         with saved(ctx):
             for i, e in enumerate(self.elements):
                 ctx.move_to(0,0)
@@ -465,7 +532,7 @@ class ElementList(Element):
                 ctx.move_to(0, 0)
                 ctx.translate(e.h_spacing, 0)
                 with saved(ctx):
-                    e.draw(ctx, cursor)
+                    e.draw(ctx, cursor, widget_transform)
                 ctx.move_to(0,0)
                 ctx.translate(e.width + e.h_spacing, 0)
             if cursor.pos == len(self.elements) > 0:
@@ -627,8 +694,11 @@ class ElementList(Element):
         for j, elem in enumerate(new_elems):
             elem.parent = self
             elem.index_in_parent = l + j
-        cursor.reparent(self, new_elems[i].index_in_parent)
-        cursor.handle_movement(Direction.RIGHT)
+        if new_elems[i].default_list:
+            cursor.reparent(new_elems[i].default_list, 0)
+        else:
+            cursor.reparent(self, new_elems[i].index_in_parent)
+            cursor.handle_movement(Direction.RIGHT)
 
 def string_to_names(string):
     regex = r"sum|prod|sqrt|."
@@ -701,8 +771,8 @@ class BaseAtom(Element):
         self.width, self.ascent, self.descent = self.layout.width, self.layout.ascent, self.layout.descent
         super().compute_metrics(ctx, metric_ctx)
 
-    def draw(self, ctx, cursor):
-        super().draw(ctx, cursor)
+    def draw(self, ctx, cursor, widget_transform):
+        super().draw(ctx, cursor, widget_transform)
         self.layout.draw_at_baseline(ctx)
 
 class Atom(BaseAtom):
@@ -750,12 +820,12 @@ class Expt(Element):
                            self.exponent.descent*self.exponent_scale + self.child_shift)
         super().compute_metrics(ctx, metric_ctx)
 
-    def draw(self, ctx, cursor):
-        super().draw(ctx, cursor)
+    def draw(self, ctx, cursor, widget_transform):
+        super().draw(ctx, cursor, widget_transform)
         with saved(ctx):
             ctx.translate(0, self.child_shift)
             ctx.scale(self.exponent_scale, self.exponent_scale)
-            self.exponent.draw(ctx, cursor)
+            self.exponent.draw(ctx, cursor, widget_transform)
 
     @classmethod
     def make_greedily(cls, left, right):
@@ -784,8 +854,8 @@ class Frac(Element):
             self.vertical_separation//2 - self.bar_height
         super().compute_metrics(ctx, metric_ctx)
 
-    def draw(self, ctx, cursor):
-        super().draw(ctx, cursor)
+    def draw(self, ctx, cursor, widget_transform):
+        super().draw(ctx, cursor, widget_transform)
         with saved(ctx):
             ctx.translate(0, -self.bar_height)
             ctx.move_to(0,0)
@@ -796,11 +866,11 @@ class Frac(Element):
             with saved(ctx):
                 ctx.translate(self.width//2 - self.numerator.width//2,
                               -self.vertical_separation//2 - self.numerator.descent)
-                self.numerator.draw(ctx, cursor)
+                self.numerator.draw(ctx, cursor, widget_transform)
             with saved(ctx):
                 ctx.translate(self.width//2 - self.denominator.width//2,
                               self.vertical_separation//2 + self.denominator.ascent)
-                self.denominator.draw(ctx, cursor)
+                self.denominator.draw(ctx, cursor, widget_transform)
 
     @classmethod
     def make_greedily(cls, left, right):
@@ -824,8 +894,8 @@ class Radical(Element):
         self.descent = self.radicand.descent
         super().compute_metrics(ctx, metric_ctx)
 
-    def draw(self, ctx, cursor):
-        super().draw(ctx, cursor)
+    def draw(self, ctx, cursor, widget_transform):
+        super().draw(ctx, cursor, widget_transform)
         symbol_size = self.symbol.ink_rect.height
         scale_factor = max(1, (self.ascent + self.descent)/symbol_size)
         with saved(ctx):
@@ -842,7 +912,7 @@ class Radical(Element):
         ctx.rel_line_to(self.radicand.width, 0)
         ctx.stroke()
         ctx.move_to(0,0)
-        self.radicand.draw(ctx, cursor)
+        self.radicand.draw(ctx, cursor, widget_transform)
 
 class Paren(Element):
     h_spacing = 0
@@ -897,8 +967,8 @@ class Paren(Element):
         else:
             self.stretch = False
 
-    def draw(self, ctx, cursor):
-        super().draw(ctx, cursor)
+    def draw(self, ctx, cursor, widget_transform):
+        super().draw(ctx, cursor, widget_transform)
         if self.stretch:
             with saved(ctx):
                 ctx.translate(0, -self.ascent - self.top.ink_rect.y*self.shrink)
@@ -934,8 +1004,9 @@ class Sum(Element):
     def __init__(self, parent=None, char="∑"):
         super().__init__(parent=parent)
         self.top = ElementList([], self)
-        self.bottom = ElementList([], self)
+        self.bottom = ElementList([BinaryOperatorAtom("=")], self)
         self.lists = [self.top, self.bottom]
+        self.default_list = self.bottom
         self.char = char
 
     def compute_metrics(self, ctx, metric_ctx):
@@ -949,7 +1020,8 @@ class Sum(Element):
             self.child_scale*self.bottom.height + self.bottom_padding
         super().compute_metrics(ctx, metric_ctx)
 
-    def draw(self, ctx, cursor):
+    def draw(self, ctx, cursor, widget_transform):
+        super().draw(ctx, cursor, widget_transform)
         with saved(ctx):
             ctx.translate(self.width/2 - self.symbol.width/2, 0)
             self.symbol.draw_at_baseline(ctx)
@@ -957,9 +1029,9 @@ class Sum(Element):
             ctx.translate(self.width/2, -self.symbol.ascent)
             ctx.scale(self.child_scale, self.child_scale)
             ctx.translate(-self.top.width/2, -self.top.descent)
-            self.top.draw(ctx, cursor)
+            self.top.draw(ctx, cursor, widget_transform)
         with saved(ctx):
             ctx.translate(self.width/2, self.symbol.descent + self.bottom_padding)
             ctx.scale(self.child_scale, self.child_scale)
             ctx.translate(-self.bottom.width/2, self.bottom.ascent)
-            self.bottom.draw(ctx, cursor)
+            self.bottom.draw(ctx, cursor, widget_transform)
