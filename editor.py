@@ -13,14 +13,13 @@ def destroy(window):
 def main():
     window = Gtk.Window()
     window.set_title("Formula Editor")
-    window.set_events(window.get_events() | Gdk.EventMask.KEY_PRESS_MASK)
 
-    app = Editor()
-
-    window.add(app)
+    editor = Editor()
+    window.add(editor)
 
     window.connect_after('destroy', destroy)
     window.show_all()
+
     Gtk.main()
 
 if __name__ == "__main__":

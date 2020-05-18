@@ -77,6 +77,8 @@ class Editor(Gtk.DrawingArea):
         self.props.can_focus = True
         self.connect("key-press-event", self.on_key_press)
         self.connect('draw', self.do_draw_cb)
+        self.connect("button-press-event", self.on_button_press)
+        self.connect("realize", self.on_realise)
         self.blink_source = None
         self.restart_blink_sequence()
 
@@ -148,6 +150,16 @@ class Editor(Gtk.DrawingArea):
             return
         except ValueError:
             pass
+
+    def on_button_press(self, widget, event):
+        print(event.x, event.y)
+
+    def on_realise(self, widget):
+        w = self.get_window()
+        w.set_events(w.get_events() | \
+                     Gdk.EventMask.KEY_PRESS_MASK | \
+                     Gdk.EventMask.BUTTON_PRESS_MASK | \
+                     Gdk.EventMask.BUTTON_MOTION_MASK)
 
 class saved():
     def __init__(self, ctx):
@@ -514,8 +526,10 @@ class ElementList(Element):
         self.convert_specials(cursor)
 
     def greedy_insert(self, cls, cursor):
-        if cursor.pos > 0 and cls.greedy_insert_left and isinstance(self.elements[cursor.pos-1], (Paren, Atom, Expt)):
+        eligible = (Paren, Atom, Expt, Radical)
+        if cursor.pos > 0 and cls.greedy_insert_left and isinstance(self.elements[cursor.pos-1], eligible):
             paren_level = 0
+            adjustment = 0
             for n, e in enumerate(self.elements[cursor.pos-1::-1]):
                 if isinstance(e, Paren):
                     if e.left:
@@ -524,19 +538,30 @@ class ElementList(Element):
                         paren_level += 1
                 if isinstance(e, Expt):
                     continue
+                if isinstance(e, Atom) and (e.name.isdecimal() or e.name == "."):
+                    if n == cursor.pos - 1:
+                        # we are at the first element in the list,
+                        # so no adjustment needed
+                        adjustment = 0
+                    else:
+                        # without this the element before the number
+                        # would also be eaten
+                        adjustment = 1
+                    continue
                 if paren_level <= 0:
                     break
             if paren_level < 0:
                 left = []
             else:
-                n += 1
+                n += 1 - adjustment
                 left = self.elements[cursor.pos - n:cursor.pos]
                 del self.elements[cursor.pos - n:cursor.pos]
                 cursor.pos -= n
         else:
             left = []
-        if cursor.pos < len(self.elements) and cls.greedy_insert_right and isinstance(self.elements[cursor.pos], (Paren, Atom, Expt)):
+        if cursor.pos < len(self.elements) and cls.greedy_insert_right and isinstance(self.elements[cursor.pos], eligible):
             paren_level = 0
+            adjustment = 0
             for n, e in enumerate(self.elements[cursor.pos:]):
                 if isinstance(e, Paren):
                     if e.left:
@@ -545,12 +570,19 @@ class ElementList(Element):
                         paren_level -= 1
                 if isinstance(e, Expt):
                     continue
+                if isinstance(e, Atom) and (e.name.isdecimal() or e.name == "."):
+                    if n + cursor.pos == len(self.elements) - 1:
+                        adjustment = 0
+                    else:
+                        adjustment = 1
+                    continue
+
                 if paren_level <= 0:
                     break
             if paren_level < 0:
                 right = []
             else:
-                n += 1
+                n += 1 - adjustment
                 right = self.elements[cursor.pos:cursor.pos + n]
                 del self.elements[cursor.pos:cursor.pos + n]
         else:
