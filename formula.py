@@ -332,21 +332,25 @@ class Cursor():
 
     def backspace(self, direction):
         if self.selecting:
+            sel = self.selection_ancestor.elements[self.selection_bounds.start:self.selection_bounds.stop]
             del self.selection_ancestor.elements[self.selection_bounds.start:self.selection_bounds.stop]
             self.reparent(self.selection_ancestor, self.selection_bounds.start)
             self.cancel_selection()
+            return sel
         else:
-            self.owner.backspace(self, direction=direction)
+            return self.owner.backspace(self, direction=direction)
 
     def insert(self, element):
         if self.selecting:
-            self.backspace(None)
+            selection = self.backspace(None)
+            element.accept_selection(selection)
         self.owner.insert(element, self)
 
     def greedy_insert(self, cls):
         if self.selecting:
-            self.backspace(None)
-        self.owner.greedy_insert(cls, self)
+            self.insert(cls())
+        else:
+            self.owner.greedy_insert(cls, self)
 
 def italify_string(s):
     def italify_char(c):
@@ -475,6 +479,9 @@ class Element():
             return Direction.LEFT
         else:
             return Direction.RIGHT
+
+    def accept_selection(self, elements):
+        pass
 
     @property
     def height(self):
@@ -835,6 +842,12 @@ class Expt(Element):
     def make_greedily(cls, left, right):
         return cls(exponent=right)
 
+    def accept_selection(self, selection):
+        self.exponent.elements.extend(selection)
+        for x in selection:
+            x.parent = self.exponent
+
+
 class Frac(Element):
     vertical_separation = 4
     greedy_insert_right = greedy_insert_left = True
@@ -875,6 +888,11 @@ class Frac(Element):
                 ctx.translate(self.width//2 - self.denominator.width//2,
                               self.vertical_separation//2 + self.denominator.ascent)
                 self.denominator.draw(ctx, cursor, widget_transform)
+
+    def accept_selection(self, selection):
+        self.numerator.elements.extend(selection)
+        for x in selection:
+            x.parent = self.numerator
 
     @classmethod
     def make_greedily(cls, left, right):
@@ -949,6 +967,11 @@ class Abs(Element):
         self.argument.draw(ctx, cursor, widget_transform)
         ctx.translate(self.argument.width, 0)
         self.draw_bar(ctx)
+
+    def accept_selection(self, selection):
+        self.argument.elements.extend(selection)
+        for x in selection:
+            x.parent = self.argument
 
 class Paren(Element):
     h_spacing = 0
