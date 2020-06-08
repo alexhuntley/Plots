@@ -551,6 +551,9 @@ class ElementList(Element):
                 self.draw_cursor(ctx, self.elements[-1].ascent, self.elements[-1].descent, cursor)
             elif not self.elements:
                 self.draw_cursor(ctx, self.ascent, self.descent, cursor)
+                ctx.set_source_rgba(0.5, 0.5, 0.5, 0.2)
+                ctx.rectangle(0, -self.ascent, self.width, self.ascent + self.descent)
+                ctx.fill()
 
     def backspace(self, cursor, caller=None, direction=Direction.LEFT):
         if self is not cursor.owner:
