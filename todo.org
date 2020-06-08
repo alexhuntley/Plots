@@ -9,6 +9,12 @@
 *** DONE Products
 *** Integrals
 *** Derivatives
+**** How?? There are many types:
+***** differential operator: $$\frac{d}{dx}$$
+***** derivative: $$\frac{dy}{dx}$$
+***** dot: $$\dot x$$
+***** derivatives evalutated at a point (like Casio calculator): $$\frac{d}{dx} f(x) \Big \rvert_{x=a} $$
+***** all the above but for partial derivatives
 *** Radicals with an actually visible index
 **** UI? Desmos uses 'nthroot' keyword
 **** Still need normal square root with no index
@@ -28,12 +34,26 @@
 **** Home, End, Ctrl-A, Ctrl-Z, Ctrl-Shift-Z (probably should be handled by app, not widget)
 *** Undo
 **** Have to make deep copies on each change?
+**** Standard way is to use command pattern
+***** would this save a lot of memory? is it worth it?
 *** DONE Make cursor blink
 *** Vectors and matrices
 *** DONE Make Paren stretch more nicely (especially square and curly braces)
 *** Better kerning for Atoms
 *** Need to convert equations to and from text/other representations (sympy?)
 **** Generic tree walking/tree building somehow??
+**** Shunting yard algorithm
+https://en.wikipedia.org/wiki/Shunting-yard_algorithm
+https://old.reddit.com/r/learnprogramming/comments/3cybca/how_do_i_go_about_building_an_ast_from_an_infix/ct02uam/
+*** Popover for keyword completion
+*** Space character (to allow users to prevent keyword expansion)
+*** ElementLists with restrictions
+**** e.g. for subscripts or variable names in derivatives/integrals
+**** Maybe shouldn't be the widget's responsibility? Probably ought to be handled by the app since apps may want to allow different things in subscripts
+*** Limits
+*** Change horizontal order of children of Sum to make editing more intuitive
+**** Probably by a custom get_next_child() method?
+**** Integral will need this too
 ** Refactoring
 *** DONE Make formula editor empty by default (but probably still keep a test expression somehow for debugging)
 *** Separate classes for numbers and binary operators instead of just using Atom
@@ -42,16 +62,17 @@
 **** Is this actually necessary?
 *** Make number atoms coalesce?
 **** Probably not worth the effort. What advantage does it bring?
-*** Remove code duplication for displaying text by using Text
+*** DONE Remove code duplication for displaying text by using Text
 **** Make Paren a subclass of BaseAtom?
 *** Split formula.py into separate files
 **** Is formula.py really too big? The individual classes aren't really reusable so maybe it doesn't make sense to make them into separate packages.
 *** DONE Get Element.font_metrics to give better bounds (use an actual Pango layout? ...like in BaseAtom)
 *** Use own copy of font instead of system's
-**** Doesn't seem possible
+**** Doesn't seem possible in a portable way
 *** Add tests
 *** Add type checking/asserts/make everything more robust
 *** Add documentation
+*** Use a modifiable dict of all possible special keywords, allowing for extension/addition of new classes by users
 * Graphing
 ** via OpenGL (is this definitely faster? offer a cpu calculation option as well?)
 ** Complex numbers?
@@ -73,3 +94,24 @@
 ** Make a standalone formula editor?
 *** LaTeX output
 ** Make a scientific calculator?
+* Calculator
+** Use sympy for everything
+*** Including symbolic and numeric evaluation
+*** Run sympy calculations in a separate thread
+** UI
+*** Main UI idea: enter expressions or equations and then press enter to evaluate if possible, or simplify the input otherwise (if expression contains unbound variables).
+
+Then show context-specific buttons next to the output, e.g.
+- solve for x (including inequalities, ODEs, PDEs?)... How to decide which variable to solve for? Dropdown?
+- factorise
+- trig_simp
+- expand, expand_trig
+- plot function
+- calculate eigenvectors
+- approximate numerically
+*** Two panes? one main pane for input and output, secondary 'workspace' pane for declared variables (and functions/distributions?/data tables??)
+**** allows you to see and modify all variables that are in scope in one place
+*** How could unit conversions be nicely integrated?
+**** must be usable from both keyboard and mouse and preferably mathematically clean
+*** How to integrate graphing? Should the full graphing app be separate?
+**** It would be nice to have little inline graphs of functions/distributions/data
