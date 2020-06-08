@@ -420,6 +420,7 @@ class Element():
         self.index_in_parent = None
         self.lists = []
         self.default_list = None
+        self.cursor_acceptor = None
 
     def children(self):
         return self.lists
@@ -602,6 +603,8 @@ class ElementList(Element):
         cursor.pos += 1
         self.update_children()
         self.convert_specials(cursor)
+        if element.cursor_acceptor is not None:
+            cursor.reparent(element.cursor_acceptor, -1)
 
     def greedy_insert(self, cls, cursor):
         eligible = (Paren, Atom, Expt, Radical)
@@ -821,6 +824,7 @@ class Expt(Element):
         super().__init__(parent)
         self.exponent = ElementList(exponent, self)
         self.lists = [self.exponent]
+        self.cursor_acceptor = self.exponent
 
     def compute_metrics(self, ctx, metric_ctx):
         self.exponent.compute_metrics(ctx, metric_ctx)
@@ -857,6 +861,7 @@ class Frac(Element):
         self.numerator = ElementList(numerator, self)
         self.denominator = ElementList(denominator, self)
         self.lists = [self.numerator, self.denominator]
+        self.cursor_acceptor = self.denominator
 
     def compute_metrics(self, ctx, metric_ctx):
         self.numerator.compute_metrics(ctx, metric_ctx)
@@ -941,6 +946,7 @@ class Abs(Element):
         super().__init__(parent)
         self.argument = ElementList(argument, self)
         self.lists = [self.argument]
+        self.cursor_acceptor = self.argument
 
     def compute_metrics(self, ctx, metric_ctx):
         self.argument.compute_metrics(ctx, metric_ctx)
