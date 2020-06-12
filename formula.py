@@ -752,7 +752,7 @@ class ElementList(Element):
             cursor.handle_movement(Direction.RIGHT)
 
 def string_to_names(string):
-    regex = r"sum|prod|sqrt|."
+    regex = r"sum|prod|sqrt|nthroot|."
     regex = "|".join(GREEK_REGEXES) + "|" + "|".join(FUNCTIONS) + "|" + regex
     names = re.findall(regex, string)
     return names
@@ -760,6 +760,8 @@ def string_to_names(string):
 def name_to_element(name):
     if name == 'sqrt':
         return Radical([])
+    elif name == 'nthroot':
+        return Radical([], index=[])
     elif name == 'sum':
         return Sum()
     elif name == 'prod':
@@ -978,29 +980,51 @@ class Frac(Element):
         return cls(numerator=left, denominator=right)
 
 class Radical(Element):
+    index_y_shift = 16
+    index_x_shift = 16
+    index_scale = 0.8
+
     def __init__(self, radicand, index=None, parent=None):
         super().__init__(parent)
         self.radicand = ElementList(radicand, self)
-        self.index = ElementList(index, self)
+        if index is not None:
+            self.index = ElementList(index, self)
+            self.lists = [self.index, self.radicand]
+        else:
+            self.index = None
+            self.lists = [self.radicand]
         self.overline_space = 4
-        self.lists = [self.radicand]
 
     def compute_metrics(self, ctx, metric_ctx):
         self.radicand.compute_metrics(ctx, metric_ctx)
-        self.index.compute_metrics(ctx, metric_ctx)
         self.symbol = Text("√", ctx)
         self.width = self.radicand.width + self.symbol.width
-        self.ascent = max(self.symbol.ascent,
-                          self.radicand.ascent + self.overline_space)
+        self.main_ascent = self.ascent = max(self.symbol.ascent, self.radicand.ascent + self.overline_space)
         self.descent = self.radicand.descent
+        if self.index is not None:
+            self.index.compute_metrics(ctx, metric_ctx)
+            self.width += self.index.width*self.index_scale - self.index_x_shift
+            self.ascent = max(self.main_ascent,
+                              (self.index.ascent + self.index.descent)*self.index_scale \
+                              - self.index_y_shift + self.main_ascent)
+
         super().compute_metrics(ctx, metric_ctx)
 
     def draw(self, ctx, cursor, widget_transform):
         super().draw(ctx, cursor, widget_transform)
+
+        if self.index is not None:
+            with saved(ctx):
+                ctx.translate(0, -self.main_ascent + self.index_y_shift -self.index.descent)
+                ctx.scale(self.index_scale, self.index_scale)
+                ctx.move_to(0, 0)
+                self.index.draw(ctx, cursor, widget_transform)
+            ctx.translate(self.index.width*self.index_scale - self.index_x_shift, 0)
+
         symbol_size = self.symbol.ink_rect.height
-        scale_factor = max(1, (self.ascent + self.descent)/symbol_size)
+        scale_factor = max(1, (self.main_ascent + self.descent)/symbol_size)
         with saved(ctx):
-            ctx.translate(0, -self.ascent)
+            ctx.translate(0, -self.main_ascent)
             ctx.scale(1, scale_factor)
             ctx.translate(0, -self.symbol.ink_rect.y)
             ctx.move_to(0, 0)
@@ -1009,7 +1033,7 @@ class Radical(Element):
         ctx.translate(self.symbol.width, 0)
         ctx.set_source_rgb(0,0,0)
         ctx.set_line_width(1)
-        ctx.move_to(0, -self.ascent + ctx.get_line_width())
+        ctx.move_to(0, -self.main_ascent + ctx.get_line_width())
         ctx.rel_line_to(self.radicand.width, 0)
         ctx.stroke()
         ctx.move_to(0,0)

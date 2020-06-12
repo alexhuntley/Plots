@@ -15,7 +15,7 @@
 ***** dot: $$\dot x$$
 ***** derivatives evalutated at a point (like Casio calculator): $$\frac{d}{dx} f(x) \Big \rvert_{x=a} $$
 ***** all the above but for partial derivatives
-*** Radicals with an actually visible index
+*** DONE Radicals with an actually visible index
 **** UI? Desmos uses 'nthroot' keyword
 **** Still need normal square root with no index
 *** DONE Absolute value
@@ -53,6 +53,7 @@ https://old.reddit.com/r/learnprogramming/comments/3cybca/how_do_i_go_about_buil
 *** Limits
 *** Change horizontal order of children of Sum to make editing more intuitive
 **** Probably by a custom get_next_child() method?
+**** Or have a second (optional) attribute for the vertical order e.g. lists_vertical
 **** Integral will need this too
 ** Refactoring
 *** DONE Make formula editor empty by default (but probably still keep a test expression somehow for debugging)
@@ -95,9 +96,10 @@ https://old.reddit.com/r/learnprogramming/comments/3cybca/how_do_i_go_about_buil
 *** LaTeX output
 ** Make a scientific calculator?
 * Calculator
+Name: Calcula?
 ** Use sympy for everything
 *** Including symbolic and numeric evaluation
-*** Run sympy calculations in a separate thread
+*** Run sympy calculations in a separate thread (or in a separate process?)
 ** UI
 *** Main UI idea: enter expressions or equations and then press enter to evaluate if possible, or simplify the input otherwise (if expression contains unbound variables).
 
