@@ -1,9 +1,9 @@
 * Formula editor
 ** New features
 *** DONE Greek letters (including pi)
-*** Logarithms with a base subscript
+*** DONE Logarithms with a base subscript
 **** Just make a general subscript class?
-*** Subscripts
+*** DONE Subscripts
 **** How would they interact with Expt?
 *** DONE Sums
 *** DONE Products
@@ -18,7 +18,7 @@
 *** Radicals with an actually visible index
 **** UI? Desmos uses 'nthroot' keyword
 **** Still need normal square root with no index
-*** Absolute value
+*** DONE Absolute value
 *** DONE Delete key
 *** DONE Mouse
 *** DONE Selection via keyboard

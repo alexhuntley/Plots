@@ -63,15 +63,38 @@ GREEK_REGEXES['(?<![EUeu])psi'] = GREEK_REGEXES.pop('psi')
 FUNCTIONS = ("asinh", "acosh", "atanh", "sinh", "cosh", "tanh", "asin", "acos", "atan", "sin", "cos", "tan", "exp", "log", "ln", "lg")
 BINARY_OPERATORS = ("+", "-", "*", "=")
 
+class Direction(Enum):
+    UP = Gdk.KEY_Up
+    DOWN = Gdk.KEY_Down
+    LEFT = Gdk.KEY_Left
+    RIGHT = Gdk.KEY_Right
+    NONE = 0
+
+    def displacement(self):
+        if self is self.UP or self is self.LEFT:
+            return -1
+        elif self is self.DOWN or self is self.RIGHT:
+            return 1
+        else:
+            return 0
+
+    def end(self):
+        return -1 if self.displacement() == -1 else 0
+
+    def vertical(self):
+        if self is self.UP or self is self.DOWN:
+            return True
+        else:
+            return False
+
+    def horizontal(self):
+        return not self.vertical()
+
 class Editor(Gtk.DrawingArea):
     padding = 4
     def __init__(self):
         super().__init__()
         self.cursor = Cursor()
-        self.test_expr = ElementList([Paren('('), Radical([]), OperatorAtom('sin'), Atom('a'), Paren(')'), Atom('b'), Atom('c'), Expt([Atom('d')]),
-             Paren('('),
-             Frac([Radical([Frac([Atom('b')], [Atom('c')]), Atom('y')], [Atom('3')])], [Atom('c'), Radical([Atom('a')])]),
-             Paren(')')])
         self.expr = ElementList()
         self.cursor.reparent(self.expr, 0)
         self.props.can_focus = True
@@ -143,7 +166,11 @@ class Editor(Gtk.DrawingArea):
             self.queue_draw()
             return
         if char == "^":
-            self.cursor.greedy_insert(Expt)
+            self.cursor.insert_superscript_subscript(superscript=True)
+            self.queue_draw()
+            return
+        if char == "_":
+            self.cursor.insert_superscript_subscript(superscript=False)
             self.queue_draw()
             return
         if char == "|":
@@ -340,17 +367,55 @@ class Cursor():
         else:
             return self.owner.backspace(self, direction=direction)
 
-    def insert(self, element):
+    def insert(self, element, direction=Direction.LEFT):
+        self.give_selected(element, direction=direction)
+        self.owner.insert(element, self)
+
+    def give_selected(self, element, direction=Direction.LEFT):
         if self.selecting:
             selection = self.backspace(None)
-            element.accept_selection(selection)
-        self.owner.insert(element, self)
+            element.accept_selection(selection, direction=direction)
+            return len(selection)
 
     def greedy_insert(self, cls):
         if self.selecting:
             self.insert(cls())
         else:
             self.owner.greedy_insert(cls, self)
+
+    def insert_superscript_subscript(self, superscript=True):
+        new = False
+        if self.pos > 0 and isinstance(self.owner.elements[self.pos - 1], SuperscriptSubscript):
+            element = self.owner.elements[self.pos - 1]
+            direction = Direction.RIGHT
+        elif self.pos < len(self.owner) and \
+             isinstance(self.owner.elements[self.pos], SuperscriptSubscript):
+            element = self.owner.elements[self.pos]
+            direction = Direction.LEFT
+        elif self.secondary_owner is self.owner and self.secondary_pos > 0 and \
+             isinstance(self.owner.elements[self.secondary_pos - 1], SuperscriptSubscript):
+            element = self.owner.elements[self.secondary_pos - 1]
+            direction = Direction.RIGHT
+        elif self.secondary_owner is self.owner and self.secondary_pos < len(self.owner) and \
+             isinstance(self.owner.elements[self.secondary_pos], SuperscriptSubscript):
+            element = self.owner.elements[self.secondary_pos]
+            direction = Direction.LEFT
+        else:
+            element  = SuperscriptSubscript()
+            new = True
+            direction = Direction.RIGHT
+        if superscript:
+            element.add_superscript(self)
+        else:
+            element.add_subscript(self)
+        if new:
+            self.insert(element, direction)
+        else:
+            selection_length = self.give_selected(element, direction)
+            if direction is Direction.RIGHT:
+                self.reparent(element.cursor_acceptor, -1)
+            else:
+                self.reparent(element.cursor_acceptor, selection_length)
 
 def italify_string(s):
     def italify_char(c):
@@ -379,33 +444,6 @@ def deitalify_char(c):
 
 def deitalify_string(s):
     return "".join(deitalify_char(c) for c in s)
-
-class Direction(Enum):
-    UP = Gdk.KEY_Up
-    DOWN = Gdk.KEY_Down
-    LEFT = Gdk.KEY_Left
-    RIGHT = Gdk.KEY_Right
-    NONE = 0
-
-    def displacement(self):
-        if self is self.UP or self is self.LEFT:
-            return -1
-        elif self is self.DOWN or self is self.RIGHT:
-            return 1
-        else:
-            return 0
-
-    def end(self):
-        return -1 if self.displacement() == -1 else 0
-
-    def vertical(self):
-        if self is self.UP or self is self.DOWN:
-            return True
-        else:
-            return False
-
-    def horizontal(self):
-        return not self.vertical()
 
 class Element():
     """Abstract class describing an element of an equation.
@@ -481,8 +519,17 @@ class Element():
         else:
             return Direction.RIGHT
 
-    def accept_selection(self, elements):
+    def accept_selection(self, elements, direction):
         pass
+
+    def dissolve(self, cursor, caller):
+        concatenation = []
+        cursor_offset = 0
+        for elementlist in self.lists:
+            if elementlist is caller:
+                cursor_offset = len(concatenation)
+            concatenation.extend(elementlist.elements)
+        self.parent.replace(self, ElementList(concatenation), cursor, cursor_offset)
 
     @property
     def height(self):
@@ -572,16 +619,7 @@ class ElementList(Element):
                 cursor.pos += shift
                 del self.elements[cursor.pos]
         elif self.parent:
-            self.dissolve_parent(cursor)
-
-    def dissolve_parent(self, cursor):
-        concatenation = []
-        cursor_offset = 0
-        for elementlist in self.parent.lists:
-            if elementlist is self:
-                cursor_offset = len(concatenation)
-            concatenation.extend(elementlist.elements)
-        self.parent.parent.replace(self.parent, ElementList(concatenation), cursor, cursor_offset)
+            self.parent.dissolve(cursor, self)
 
     def replace(self, old, new, cursor, cursor_offset=0):
         if old.parent is self:
@@ -610,7 +648,7 @@ class ElementList(Element):
             cursor.reparent(element.cursor_acceptor, -1)
 
     def greedy_insert(self, cls, cursor):
-        eligible = (Paren, Atom, Expt, Radical)
+        eligible = (Paren, Atom, Radical)
         if cursor.pos > 0 and cls.greedy_insert_left and isinstance(self.elements[cursor.pos-1], eligible):
             paren_level = 0
             adjustment = 0
@@ -620,8 +658,6 @@ class ElementList(Element):
                         paren_level -= 1
                     else:
                         paren_level += 1
-                if isinstance(e, Expt):
-                    continue
                 if isinstance(e, Atom) and (e.name.isdecimal() or e.name == "."):
                     if n == cursor.pos - 1:
                         # we are at the first element in the list,
@@ -652,8 +688,6 @@ class ElementList(Element):
                         paren_level += 1
                     else:
                         paren_level -= 1
-                if isinstance(e, Expt):
-                    continue
                 if isinstance(e, Atom) and (e.name.isdecimal() or e.name == "."):
                     if n + cursor.pos == len(self.elements) - 1:
                         adjustment = 0
@@ -817,42 +851,79 @@ class OperatorAtom(BaseAtom):
             if i != -1:
                 return name, i
 
-class Expt(Element):
-    greedy_insert_right = True
-    greedy_insert_left = False
+class SuperscriptSubscript(Element):
     h_spacing = 0
     exponent_scale = 0.7
+    subscript_scale = 0.7
+    subscript_shift = 6
+    superscript_adjustment = 14
 
     def __init__(self, exponent=None, parent=None):
         super().__init__(parent)
-        self.exponent = ElementList(exponent, self)
-        self.lists = [self.exponent]
+        self.exponent = None
+        self.subscript = None
+        self.lists = []
+        self._selection_acceptor = None
+
+    def add_superscript(self, cursor):
+        if self.exponent is None:
+            self.exponent = ElementList([], self)
+            self.update_lists()
         self.cursor_acceptor = self.exponent
+        self._selection_acceptor = self.exponent
+
+    def add_subscript(self, cursor):
+        if self.subscript is None:
+            self.subscript = ElementList([], self)
+            self.update_lists()
+        self.cursor_acceptor = self.subscript
+        self._selection_acceptor = self.subscript
+
+    def update_lists(self):
+        self.lists = [x for x in (self.exponent, self.subscript) if x is not None]
 
     def compute_metrics(self, ctx, metric_ctx):
-        self.exponent.compute_metrics(ctx, metric_ctx)
-        self.child_shift = -self.exponent.descent*self.exponent_scale - metric_ctx.prev.ascent + 14 # -ve y is up
-        self.width = self.exponent.width*self.exponent_scale
-        self.ascent = self.exponent.ascent*self.exponent_scale - self.child_shift
-        self.descent = max(0, metric_ctx.prev.descent,
-                           self.exponent.descent*self.exponent_scale + self.child_shift)
+        self.width = 0
+        self.ascent = max(0, metric_ctx.prev.ascent)
+        self.descent = max(0, metric_ctx.prev.descent)
+        if self.exponent is not None:
+            self.exponent.compute_metrics(ctx, metric_ctx)
+            self.superscript_shift = -self.exponent.descent*self.exponent_scale \
+                - metric_ctx.prev.ascent + self.superscript_adjustment # -ve y is up
+            self.width = max(self.width, self.exponent.width*self.exponent_scale)
+            self.ascent = max(self.ascent, self.exponent.ascent*self.exponent_scale - self.superscript_shift)
+            self.descent = max(self.descent, self.exponent.descent*self.exponent_scale + self.superscript_shift)
+        if self.subscript is not None:
+            self.subscript.compute_metrics(ctx, metric_ctx)
+            self.width = max(self.width, self.subscript.width*self.subscript_scale)
+            self.ascent = max(self.ascent, self.subscript.ascent*self.subscript_scale - self.subscript_shift)
+            self.descent = max(self.descent, self.subscript.descent*self.subscript_scale + self.subscript_shift)
         super().compute_metrics(ctx, metric_ctx)
 
     def draw(self, ctx, cursor, widget_transform):
         super().draw(ctx, cursor, widget_transform)
-        with saved(ctx):
-            ctx.translate(0, self.child_shift)
-            ctx.scale(self.exponent_scale, self.exponent_scale)
-            self.exponent.draw(ctx, cursor, widget_transform)
+        if self.exponent is not None:
+            with saved(ctx):
+                ctx.translate(0, self.superscript_shift)
+                ctx.scale(self.exponent_scale, self.exponent_scale)
+                self.exponent.draw(ctx, cursor, widget_transform)
+        if self.subscript is not None:
+            with saved(ctx):
+                ctx.translate(0, self.subscript_shift)
+                ctx.scale(self.subscript_scale, self.subscript_scale)
+                self.subscript.draw(ctx, cursor, widget_transform)
 
     @classmethod
     def make_greedily(cls, left, right):
         return cls(exponent=right)
 
-    def accept_selection(self, selection):
-        self.exponent.elements.extend(selection)
+    def accept_selection(self, selection, direction):
+        if direction is Direction.LEFT:
+            self._selection_acceptor.elements[0:0] = selection
+        else:
+            self._selection_acceptor.elements.extend(selection)
         for x in selection:
-            x.parent = self.exponent
+            x.parent = self._selection_acceptor
 
 
 class Frac(Element):
@@ -897,7 +968,7 @@ class Frac(Element):
                               self.vertical_separation//2 + self.denominator.ascent)
                 self.denominator.draw(ctx, cursor, widget_transform)
 
-    def accept_selection(self, selection):
+    def accept_selection(self, selection, direction):
         self.numerator.elements.extend(selection)
         for x in selection:
             x.parent = self.numerator
@@ -977,7 +1048,7 @@ class Abs(Element):
         ctx.translate(self.argument.width, 0)
         self.draw_bar(ctx)
 
-    def accept_selection(self, selection):
+    def accept_selection(self, selection, direction):
         self.argument.elements.extend(selection)
         for x in selection:
             x.parent = self.argument
