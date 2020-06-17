@@ -647,6 +647,13 @@ class ElementList(Element):
         if element.cursor_acceptor is not None:
             cursor.reparent(element.cursor_acceptor, -1)
 
+    def insert_elementlist(self, new, cursor, position, cursor_right=True):
+        self.elements[position:position] = new.elements
+        self.update_children()
+        if cursor_right:
+            position += len(new)
+        cursor.reparent(self, position)
+
     def greedy_insert(self, cls, cursor):
         eligible = (Paren, Atom, Radical)
         if cursor.pos > 0 and cls.greedy_insert_left and isinstance(self.elements[cursor.pos-1], eligible):
@@ -927,6 +934,16 @@ class SuperscriptSubscript(Element):
         for x in selection:
             x.parent = self._selection_acceptor
 
+    def dissolve(self, cursor, caller):
+        if len(self.lists) == 1:
+            return super().dissolve(cursor, caller)
+        self.lists.remove(caller)
+        if caller is self.exponent:
+            self.exponent = None
+            self.parent.insert_elementlist(caller, cursor, self.index_in_parent+1, False)
+        elif caller is self.subscript:
+            self.subscript = None
+            self.parent.insert_elementlist(caller, cursor, self.index_in_parent, True)
 
 class Frac(Element):
     vertical_separation = 4
