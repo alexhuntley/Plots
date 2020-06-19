@@ -4,6 +4,8 @@ from collections import namedtuple
 from gi.repository import GLib, Gtk, Gdk, cairo, Pango, PangoCairo
 from enum import Enum
 
+import converters
+
 desc = Pango.font_description_from_string("Latin Modern Math 20")
 DEBUG = False
 dpi = PangoCairo.font_map_get_default().get_resolution()
@@ -135,6 +137,10 @@ class Editor(Gtk.DrawingArea):
         if DEBUG:
             print(Gdk.keyval_name(event.keyval))
         char = chr(Gdk.keyval_to_unicode(event.keyval))
+        if event.keyval == Gdk.KEY_Return:
+            print(converters.elementlist_to_sympy(self.expr))
+            self.queue_draw()
+            return
         if char.isalnum():
             self.cursor.insert(Atom(char))
             self.queue_draw()
@@ -835,12 +841,12 @@ class BaseAtom(Element):
         super().draw(ctx, cursor, widget_transform)
         self.layout.draw_at_baseline(ctx)
 
+    def __repr__(self):
+        return "{}({!r})".format(type(self).__name__, self.name)
+
 class Atom(BaseAtom):
     def __init__(self, name, parent=None):
         super().__init__(italify_string(name), parent=parent)
-
-    def __repr__(self):
-        return "Atom({!r})".format(self.name)
 
 class BinaryOperatorAtom(BaseAtom):
     def __init__(self, name, parent=None):

@@ -5,7 +5,7 @@ from gi.repository import Gtk, Gdk, cairo, Pango, PangoCairo
 import math
 import sys
 
-from formula import Editor
+import formula
 
 def destroy(window):
     Gtk.main_quit()
@@ -14,7 +14,7 @@ def main():
     window = Gtk.Window()
     window.set_title("Formula Editor")
 
-    editor = Editor()
+    editor = formula.Editor()
     window.add(editor)
 
     window.connect_after('destroy', destroy)
