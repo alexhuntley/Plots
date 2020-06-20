@@ -159,7 +159,11 @@ def pop_operators(operators, output, current_precedence, only_unary=False):
 
 
 def sympy_to_elementlist(expr):
-    if isinstance(expr, sympy.Symbol):
+    numer, denom = expr.as_numer_denom()
+    if denom != 1:
+        return formula.ElementList([formula.Frac(sympy_to_elementlist(numer).elements,
+                                                 sympy_to_elementlist(denom).elements)])
+    elif isinstance(expr, sympy.Symbol):
         return formula.ElementList([formula.Atom(expr.name)])
     elif expr is sympy.pi:
         return formula.ElementList([formula.Atom('π')])
