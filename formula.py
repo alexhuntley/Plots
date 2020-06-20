@@ -555,6 +555,9 @@ class ElementList(Element):
     def __repr__(self):
         return "ElementList({!r})".format(self.elements)
 
+    def __add__(self, other):
+        return ElementList(self.elements + other.elements)
+
     def children(self):
         return self.elements
 
@@ -1116,6 +1119,9 @@ class Paren(Element):
             raise ValueError("{!r} is not a valid paren".format(char))
         self.char = char
         self.match = None
+
+    def __repr__(self):
+        return f'Paren({self.char!p})'
 
     def compute_metrics(self, ctx, metric_ctx):
         self.text = Text(self.char, ctx)

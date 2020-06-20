@@ -156,3 +156,42 @@ def pop_operators(operators, output, current_precedence, only_unary=False):
             pop_operator(operators, output)
     except IndexError:
         raise SyntaxError("Unmatched parentheses")
+
+
+def sympy_to_elementlist(expr):
+    if isinstance(expr, sympy.Symbol):
+        return formula.ElementList([formula.Atom(expr.name)])
+    elif expr is sympy.pi:
+        return formula.ElementList([formula.Atom('π')])
+    elif expr is sympy.E:
+        return formula.ElementList([formula.Atom('e')])
+    elif expr is sympy.I:
+        return formula.ElementList([formula.Atom('i')])
+    elif isinstance(expr, sympy.Number):
+        return formula.ElementList([formula.BinaryOperatorAtom(ch) if ch == '-' else formula.Atom(ch) for ch in str(expr)])
+    elif isinstance(expr, sympy.sin):
+        return formula.ElementList([formula.OperatorAtom('sin'), formula.Paren('('),
+                                    *sympy_to_elementlist(expr.args[0]).elements, formula.Paren(')')])
+    elif expr is sympy.cos:
+        return formula.ElementList([formula.OperatorAtom('cos')])
+    elif isinstance(expr, sympy.Add):
+        res = []
+        for arg in expr.args:
+            res.extend(sympy_to_elementlist(arg).elements)
+            res.append(formula.BinaryOperatorAtom('+'))
+        del res[-1]
+        return formula.ElementList(res)
+    elif isinstance(expr, sympy.Mul):
+        res = []
+        for arg in expr.args:
+            if isinstance(arg, sympy.Add):
+                res.append(formula.Paren('('))
+            res.extend(sympy_to_elementlist(arg).elements)
+            if isinstance(arg, sympy.Add):
+                res.append(formula.Paren(')'))
+        return formula.ElementList(res)
+    elif isinstance(expr, sympy.Pow):
+        return sympy_to_elementlist(expr.args[0]) \
+            + formula.ElementList([formula.SuperscriptSubscript(exponent=sympy_to_elementlist(expr.args[1]))])
+    else:
+        raise NotImplementedError(expr.func)
