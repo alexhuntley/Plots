@@ -1,6 +1,8 @@
 import re
 from itertools import count
 from collections import namedtuple
+import gi
+gi.require_version('PangoCairo', '1.0')
 from gi.repository import GLib, Gtk, Gdk, cairo, Pango, PangoCairo
 from enum import Enum
 
@@ -1121,7 +1123,7 @@ class Paren(Element):
         self.match = None
 
     def __repr__(self):
-        return f'Paren({self.char!p})'
+        return f'Paren({self.char!r})'
 
     def compute_metrics(self, ctx, metric_ctx):
         self.text = Text(self.char, ctx)
