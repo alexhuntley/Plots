@@ -191,7 +191,10 @@ def sympy_to_elementlist(expr):
                 res.append(formula.Paren(')'))
         return formula.ElementList(res)
     elif isinstance(expr, sympy.Pow):
-        return sympy_to_elementlist(expr.args[0]) \
-            + formula.ElementList([formula.SuperscriptSubscript(exponent=sympy_to_elementlist(expr.args[1]))])
+        x = sympy_to_elementlist(expr.args[0])
+        supersub = formula.SuperscriptSubscript()
+        supersub.exponent = sympy_to_elementlist(expr.args[1])
+        supersub.update_lists()
+        return x + formula.ElementList([supersub])
     else:
         raise NotImplementedError(expr.func)

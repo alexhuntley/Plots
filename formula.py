@@ -96,19 +96,28 @@ class Direction(Enum):
 
 class Editor(Gtk.DrawingArea):
     padding = 4
-    def __init__(self):
+    def __init__(self, expression=None):
         super().__init__()
         self.cursor = Cursor()
-        self.expr = ElementList()
-        self.cursor.reparent(self.expr, 0)
+        if expression:
+            self.expr = expression
+        else:
+            self.expr = ElementList()
+        self.cursor.reparent(self.expr, -1)
         self.props.can_focus = True
         self.connect("key-press-event", self.on_key_press)
         self.connect('draw', self.do_draw_cb)
         self.connect("button-press-event", self.on_button_press)
         self.connect("realize", self.on_realise)
         self.connect("motion-notify-event", self.on_pointer_move)
+        self.connect("focus-in-event", self.focus_in)
+        self.connect("focus-out-event", self.focus_out)
         self.blink_source = None
         self.restart_blink_sequence()
+
+    def set_expr(self, new_expr):
+        self.expr = new_expr
+        self.cursor.reparent(self.expr, -1)
 
     def do_draw_cb(self, widget, ctx):
         widget_transform = ctx.get_matrix()
@@ -121,6 +130,15 @@ class Editor(Gtk.DrawingArea):
         self.expr.draw(ctx, self.cursor, widget_transform)
         self.set_size_request(self.expr.width*scale + 2*self.padding,
                               (self.expr.ascent + self.expr.descent)*scale + 2*self.padding)
+
+    def focus_in(self, widget, event):
+        self.restart_blink_sequence()
+
+    def focus_out(self, widget, event):
+        GLib.source_remove(self.blink_source)
+        self.blink_source = None
+        self.cursor.visible = False
+        self.queue_draw()
 
     def blink_cursor_cb(self):
         self.cursor.visible = not self.cursor.visible
@@ -139,10 +157,6 @@ class Editor(Gtk.DrawingArea):
         if DEBUG:
             print(Gdk.keyval_name(event.keyval))
         char = chr(Gdk.keyval_to_unicode(event.keyval))
-        if event.keyval == Gdk.KEY_Return:
-            print(converters.elementlist_to_sympy(self.expr))
-            self.queue_draw()
-            return
         if char.isalnum():
             self.cursor.insert(Atom(char))
             self.queue_draw()
@@ -209,6 +223,7 @@ class Editor(Gtk.DrawingArea):
         element, direction = self.element_at(event.x, event.y)
         self.cursor.mouse_select(element, direction, drag=False)
         self.restart_blink_sequence()
+        self.grab_focus()
         self.queue_draw()
 
     def on_pointer_move(self, widget, event):
@@ -878,7 +893,7 @@ class SuperscriptSubscript(Element):
     subscript_shift = 6
     superscript_adjustment = 14
 
-    def __init__(self, exponent=None, parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
         self.exponent = None
         self.subscript = None
@@ -901,6 +916,8 @@ class SuperscriptSubscript(Element):
 
     def update_lists(self):
         self.lists = [x for x in (self.exponent, self.subscript) if x is not None]
+        for l in self.lists:
+            l.parent = self
 
     def compute_metrics(self, ctx, metric_ctx):
         self.width = 0
