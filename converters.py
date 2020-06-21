@@ -149,7 +149,7 @@ def pop_operator(operators, output):
 
 def pop_operators(operators, output, current_precedence, only_unary=False):
     try:
-        while operators and isinstance(operators[-1], formula.BinaryOperatorAtom) \
+        while operators and isinstance(operators[-1], (formula.BinaryOperatorAtom, formula.OperatorAtom)) \
               and not is_paren(operators[-1], left=True) and \
               current_precedence <= precedence(operators[-1]) and \
               (not only_unary or operators[-1].name == "unary_minus"):
