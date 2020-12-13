@@ -45,6 +45,7 @@
 **** Shunting yard algorithm
 https://en.wikipedia.org/wiki/Shunting-yard_algorithm
 https://old.reddit.com/r/learnprogramming/comments/3cybca/how_do_i_go_about_building_an_ast_from_an_infix/ct02uam/
+http://www.reedbeta.com/blog/the-shunting-yard-algorithm/
 *** Popover for keyword completion
 *** Space character (to allow users to prevent keyword expansion)
 *** ElementLists with restrictions

@@ -86,10 +86,7 @@ class Direction(Enum):
         return -1 if self.displacement() == -1 else 0
 
     def vertical(self):
-        if self is self.UP or self is self.DOWN:
-            return True
-        else:
-            return False
+        return self is self.UP or self is self.DOWN
 
     def horizontal(self):
         return not self.vertical()
@@ -114,6 +111,7 @@ class Editor(Gtk.DrawingArea):
         self.connect("focus-out-event", self.focus_out)
         self.blink_source = None
         self.restart_blink_sequence()
+        self.set_size_request(16, 20)
 
     def set_expr(self, new_expr):
         self.expr = new_expr
@@ -187,6 +185,10 @@ class Editor(Gtk.DrawingArea):
             self.cursor.greedy_insert(Frac)
             self.queue_draw()
             return
+        if event.keyval == Gdk.KEY_Return:
+            print(self.expr)
+            print(self.expr.to_glsl())
+            return
         if char == "^":
             self.cursor.insert_superscript_subscript(superscript=True)
             self.queue_draw()
@@ -241,6 +243,7 @@ class Editor(Gtk.DrawingArea):
         w.set_cursor(Gdk.Cursor.new_from_name(Gdk.Display.get_default(), "text"))
 
 class saved():
+    """Context manager, ensures the cairo context is restored"""
     def __init__(self, ctx):
         self.ctx = ctx
 
@@ -252,6 +255,7 @@ class saved():
         return False
 
 class MetricContext():
+    "Keeps track of state needed to calculate sizes"
     def __init__(self, cursor=None):
         self.prev = None
         self.paren_stack = []
@@ -566,6 +570,9 @@ class ElementList(Element):
             e.parent = self
             e.index_in_parent = i
 
+    def __iter__(self):
+        return iter(self.elements)
+
     def __len__(self):
         return len(self.elements)
 
@@ -784,6 +791,44 @@ class ElementList(Element):
             cursor.reparent(self, new_elems[i].index_in_parent)
             cursor.handle_movement(Direction.RIGHT)
 
+    def to_glsl(self):
+        strings = []
+        prev = None
+        parens = 0
+        for elem in self.elements:
+            if prev is not None and \
+               not isinstance(prev, BinaryOperatorAtom) and \
+               not isinstance(elem, BinaryOperatorAtom) and \
+               not isinstance(elem, SuperscriptSubscript) and \
+               not converters.part_of_number(elem) and \
+               not converters.is_paren(elem, left=False) and \
+               not converters.is_paren(prev, left=True) and \
+               not isinstance(prev, OperatorAtom):
+                strings.append("*")
+            if isinstance(prev, OperatorAtom) and \
+               not converters.is_paren(elem, left=True):
+                strings.append("(")
+                parens += 1
+            elif isinstance(elem, BinaryOperatorAtom):
+                strings.append(")"*parens)
+                parens = 0
+            if isinstance(elem, SuperscriptSubscript) and elem.exponent is not None:
+                parens2 = 0
+                for i, s in reversed(list(enumerate(strings))):
+                    if s == ")":
+                        parens2 += 1
+                    elif s == "(":
+                        parens2 -= 1
+                    if parens2 <= 0:
+                        strings.insert(i, "pow(")
+                        break
+                strings.append(f", ({elem.exponent.to_glsl()}))")
+            else:
+                strings.append(elem.to_glsl())
+            prev = elem
+        strings.append(")"*parens)
+        return "".join(strings)
+
 def string_to_names(string):
     regex = r"sum|prod|sqrt|nthroot|."
     regex = "|".join(GREEK_REGEXES) + "|" + "|".join(FUNCTIONS) + "|" + regex
@@ -863,6 +908,9 @@ class BaseAtom(Element):
 
     def __repr__(self):
         return "{}({!r})".format(type(self).__name__, self.name)
+
+    def to_glsl(self):
+        return deitalify_string(self.name)
 
 class Atom(BaseAtom):
     def __init__(self, name, parent=None):
@@ -1024,6 +1072,9 @@ class Frac(Element):
     def make_greedily(cls, left, right):
         return cls(numerator=left, denominator=right)
 
+    def to_glsl(self):
+        return f"({self.numerator.to_glsl()})/({self.denominator.to_glsl()})"
+
 class Radical(Element):
     index_y_shift = 16
     index_x_shift = 16
@@ -1084,6 +1135,12 @@ class Radical(Element):
         ctx.move_to(0,0)
         self.radicand.draw(ctx, cursor, widget_transform)
 
+    def to_glsl(self):
+        if self.index:
+            return f"pow({self.radicand.to_glsl()}, 1.0/({self.index.to_glsl()}))"
+        else:
+            return f"sqrt({self.radicand.to_glsl()})"
+
 class Abs(Element):
     def __init__(self, argument, parent=None):
         super().__init__(parent)
@@ -1121,6 +1178,9 @@ class Abs(Element):
         self.argument.elements.extend(selection)
         for x in selection:
             x.parent = self.argument
+
+    def to_glsl(self):
+        return f"abs({self.argument.to_glsl()})"
 
 class Paren(Element):
     h_spacing = 0
@@ -1207,6 +1267,9 @@ class Paren(Element):
                 ctx.translate(0, -self.ascent/self.scale_factor-self.text.ink_rect.y)
                 ctx.move_to(0, 0)
                 self.text.draw(ctx)
+
+    def to_glsl(self):
+        return "(" if self.left else ")"
 
 class Sum(Element):
     child_scale = 0.7

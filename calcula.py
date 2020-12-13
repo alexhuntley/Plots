@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk
@@ -15,6 +16,9 @@ class Calcula:
             answer_display = formula.Editor(converters.sympy_to_elementlist(expr))
             self.add_formula_editor(answer_display)
             self.add_formula_editor(formula.Editor())
+            adj = self.scroll.get_vadjustment()
+            adj.set_value(adj.get_upper())
+            return
 
     def add_formula_editor(self, editor):
         self.formulae.append(editor)
@@ -28,14 +32,13 @@ class Calcula:
         builder.connect_signals(self)
 
         self.window = builder.get_object("main_window")
-
+        self.scroll = builder.get_object("calculation_scroll")
         self.formula_box = builder.get_object("calculationbox")
         for c in self.formula_box.get_children():
             self.formula_box.remove(c)
 
         self.formulae = [formula.Editor()]
         self.formula_box.pack_start(self.formulae[0], False, False, 0)
-
         self.window.show_all()
 
         Gtk.main()
