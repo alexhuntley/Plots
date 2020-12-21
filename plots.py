@@ -94,8 +94,23 @@ class Plots:
         FRAGMENT_SHADER = shaders.compileShader("""#version 330 core
         out vec4 color;
         in vec2 graph_pos;
+
+        float y1(float x) {
+            return (x > 0. && x < 1.) ? 1. : 0.;
+        }
+
+        float y2(float x) {
+            float y = 0;
+            for (float i = 1; i < 500; i+=2)
+                y += sin(i*x)/i;
+            return y;
+        }
+
         void main() {
-            color = vec4(abs(cos(graph_pos)), 1, 1 );
+            if (y1(graph_pos.x) > graph_pos.y)
+                color = vec4(abs(cos(graph_pos.xy)), 1, 1);
+            else
+                color = vec4(0);
         }""", GL_FRAGMENT_SHADER)
 
         self.shader = shaders.compileProgram(VERTEX_SHADER, FRAGMENT_SHADER)
@@ -111,17 +126,15 @@ class Plots:
         self.vao = glGenVertexArrays(1)
         glBindVertexArray(self.vao)
         self.vbo.bind()
-        #self.vbo.copy_data()
-        glBufferData(GL_ARRAY_BUFFER, self.vbo.data.nbytes, self.vbo.data,  GL_STATIC_DRAW)
+        self.vbo.copy_data()
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*self.vbo.data.itemsize, self.vbo)
         glEnableVertexAttribArray(0)
         self.vbo.unbind()
         glBindVertexArray(0)
 
     def drag_update(self, gesture, dx, dy):
-        dr = 2*np.array([dx, -dy], 'f')/self.viewport
+        dr = 2*np.array([dx, -dy], 'f')/self.viewport[0]
         self.translation = self.init_translation + dr/self.scale
-        print(dx, dy)
         self.gl_area.queue_draw()
 
     def drag_begin(self, gesture, start_x, start_y):
@@ -129,7 +142,7 @@ class Plots:
 
     def scroll_zoom(self, widget, event):
         _, dx, dy = event.get_scroll_deltas()
-        self.scale *= 1-dy/3
+        self.scale *= np.exp(-dy/10)
         widget.queue_draw()
 
 
