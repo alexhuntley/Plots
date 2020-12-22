@@ -58,6 +58,9 @@ class Plots:
         w = area.get_allocated_width()
         h = area.get_allocated_height()
         self.viewport = np.array([w, h], 'f')
+        graph_extent = 2*self.viewport/self.viewport[0]*self.scale
+        # extent of each pixel, in graph coordinates
+        pixel_extent = graph_extent / self.viewport
         glViewport(0, 0, w, h)
 
         glClearColor(0, 0, 1, 0)
@@ -66,6 +69,7 @@ class Plots:
         shaders.glUseProgram(self.shader)
         glUniform2f(glGetUniformLocation(self.shader, "viewport"), *self.viewport)
         glUniform2f(glGetUniformLocation(self.shader, "translation"), *self.translation)
+        glUniform2f(glGetUniformLocation(self.shader, "pixel_extent"), *pixel_extent)
         glUniform1f(glGetUniformLocation(self.shader, "scale"), self.scale)
         glBindVertexArray(self.vao)
         glDrawArrays(GL_TRIANGLES, 0, 18)
@@ -86,31 +90,55 @@ class Plots:
         uniform vec2 translation;
         uniform float scale;
         void main() {
-        gl_Position = vec4(position, 1.0);
-        vec2 normalised = position.xy * viewport / viewport.x;
-        graph_pos = normalised/scale - translation;
+            gl_Position = vec4(position, 1.0);
+            vec2 normalised = position.xy * viewport / viewport.x;
+            graph_pos = normalised*scale - translation;
         }""", GL_VERTEX_SHADER)
 
         FRAGMENT_SHADER = shaders.compileShader("""#version 330 core
-        out vec4 color;
         in vec2 graph_pos;
+        out vec3 color;
 
-        float y1(float x) {
-            return (x > 0. && x < 1.) ? 1. : 0.;
+        uniform vec2 pixel_extent;
+        uniform float scale;
+
+        float rand(vec2 co){
+                // implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
+                return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
         }
 
-        float y2(float x) {
+        float y1(float x) {
+            return sin(x*x);
+            //return (x > 0. && x < 1.) ? 1. : 0.;
+        }
+
+        float y(float x) {
             float y = 0;
-            for (float i = 1; i < 500; i+=2)
+            for (float i = 1; i < 40; i+=2)
                 y += sin(i*x)/i;
             return y;
         }
 
         void main() {
-            if (y1(graph_pos.x) > graph_pos.y)
-                color = vec4(abs(cos(graph_pos.xy)), 1, 1);
-            else
-                color = vec4(0);
+            vec2 samples = vec2(6, 6);
+            vec2 step = 1.4*pixel_extent / samples;
+            float jitter = 1.8;
+
+            float count = 0;
+            for (float i = 0.0; i < samples.x; i++) {
+                for (float j = 0.0; j < samples.y; j++) {
+                    float ii = i + jitter*rand(vec2(graph_pos.x+ i*step.x,graph_pos.y+ j*step.y));
+                    float jj = j + jitter*rand(vec2(graph_pos.y + i*step.x,graph_pos.x+ j*step.y));
+                    float f = y1(graph_pos.x + ii*step.x) - (graph_pos.y + jj*step.y);
+                    count += (f > 0.) ? 1.0 : -1.0;
+                }
+            }
+            float total_samples = samples.x*samples.y;
+            color = vec3(1.0);
+            if (abs(count) != total_samples) color = vec3(abs(count)/total_samples);
+            float axis_width = pixel_extent.x;
+            if (abs(graph_pos.x) < axis_width || abs(graph_pos.y) < axis_width) color -= 1.0-vec3(0.2,0.2,1.0);
+            if (abs(mod(graph_pos.x, 1.0)) < axis_width || abs(mod(graph_pos.y, 1.0)) < axis_width) color -= 1.0-vec3(0.8, 0.8, 1.0);
         }""", GL_FRAGMENT_SHADER)
 
         self.shader = shaders.compileProgram(VERTEX_SHADER, FRAGMENT_SHADER)
@@ -134,7 +162,7 @@ class Plots:
 
     def drag_update(self, gesture, dx, dy):
         dr = 2*np.array([dx, -dy], 'f')/self.viewport[0]
-        self.translation = self.init_translation + dr/self.scale
+        self.translation = self.init_translation + dr*self.scale
         self.gl_area.queue_draw()
 
     def drag_begin(self, gesture, start_x, start_y):
@@ -142,7 +170,7 @@ class Plots:
 
     def scroll_zoom(self, widget, event):
         _, dx, dy = event.get_scroll_deltas()
-        self.scale *= np.exp(-dy/10)
+        self.scale *= np.exp(dy/10)
         widget.queue_draw()
 
 
