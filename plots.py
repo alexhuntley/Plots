@@ -14,7 +14,7 @@ import numpy as np
 
 class Plots:
     def __init__(self):
-        self.scale = 1
+        self.scale = 10
         self.translation = np.array([0, 0], 'f')
 
     def on_destroy(self, *args):
@@ -41,7 +41,7 @@ class Plots:
         self.formulae = [formula.Editor()]
         self.formula_box.pack_start(self.formulae[0], False, False, 0)
 
-        self.window.set_default_size(600,400)
+        self.window.set_default_size(1200,800)
         self.window.show_all()
 
         self.drag = Gtk.GestureDrag(widget=self.gl_area)
