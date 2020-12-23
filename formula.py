@@ -3,7 +3,7 @@ from itertools import count
 from collections import namedtuple
 import gi
 gi.require_version('PangoCairo', '1.0')
-from gi.repository import GLib, Gtk, Gdk, cairo, Pango, PangoCairo
+from gi.repository import GLib, Gtk, Gdk, cairo, Pango, PangoCairo, GObject
 from enum import Enum
 
 import converters
@@ -93,6 +93,9 @@ class Direction(Enum):
 
 class Editor(Gtk.DrawingArea):
     padding = 4
+    __gsignals__ = {
+        'edit': (GObject.SIGNAL_RUN_LAST, None, ())
+    }
     def __init__(self, expression=None):
         super().__init__()
         self.cursor = Cursor()
@@ -154,53 +157,6 @@ class Editor(Gtk.DrawingArea):
         self.restart_blink_sequence()
         if DEBUG:
             print(Gdk.keyval_name(event.keyval))
-        char = chr(Gdk.keyval_to_unicode(event.keyval))
-        if char.isalnum():
-            self.cursor.insert(Atom(char))
-            self.queue_draw()
-            return
-        if char in BINARY_OPERATORS:
-            translation = str.maketrans("-*", "−×")
-            self.cursor.insert(BinaryOperatorAtom(char.translate(translation)))
-            self.queue_draw()
-            return
-        if char in "!'.":
-            translation = str.maketrans("'", "′")
-            self.cursor.insert(Atom(char.translate(translation)))
-            self.queue_draw()
-            return
-        if char in "()[]{}":
-            self.cursor.insert(Paren(char))
-            self.queue_draw()
-            return
-        if event.keyval == Gdk.KEY_BackSpace:
-            self.cursor.backspace(Direction.LEFT)
-            self.queue_draw()
-            return
-        if event.keyval == Gdk.KEY_Delete:
-            self.cursor.backspace(Direction.RIGHT)
-            self.queue_draw()
-            return
-        if event.keyval == Gdk.KEY_slash:
-            self.cursor.greedy_insert(Frac)
-            self.queue_draw()
-            return
-        if event.keyval == Gdk.KEY_Return:
-            print(self.expr)
-            print(self.expr.to_glsl())
-            return
-        if char == "^":
-            self.cursor.insert_superscript_subscript(superscript=True)
-            self.queue_draw()
-            return
-        if char == "_":
-            self.cursor.insert_superscript_subscript(superscript=False)
-            self.queue_draw()
-            return
-        if char == "|":
-            self.cursor.insert(Abs(None))
-            self.queue_draw()
-            return
         try:
             direction = Direction(event.keyval)
             select = bool(event.state & Gdk.ModifierType.SHIFT_MASK)
@@ -209,6 +165,66 @@ class Editor(Gtk.DrawingArea):
             return
         except ValueError:
             pass
+
+        char = chr(Gdk.keyval_to_unicode(event.keyval))
+        if char.isalnum():
+            self.cursor.insert(Atom(char))
+            self.queue_draw()
+            self.emit("edit")
+            return
+        if char in BINARY_OPERATORS:
+            translation = str.maketrans("-*", "−×")
+            self.cursor.insert(BinaryOperatorAtom(char.translate(translation)))
+            self.queue_draw()
+            self.emit("edit")
+            return
+        if char in "!'.":
+            translation = str.maketrans("'", "′")
+            self.cursor.insert(Atom(char.translate(translation)))
+            self.queue_draw()
+            self.emit("edit")
+            return
+        if char in "()[]{}":
+            self.cursor.insert(Paren(char))
+            self.queue_draw()
+            self.emit("edit")
+            return
+        if event.keyval == Gdk.KEY_BackSpace:
+            self.cursor.backspace(Direction.LEFT)
+            self.queue_draw()
+            self.emit("edit")
+            return
+        if event.keyval == Gdk.KEY_Delete:
+            self.cursor.backspace(Direction.RIGHT)
+            self.queue_draw()
+            self.emit("edit")
+            return
+        if event.keyval == Gdk.KEY_slash:
+            self.cursor.greedy_insert(Frac)
+            self.queue_draw()
+            self.emit("edit")
+            return
+        if event.keyval == Gdk.KEY_Return:
+            print(self.expr)
+            print(self.expr.to_glsl())
+            self.emit("edit")
+            return
+        if char == "^":
+            self.cursor.insert_superscript_subscript(superscript=True)
+            self.queue_draw()
+            self.emit("edit")
+            return
+        if char == "_":
+            self.cursor.insert_superscript_subscript(superscript=False)
+            self.queue_draw()
+            self.emit("edit")
+            return
+        if char == "|":
+            self.cursor.insert(Abs(None))
+            self.queue_draw()
+            self.emit("edit")
+            return
+
         self.queue_draw()
 
     def element_at(self, x, y):

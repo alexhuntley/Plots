@@ -9,6 +9,7 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.arrays import vbo
 from OpenGL.GL import shaders
+from jinja2 import Environment, FileSystemLoader
 
 import numpy as np
 
@@ -16,6 +17,9 @@ class Plots:
     def __init__(self):
         self.scale = 10
         self.translation = np.array([0, 0], 'f')
+        self.jinja_env = Environment(loader=FileSystemLoader('./shaders'))
+        self.vertex_template = self.jinja_env.get_template('vertex.glsl')
+        self.fragment_template = self.jinja_env.get_template('fragment.glsl')
 
     def on_destroy(self, *args):
         Gtk.main_quit()
@@ -39,6 +43,7 @@ class Plots:
             self.formula_box.remove(c)
 
         self.formulae = [formula.Editor()]
+        self.formulae[0].connect("edit", self.formula_edited)
         self.formula_box.pack_start(self.formulae[0], False, False, 0)
 
         self.window.set_default_size(1200,800)
@@ -83,63 +88,12 @@ class Plots:
         if (area.get_error() != None):
             return
 
-        VERTEX_SHADER = shaders.compileShader("""#version 330 core
-        layout (location = 0) in vec3 position;
-        out vec2 graph_pos;
-        uniform vec2 viewport;
-        uniform vec2 translation;
-        uniform float scale;
-        void main() {
-            gl_Position = vec4(position, 1.0);
-            vec2 normalised = position.xy * viewport / viewport.x;
-            graph_pos = normalised*scale - translation;
-        }""", GL_VERTEX_SHADER)
+        VERTEX_SHADER = shaders.compileShader(
+            self.vertex_template.render(), GL_VERTEX_SHADER)
 
-        FRAGMENT_SHADER = shaders.compileShader("""#version 330 core
-        in vec2 graph_pos;
-        out vec3 color;
-
-        uniform vec2 pixel_extent;
-        uniform float scale;
-
-        float rand(vec2 co){
-                // implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
-                return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
-        }
-
-        float y1(float x) {
-            return sin(x*x);
-            //return (x > 0. && x < 1.) ? 1. : 0.;
-        }
-
-        float y(float x) {
-            float y = 0;
-            for (float i = 1; i < 40; i+=2)
-                y += sin(i*x)/i;
-            return y;
-        }
-
-        void main() {
-            vec2 samples = vec2(6, 6);
-            vec2 step = 1.4*pixel_extent / samples;
-            float jitter = 1.8;
-
-            float count = 0;
-            for (float i = 0.0; i < samples.x; i++) {
-                for (float j = 0.0; j < samples.y; j++) {
-                    float ii = i + jitter*rand(vec2(graph_pos.x+ i*step.x,graph_pos.y+ j*step.y));
-                    float jj = j + jitter*rand(vec2(graph_pos.y + i*step.x,graph_pos.x+ j*step.y));
-                    float f = y1(graph_pos.x + ii*step.x) - (graph_pos.y + jj*step.y);
-                    count += (f > 0.) ? 1.0 : -1.0;
-                }
-            }
-            float total_samples = samples.x*samples.y;
-            color = vec3(1.0);
-            if (abs(count) != total_samples) color = vec3(abs(count)/total_samples);
-            float axis_width = pixel_extent.x;
-            if (abs(graph_pos.x) < axis_width || abs(graph_pos.y) < axis_width) color -= 1.0-vec3(0.2,0.2,1.0);
-            if (abs(mod(graph_pos.x, 1.0)) < axis_width || abs(mod(graph_pos.y, 1.0)) < axis_width) color -= 1.0-vec3(0.8, 0.8, 1.0);
-        }""", GL_FRAGMENT_SHADER)
+        FRAGMENT_SHADER = shaders.compileShader(
+            self.fragment_template.render(formulae=['1-0.5*x*x + pow(x,4)/24', 'cos(x)']),
+            GL_FRAGMENT_SHADER)
 
         self.shader = shaders.compileProgram(VERTEX_SHADER, FRAGMENT_SHADER)
         self.vbo = vbo.VBO(np.array([
@@ -173,6 +127,8 @@ class Plots:
         self.scale *= np.exp(dy/10)
         widget.queue_draw()
 
+    def formula_edited(self, widget):
+        print(widget.expr.to_glsl())
 
 if __name__ == '__main__':
     Plots().main()
