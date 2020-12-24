@@ -26,10 +26,11 @@ float formula{{ loop.index0 }}(float x) {
 void main() {
     vec2 samples = vec2(6, 6);
     vec2 step = 1.4*pixel_extent / samples;
-    float jitter = 1.8;
+    float jitter = .8;
 
 
     float count[]= float[]({{ ([0.0] * formulae|length) | join(",") }});
+    bool asymptote[] = bool[]({{ (["false"] * formulae|length) | join(",") }});
     for (float i = 0.0; i < samples.x; i++) {
         for (float j = 0.0; j < samples.y; j++) {
             float ii = i + jitter*rand(vec2(graph_pos.x+ i*step.x,graph_pos.y+ j*step.y));
@@ -37,13 +38,15 @@ void main() {
             {% for _ in formulae %}
             float f{{loop.index0}} = formula{{loop.index0}}(graph_pos.x + ii*step.x) - (graph_pos.y + jj*step.y);
             count[{{loop.index0}}] += sign(f{{loop.index0}});
+            if (abs(f{{loop.index0}}) > 1000)
+                asymptote[{{loop.index0}}] = true;
             {% endfor %}
         }
     }
     float total_samples = samples.x*samples.y;
     color = vec3(1.0);
     {% for _ in formulae %}
-    if (abs(count[{{loop.index0}}]) != total_samples)
+    if (abs(count[{{loop.index0}}]) != total_samples && !asymptote[{{loop.index0}}])
         color = vec3(abs(count[{{loop.index0}}])/total_samples);
     {% endfor %}
     float axis_width = pixel_extent.x;

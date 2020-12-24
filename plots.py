@@ -35,16 +35,18 @@ class Plots:
         self.window = builder.get_object("main_window")
         self.scroll = builder.get_object("equation_scroll")
         self.formula_box = builder.get_object("equation_box")
+        self.add_equation_button = builder.get_object("add_equation")
+
         self.gl_area = builder.get_object("gl")
         self.gl_area.connect("render", self.gl_render)
         self.gl_area.connect("realize", self.gl_realize)
 
+        self.add_equation_button.connect("clicked", self.add_equation)
+
         for c in self.formula_box.get_children():
             self.formula_box.remove(c)
 
-        self.formulae = [formula.Editor()]
-        self.formulae[0].connect("edit", self.formula_edited)
-        self.formula_box.pack_start(self.formulae[0], False, False, 0)
+        self.add_equation(None)
 
         self.window.set_default_size(1200,800)
         self.window.show_all()
@@ -92,7 +94,7 @@ class Plots:
             self.vertex_template.render(), GL_VERTEX_SHADER)
 
         FRAGMENT_SHADER = shaders.compileShader(
-            self.fragment_template.render(formulae=['1-0.5*x*x + pow(x,4)/24', 'cos(x)']),
+            self.fragment_template.render(formulae=['1/x - floor(1/x)', 'tan(x)', 'pow(x,x)']),
             GL_FRAGMENT_SHADER)
 
         self.shader = shaders.compileProgram(VERTEX_SHADER, FRAGMENT_SHADER)
@@ -129,6 +131,24 @@ class Plots:
 
     def formula_edited(self, widget):
         print(widget.expr.to_glsl())
+
+    def add_equation(self, _):
+        builder = Gtk.Builder()
+        builder.add_from_file("formula_box.glade")
+        builder.connect_signals(self)
+        formula_box = builder.get_object("formula_box")
+        delete_button = builder.get_object("delete_button")
+        delete_button.connect("clicked", self.delete_equation)
+
+        editor = formula.Editor()
+        editor.connect("edit", self.formula_edited)
+        formula_box.pack_start(editor, True, True, 0)
+        formula_box.show_all()
+        self.formula_box.pack_start(formula_box, False, False, 0)
+        editor.grab_focus()
+
+    def delete_equation(self, widget):
+        widget.get_parent().destroy()
 
 if __name__ == '__main__':
     Plots().main()
