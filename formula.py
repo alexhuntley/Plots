@@ -160,9 +160,9 @@ class Editor(Gtk.DrawingArea):
         try:
             direction = Direction(event.keyval)
             select = bool(event.state & Gdk.ModifierType.SHIFT_MASK)
-            self.cursor.handle_movement(direction, select=select)
+            res = self.cursor.handle_movement(direction, select=select)
             self.queue_draw()
-            return
+            return res
         except ValueError:
             pass
 
@@ -343,11 +343,13 @@ class Cursor():
                 else:
                     self.pos = self.owner.parent.index_in_parent + shift + 1
                     self.owner = self.owner.parent.parent
+                return True
+            return False
 
         if direction.vertical():
-            go_to_parent()
-            return
+            return go_to_parent()
         adj_idx = self.pos + shift
+        res = True
         try:
             if adj_idx < 0:
                 raise IndexError
@@ -360,10 +362,13 @@ class Cursor():
                 new_pos = self.pos + direction.displacement()
                 if new_pos in range(len(self.owner.elements) + 1):
                     self.pos = new_pos
+                else:
+                    res = False
         except IndexError:
-            go_to_parent()
+            res = go_to_parent()
         if self.selecting:
             self.selection_bounds, self.selection_ancestor = self.calculate_selection()
+        return res
 
     def calculate_selection(self):
         if not self.secondary_owner:
