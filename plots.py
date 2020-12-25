@@ -20,6 +20,7 @@ class Plots:
         self.jinja_env = Environment(loader=FileSystemLoader('./shaders'))
         self.vertex_template = self.jinja_env.get_template('vertex.glsl')
         self.fragment_template = self.jinja_env.get_template('fragment.glsl')
+        self.formulae = []
 
     def on_destroy(self, *args):
         Gtk.main_quit()
@@ -90,14 +91,10 @@ class Plots:
         if (area.get_error() != None):
             return
 
-        VERTEX_SHADER = shaders.compileShader(
+        self.vertex_shader = shaders.compileShader(
             self.vertex_template.render(), GL_VERTEX_SHADER)
+        self.update_shader()
 
-        FRAGMENT_SHADER = shaders.compileShader(
-            self.fragment_template.render(formulae=['1/x - floor(1/x)', 'tan(x)', 'pow(x,x)']),
-            GL_FRAGMENT_SHADER)
-
-        self.shader = shaders.compileProgram(VERTEX_SHADER, FRAGMENT_SHADER)
         self.vbo = vbo.VBO(np.array([
             [-1, -1, 0],
             [-1, 1, 0],
@@ -130,7 +127,21 @@ class Plots:
         widget.queue_draw()
 
     def formula_edited(self, widget):
-        print(widget.expr.to_glsl())
+        self.update_shader()
+        self.gl_area.queue_draw()
+
+    def update_shader(self):
+        exprs = []
+        for f in self.formulae:
+            expr = f.expr.to_glsl()
+            if expr:
+                exprs.append(expr)
+        print(exprs)
+        fragment_shader = shaders.compileShader(
+            self.fragment_template.render(formulae=exprs),
+            GL_FRAGMENT_SHADER)
+        self.shader = shaders.compileProgram(self.vertex_shader, fragment_shader)
+
 
     def add_equation(self, _):
         builder = Gtk.Builder()
@@ -138,16 +149,18 @@ class Plots:
         builder.connect_signals(self)
         formula_box = builder.get_object("formula_box")
         delete_button = builder.get_object("delete_button")
-        delete_button.connect("clicked", self.delete_equation)
-
         editor = formula.Editor()
+
         editor.connect("edit", self.formula_edited)
+        delete_button.connect("clicked", self.delete_equation, editor)
         formula_box.pack_start(editor, True, True, 0)
         formula_box.show_all()
         self.formula_box.pack_start(formula_box, False, False, 0)
         editor.grab_focus()
+        self.formulae.append(editor)
 
-    def delete_equation(self, widget):
+    def delete_equation(self, widget, editor):
+        self.formulae.remove(editor)
         widget.get_parent().destroy()
 
 if __name__ == '__main__':

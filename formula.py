@@ -62,6 +62,7 @@ GREEK_LETTERS = {
     'xi': 'ξ',
     'zeta': 'ζ'
 }
+GREEK_LETTERS_INVERSE = {char: name for name, char in GREEK_LETTERS.items()}
 GREEK_REGEXES = GREEK_LETTERS.copy()
 GREEK_REGEXES['(?<![EUeu])psi'] = GREEK_REGEXES.pop('psi')
 FUNCTIONS = ("asinh", "acosh", "atanh", "sinh", "cosh", "tanh", "asin", "acos", "atan", "sin", "cos", "tan", "exp", "log", "ln", "lg")
@@ -155,11 +156,15 @@ class Editor(Gtk.DrawingArea):
 
     def on_key_press(self, widget, event):
         self.restart_blink_sequence()
+        modifiers = event.state & Gtk.accelerator_get_default_mod_mask()
         if DEBUG:
             print(Gdk.keyval_name(event.keyval))
+        if modifiers & (Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.MOD1_MASK
+                        | Gdk.ModifierType.MOD4_MASK):
+            return False
         try:
             direction = Direction(event.keyval)
-            select = bool(event.state & Gdk.ModifierType.SHIFT_MASK)
+            select = bool(modifiers & Gdk.ModifierType.SHIFT_MASK)
             res = self.cursor.handle_movement(direction, select=select)
             self.queue_draw()
             return res
@@ -488,6 +493,8 @@ def deitalify_char(c):
         return chr(ord(c) - 0x1d44e + 0x61)
     if 0x1d434 <= ord(c) < 0x1d434 + 26:
         return chr(ord(c) - 0x1d434 + 0x41)
+    if 0x1d6fc <= ord(c) < 0x1d6fc + 18:
+        return chr(ord(c) - 0x1d6fc + 0x3b1)
     return c
 
 def deitalify_string(s):
@@ -848,7 +855,10 @@ class ElementList(Element):
                 strings.append(elem.to_glsl())
             prev = elem
         strings.append(")"*parens)
-        return "".join(strings)
+        return ints_to_floats("".join(strings))
+
+def ints_to_floats(string):
+    return re.sub(r"(?<![\.\d])(\d+)(?![\.\d])", r"\1.0", string)
 
 def string_to_names(string):
     regex = r"sum|prod|sqrt|nthroot|."
@@ -931,7 +941,11 @@ class BaseAtom(Element):
         return "{}({!r})".format(type(self).__name__, self.name)
 
     def to_glsl(self):
-        return deitalify_string(self.name)
+        s = deitalify_string(self.name)
+        if s in GREEK_LETTERS_INVERSE:
+            return GREEK_LETTERS_INVERSE[s]
+        else:
+            return deitalify_string(self.name)
 
 class Atom(BaseAtom):
     def __init__(self, name, parent=None):
@@ -944,6 +958,10 @@ class BinaryOperatorAtom(BaseAtom):
             self.h_spacing = 6
         else:
             self.h_spacing = 4
+
+    def to_glsl(self):
+        translation = str.maketrans("−×", "-*")
+        return self.name.translate(translation)
 
 class OperatorAtom(BaseAtom):
     h_spacing = 2

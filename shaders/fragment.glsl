@@ -5,16 +5,13 @@ out vec3 color;
 uniform vec2 pixel_extent;
 uniform float scale;
 
+#define ln(x) log(x)
+#define pi 3.141592653589793
+#define e 2.718281828459045
+
 float rand(vec2 co){
     // implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
-}
-
-float y(float x) {
-    float y = 0;
-    for (float i = 1; i < 40; i+=2)
-        y += sin(i*x)/i;
-    return y;
 }
 
 {% for expression in formulae %}
@@ -28,7 +25,7 @@ void main() {
     vec2 step = 1.4*pixel_extent / samples;
     float jitter = .8;
 
-
+    {% if formulae %}
     float count[]= float[]({{ ([0.0] * formulae|length) | join(",") }});
     bool asymptote[] = bool[]({{ (["false"] * formulae|length) | join(",") }});
     for (float i = 0.0; i < samples.x; i++) {
@@ -44,11 +41,13 @@ void main() {
         }
     }
     float total_samples = samples.x*samples.y;
+    {% endif %}
     color = vec3(1.0);
     {% for _ in formulae %}
-    if (abs(count[{{loop.index0}}]) != total_samples && !asymptote[{{loop.index0}}])
+    if (abs(count[{{loop.index0}}]) != total_samples)// && !asymptote[{{loop.index0}}])
         color = vec3(abs(count[{{loop.index0}}])/total_samples);
     {% endfor %}
+
     float axis_width = pixel_extent.x;
     if (abs(graph_pos.x) < axis_width
         || abs(graph_pos.y) < axis_width)
