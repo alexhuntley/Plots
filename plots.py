@@ -133,10 +133,9 @@ class Plots:
     def update_shader(self):
         exprs = []
         for f in self.formulae:
-            expr = f.expr.to_glsl()
+            body, expr = f.expr.to_glsl()
             if expr:
-                exprs.append(expr)
-        print(exprs)
+                exprs.append((body, expr))
         fragment_shader = shaders.compileShader(
             self.fragment_template.render(formulae=exprs),
             GL_FRAGMENT_SHADER)

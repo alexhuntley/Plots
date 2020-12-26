@@ -820,7 +820,10 @@ class ElementList(Element):
             cursor.handle_movement(Direction.RIGHT)
 
     def to_glsl(self):
-        strings = []
+        string_stack = [[]]
+        body_stack = [[]]
+        sums = []
+        sum_paren_levels = []
         prev = None
         parens = 0
         for elem in self.elements:
@@ -829,36 +832,66 @@ class ElementList(Element):
                not isinstance(elem, BinaryOperatorAtom) and \
                not isinstance(elem, SuperscriptSubscript) and \
                not converters.part_of_number(elem) and \
-               not converters.is_paren(elem, left=False) and \
-               not converters.is_paren(prev, left=True) and \
-               not isinstance(prev, OperatorAtom):
-                strings.append("*")
+               not Paren.is_paren(elem, left=False) and \
+               not Paren.is_paren(prev, left=True) and \
+               not isinstance(prev, OperatorAtom) and \
+               not isinstance(prev, Sum):
+                string_stack[-1].append("*")
             if isinstance(prev, OperatorAtom) and \
-               not converters.is_paren(elem, left=True):
-                strings.append("(")
+               not Paren.is_paren(elem, left=True):
+                string_stack[-1].append("(")
                 parens += 1
             elif isinstance(elem, BinaryOperatorAtom):
-                strings.append(")"*parens)
+                string_stack[-1].append(")"*parens)
                 parens = 0
             if isinstance(elem, SuperscriptSubscript) and elem.exponent is not None:
                 parens2 = 0
-                for i, s in reversed(list(enumerate(strings))):
+                for i, s in reversed(list(enumerate(string_stack[-1]))):
                     if s == ")":
                         parens2 += 1
                     elif s == "(":
                         parens2 -= 1
                     if parens2 <= 0:
-                        strings.insert(i, "pow(")
+                        string_stack[-1].insert(i, "pow(")
                         break
-                strings.append(f", ({elem.exponent.to_glsl()}))")
+                b, e = elem.exponent.to_glsl()
+                string_stack[-1].append(f", ({e}))")
+                body_stack[-1].append(b)
+            elif isinstance(elem, Sum):
+                string_stack.append([])
+                body_stack.append([])
+                sums.append(elem)
+                sum_paren_levels.append(0)
             else:
-                strings.append(elem.to_glsl())
+                if (isinstance(elem, BinaryOperatorAtom) or \
+                    Paren.is_paren(elem, left=False)):
+                    while sums and sum_paren_levels[-1] == 0:
+                        sum_body, sum_expr = sums.pop().to_glsl("".join(body_stack.pop()),
+                                                                "".join(string_stack.pop()))
+                        sum_paren_levels.pop()
+                        string_stack[-1].append(sum_expr)
+                        body_stack[-1].append(sum_body)
+                elem_body, elem_expr = elem.to_glsl()
+                body_stack[-1].append(elem_body)
+                string_stack[-1].append(elem_expr)
+                if sums and Paren.is_paren(elem, left=True):
+                    sum_paren_levels[-1] += 1
+                elif sums and Paren.is_paren(elem, left=False):
+                    sum_paren_levels[-1] -= 1
             prev = elem
-        strings.append(")"*parens)
-        return ints_to_floats("".join(strings))
+            print(body_stack, string_stack)
+        string_stack[-1].append(")"*parens)
+        while sums:
+            sum_body, sum_expr = sums.pop().to_glsl("".join(body_stack.pop()),
+                                                    "".join(string_stack.pop()))
+            sum_paren_levels.pop()
+            string_stack[-1].append(sum_expr)
+            body_stack[-1].append(sum_body)
+        return ints_to_floats("".join(body_stack[-1])), \
+            ints_to_floats("".join(string_stack[-1]))
 
 def ints_to_floats(string):
-    return re.sub(r"(?<![\.\d])(\d+)(?![\.\d])", r"\1.0", string)
+    return re.sub(r"(?<![\.\da-zA-Z_])(\d+)(?![\.\d])", r"\1.0", string)
 
 def string_to_names(string):
     regex = r"sum|prod|sqrt|nthroot|."
@@ -943,9 +976,9 @@ class BaseAtom(Element):
     def to_glsl(self):
         s = deitalify_string(self.name)
         if s in GREEK_LETTERS_INVERSE:
-            return GREEK_LETTERS_INVERSE[s]
+            return "", GREEK_LETTERS_INVERSE[s]
         else:
-            return deitalify_string(self.name)
+            return "", deitalify_string(self.name)
 
 class Atom(BaseAtom):
     def __init__(self, name, parent=None):
@@ -961,7 +994,7 @@ class BinaryOperatorAtom(BaseAtom):
 
     def to_glsl(self):
         translation = str.maketrans("−×", "-*")
-        return self.name.translate(translation)
+        return "", self.name.translate(translation)
 
 class OperatorAtom(BaseAtom):
     h_spacing = 2
@@ -1112,7 +1145,9 @@ class Frac(Element):
         return cls(numerator=left, denominator=right)
 
     def to_glsl(self):
-        return f"({self.numerator.to_glsl()})/({self.denominator.to_glsl()})"
+        num_body, num_expr = self.numerator.to_glsl()
+        den_body, den_expr = self.denominator.to_glsl()
+        return num_body + den_body, f"({num_expr})/({den_expr})"
 
 class Radical(Element):
     index_y_shift = 16
@@ -1175,10 +1210,12 @@ class Radical(Element):
         self.radicand.draw(ctx, cursor, widget_transform)
 
     def to_glsl(self):
+        radicand_body, radicand_expr = self.radicand.to_glsl()
         if self.index:
-            return f"pow({self.radicand.to_glsl()}, 1.0/({self.index.to_glsl()}))"
+            index_body, index_expr = self.index.to_glsl()
+            return radicand_body + index_body, f"pow({radicand_expr}, 1.0/({index_expr}))"
         else:
-            return f"sqrt({self.radicand.to_glsl()})"
+            return radicand_body, f"sqrt({radicand_expr})"
 
 class Abs(Element):
     def __init__(self, argument, parent=None):
@@ -1219,7 +1256,8 @@ class Abs(Element):
             x.parent = self.argument
 
     def to_glsl(self):
-        return f"abs({self.argument.to_glsl()})"
+        arg_body, arg_expr = self.argument.to_glsl()
+        return arg_body, f"abs({arg_expr})"
 
 class Paren(Element):
     h_spacing = 0
@@ -1308,11 +1346,20 @@ class Paren(Element):
                 self.text.draw(ctx)
 
     def to_glsl(self):
-        return "(" if self.left else ")"
+        return "", "(" if self.left else ")"
+
+    @classmethod
+    def is_paren(cls, element, left=None):
+        if not isinstance(element, cls):
+            return False
+        if left is None:
+            return True
+        return left == element.left
 
 class Sum(Element):
     child_scale = 0.7
     bottom_padding = 4
+    glsl_var_counter = 0
 
     def __init__(self, parent=None, char="∑"):
         super().__init__(parent=parent)
@@ -1348,3 +1395,22 @@ class Sum(Element):
             ctx.scale(self.child_scale, self.child_scale)
             ctx.translate(-self.bottom.width/2, self.bottom.ascent)
             self.bottom.draw(ctx, cursor, widget_transform)
+
+    def to_glsl(self, arg_body, arg_expr):
+        init_body, init_expr = self.bottom.to_glsl()
+        end_body, end_expr = self.top.to_glsl()
+        var = init_expr.split('=')[0].strip()
+        assert var.isidentifier()
+        sum_var = f"sum{Sum.glsl_var_counter}"
+        Sum.glsl_var_counter += 1
+        if Sum.glsl_var_counter > 100000:
+            Sum.glsl_var_counter = 0
+        body = f"""
+        {init_body}
+        {end_body}
+        float {sum_var} = 0.0;
+        for (float {init_expr}; {var} <= {end_expr}; {var}++) {{
+            {arg_body}
+            {sum_var} += {arg_expr};
+        }}"""
+        return body, sum_var

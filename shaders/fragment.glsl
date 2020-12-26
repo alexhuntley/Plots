@@ -14,8 +14,9 @@ float rand(vec2 co){
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
-{% for expression in formulae %}
+{% for body, expression in formulae %}
 float formula{{ loop.index0 }}(float x) {
+    {{ body }}
     return {{ expression }};
 }
 {% endfor %}
