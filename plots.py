@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gdk
+from gi.repository import Gtk, Gdk, Gio
 
 import formula
 import converters
@@ -10,11 +10,13 @@ from OpenGL.GLU import *
 from OpenGL.arrays import vbo
 from OpenGL.GL import shaders
 from jinja2 import Environment, FileSystemLoader
+import sys
 
 import numpy as np
 
-class Plots:
+class Plots(Gtk.Application):
     def __init__(self):
+        super().__init__(application_id="com.github.alexhuntley.Plotter")
         self.scale = 10
         self.translation = np.array([0, 0], 'f')
         self.jinja_env = Environment(loader=FileSystemLoader('./shaders'))
@@ -22,18 +24,18 @@ class Plots:
         self.fragment_template = self.jinja_env.get_template('fragment.glsl')
         self.formulae = []
 
-    def on_destroy(self, *args):
-        Gtk.main_quit()
-
     def key_pressed(self, widget, event):
         pass
 
-    def main(self):
+    def do_activate(self):
         builder = Gtk.Builder()
         builder.add_from_file("plots.glade")
         builder.connect_signals(self)
 
         self.window = builder.get_object("main_window")
+        self.add_window(self.window)
+        self.window.set_icon_from_file("res/com.github.alexhuntley.Plotter.svg")
+        self.window.set_title("Plotter")
         self.scroll = builder.get_object("equation_scroll")
         self.formula_box = builder.get_object("equation_box")
         self.add_equation_button = builder.get_object("add_equation")
@@ -43,6 +45,17 @@ class Plots:
         self.gl_area.connect("realize", self.gl_realize)
 
         self.add_equation_button.connect("clicked", self.add_equation)
+
+        menu_button = builder.get_object("menu_button")
+
+        self.menu = Gio.Menu()
+        self.menu.append("About Plots", "app.about")
+        menu_button.set_menu_model(self.menu)
+
+        self.about_action = Gio.SimpleAction.new("about", None)
+        self.about_action.connect("activate", self.about_cb)
+        self.about_action.set_enabled(True)
+        self.add_action(self.about_action)
 
         for c in self.formula_box.get_children():
             self.formula_box.remove(c)
@@ -58,8 +71,6 @@ class Plots:
         self.drag.connect("drag-begin", self.drag_begin)
         self.gl_area.add_events(Gdk.EventMask.SMOOTH_SCROLL_MASK)
         self.gl_area.connect('scroll_event', self.scroll_zoom)
-
-        Gtk.main()
 
     def gl_render(self, area, context):
         area.make_current()
@@ -162,5 +173,17 @@ class Plots:
         self.formulae.remove(editor)
         widget.get_parent().destroy()
 
+    def about_cb(self, action, _):
+        builder = Gtk.Builder()
+        builder.add_from_file("ui/about.glade")
+        builder.connect_signals(self)
+        about_dialog = builder.get_object("about_dialog")
+        about_dialog.props.modal = True
+        about_dialog.set_transient_for(self.window)
+        about_dialog.set_logo(self.window.get_icon())
+        about_dialog.run()
+        about_dialog.destroy()
+
+
 if __name__ == '__main__':
-    Plots().main()
+    Plots().run(sys.argv)

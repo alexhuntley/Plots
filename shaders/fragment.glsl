@@ -28,7 +28,7 @@ void main() {
 
     {% if formulae %}
     float count[]= float[]({{ ([0.0] * formulae|length) | join(",") }});
-    bool asymptote[] = bool[]({{ (["false"] * formulae|length) | join(",") }});
+
     for (float i = 0.0; i < samples.x; i++) {
         for (float j = 0.0; j < samples.y; j++) {
             float ii = i + jitter*rand(vec2(graph_pos.x+ i*step.x,graph_pos.y+ j*step.y));
@@ -36,8 +36,7 @@ void main() {
             {% for _ in formulae %}
             float f{{loop.index0}} = formula{{loop.index0}}(graph_pos.x + ii*step.x) - (graph_pos.y + jj*step.y);
             count[{{loop.index0}}] += sign(f{{loop.index0}});
-            if (abs(f{{loop.index0}}) > 1000)
-                asymptote[{{loop.index0}}] = true;
+
             {% endfor %}
         }
     }
