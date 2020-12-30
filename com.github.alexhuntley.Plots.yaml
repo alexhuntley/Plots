@@ -1,0 +1,25 @@
+app-id: com.github.alexhuntley.Plots
+runtime: org.gnome.Platform
+runtime-version: '3.38'
+sdk: org.gnome.Sdk
+command: plots
+modules:
+  - python3-flatpak-requirements.json
+  - name: plots
+    buildsystem: simple
+    build-commands:
+      - pip3 install --prefix=/app .
+    sources:
+      - type: dir
+        path: plots
+        dest: plots
+      - type: file
+        path: setup.py
+finish-args:
+  # X11 + XShm access
+  - --share=ipc
+  - --socket=x11
+  # Wayland access
+  - --socket=wayland
+  # OpenGL
+  - --device=dri

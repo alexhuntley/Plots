@@ -3,8 +3,8 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk
 
-import formula
-import converters
+from plots import formula
+from plots import converters
 
 class Calcula:
     def on_destroy(self, *args):

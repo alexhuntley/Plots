@@ -5,7 +5,7 @@ from gi.repository import Gtk, Gdk, cairo, Pango, PangoCairo
 import math
 import sys
 
-import formula
+from . import formula
 
 def destroy(window):
     Gtk.main_quit()

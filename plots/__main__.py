@@ -1,0 +1,2 @@
+import plots
+plots.main()

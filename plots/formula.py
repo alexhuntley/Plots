@@ -6,7 +6,7 @@ gi.require_version('PangoCairo', '1.0')
 from gi.repository import GLib, Gtk, Gdk, cairo, Pango, PangoCairo, GObject
 from enum import Enum
 
-import converters
+from plots import converters
 
 desc = Pango.font_description_from_string("Latin Modern Math 20")
 DEBUG = False

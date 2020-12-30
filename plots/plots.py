@@ -1,25 +1,26 @@
 #!/usr/bin/env python3
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gdk, Gio
+from gi.repository import Gtk, Gdk, Gio, GdkPixbuf
 
-import formula
-import converters
+from plots import formula
+from plots import converters
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.arrays import vbo
 from OpenGL.GL import shaders
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, PackageLoader
 import sys
+import importlib.resources
 
 import numpy as np
 
 class Plots(Gtk.Application):
     def __init__(self):
-        super().__init__(application_id="com.github.alexhuntley.Plotter")
+        super().__init__(application_id="com.github.alexhuntley.Plots")
         self.scale = 10
         self.translation = np.array([0, 0], 'f')
-        self.jinja_env = Environment(loader=FileSystemLoader('./shaders'))
+        self.jinja_env = Environment(loader=PackageLoader('plots', 'shaders'))
         self.vertex_template = self.jinja_env.get_template('vertex.glsl')
         self.fragment_template = self.jinja_env.get_template('fragment.glsl')
         self.formulae = []
@@ -29,13 +30,16 @@ class Plots(Gtk.Application):
 
     def do_activate(self):
         builder = Gtk.Builder()
-        builder.add_from_file("plots.glade")
+        builder.add_from_string(read_ui_file("plots.glade"))
         builder.connect_signals(self)
 
         self.window = builder.get_object("main_window")
         self.add_window(self.window)
-        self.window.set_icon_from_file("res/com.github.alexhuntley.Plotter.svg")
-        self.window.set_title("Plotter")
+        loader = GdkPixbuf.PixbufLoader()
+        loader.write(importlib.resources.read_binary("plots.res", "com.github.alexhuntley.Plotter.svg"))
+        loader.close()
+        self.window.set_icon(loader.get_pixbuf())
+        self.window.set_title("Plots")
         self.scroll = builder.get_object("equation_scroll")
         self.formula_box = builder.get_object("equation_box")
         self.add_equation_button = builder.get_object("add_equation")
@@ -155,7 +159,7 @@ class Plots(Gtk.Application):
 
     def add_equation(self, _):
         builder = Gtk.Builder()
-        builder.add_from_file("formula_box.glade")
+        builder.add_from_string(read_ui_file("formula_box.glade"))
         builder.connect_signals(self)
         formula_box = builder.get_object("formula_box")
         delete_button = builder.get_object("delete_button")
@@ -175,7 +179,7 @@ class Plots(Gtk.Application):
 
     def about_cb(self, action, _):
         builder = Gtk.Builder()
-        builder.add_from_file("ui/about.glade")
+        builder.add_from_string(read_ui_file("about.glade"))
         builder.connect_signals(self)
         about_dialog = builder.get_object("about_dialog")
         about_dialog.props.modal = True
@@ -184,6 +188,8 @@ class Plots(Gtk.Application):
         about_dialog.run()
         about_dialog.destroy()
 
+def read_ui_file(name):
+    return importlib.resources.read_text("plots.ui", name)
 
 if __name__ == '__main__':
     Plots().run(sys.argv)

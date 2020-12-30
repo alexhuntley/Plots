@@ -1,4 +1,4 @@
-import formula
+from plots import formula
 import sympy
 from itertools import zip_longest
 

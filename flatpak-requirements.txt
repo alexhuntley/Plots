@@ -1,0 +1,4 @@
+PyOpenGL == 3.1.5
+Jinja2 == 2.11.2
+numpy == 1.18.4
+sympy == 1.6.2
