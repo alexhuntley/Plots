@@ -780,13 +780,13 @@ class ElementList(Element):
     def atoms_at_cursor(self, cursor):
         l = cursor.pos
         while l - 1 >= 0:
-            if isinstance(self.elements[l-1], Atom):
+            if isinstance(self.elements[l-1], (Atom, OperatorAtom)):
                 l -= 1
             else:
                 break
         r = cursor.pos
         while r < len(self.elements):
-            if isinstance(self.elements[r], Atom):
+            if isinstance(self.elements[r], (Atom, OperatorAtom)):
                 r += 1
             else:
                 break
