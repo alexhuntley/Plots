@@ -9,12 +9,16 @@ modules:
     buildsystem: simple
     build-commands:
       - pip3 install --prefix=/app .
+      - install -D res/latinmodern-math.otf /app/share/fonts/latinmodern-math.otf
     sources:
       - type: dir
         path: plots
         dest: plots
       - type: file
         path: setup.py
+      - type: dir
+        path: res
+        dest: res
 finish-args:
   # X11 + XShm access
   - --share=ipc
