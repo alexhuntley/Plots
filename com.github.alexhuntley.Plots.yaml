@@ -10,6 +10,10 @@ modules:
     build-commands:
       - pip3 install --prefix=/app .
       - install -D res/latinmodern-math.otf /app/share/fonts/latinmodern-math.otf
+      - install -D res/com.github.alexhuntley.Plots.metainfo.xml -t /app/share/metainfo/
+      - install -D res/com.github.alexhuntley.Plots.desktop -t /app/share/applications/
+      - install -D res/com.github.alexhuntley.Plots.svg -t /app/share/icons/hicolor/128x128/apps/
+      - install -D res/com.github.alexhuntley.Plots-symbolic.svg -t /app/share/icons/hicolor/symbolic/apps/
     sources:
       - type: dir
         path: plots

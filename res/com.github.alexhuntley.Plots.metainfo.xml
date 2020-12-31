@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2021 Alexander Huntley <huntley.alexander@gmail.com> -->
+<component type="desktop-application">
+  <id>com.github.alexhuntley.Plots</id>
+  <metadata_license>FSFAP</metadata_license>
+  <project_license>GPL-3.0</project_license>
+  <name>Plots</name>
+  <summary>Simple graph plotting</summary>
+
+  <description>
+    <p>
+      Plots is a program used to plot graphs of equations. It currently supports
+      equations in the form y = f(x).
+    </p>
+  </description>
+
+  <launchable type="desktop-id">com.github.alexhuntley.Plots.desktop</launchable>
+
+  <!-- <screenshots> -->
+  <!--   <screenshot type="default"> -->
+  <!--     <caption>The options dialog</caption> -->
+  <!--     <image>http://www.hughsie.com/en_US/main.png</image> -->
+  <!--   </screenshot> -->
+  <!--   <screenshot> -->
+  <!--     <image>http://www.hughsie.com/en_US/preferences.png</image> -->
+  <!--   </screenshot> -->
+  <!-- </screenshots> -->
+
+  <url type="homepage">https://github.com/alexhuntley/Plots</url>
+
+  <content_rating type="oars-1.0" />
+
+  <provides>
+    <binary>plots</binary>
+  </provides>
+
+  <releases>
+    <release version="0.1.0" date="2020-12-31">
+      <description>
+        <p>Initial release</p>
+      </description>
+    </release>
+  </releases>
+</component>
