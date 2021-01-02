@@ -22,30 +22,43 @@ float formula{{ loop.index0 }}(float x) {
 {% endfor %}
 
 void main() {
-    vec2 samples = vec2(6, 6);
-    vec2 step = 1.4*pixel_extent / samples;
-    float jitter = .8;
+    float samples = 20;
+    float step = 1.*pixel_extent.x / samples;
+    float jitter = .5;
 
     {% if formulae %}
-    float count[]= float[]({{ ([0.0] * formulae|length) | join(",") }});
-
-    for (float i = 0.0; i < samples.x; i++) {
-        for (float j = 0.0; j < samples.y; j++) {
-            float ii = i + jitter*rand(vec2(graph_pos.x+ i*step.x,graph_pos.y+ j*step.y));
-            float jj = j + jitter*rand(vec2(graph_pos.y + i*step.x,graph_pos.x+ j*step.y));
+    float inside[]= float[]({{ ([0.0] * formulae|length) | join(",") }});
+    float outside[]= float[]({{ ([0.0] * formulae|length) | join(",") }});
+    float prev[]= float[]({{ ([0.0] * formulae|length) | join(",") }});
+    int monotonic[] = int[]({{ ([0] * formulae|length) | join(",") }});
+    for (float i = 0.0; i < samples; i++) {
+            float ii = i + jitter*rand(vec2(graph_pos.x + i*step, graph_pos.y));
+            float x = graph_pos.x + ii*step;
+            float yj = jitter*rand(vec2(graph_pos.y, graph_pos.y + i*step));
+            float lower = (-0.5+yj)*pixel_extent.y;
+            float upper = (0.5+yj)*pixel_extent.y;
+            float fp, f;
             {% for _ in formulae %}
-            float f{{loop.index0}} = formula{{loop.index0}}(graph_pos.x + ii*step.x) - (graph_pos.y + jj*step.y);
-            count[{{loop.index0}}] += sign(f{{loop.index0}});
-
+            f = formula{{loop.index0}}(x) - graph_pos.y;
+            if (lower < f && f < upper)
+                inside[{{loop.index0}}] += 1.0;
+            else
+                outside[{{loop.index0}}] += sign(f);
+            fp = prev[{{loop.index0}}];
+            if (i != 0.0)
+                monotonic[{{loop.index0}}] += int(sign(f - fp));
+            prev[{{loop.index0}}] = f;
             {% endfor %}
-        }
     }
-    float total_samples = samples.x*samples.y;
     {% endif %}
     color = vec3(1.0);
     {% for _ in formulae %}
-    if (abs(count[{{loop.index0}}]) != total_samples)// && !asymptote[{{loop.index0}}])
-        color = vec3(abs(count[{{loop.index0}}])/total_samples);
+    if (inside[{{loop.index0}}] > 0.0)
+        color = vec3(0.0);
+    else if (abs(monotonic[{{loop.index0}}]) == int(samples) - 3)
+        {}
+    else if (abs(outside[{{loop.index0}}]) != samples)
+        color = vec3(abs(outside[{{loop.index0}}])/samples);
     {% endfor %}
 
     float axis_width = pixel_extent.x;

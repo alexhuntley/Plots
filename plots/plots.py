@@ -151,10 +151,15 @@ class Plots(Gtk.Application):
             body, expr = f.expr.to_glsl()
             if expr:
                 exprs.append((body, expr))
-        fragment_shader = shaders.compileShader(
-            self.fragment_template.render(formulae=exprs),
-            GL_FRAGMENT_SHADER)
-        self.shader = shaders.compileProgram(self.vertex_shader, fragment_shader)
+        try:
+            fragment_shader = shaders.compileShader(
+                self.fragment_template.render(formulae=exprs),
+                GL_FRAGMENT_SHADER)
+            self.shader = shaders.compileProgram(self.vertex_shader, fragment_shader)
+        except shaders.ShaderCompilationError as e:
+            pass
+            print(e.args[0])
+            #print(e.args[1][0].decode())
 
 
     def add_equation(self, _):
@@ -176,6 +181,8 @@ class Plots(Gtk.Application):
     def delete_equation(self, widget, editor):
         self.formulae.remove(editor)
         widget.get_parent().destroy()
+        self.update_shader()
+        self.gl_area.queue_draw()
 
     def about_cb(self, action, _):
         builder = Gtk.Builder()

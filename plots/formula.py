@@ -879,7 +879,6 @@ class ElementList(Element):
                 elif sums and Paren.is_paren(elem, left=False):
                     sum_paren_levels[-1] -= 1
             prev = elem
-            print(body_stack, string_stack)
         string_stack[-1].append(")"*parens)
         while sums:
             sum_body, sum_expr = sums.pop().to_glsl("".join(body_stack.pop()),
