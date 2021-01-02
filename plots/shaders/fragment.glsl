@@ -23,7 +23,7 @@ float formula{{ loop.index0 }}(float x) {
 
 void main() {
     float samples = 20;
-    float step = 1.*pixel_extent.x / samples;
+    float step = 1.4*pixel_extent.x / samples;
     float jitter = .5;
 
     {% if formulae %}
@@ -54,11 +54,12 @@ void main() {
     color = vec3(1.0);
     {% for _ in formulae %}
     if (inside[{{loop.index0}}] > 0.0)
-        color = vec3(0.0);
-    else if (abs(monotonic[{{loop.index0}}]) == int(samples) - 3)
-        {}
-    else if (abs(outside[{{loop.index0}}]) != samples)
+        color = vec3(1.-inside[{{loop.index0}}]/samples);
+    if (abs(outside[{{loop.index0}}]) != samples)
         color = vec3(abs(outside[{{loop.index0}}])/samples);
+    if (abs(monotonic[{{loop.index0}}]) == int(samples) - 3)
+        color = vec3(1.0);
+
     {% endfor %}
 
     float axis_width = pixel_extent.x;
