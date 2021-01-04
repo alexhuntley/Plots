@@ -835,16 +835,18 @@ class ElementList(Element):
                not Paren.is_paren(elem, left=False) and \
                not Paren.is_paren(prev, left=True) and \
                not isinstance(prev, OperatorAtom) and \
-               not isinstance(prev, Sum):
+               not isinstance(prev, Sum) and \
+               not (isinstance(elem, Atom) and elem.name == "!"):
                 string_stack[-1].append("*")
             if isinstance(prev, OperatorAtom) and \
                not Paren.is_paren(elem, left=True):
                 string_stack[-1].append("(")
                 parens += 1
-            elif isinstance(elem, BinaryOperatorAtom):
+            elif isinstance(elem, BinaryOperatorAtom) or Paren.is_paren(elem, left=False):
                 string_stack[-1].append(")"*parens)
                 parens = 0
-            if isinstance(elem, SuperscriptSubscript) and elem.exponent is not None:
+            if isinstance(elem, SuperscriptSubscript) and elem.exponent is not None \
+               or isinstance(elem, Atom) and elem.name == "!":
                 parens2 = 0
                 for i, s in reversed(list(enumerate(string_stack[-1]))):
                     if s == ")":
@@ -852,11 +854,15 @@ class ElementList(Element):
                     elif s == "(":
                         parens2 -= 1
                     if parens2 <= 0:
-                        string_stack[-1].insert(i, "pow(")
                         break
-                b, e = elem.exponent.to_glsl()
-                string_stack[-1].append(f", ({e}))")
-                body_stack[-1].append(b)
+                if isinstance(elem, SuperscriptSubscript):
+                    string_stack[-1].insert(i, "mypow(")
+                    b, e = elem.exponent.to_glsl()
+                    string_stack[-1].append(f", ({e}))")
+                    body_stack[-1].append(b)
+                else:
+                    string_stack[-1].insert(i, "factorial(")
+                    string_stack[-1].append(")")
             elif isinstance(elem, Sum):
                 string_stack.append([])
                 body_stack.append([])

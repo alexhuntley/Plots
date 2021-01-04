@@ -14,6 +14,21 @@ float rand(vec2 co){
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
+float factorial(float x) {
+    float res = 1;
+    for (float i = 1; i <= x; i++)
+        res *= i;
+    return res;
+}
+
+float mypow(float x, float y) {
+    if (x >= 0)
+        return pow(x, y);
+    else if (floor(y) == y) {
+        return int(y) % 2 == 0 ? pow(-x, y) : -pow(-x, y);
+    }
+}
+
 {% for body, expression in formulae %}
 float formula{{ loop.index0 }}(float x) {
     {{ body }}
@@ -22,7 +37,7 @@ float formula{{ loop.index0 }}(float x) {
 {% endfor %}
 
 void main() {
-    float samples = 20;
+    float samples = 36;
     float step = 1.4*pixel_extent.x / samples;
     float jitter = .5;
 
@@ -34,7 +49,7 @@ void main() {
     for (float i = 0.0; i < samples; i++) {
             float ii = i + jitter*rand(vec2(graph_pos.x + i*step, graph_pos.y));
             float x = graph_pos.x + ii*step;
-            float yj = jitter*rand(vec2(graph_pos.y, graph_pos.y + i*step));
+            float yj = jitter*rand(vec2(graph_pos.y, graph_pos.y + i*step))/samples;
             float lower = (-0.5+yj)*pixel_extent.y;
             float upper = (0.5+yj)*pixel_extent.y;
             float fp, f;
