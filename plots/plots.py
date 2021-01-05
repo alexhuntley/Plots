@@ -155,11 +155,13 @@ class Plots(Gtk.Application):
             fragment_shader = shaders.compileShader(
                 self.fragment_template.render(formulae=exprs),
                 GL_FRAGMENT_SHADER)
-            self.shader = shaders.compileProgram(self.vertex_shader, fragment_shader)
         except shaders.ShaderCompilationError as e:
-            pass
             print(e.args[0])
+            fragment_shader = shaders.compileShader(
+                self.fragment_template.render(formulae=[]),
+                GL_FRAGMENT_SHADER)
             #print(e.args[1][0].decode())
+        self.shader = shaders.compileProgram(self.vertex_shader, fragment_shader)
 
 
     def add_equation(self, _):
