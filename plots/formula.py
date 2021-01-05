@@ -65,7 +65,7 @@ GREEK_LETTERS = {
 GREEK_LETTERS_INVERSE = {char: name for name, char in GREEK_LETTERS.items()}
 GREEK_REGEXES = GREEK_LETTERS.copy()
 GREEK_REGEXES['(?<![EUeu])psi'] = GREEK_REGEXES.pop('psi')
-FUNCTIONS = ("asinh", "acosh", "atanh", "sinh", "cosh", "tanh", "asin", "acos", "atan", "sin", "cos", "tan", "exp", "log", "ln", "lg")
+FUNCTIONS = "asinh acosh atanh sinh cosh tanh asin acos atan arcsin arccos arctan sin cos tan exp log ln lg sec csc cot asec acsc acot arcsec arccsc arccot".split()
 BINARY_OPERATORS = ("+", "-", "*", "=")
 
 class Direction(Enum):

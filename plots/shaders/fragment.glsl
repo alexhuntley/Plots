@@ -5,9 +5,23 @@ out vec3 color;
 uniform vec2 pixel_extent;
 uniform float scale;
 
-#define ln(x) log(x)
 #define pi 3.141592653589793
 #define e 2.718281828459045
+
+#define ln(x) log(x)
+#define lg(x) log2(x)
+#define sec(x) (1.0/cos(x))
+#define csc(x) (1.0/sin(x))
+#define cot(x) (1.0/tan(x))
+#define arcsin(x) asin(x)
+#define arccos(x) acos(x)
+#define arctan(x) atan(x)
+#define asec(x) acos(1.0/(x))
+#define acsc(x) asin(1.0/(x))
+#define acot(x) (atan(1.0/(x)) - ((x) > 0 ? 0.0 : pi))
+#define arcsec(x) asec(x)
+#define arccsc(x) acsc(x)
+#define arccot(x) acot(x)
 
 float rand(vec2 co){
     // implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
