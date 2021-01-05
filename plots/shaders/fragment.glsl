@@ -60,6 +60,7 @@ void main() {
     float outside[]= float[]({{ ([0.0] * formulae|length) | join(",") }});
     float prev[]= float[]({{ ([0.0] * formulae|length) | join(",") }});
     int monotonic[] = int[]({{ ([0] * formulae|length) | join(",") }});
+    bool nans[] = bool[]({{ (["false"] * formulae|length) | join(",") }});
     for (float i = 0.0; i < samples; i++) {
             float ii = i + jitter*rand(vec2(graph_pos.x + i*step, graph_pos.y));
             float x = graph_pos.x + ii*step;
@@ -77,6 +78,7 @@ void main() {
             if (i != 0.0)
                 monotonic[{{loop.index0}}] += int(sign(f - fp));
             prev[{{loop.index0}}] = f;
+            nans[{{loop.index0}}] = nans[{{loop.index0}}] || isinf(f) || isnan(f);
             {% endfor %}
     }
     {% endif %}
@@ -86,7 +88,7 @@ void main() {
         color = vec3(1.-inside[{{loop.index0}}]/samples);
     if (abs(outside[{{loop.index0}}]) != samples)
         color = vec3(abs(outside[{{loop.index0}}])/samples);
-    if (abs(monotonic[{{loop.index0}}]) == int(samples) - 3)
+    if (abs(monotonic[{{loop.index0}}]) == int(samples) - 3 || nans[{{loop.index0}}])
         color = vec3(1.0);
 
     {% endfor %}
