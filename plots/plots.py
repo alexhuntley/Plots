@@ -69,7 +69,7 @@ class Plots(Gtk.Application):
 
         self.add_equation(None)
 
-        self.window.set_default_size(1200,800)
+        self.window.set_default_size(1280,720)
         self.window.show_all()
 
         self.drag = Gtk.GestureDrag(widget=self.gl_area)
