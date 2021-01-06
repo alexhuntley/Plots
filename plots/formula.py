@@ -1405,12 +1405,18 @@ class Sum(Element):
         Sum.glsl_var_counter += 1
         if Sum.glsl_var_counter > 100000:
             Sum.glsl_var_counter = 0
+        if self.char == "∑":
+            init = 0.0
+            op = "+="
+        elif self.char == "∏":
+            init = 1.0
+            op = "*="
         body = f"""
         {init_body}
         {end_body}
-        float {sum_var} = 0.0;
+        float {sum_var} = {init};
         for (float {init_expr}; {var} <= {end_expr}; {var}++) {{
             {arg_body}
-            {sum_var} += {arg_expr};
+            {sum_var} {op} {arg_expr};
         }}"""
         return body, sum_var
