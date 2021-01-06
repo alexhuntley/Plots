@@ -26,7 +26,9 @@ class Plots(Gtk.Application):
         self.formulae = []
 
     def key_pressed(self, widget, event):
-        pass
+        if event.keyval == Gdk.KEY_Return:
+            self.add_equation(None)
+            return
 
     def do_activate(self):
         builder = Gtk.Builder()
@@ -43,6 +45,7 @@ class Plots(Gtk.Application):
         self.scroll = builder.get_object("equation_scroll")
         self.formula_box = builder.get_object("equation_box")
         self.add_equation_button = builder.get_object("add_equation")
+        self.window.connect("key-press-event", self.key_pressed)
 
         self.gl_area = builder.get_object("gl")
         self.gl_area.connect("render", self.gl_render)
@@ -183,6 +186,8 @@ class Plots(Gtk.Application):
     def delete_equation(self, widget, editor):
         self.formulae.remove(editor)
         widget.get_parent().destroy()
+        if not self.formulae:
+            self.add_equation(None)
         self.update_shader()
         self.gl_area.queue_draw()
 

@@ -209,11 +209,6 @@ class Editor(Gtk.DrawingArea):
             self.queue_draw()
             self.emit("edit")
             return
-        if event.keyval == Gdk.KEY_Return:
-            print(self.expr)
-            print(self.expr.to_glsl())
-            self.emit("edit")
-            return
         if char == "^":
             self.cursor.insert_superscript_subscript(superscript=True)
             self.queue_draw()
