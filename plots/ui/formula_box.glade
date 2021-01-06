@@ -22,7 +22,7 @@
           <object class="GtkImage">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="icon_name">application-exit</property>
+            <property name="icon_name">edit-delete-symbolic</property>
           </object>
         </child>
       </object>
