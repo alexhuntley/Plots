@@ -90,12 +90,12 @@ void main() {
     {% endif %}
     color = vec3(1.0);
     {% for _ in formulae %}
-    if (inside[{{loop.index0}}] > 0.0)
-        color = vec3(1.-inside[{{loop.index0}}]/samples);
-    if (abs(outside[{{loop.index0}}]) != samples)
-        color = vec3(abs(outside[{{loop.index0}}])/samples);
-    if (abs(monotonic[{{loop.index0}}]) == int(samples) - 3 || nans[{{loop.index0}}])
-        color = vec3(1.0);
+    if (abs(monotonic[{{loop.index0}}]) != int(samples) - 3 && !nans[{{loop.index0}}]) {
+        if (inside[{{loop.index0}}] > 0.0)
+            color *= vec3(1.-inside[{{loop.index0}}]/samples);
+        if (abs(outside[{{loop.index0}}]) != samples)
+            color *= vec3(abs(outside[{{loop.index0}}])/samples);
+    }
 
     {% endfor %}
 
