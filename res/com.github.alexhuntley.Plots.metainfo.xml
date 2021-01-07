@@ -16,15 +16,18 @@
 
   <launchable type="desktop-id">com.github.alexhuntley.Plots.desktop</launchable>
 
-  <!-- <screenshots> -->
-  <!--   <screenshot type="default"> -->
-  <!--     <caption>The options dialog</caption> -->
-  <!--     <image>http://www.hughsie.com/en_US/main.png</image> -->
-  <!--   </screenshot> -->
-  <!--   <screenshot> -->
-  <!--     <image>http://www.hughsie.com/en_US/preferences.png</image> -->
-  <!--   </screenshot> -->
-  <!-- </screenshots> -->
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/alexhuntley/Plots/main/res/screenshot_fourier.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/alexhuntley/Plots/main/res/screenshot_trig_hyperbolic.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/alexhuntley/Plots/main/res/screenshot_sine_taylor.png</image>
+    </screenshot>
+
+  </screenshots>
 
   <url type="homepage">https://github.com/alexhuntley/Plots</url>
 
