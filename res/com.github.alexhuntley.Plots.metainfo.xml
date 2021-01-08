@@ -3,7 +3,7 @@
 <component type="desktop-application">
   <id>com.github.alexhuntley.Plots</id>
   <metadata_license>FSFAP</metadata_license>
-  <project_license>GPL-3.0</project_license>
+  <project_license>GPL-3.0-or-later</project_license>
   <name>Plots</name>
   <summary>Simple graph plotting</summary>
 
