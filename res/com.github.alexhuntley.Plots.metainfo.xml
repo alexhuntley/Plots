@@ -48,5 +48,11 @@
         <p>Initial release</p>
       </description>
     </release>
+    <release version="0.1.1" date="2021-01-08">
+      <description>
+        <p>Remove sympy dependency</p>
+      </description>
+    </release>
+
   </releases>
 </component>
