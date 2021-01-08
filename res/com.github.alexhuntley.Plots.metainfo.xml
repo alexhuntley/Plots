@@ -43,14 +43,19 @@
   </provides>
 
   <releases>
-    <release version="0.1.0" date="2020-12-31">
+    <release version="0.1.2" date="2021-01-08">
       <description>
-        <p>Initial release</p>
+        <p>Fix AppStream data</p>
       </description>
     </release>
     <release version="0.1.1" date="2021-01-08">
       <description>
         <p>Remove sympy dependency</p>
+      </description>
+    </release>
+    <release version="0.1.0" date="2020-12-31">
+      <description>
+        <p>Initial release</p>
       </description>
     </release>
 
