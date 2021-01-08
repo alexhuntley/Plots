@@ -13,7 +13,7 @@ setuptools.setup(
         "plots": ["shaders/*.glsl"],
         "plots.res": ["*.svg"],
     },
-    install_requires=["PyGObject", "PyOpenGL", "Jinja2", "numpy", "sympy"],
+    install_requires=["PyGObject", "PyOpenGL", "Jinja2", "numpy"],
     python_requires='~=3.7',
     entry_points={
         "gui_scripts": [

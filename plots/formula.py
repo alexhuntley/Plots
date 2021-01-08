@@ -6,8 +6,6 @@ gi.require_version('PangoCairo', '1.0')
 from gi.repository import GLib, Gtk, Gdk, cairo, Pango, PangoCairo, GObject
 from enum import Enum
 
-from plots import converters
-
 desc = Pango.font_description_from_string("Latin Modern Math 20")
 DEBUG = False
 dpi = PangoCairo.font_map_get_default().get_resolution()
@@ -826,7 +824,7 @@ class ElementList(Element):
                not isinstance(prev, BinaryOperatorAtom) and \
                not isinstance(elem, BinaryOperatorAtom) and \
                not isinstance(elem, SuperscriptSubscript) and \
-               not converters.part_of_number(elem) and \
+               not part_of_number(elem) and \
                not Paren.is_paren(elem, left=False) and \
                not Paren.is_paren(prev, left=True) and \
                not isinstance(prev, OperatorAtom) and \
@@ -890,6 +888,10 @@ class ElementList(Element):
             body_stack[-1].append(sum_body)
         return ints_to_floats("".join(body_stack[-1])), \
             ints_to_floats("".join(string_stack[-1]))
+
+def part_of_number(element):
+    return isinstance(element, Atom) \
+        and (element.name.isdigit() or element.name == ".")
 
 def ints_to_floats(string):
     return re.sub(r"(?<![\.\da-zA-Z_])(\d+)(?![\.\d])", r"\1.0", string)
