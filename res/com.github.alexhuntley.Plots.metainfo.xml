@@ -9,8 +9,13 @@
 
   <description>
     <p>
-      Plots is a program used to plot graphs of equations. It currently supports
-      equations in the form y = f(x).
+      Plots makes it easy to visualise mathematical formulae. In addition to basic
+      arithmetic operations, it supports trigonometric, hyperbolic, exponential and
+      logarithmic functions, as well as arbitrary sums and products.
+    </p>
+    <p>
+      Plots is designed to integrate well with the GNOME desktop and takes advantage
+      of modern hardware using OpenGL.
     </p>
   </description>
 
