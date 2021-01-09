@@ -98,8 +98,8 @@ class Plots(Gtk.Application):
 
     def gl_render(self, area, context):
         area.make_current()
-        w = area.get_allocated_width()
-        h = area.get_allocated_height()
+        w = area.get_allocated_width() * area.get_scale_factor()
+        h = area.get_allocated_height() * area.get_scale_factor()
         self.viewport = np.array([w, h], 'f')
         graph_extent = 2*self.viewport/self.viewport[0]*self.scale
         # extent of each pixel, in graph coordinates
@@ -149,7 +149,7 @@ class Plots(Gtk.Application):
         glBindVertexArray(0)
 
     def drag_update(self, gesture, dx, dy):
-        dr = 2*np.array([dx, -dy], 'f')/self.viewport[0]
+        dr = 2*np.array([dx, -dy], 'f')/self.viewport[0]*self.gl_area.get_scale_factor()
         self.translation = self.init_translation + dr*self.scale
         self.gl_area.queue_draw()
 
