@@ -3,6 +3,18 @@ runtime: org.gnome.Platform
 runtime-version: '3.38'
 sdk: org.gnome.Sdk
 command: plots
+
+finish-args:
+  # X11
+  - --socket=fallback-x11
+  # Wayland access
+  - --socket=wayland
+  # OpenGL
+  - --device=dri
+
+cleanup:
+  - '/lib/debug'
+
 modules:
   - python3-flatpak-requirements.json
   - name: fonts
@@ -26,13 +38,3 @@ modules:
     sources:
       - type: dir
         path: .
-cleanup:
-  - '/lib/debug'
-finish-args:
-  # X11 + XShm access
-  - --share=ipc
-  - --socket=x11
-  # Wayland access
-  - --socket=wayland
-  # OpenGL
-  - --device=dri
