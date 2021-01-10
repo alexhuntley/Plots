@@ -1,4 +1,6 @@
 # Plots ![CI](https://github.com/alexhuntley/Plots/workflows/CI/badge.svg)
+![Plots icon](res/com.github.alexhuntley.Plots.svg)
+
 Plots is a graph plotting app for GNOME. Plots makes it easy to visualise
 mathematical formulae. In addition to basic arithmetic operations, it supports
 trigonometric, hyperbolic, exponential and logarithmic functions, as well as
