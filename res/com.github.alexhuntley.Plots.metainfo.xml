@@ -5,6 +5,7 @@
   <metadata_license>FSFAP</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <name>Plots</name>
+  <developer_name>Alex Huntley</developer_name>
   <summary>Simple graph plotting</summary>
 
   <description>
