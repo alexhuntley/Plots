@@ -227,7 +227,7 @@ class Editor(Gtk.DrawingArea):
             self.queue_draw()
             self.emit("edit")
             return
-        if char == "^":
+        if char == "^" or event.keyval == Gdk.KEY_dead_circumflex:
             self.cursor.insert_superscript_subscript(superscript=True)
             self.queue_draw()
             self.emit("edit")
