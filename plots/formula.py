@@ -187,6 +187,9 @@ class Editor(Gtk.DrawingArea):
             pass
 
         char = chr(Gdk.keyval_to_unicode(event.keyval))
+        print("keyval:", event.keyval)
+        print("char:", char)
+        print("ord:", ord(char))
         if char.isalnum():
             self.cursor.insert(Atom(char))
             self.queue_draw()
