@@ -43,6 +43,11 @@
   </provides>
 
   <releases>
+    <release version="0.1.4" date="2021-01-10">
+      <description>
+        <p>Fix superscript insertion on AZERTY keyboards</p>
+      </description>
+    </release>
     <release version="0.1.3" date="2021-01-09">
       <description>
         <p>Fix graph rendering on hidpi displays</p>
