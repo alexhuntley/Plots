@@ -1,0 +1,26 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      xmlns:its="http://www.w3.org/2005/11/its"
+      type="guide" style="2column task"
+      id="exponential-functions">
+
+  <info>
+    <link type="guide" xref="index#functions"/>
+
+    <desc>e.g. exp, log</desc>
+  </info>
+<title>Exponential and logarithmic functions</title>
+<p>The following functions can be inserted simply by typing their name:</p>
+
+  <list>
+    <title>Supported functions</title>
+    <item>
+      <p>exp</p>
+    </item>
+    <item>
+      <p>ln, log, lg</p>
+      <p>ln and log are natural logarithms. lg is the base-2 logarithm.</p>
+    </item>
+  </list>
+
+
+</page>

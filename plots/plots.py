@@ -73,6 +73,7 @@ class Plots(Gtk.Application):
         menu_button = builder.get_object("menu_button")
 
         self.menu = Gio.Menu()
+        self.menu.append("Help", "app.help")
         self.menu.append("About Plots", "app.about")
         menu_button.set_menu_model(self.menu)
 
@@ -80,6 +81,11 @@ class Plots(Gtk.Application):
         self.about_action.connect("activate", self.about_cb)
         self.about_action.set_enabled(True)
         self.add_action(self.about_action)
+
+        help_action = Gio.SimpleAction.new("help", None)
+        help_action.connect("activate", self.help_cb)
+        help_action.set_enabled(True)
+        self.add_action(help_action)
 
         for c in self.formula_box.get_children():
             self.formula_box.remove(c)
@@ -218,6 +224,9 @@ class Plots(Gtk.Application):
         about_dialog.set_logo(self.window.get_icon())
         about_dialog.run()
         about_dialog.destroy()
+
+    def help_cb(self, action, _):
+        Gtk.show_uri(None, "help:plots", Gdk.CURRENT_TIME)
 
 def read_ui_file(name):
     return importlib.resources.read_text("plots.ui", name)
