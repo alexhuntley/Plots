@@ -1,0 +1,7 @@
+cd /tmp
+wget http://www.gust.org.pl/projects/e-foundry/lm-math/download/latinmodern-math-1959.zip
+unzip latinmodern-math-1959.zip
+mkdir /usr/share/fonts/opentype/latinmodern-math/
+cp /tmp/latinmodern-math-1959/otf/latinmodern-math.otf /usr/share/fonts/opentype/latinmodern-math/
+rm /tmp/latinmodern-math-1959.zip
+rm -rf /tmp/latinmodern-math-1959/

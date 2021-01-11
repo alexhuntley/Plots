@@ -1,0 +1,4 @@
+res/com.github.alexhuntley.Plots.desktop /usr/share/applications/
+res/com.github.alexhuntley.Plots.svg /usr/share/icons/hicolor/scalable/apps/
+res/com.github.alexhuntley.Plots-symbolic.svg /usr/share/icons/hicolor/symbolic/apps/
+res/com.github.alexhuntley.Plots.metainfo.xml /app/share/metainfo/
