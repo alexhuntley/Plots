@@ -44,6 +44,11 @@
   </provides>
 
   <releases>
+    <release version="0.1.5" date="2021-01-11">
+      <description>
+        <p>Added Help to menu, wrote manual pages describing available functions</p>
+      </description>
+    </release>
     <release version="0.1.4" date="2021-01-10">
       <description>
         <p>Fix superscript insertion on AZERTY keyboards</p>
