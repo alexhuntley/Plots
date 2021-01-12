@@ -24,11 +24,30 @@ Scroll down and click on a package name to download the .deb file from the PPA t
 You can also install with Python. Open a terminal in the repository and run
 
 ```bash
-python3 setup.py install
+# python3 setup.py install
 ```
+Note that this method does not currently install the icon, font or .desktop files. You can then run Plots using the `plots` command.
 
 ## Screenshots
 
 ![Screenshot showing plot of sawtooth, square, triangle and sine waves](res/screenshot_fourier.png)
 ![Screenshot showing plot of cot(x), sin(cot(x)) and sinh(x)](res/screenshot_trig_hyperbolic.png)
 ![Screenshot showing plot of sin(x) and its Taylor approximation](res/screenshot_sine_taylor.png)
+
+## Development
+### Running from source
+To run directly without installation, open a terminal in the root of the repository and run
+```bash
+$ python3 -m plots
+```
+### Building the Flatpak
+To generate the manifest for the python modules, download [flatpak-pip-generator](https://github.com/flatpak/flatpak-builder-tools/tree/master/pip) and run
+```bash
+$ python3 flatpak-pip-generator --requirements-file=flatpak-requirements.txt --no-build-isolation
+```
+It is only necessary to do this when `flatpak-requirements.txt` changes.
+
+Then build and install the Flatpak using
+```bash
+$ flatpak-builder --user --install build --force-clean com.github.alexhuntley.Plots.json
+```
