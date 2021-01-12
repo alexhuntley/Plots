@@ -1,0 +1,12 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: Plots
+Upstream-Contact: Alexander Huntley <huntley.alexander@gmail.com>
+Source: https://github.com/alexhuntley/Plots
+
+Files: *
+Copyright: 2021 Alexander Huntley <huntley.alexander@gmail.com>
+License: GPL-3+
+
+Files: debian/*
+Copyright: 2021 Archisman Panigrahi <apandada1@gmail.com>
+License: GPL-3+

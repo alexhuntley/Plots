@@ -1,0 +1,14 @@
+Source: plots
+Section: python
+Priority: optional
+Maintainer: Archisman Panigrahi <apandada1@gmail.com>
+Build-Depends: debhelper (>= 10), python3-all-dev, python3-setuptools, dh-python, python3-opengl, libglib2.0-dev, python3-gi, gobject-introspection, gir1.2-gtk-3.0, python3-jinja2, python3-numpy
+Standards-Version: 4.5.0
+
+Package: plots
+Architecture: all
+Depends: ${python3:Depends}, ${misc:Depends}, gir1.2-gtk-3.0, fonts-lmodern
+Description: Simple graph plotting
+ Plots makes it easy to visualise mathematical formulae. In addition to basic arithmetic operations, it supports trigonometric, hyperbolic, exponential and logarithmic functions, as well as arbitrary sums and products.
+ .
+ Plots is designed to integrate well with the GNOME desktop and takes advantage of modern hardware using OpenGL.
