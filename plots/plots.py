@@ -40,7 +40,7 @@ class Plots(Gtk.Application):
         self.jinja_env = Environment(loader=PackageLoader('plots', 'shaders'))
         self.vertex_template = self.jinja_env.get_template('vertex.glsl')
         self.fragment_template = self.jinja_env.get_template('fragment.glsl')
-        self.formulae = []
+        self.rows = []
 
     def key_pressed(self, widget, event):
         if event.keyval == Gdk.KEY_Return:
@@ -167,23 +167,10 @@ class Plots(Gtk.Application):
         self.scale *= np.exp(dy/10)
         widget.queue_draw()
 
-    def formula_edited(self, widget):
-        self.update_shader()
-        self.gl_area.queue_draw()
-
-    def formula_cursor_position(self, widget, x, y):
-        adj = widget.get_parent().get_hadjustment().props
-        # Force adjustment to update to new size
-        adj.upper = max(widget.get_size_request()[0], adj.page_size)
-        if x - 4 < adj.value:
-            adj.value = x - 4
-        elif x + 4 > adj.value + adj.page_size:
-            adj.value = x - adj.page_size + 4
-
     def update_shader(self):
         exprs = []
-        for f in self.formulae:
-            body, expr = f.expr.to_glsl()
+        for r in self.rows:
+            body, expr = r.editor.expr.to_glsl()
             if expr:
                 exprs.append((body, expr))
         try:
@@ -197,33 +184,13 @@ class Plots(Gtk.Application):
                 GL_FRAGMENT_SHADER)
             #print(e.args[1][0].decode())
         self.shader = shaders.compileProgram(self.vertex_shader, fragment_shader)
-
+        self.gl_area.queue_draw()
 
     def add_equation(self, _):
-        builder = Gtk.Builder()
-        builder.add_from_string(read_ui_file("formula_box.glade"))
-        builder.connect_signals(self)
-        formula_box = builder.get_object("formula_box")
-        delete_button = builder.get_object("delete_button")
-        viewport = builder.get_object("editor_viewport")
-        editor = formula.Editor()
-
-        editor.connect("edit", self.formula_edited)
-        editor.connect("cursor_position", self.formula_cursor_position)
-        delete_button.connect("clicked", self.delete_equation, editor)
-        viewport.add(editor)
-        formula_box.show_all()
-        self.formula_box.pack_start(formula_box, False, False, 0)
-        editor.grab_focus()
-        self.formulae.append(editor)
-
-    def delete_equation(self, widget, editor):
-        self.formulae.remove(editor)
-        widget.get_parent().destroy()
-        if not self.formulae:
-            self.add_equation(None)
-        self.update_shader()
-        self.gl_area.queue_draw()
+        row = FormulaRow(self)
+        self.rows.append(row)
+        self.formula_box.pack_start(row.formula_box, False, False, 0)
+        row.editor.grab_focus()
 
     def about_cb(self, action, _):
         builder = Gtk.Builder()
@@ -241,6 +208,44 @@ class Plots(Gtk.Application):
 
 def read_ui_file(name):
     return importlib.resources.read_text("plots.ui", name)
+
+class FormulaRow():
+    def __init__(self, app):
+        self.app = app
+        builder = Gtk.Builder()
+        builder.add_from_string(read_ui_file("formula_box.glade"))
+        builder.connect_signals(self)
+        self.formula_box = builder.get_object("formula_box")
+        self.delete_button = builder.get_object("delete_button")
+        self.viewport = builder.get_object("editor_viewport")
+        self.editor = formula.Editor()
+        self.editor.connect("edit", self.edited)
+        self.editor.connect("cursor_position", self.cursor_position)
+        self.delete_button.connect("clicked", self.delete)
+        self.viewport.add(self.editor)
+        self.formula_box.show_all()
+        self.editor.grab_focus()
+
+    def delete(self, widget):
+        self.app.rows.remove(self)
+        self.formula_box.destroy()
+        if not self.app.rows:
+            self.app.add_equation(None)
+        self.app.update_shader()
+
+    def cursor_position(self, widget, x, y):
+        adj = widget.get_parent().get_hadjustment().props
+        # Force adjustment to update to new size
+        adj.upper = max(widget.get_size_request()[0], adj.page_size)
+        if x - 4 < adj.value:
+            adj.value = x - 4
+        elif x + 4 > adj.value + adj.page_size:
+            adj.value = x - adj.page_size + 4
+
+    def edited(self, widget):
+        self.app.update_shader()
+
+
 
 if __name__ == '__main__':
     Plots().run(sys.argv)
