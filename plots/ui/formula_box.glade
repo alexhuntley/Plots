@@ -16,8 +16,6 @@
         <property name="receives_default">True</property>
         <property name="halign">end</property>
         <property name="valign">center</property>
-        <property name="margin_left">2</property>
-        <property name="margin_right">2</property>
         <child>
           <object class="GtkImage">
             <property name="visible">True</property>
@@ -25,6 +23,9 @@
             <property name="icon_name">edit-delete-symbolic</property>
           </object>
         </child>
+        <style>
+          <class name="flat"/>
+        </style>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -34,7 +35,27 @@
       </packing>
     </child>
     <child>
-      <placeholder/>
+      <object class="GtkScrolledWindow" id="editor_scroll">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="hexpand">True</property>
+        <property name="vscrollbar_policy">never</property>
+        <property name="propagate_natural_height">True</property>
+        <child>
+          <object class="GtkViewport" id="editor_viewport">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
     </child>
   </object>
 </interface>

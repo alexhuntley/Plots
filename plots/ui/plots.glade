@@ -53,12 +53,12 @@
       <object class="GtkPaned" id="paned">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
+        <property name="position">240</property>
         <child>
           <object class="GtkScrolledWindow" id="equation_scroll">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="hscrollbar_policy">always</property>
-            <property name="vscrollbar_policy">always</property>
+            <property name="hscrollbar_policy">never</property>
             <property name="min_content_width">200</property>
             <child>
               <object class="GtkViewport">

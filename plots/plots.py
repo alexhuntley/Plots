@@ -171,6 +171,14 @@ class Plots(Gtk.Application):
         self.update_shader()
         self.gl_area.queue_draw()
 
+    def formula_cursor_position(self, widget, x, y):
+        adj = widget.get_parent().get_hadjustment().props
+        adj.upper = widget.get_size_request()[0]
+        if x - 4 < adj.value:
+            adj.value = x - 4
+        elif x + 4 > adj.value + adj.page_size:
+            adj.value = x - adj.page_size + 4
+
     def update_shader(self):
         exprs = []
         for f in self.formulae:
@@ -196,11 +204,13 @@ class Plots(Gtk.Application):
         builder.connect_signals(self)
         formula_box = builder.get_object("formula_box")
         delete_button = builder.get_object("delete_button")
+        viewport = builder.get_object("editor_viewport")
         editor = formula.Editor()
 
         editor.connect("edit", self.formula_edited)
+        editor.connect("cursor_position", self.formula_cursor_position)
         delete_button.connect("clicked", self.delete_equation, editor)
-        formula_box.pack_start(editor, True, True, 0)
+        viewport.add(editor)
         formula_box.show_all()
         self.formula_box.pack_start(formula_box, False, False, 0)
         editor.grab_focus()

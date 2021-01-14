@@ -110,7 +110,8 @@ class Direction(Enum):
 class Editor(Gtk.DrawingArea):
     padding = 4
     __gsignals__ = {
-        'edit': (GObject.SIGNAL_RUN_LAST, None, ())
+        'edit': (GObject.SIGNAL_RUN_LAST, None, ()),
+        'cursor_position': (GObject.SIGNAL_RUN_FIRST, None, (float, float)),
     }
     def __init__(self, expression=None):
         super().__init__()
@@ -144,9 +145,12 @@ class Editor(Gtk.DrawingArea):
         ctx.scale(scale, scale)
         self.expr.compute_metrics(ctx, MetricContext(self.cursor))
         ctx.translate(0, self.expr.ascent)
-        self.expr.draw(ctx, self.cursor, widget_transform)
         self.set_size_request(self.expr.width*scale + 2*self.padding,
                               (self.expr.ascent + self.expr.descent)*scale + 2*self.padding)
+        self.expr.draw(ctx, self.cursor, widget_transform)
+        if self.cursor.position_changed:
+            self.emit("cursor_position", *self.cursor.position)
+            self.cursor.position_changed = False
 
     def focus_in(self, widget, event):
         self.restart_blink_sequence()
@@ -306,6 +310,18 @@ class Cursor():
         self.selection_bounds = None
         self.selection_ancestor = None
         self.selection_rgba = [0.5, 0.5, 1, 0.6]
+        self._position = (0., 0.)     # absolute position in widget (in pixels)
+        self.position_changed = False  # set to True when self.position changes
+
+    @property
+    def position(self):
+        return self._position
+
+    @position.setter
+    def position(self, new):
+        if new != self._position:
+            self._position = new
+            self.position_changed = True
 
     def reparent(self, new_parent, position):
         self.owner = new_parent
@@ -639,7 +655,7 @@ class ElementList(Element):
             self.descent = self.font_metrics(ctx).descent
             self.width = self.font_metrics(ctx).width
 
-    def draw_cursor(self, ctx, ascent, descent, cursor):
+    def draw_cursor(self, ctx, ascent, descent, cursor, widget_transform):
         if cursor.owner is self and cursor.visible:
             ctx.set_source_rgb(0, 0, 0)
             ctx.set_line_width(max(ctx.device_to_user_distance(Cursor.WIDTH, Cursor.WIDTH)))
@@ -647,6 +663,7 @@ class ElementList(Element):
             ctx.line_to(0, -ascent+2)
             ctx.move_to(0, 0)
             ctx.stroke()
+            cursor.position = widget_transform.transform_point(*ctx.user_to_device(0,0))
 
     def draw(self, ctx, cursor, widget_transform):
         super().draw(ctx, cursor, widget_transform)
@@ -658,7 +675,7 @@ class ElementList(Element):
                     if cursor.pos > 0:
                         ascent = max(ascent, self.elements[i-1].ascent)
                         descent = max(descent, self.elements[i-1].descent)
-                    self.draw_cursor(ctx, ascent, descent, cursor)
+                    self.draw_cursor(ctx, ascent, descent, cursor, widget_transform)
                 ctx.move_to(0, 0)
                 ctx.translate(e.h_spacing, 0)
                 with saved(ctx):
@@ -666,9 +683,9 @@ class ElementList(Element):
                 ctx.move_to(0,0)
                 ctx.translate(e.width + e.h_spacing, 0)
             if cursor.pos == len(self.elements) > 0:
-                self.draw_cursor(ctx, self.elements[-1].ascent, self.elements[-1].descent, cursor)
+                self.draw_cursor(ctx, self.elements[-1].ascent, self.elements[-1].descent, cursor, widget_transform)
             elif not self.elements:
-                self.draw_cursor(ctx, self.ascent, self.descent, cursor)
+                self.draw_cursor(ctx, self.ascent, self.descent, cursor, widget_transform)
                 ctx.set_source_rgba(0.5, 0.5, 0.5, 0.2)
                 ctx.rectangle(0, -self.ascent, self.width, self.ascent + self.descent)
                 ctx.fill()
