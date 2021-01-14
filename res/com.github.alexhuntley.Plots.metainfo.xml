@@ -45,6 +45,17 @@
   </provides>
 
   <releases>
+    <release version="0.1.6" date="2021-01-14">
+      <description>
+        <p>UI improvements to formula editors:</p>
+        <ul>
+          <li>Flatter delete button;</li>
+          <li>Formula editing boxes can now scroll horizontally, and the formula pane now
+          only scrolls vertically;</li>
+          <li>Formulae scroll to the cursor position when it moves.</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.1.5" date="2021-01-11">
       <description>
         <p>Added Help to menu, wrote manual pages describing available functions</p>
