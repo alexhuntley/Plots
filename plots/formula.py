@@ -138,6 +138,7 @@ class Editor(Gtk.DrawingArea):
         self.cursor.reparent(self.expr, -1)
 
     def do_draw_cb(self, widget, ctx):
+        Element.color = self.get_style_context().get_color(Gtk.StateFlags.NORMAL)
         widget_transform = ctx.get_matrix()
         widget_transform.invert()
         ctx.translate(self.padding, self.padding) # a bit of padding
@@ -533,6 +534,7 @@ class Element():
     and width properties, compute_metrics(ctx, metric_ctx) and draw(ctx, cursor, widget_transform)."""
 
     h_spacing = 2
+    color = Gdk.RGBA()
 
     def __init__(self, parent):
         self.parent = parent
@@ -571,7 +573,7 @@ class Element():
             ctx.fill()
         self.top_left = widget_transform.transform_point(*ctx.user_to_device(-self.h_spacing, -self.ascent))
         self.bottom_right = widget_transform.transform_point(*ctx.user_to_device(self.width + self.h_spacing, self.descent))
-        ctx.set_source_rgba(0,0,0)
+        ctx.set_source_rgba(*Element.color)
         ctx.move_to(0,0)
 
     def get_next_child(self, direction, previous=None):
@@ -657,7 +659,7 @@ class ElementList(Element):
 
     def draw_cursor(self, ctx, ascent, descent, cursor, widget_transform):
         if cursor.owner is self and cursor.visible:
-            ctx.set_source_rgb(0, 0, 0)
+            ctx.set_source_rgba(*Element.color)
             ctx.set_line_width(max(ctx.device_to_user_distance(Cursor.WIDTH, Cursor.WIDTH)))
             ctx.move_to(0, descent-2)
             ctx.line_to(0, -ascent+2)
