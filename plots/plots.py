@@ -173,7 +173,8 @@ class Plots(Gtk.Application):
 
     def formula_cursor_position(self, widget, x, y):
         adj = widget.get_parent().get_hadjustment().props
-        adj.upper = widget.get_size_request()[0]
+        # Force adjustment to update to new size
+        adj.upper = max(widget.get_size_request()[0], adj.page_size)
         if x - 4 < adj.value:
             adj.value = x - 4
         elif x + 4 > adj.value + adj.page_size:
