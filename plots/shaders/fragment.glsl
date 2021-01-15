@@ -68,7 +68,7 @@ float mypow(float x, float y) {
     }
 }
 
-{% for body, expression in formulae %}
+{% for rgba, body, expression in formulae %}
 float formula{{ loop.index0 }}(float x) {
     {{ body }}
     return {{ expression }};
@@ -108,12 +108,14 @@ void main() {
     }
     {% endif %}
     color = vec3(1.0);
-    {% for _ in formulae %}
+    vec3 formula_color = vec3(0);
+    {% for rgba, body, expression in formulae %}
+    formula_color = vec3({{ rgba[:3] | join(",") }});
     if (abs(monotonic[{{loop.index0}}]) != int(samples) - 3 && !nans[{{loop.index0}}]) {
         if (inside[{{loop.index0}}] > 0.0)
-            color *= vec3(1.-inside[{{loop.index0}}]/samples);
+            color = mix(color, formula_color, inside[{{loop.index0}}]/samples);
         if (abs(outside[{{loop.index0}}]) != samples)
-            color *= vec3(abs(outside[{{loop.index0}}])/samples);
+            color = mix(color, formula_color, 1. - abs(outside[{{loop.index0}}])/samples);
     }
 
     {% endfor %}

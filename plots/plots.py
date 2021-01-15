@@ -171,8 +171,9 @@ class Plots(Gtk.Application):
         exprs = []
         for r in self.rows:
             body, expr = r.editor.expr.to_glsl()
+            rgba = tuple(r.color_picker.get_rgba())
             if expr:
-                exprs.append((body, expr))
+                exprs.append((rgba, body, expr))
         try:
             fragment_shader = shaders.compileShader(
                 self.fragment_template.render(formulae=exprs),
@@ -210,6 +211,19 @@ def read_ui_file(name):
     return importlib.resources.read_text("plots.ui", name)
 
 class FormulaRow():
+    PALETTE = [
+        [0,0,0     ],
+        [28,113,216],
+        [46,194,126],
+        [245,194,17],
+        [230,97,0  ],
+        [192,28,40 ],
+        [129,61,156],
+        [134,94,60 ],
+    ]
+    PALETTE = [Gdk.RGBA(*(color/255 for color in colors)) for colors in PALETTE]
+    _palette_use_next = 0
+
     def __init__(self, app):
         self.app = app
         builder = Gtk.Builder()
@@ -218,10 +232,15 @@ class FormulaRow():
         self.formula_box = builder.get_object("formula_box")
         self.delete_button = builder.get_object("delete_button")
         self.viewport = builder.get_object("editor_viewport")
+        self.color_picker = builder.get_object("color_button")
+        self.color_picker.add_palette(Gtk.Orientation.HORIZONTAL, 9, FormulaRow.PALETTE)
+        self.color_picker.set_rgba(FormulaRow.PALETTE[FormulaRow._palette_use_next])
+        FormulaRow._palette_use_next = (FormulaRow._palette_use_next + 1) % len(FormulaRow.PALETTE)
         self.editor = formula.Editor()
         self.editor.connect("edit", self.edited)
         self.editor.connect("cursor_position", self.cursor_position)
         self.delete_button.connect("clicked", self.delete)
+        self.color_picker.connect("color-set", self.edited)
         self.viewport.add(self.editor)
         self.formula_box.show_all()
         self.editor.grab_focus()
@@ -244,7 +263,6 @@ class FormulaRow():
 
     def edited(self, widget):
         self.app.update_shader()
-
 
 
 if __name__ == '__main__':
