@@ -159,6 +159,7 @@ class Editor(Gtk.DrawingArea):
     def focus_out(self, widget, event):
         GLib.source_remove(self.blink_source)
         self.blink_source = None
+        self.cursor.cancel_selection()
         self.cursor.visible = False
         self.queue_draw()
 
