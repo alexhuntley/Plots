@@ -179,7 +179,7 @@ class Plots(Gtk.Application):
                 self.fragment_template.render(formulae=exprs),
                 GL_FRAGMENT_SHADER)
         except shaders.ShaderCompilationError as e:
-            print(e.args[0])
+            print(e.args[0].encode('ascii', 'ignore').decode('unicode_escape'))
             fragment_shader = shaders.compileShader(
                 self.fragment_template.render(formulae=[]),
                 GL_FRAGMENT_SHADER)
