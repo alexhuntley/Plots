@@ -180,8 +180,7 @@ class Editor(Gtk.DrawingArea):
         modifiers = event.state & Gtk.accelerator_get_default_mod_mask()
         if DEBUG:
             print(Gdk.keyval_name(event.keyval))
-        if modifiers & (Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.MOD1_MASK
-                        | Gdk.ModifierType.MOD4_MASK):
+        if modifiers & (Gdk.ModifierType.MOD1_MASK | Gdk.ModifierType.MOD4_MASK):
             return False
         try:
             direction = Direction(event.keyval)
@@ -193,6 +192,10 @@ class Editor(Gtk.DrawingArea):
             pass
 
         char = chr(Gdk.keyval_to_unicode(event.keyval))
+        if modifiers & Gdk.ModifierType.CONTROL_MASK and char == "a":
+            self.cursor.select_all(self.expr)
+            self.queue_draw()
+            return True
         if char.isalnum():
             self.cursor.insert(Atom(char))
             self.queue_draw()
@@ -335,6 +338,13 @@ class Cursor():
         self.secondary_pos, self.secondary_owner = None, None
         self.selection_bounds, self.selection_ancestor = None, None
         self.selecting = False
+
+    def select_all(self, root):
+        self.reparent(root, -1)
+        self.secondary_pos = 0
+        self.secondary_owner = root
+        self.selecting = True
+        self.selection_bounds, self.selection_ancestor = self.calculate_selection()
 
     def mouse_select(self, element, direction, drag=False):
         if drag:
