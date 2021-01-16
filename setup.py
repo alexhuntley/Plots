@@ -1,7 +1,7 @@
 import setuptools
 
 package = 'Plots'
-version = '0.1.6'
+version = '0.2.0'
 
 setuptools.setup(
     name=package,

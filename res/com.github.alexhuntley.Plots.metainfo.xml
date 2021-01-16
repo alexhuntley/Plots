@@ -45,6 +45,11 @@
   </provides>
 
   <releases>
+    <release version="0.2.0" date="2021-01-16">
+      <description>
+        <p>Improved the UI and added coloured graphs!</p>
+      </description>
+    </release>
     <release version="0.1.6" date="2021-01-14">
       <description>
         <p>UI improvements to formula editors:</p>
