@@ -19,6 +19,7 @@
         <property name="layout_style">expand</property>
         <child>
           <object class="GtkButton" id="delete_button">
+            <property name="width_request">46</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>

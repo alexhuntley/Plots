@@ -29,7 +29,7 @@ from OpenGL.GL import shaders
 from jinja2 import Environment, FileSystemLoader, PackageLoader
 import sys
 import importlib.resources
-
+import re
 import numpy as np
 
 class Plots(Gtk.Application):
@@ -168,22 +168,24 @@ class Plots(Gtk.Application):
         widget.queue_draw()
 
     def update_shader(self):
-        exprs = []
+        formulae = []
+        variables = []
         for r in self.rows:
-            body, expr = r.editor.expr.to_glsl()
-            rgba = tuple(r.color_picker.get_rgba())
-            if expr:
-                exprs.append((rgba, body, expr))
+            data = r.to_glsl()
+            if data.type == "formula":
+                formulae.append(data)
+            elif data.type == "variable":
+                variables.append(data)
         try:
             fragment_shader = shaders.compileShader(
-                self.fragment_template.render(formulae=exprs),
+                self.fragment_template.render(formulae=formulae, variables=variables),
                 GL_FRAGMENT_SHADER)
         except shaders.ShaderCompilationError as e:
             print(e.args[0].encode('ascii', 'ignore').decode('unicode_escape'))
             fragment_shader = shaders.compileShader(
                 self.fragment_template.render(formulae=[]),
                 GL_FRAGMENT_SHADER)
-            #print(e.args[1][0].decode())
+            print(e.args[1][0].decode())
         self.shader = shaders.compileProgram(self.vertex_shader, fragment_shader)
         self.gl_area.queue_draw()
 
@@ -209,6 +211,18 @@ class Plots(Gtk.Application):
 
 def read_ui_file(name):
     return importlib.resources.read_text("plots.ui", name)
+
+class RowData():
+    def __init__(self, type, expr=None, body=None, rgba=None, name=None):
+        self.type = type
+        if expr:
+            self.expr = expr
+        if body:
+            self.body = body
+        if rgba:
+            self.rgba = rgba
+        if name:
+            self.name = name
 
 class FormulaRow():
     PALETTE = [
@@ -263,6 +277,22 @@ class FormulaRow():
 
     def edited(self, widget):
         self.app.update_shader()
+
+    def to_glsl(self):
+        body, expr = self.editor.expr.to_glsl()
+        rgba = tuple(self.color_picker.get_rgba())
+        if expr:
+            m = re.match(r'^([a-zA-Z_]\w*) *=', expr)
+            if m and m.group(1) not in ["x", "y"]:
+                data = RowData(type="variable", body=body, expr=expr, name=m.group(1))
+                self.color_picker.hide()
+            else:
+                data = RowData(type="formula", body=body, expr=expr, rgba=rgba)
+                self.color_picker.show()
+        else:
+            data = RowData(type="empty")
+            self.color_picker.show()
+        return data
 
 
 if __name__ == '__main__':

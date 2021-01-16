@@ -68,14 +68,22 @@ float mypow(float x, float y) {
     }
 }
 
-{% for rgba, body, expression in formulae %}
+{% for v in variables %}
+float {{ v.name }};
+{% endfor %}
+
+{% for f in formulae %}
 float formula{{ loop.index0 }}(float x) {
-    {{ body }}
-    return {{ expression }};
+    {{ f.body }}
+    return {{ f.expr }};
 }
 {% endfor %}
 
 void main() {
+    {% for v in variables %}
+    {{ v.body }}
+    {{ v.expr }};
+    {% endfor %}
     float samples = 36;
     float step = 1.4*pixel_extent.x / samples;
     float jitter = .5;
@@ -109,8 +117,8 @@ void main() {
     {% endif %}
     color = vec3(1.0);
     vec3 formula_color = vec3(0);
-    {% for rgba, body, expression in formulae %}
-    formula_color = vec3({{ rgba[:3] | join(",") }});
+    {% for f in formulae %}
+    formula_color = vec3({{ f.rgba[:3] | join(",") }});
     if (abs(monotonic[{{loop.index0}}]) != int(samples) - 3 && !nans[{{loop.index0}}]) {
         if (inside[{{loop.index0}}] > 0.0)
             color = mix(color, formula_color, inside[{{loop.index0}}]/samples);
