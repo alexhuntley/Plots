@@ -195,7 +195,7 @@ class Plots(Gtk.Application):
             fragment_shader = shaders.compileShader(
                 self.fragment_template.render(formulae=[], variables=[], sliders=[]),
                 GL_FRAGMENT_SHADER)
-            print(e.args[1][0].decode())
+            #print(e.args[1][0].decode())
         self.shader = shaders.compileProgram(self.vertex_shader, fragment_shader)
         self.gl_area.queue_draw()
 
@@ -303,6 +303,7 @@ class FormulaRow():
         rgba = tuple(self.color_picker.get_rgba())
         m = re.match(r'^([a-zA-Z_]\w*) *=(.*)', expr)
         m2 = re.match(r'^([a-zA-Z_]\w*) *= *([+-]?([0-9]*[.])?[0-9]+)', expr)
+        print(self.editor.expr.to_latex())
         if m2 and m2.group(1) not in ["x", "y"]:
             self.data = RowData(type="slider", name=m2.group(1))
         elif m and m.group(1) not in ["x", "y"]:

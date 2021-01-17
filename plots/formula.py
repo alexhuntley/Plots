@@ -936,6 +936,9 @@ class ElementList(Element):
         return ints_to_floats("".join(body_stack[-1])), \
             ints_to_floats("".join(string_stack[-1]))
 
+    def to_latex(self):
+        return "".join(e.to_latex() for e in self.elements)
+
 def part_of_number(element):
     return isinstance(element, Atom) \
         and (element.name.isdigit() or element.name == ".")
@@ -1035,6 +1038,13 @@ class BaseAtom(Element):
         else:
             return "", deitalify_string(self.name)
 
+    def to_latex(self):
+        s = deitalify_string(self.name)
+        if s in GREEK_LETTERS_INVERSE:
+            return "\\" + GREEK_LETTERS_INVERSE[s]
+        else:
+            return s
+
 class Atom(BaseAtom):
     def __init__(self, name, parent=None):
         super().__init__(italify_string(name), parent=parent)
@@ -1051,6 +1061,14 @@ class BinaryOperatorAtom(BaseAtom):
         translation = str.maketrans("−×", "-*")
         return "", self.name.translate(translation)
 
+    def to_latex(self):
+        if self.name == "−":
+            return "-"
+        elif self.name == "×":
+            return "\\times"
+        else:
+            return self.name
+
 class OperatorAtom(BaseAtom):
     h_spacing = 2
 
@@ -1060,6 +1078,9 @@ class OperatorAtom(BaseAtom):
             i = string.find(name)
             if i != -1:
                 return name, i
+
+    def to_latex(self):
+        return "\\operatorname{" + self.name + "}"
 
 class SuperscriptSubscript(Element):
     h_spacing = 0
@@ -1148,6 +1169,14 @@ class SuperscriptSubscript(Element):
             self.subscript = None
             self.parent.insert_elementlist(caller, cursor, self.index_in_parent, True)
 
+    def to_latex(self):
+        res = ""
+        if self.subscript:
+            res += "_{" + self.subscript.to_latex() + "}"
+        if self.exponent:
+            res += "^{" + self.exponent.to_latex() + "}"
+        return res
+
 class Frac(Element):
     vertical_separation = 4
     greedy_insert_right = greedy_insert_left = True
@@ -1203,6 +1232,9 @@ class Frac(Element):
         num_body, num_expr = self.numerator.to_glsl()
         den_body, den_expr = self.denominator.to_glsl()
         return num_body + den_body, f"({num_expr})/({den_expr})"
+
+    def to_latex(self):
+        return "\\frac{" + self.numerator.to_latex() + "}{" + self.denominator.to_latex() + "}"
 
 class Radical(Element):
     index_y_shift = 16
@@ -1272,6 +1304,12 @@ class Radical(Element):
         else:
             return radicand_body, f"sqrt({radicand_expr})"
 
+    def to_latex(self):
+        if self.index:
+            return "\\sqrt[" + self.index.to_latex() + "]{" + self.radicand.to_latex() + "}"
+        else:
+            return "\\sqrt{" + self.radicand.to_latex() + "}"
+
 class Abs(Element):
     def __init__(self, argument, parent=None):
         super().__init__(parent)
@@ -1313,6 +1351,9 @@ class Abs(Element):
     def to_glsl(self):
         arg_body, arg_expr = self.argument.to_glsl()
         return arg_body, f"abs({arg_expr})"
+
+    def to_latex(self):
+        return f"\left|{self.argument.to_latex()}\right|"
 
 class Paren(Element):
     h_spacing = 0
@@ -1403,6 +1444,9 @@ class Paren(Element):
     def to_glsl(self):
         return "", "(" if self.left else ")"
 
+    def to_latex(self):
+        return ("\\left" if self.left else "\\right") + self.char
+
     @classmethod
     def is_paren(cls, element, left=None):
         if not isinstance(element, cls):
@@ -1475,3 +1519,6 @@ class Sum(Element):
             {sum_var} {op} {arg_expr};
         }}"""
         return body, sum_var
+
+    def to_latex(self):
+        return "\sum_{" + self.bottom.to_latex() + "}^{" + self.top.to_latex() + "}"
