@@ -1,6 +1,6 @@
 <page xmlns="http://projectmallard.org/1.0/"
-  xmlns:its="http://www.w3.org/2005/11/its"
-  type="guide" id="index">
+      xmlns:its="http://www.w3.org/2005/11/its"
+      type="guide" id="index">
 
   <info>
     <title type="link">Plots</title>
@@ -18,11 +18,15 @@
     Plots
   </title>
 
-<p>A simple graph plotting app for GNOME.</p>
+  <p>A simple graph plotting app for GNOME.</p>
 
-<p>Plots currently supports plotting functions of the variable <em>x</em> only.</p>
+  <p>Plots currently supports plotting functions of the variable <em>x</em> only.</p>
 
-  <section id="functions" style= "2column">
+  <section id="formulae" style="2column">
+    <title>Supported formula types</title>
+  </section>
+
+  <section id="functions" style="2column">
     <title>Available functions</title>
   </section>
 

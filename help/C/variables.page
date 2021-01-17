@@ -4,13 +4,24 @@
       id="variables">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#formulae"/>
 
-    <desc>Symbols with special meaning</desc>
+    <desc>Easily adjustable parameters</desc>
   </info>
-<title>Variables and constants</title>
-<p>Greek letters can be inserted by typing their English name.</p>
-<p>The constants <em>π</em> and <em>e</em> have their usual values.</p>
-<p>The variable <em>x</em> can be used anywhere in a formula.</p>
+  <title>Variables and sliders</title>
 
+  <p>
+    To declare a variable, type an equation of the form
+    <code><em>variable</em> = <em>value</em></code> into an empty formula box, where
+    <code><em>variable</em></code> is a single Latin or Greek letter, and
+    <code><em>value</em></code> is an expression which must not depend on position, but
+    may depend on preceding variables.
+  </p>
+
+  <p>
+    If <code><em>value</em></code> is a literal integer or decimal number, Plots will
+    display an adjustable slider control, allowing the variable to be adjusted
+    interactively. The upper and lower limits of the slider can be edited using the
+    adjacent fields.
+  </p>
 </page>
