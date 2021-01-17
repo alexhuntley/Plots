@@ -5,34 +5,116 @@
   <object class="GtkBox" id="formula_box">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="margin_left">4</property>
-    <property name="margin_right">4</property>
-    <property name="margin_top">4</property>
-    <property name="margin_bottom">4</property>
+    <property name="margin_top">6</property>
+    <property name="margin_bottom">6</property>
+    <property name="orientation">vertical</property>
     <child>
-      <object class="GtkButtonBox">
+      <object class="GtkBox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="halign">end</property>
-        <property name="valign">start</property>
-        <property name="orientation">vertical</property>
-        <property name="layout_style">expand</property>
+        <property name="margin_left">4</property>
+        <property name="margin_right">4</property>
+        <property name="margin_top">4</property>
+        <property name="margin_bottom">4</property>
         <child>
-          <object class="GtkButton" id="delete_button">
+          <object class="GtkButtonBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">end</property>
+            <property name="valign">start</property>
+            <property name="orientation">vertical</property>
+            <property name="layout_style">expand</property>
+            <child>
+              <object class="GtkButton" id="delete_button">
+                <property name="width_request">46</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="valign">center</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon_name">edit-delete-symbolic</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkColorButton" id="color_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="halign">end</property>
+                <property name="valign">center</property>
+                <property name="rgba">rgb(0,0,0)</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+                <property name="non_homogeneous">True</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="editor_scroll">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="valign">center</property>
+            <property name="hexpand">True</property>
+            <property name="vscrollbar_policy">never</property>
+            <property name="propagate_natural_height">True</property>
+            <child>
+              <object class="GtkViewport" id="editor_viewport">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkBox" id="slider_box">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="margin_left">4</property>
+        <property name="margin_right">4</property>
+        <child>
+          <object class="GtkEntry" id="slider_lower">
             <property name="width_request">46</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="valign">center</property>
-            <child>
-              <object class="GtkImage">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="icon_name">edit-delete-symbolic</property>
-              </object>
-            </child>
+            <property name="width_chars">3</property>
+            <property name="input_purpose">number</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -41,49 +123,36 @@
           </packing>
         </child>
         <child>
-          <object class="GtkColorButton" id="color_button">
+          <object class="GtkScale" id="slider">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="halign">end</property>
-            <property name="valign">center</property>
-            <property name="rgba">rgb(0,0,0)</property>
+            <property name="round_digits">3</property>
+            <property name="draw_value">False</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="slider_upper">
+            <property name="width_request">46</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="width_chars">3</property>
+            <property name="caps_lock_warning">False</property>
+            <property name="input_purpose">number</property>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
-            <property name="non_homogeneous">True</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
       <packing>
         <property name="expand">False</property>
-        <property name="fill">False</property>
-        <property name="pack_type">end</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkScrolledWindow" id="editor_scroll">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="valign">center</property>
-        <property name="hexpand">True</property>
-        <property name="vscrollbar_policy">never</property>
-        <property name="propagate_natural_height">True</property>
-        <child>
-          <object class="GtkViewport" id="editor_viewport">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <placeholder/>
-            </child>
-          </object>
-        </child>
-      </object>
-      <packing>
-        <property name="expand">True</property>
         <property name="fill">True</property>
         <property name="position">1</property>
       </packing>

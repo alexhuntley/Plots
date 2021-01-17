@@ -893,7 +893,7 @@ class ElementList(Element):
                         parens2 += 1
                     elif s == "(":
                         parens2 -= 1
-                    if parens2 == 0 and s in "+-*" or parens2 < 0:
+                    if parens2 == 0 and s in "+-*=" or parens2 < 0:
                         i += 1
                         break
                 if isinstance(elem, SuperscriptSubscript):
@@ -1022,6 +1022,11 @@ class BaseAtom(Element):
 
     def __repr__(self):
         return "{}({!r})".format(type(self).__name__, self.name)
+
+    def __eq__(self, other):
+        if isinstance(other, BaseAtom):
+            return self.name == other.name
+        return NotImplemented
 
     def to_glsl(self):
         s = deitalify_string(self.name)

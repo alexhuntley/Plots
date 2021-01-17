@@ -30,6 +30,7 @@ from jinja2 import Environment, FileSystemLoader, PackageLoader
 import sys
 import importlib.resources
 import re
+import math
 import numpy as np
 
 class Plots(Gtk.Application):
@@ -41,6 +42,7 @@ class Plots(Gtk.Application):
         self.vertex_template = self.jinja_env.get_template('vertex.glsl')
         self.fragment_template = self.jinja_env.get_template('fragment.glsl')
         self.rows = []
+        self.slider_rows = []
 
     def key_pressed(self, widget, event):
         if event.keyval == Gdk.KEY_Return:
@@ -120,6 +122,8 @@ class Plots(Gtk.Application):
         glUniform2f(glGetUniformLocation(self.shader, "translation"), *self.translation)
         glUniform2f(glGetUniformLocation(self.shader, "pixel_extent"), *pixel_extent)
         glUniform1f(glGetUniformLocation(self.shader, "scale"), self.scale)
+        for slider in self.slider_rows:
+            glUniform1f(glGetUniformLocation(self.shader, slider.name), slider.value)
         glBindVertexArray(self.vao)
         glDrawArrays(GL_TRIANGLES, 0, 18)
         glBindVertexArray(0)
@@ -170,20 +174,26 @@ class Plots(Gtk.Application):
     def update_shader(self):
         formulae = []
         variables = []
+        sliders = []
+        self.slider_rows.clear()
         for r in self.rows:
             data = r.to_glsl()
             if data.type == "formula":
                 formulae.append(data)
             elif data.type == "variable":
                 variables.append(data)
+            elif data.type == "slider":
+                sliders.append(data)
+                self.slider_rows.append(r)
         try:
             fragment_shader = shaders.compileShader(
-                self.fragment_template.render(formulae=formulae, variables=variables),
+                self.fragment_template.render(formulae=formulae, variables=variables,
+                                              sliders=sliders),
                 GL_FRAGMENT_SHADER)
         except shaders.ShaderCompilationError as e:
             print(e.args[0].encode('ascii', 'ignore').decode('unicode_escape'))
             fragment_shader = shaders.compileShader(
-                self.fragment_template.render(formulae=[]),
+                self.fragment_template.render(formulae=[], variables=[], sliders=[]),
                 GL_FRAGMENT_SHADER)
             print(e.args[1][0].decode())
         self.shader = shaders.compileProgram(self.vertex_shader, fragment_shader)
@@ -240,6 +250,7 @@ class FormulaRow():
 
     def __init__(self, app):
         self.app = app
+        self.data = RowData("empty")
         builder = Gtk.Builder()
         builder.add_from_string(read_ui_file("formula_box.glade"))
         builder.connect_signals(self)
@@ -247,6 +258,10 @@ class FormulaRow():
         self.delete_button = builder.get_object("delete_button")
         self.viewport = builder.get_object("editor_viewport")
         self.color_picker = builder.get_object("color_button")
+        self.slider_box = builder.get_object("slider_box")
+        self.slider = builder.get_object("slider")
+        self.slider_upper = builder.get_object("slider_upper")
+        self.slider_lower = builder.get_object("slider_lower")
         self.color_picker.add_palette(Gtk.Orientation.HORIZONTAL, 9, FormulaRow.PALETTE)
         self.color_picker.set_rgba(FormulaRow.PALETTE[FormulaRow._palette_use_next])
         FormulaRow._palette_use_next = (FormulaRow._palette_use_next + 1) % len(FormulaRow.PALETTE)
@@ -255,9 +270,17 @@ class FormulaRow():
         self.editor.connect("cursor_position", self.cursor_position)
         self.delete_button.connect("clicked", self.delete)
         self.color_picker.connect("color-set", self.edited)
+        self.slider.connect("value-changed", self.slider_changed)
+        self.slider_upper.connect("changed", self.slider_limits_changed)
+        self.slider_lower.connect("changed", self.slider_limits_changed)
         self.viewport.add(self.editor)
         self.formula_box.show_all()
+        self.formula_box.connect("realize", self.on_realize)
         self.editor.grab_focus()
+
+    def on_realize(self, widget):
+        self.slider_box.hide()
+        self.slider.set_adjustment(Gtk.Adjustment(0.5, 0, 1, 0.1, 0, 0))
 
     def delete(self, widget):
         self.app.rows.remove(self)
@@ -276,23 +299,72 @@ class FormulaRow():
             adj.value = x - adj.page_size + 4
 
     def edited(self, widget):
-        self.app.update_shader()
-
-    def to_glsl(self):
         body, expr = self.editor.expr.to_glsl()
         rgba = tuple(self.color_picker.get_rgba())
-        if expr:
-            m = re.match(r'^([a-zA-Z_]\w*) *=', expr)
-            if m and m.group(1) not in ["x", "y"]:
-                data = RowData(type="variable", body=body, expr=expr, name=m.group(1))
-                self.color_picker.hide()
-            else:
-                data = RowData(type="formula", body=body, expr=expr, rgba=rgba)
-                self.color_picker.show()
+        m = re.match(r'^([a-zA-Z_]\w*) *=(.*)', expr)
+        m2 = re.match(r'^([a-zA-Z_]\w*) *= *([+-]?([0-9]*[.])?[0-9]+)', expr)
+        if m2 and m2.group(1) not in ["x", "y"]:
+            self.data = RowData(type="slider", name=m2.group(1))
+        elif m and m.group(1) not in ["x", "y"]:
+            self.data = RowData(type="variable", body=body, expr=expr, name=m.group(1))
+        elif m and m.group(1) == "y":
+            self.data = RowData(type="formula", body=body, expr=m.group(2), rgba=rgba)
+        elif expr:
+            self.data = RowData(type="formula", body=body, expr=expr, rgba=rgba)
         else:
-            data = RowData(type="empty")
+            self.data = RowData(type="empty")
+
+        if self.data.type in ("variable", "slider"):
+            self.color_picker.hide()
+            self.name = m.group(1)
+        else:
             self.color_picker.show()
-        return data
+
+        if self.data.type == "slider":
+            self.slider_box.show()
+            val = float(m2.group(2))
+            if val == 0:
+                u, l = 10., -10.
+            else:
+                u = 10**(1+math.floor(math.log10(abs(val))))
+                l = round(-u/10)
+                if val < 0:
+                    u, l = -l, u
+            self.slider_upper.set_text(str(u))
+            self.slider_lower.set_text(str(l))
+            self.slider.set_value(val)
+        else:
+            self.slider_box.hide()
+        self.app.update_shader()
+
+    def slider_changed(self, widget):
+        self.editor.cursor.cancel_selection()
+        equals_index = self.editor.expr.elements.index(formula.BinaryOperatorAtom("="))
+        del self.editor.expr.elements[equals_index+1:]
+        cursor = self.editor.cursor
+        cursor.reparent(self.editor.expr, -1)
+        new_val = round(self.slider.get_value(), 4)
+        for char in str(int(new_val) if new_val.is_integer() else new_val):
+            if char == "-":
+                self.editor.expr.insert(formula.BinaryOperatorAtom("−"), cursor)
+            elif char.isdigit() or char == ".":
+                self.editor.expr.insert(formula.Atom(char), cursor)
+        self.editor.queue_draw()
+        self.app.gl_area.queue_draw()
+
+    def slider_limits_changed(self, widget):
+        if widget is self.slider_upper:
+            self.slider.get_adjustment().set_upper(float(widget.get_text()))
+        elif widget is self.slider_lower:
+            self.slider.get_adjustment().set_lower(float(widget.get_text()))
+
+
+    @property
+    def value(self):
+        return self.slider.get_value()
+
+    def to_glsl(self):
+        return self.data
 
 
 if __name__ == '__main__':

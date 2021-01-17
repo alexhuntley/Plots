@@ -68,8 +68,12 @@ float mypow(float x, float y) {
     }
 }
 
+{% for s in sliders %}
+uniform float {{ s.name }};
+{% endfor %}
+
 {% for v in variables %}
-float {{ v.name }};
+float {{ v.name }} = 0.0/0.0;
 {% endfor %}
 
 {% for f in formulae %}
