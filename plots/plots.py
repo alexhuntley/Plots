@@ -327,9 +327,9 @@ class FormulaRow():
                 u, l = 10., -10.
             else:
                 u = 10**(1+math.floor(math.log10(abs(val))))
-                l = round(-u/10)
+                l = -abs(u)/10
                 if val < 0:
-                    u, l = -l, u
+                    u, l = -l, -u
             self.slider_upper.set_text(str(u))
             self.slider_lower.set_text(str(l))
             self.slider.set_value(val)
