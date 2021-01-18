@@ -1445,7 +1445,10 @@ class Paren(Element):
         return "", "(" if self.left else ")"
 
     def to_latex(self):
-        return ("\\left" if self.left else "\\right") + self.char
+        if char in "{}":
+            return ("\\left" if self.left else "\\right") + "\\" + self.char
+        else:
+            return ("\\left" if self.left else "\\right") + self.char
 
     @classmethod
     def is_paren(cls, element, left=None):
