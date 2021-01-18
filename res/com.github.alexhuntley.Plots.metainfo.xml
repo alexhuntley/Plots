@@ -47,6 +47,14 @@
   </provides>
 
   <releases>
+    <release version="0.3.0" date="2021-01-18">
+      <description>
+        <p>New feature: variables and sliders. Easily modify the parameters
+        in your equations with just a click!</p>
+        <p>Also added a shortcut to select all the contents of a formula box,
+        and updated the in-app documentation.</p>
+      </description>
+    </release>
     <release version="0.2.0" date="2021-01-16">
       <description>
         <p>Improved the UI and added coloured graphs!</p>
