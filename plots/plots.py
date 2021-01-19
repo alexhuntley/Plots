@@ -303,7 +303,6 @@ class FormulaRow():
         rgba = tuple(self.color_picker.get_rgba())
         m = re.match(r'^([a-zA-Z_]\w*) *=(.*)', expr)
         m2 = re.match(r'^([a-zA-Z_]\w*) *= *([+-]?([0-9]*[.])?[0-9]+)', expr)
-        print(self.editor.expr.to_latex())
         if m2 and m2.group(1) not in ["x", "y"]:
             self.data = RowData(type="slider", name=m2.group(1))
         elif m and m.group(1) not in ["x", "y"]:

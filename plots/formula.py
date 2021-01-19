@@ -22,6 +22,7 @@ import gi
 gi.require_version('PangoCairo', '1.0')
 from gi.repository import GLib, Gtk, Gdk, cairo, Pango, PangoCairo, GObject
 from enum import Enum
+from plots import parser
 
 desc = Pango.font_description_from_string("Latin Modern Math 20")
 DEBUG = False
@@ -192,10 +193,25 @@ class Editor(Gtk.DrawingArea):
             pass
 
         char = chr(Gdk.keyval_to_unicode(event.keyval))
-        if modifiers & Gdk.ModifierType.CONTROL_MASK and char == "a":
-            self.cursor.select_all(self.expr)
-            self.queue_draw()
-            return True
+        if modifiers & Gdk.ModifierType.CONTROL_MASK:
+            if char == "a":
+                self.cursor.select_all(self.expr)
+                self.queue_draw()
+                return True
+            elif char == "c":
+                self.cursor.copy_selection()
+                self.queue_draw()
+                return True
+            elif char == "x":
+                self.cursor.cut_selection()
+                self.queue_draw()
+                self.emit("edit")
+                return True
+            elif char == "v":
+                self.cursor.paste()
+                self.queue_draw()
+                self.emit("edit")
+                return True
         if char.isalnum():
             self.cursor.insert(Atom(char))
             self.queue_draw()
@@ -317,6 +333,7 @@ class Cursor():
         self.selection_rgba = [0.5, 0.5, 1, 0.6]
         self._position = (0., 0.)     # absolute position in widget (in pixels)
         self.position_changed = False  # set to True when self.position changes
+        self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
 
     @property
     def position(self):
@@ -327,6 +344,11 @@ class Cursor():
         if new != self._position:
             self._position = new
             self.position_changed = True
+
+    @property
+    def selection_slice(self):
+        s = self.selection_bounds
+        return slice(s.start, s.stop, s.step)
 
     def reparent(self, new_parent, position):
         self.owner = new_parent
@@ -345,6 +367,22 @@ class Cursor():
         self.secondary_owner = root
         self.selecting = True
         self.selection_bounds, self.selection_ancestor = self.calculate_selection()
+
+    def copy_selection(self):
+        elements = self.selection_ancestor.elements[self.selection_slice]
+        text = "".join(e.to_latex() for e in elements)
+        self.clipboard.set_text(text, len(text))
+
+    def cut_selection(self):
+        self.copy_selection()
+        self.backspace(None)
+
+    def paste(self):
+        text = self.clipboard.wait_for_text()
+        elements = parser.from_latex(text)
+        if self.selecting:
+            self.backspace(None)
+        self.owner.insert_elementlist(elements, self, self.pos)
 
     def mouse_select(self, element, direction, drag=False):
         if drag:
