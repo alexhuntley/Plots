@@ -14,3 +14,6 @@ s|<releases>|<releases>\n\
       </description>\n\
     </release>|
 EOF
+git add setup.py plots/ui/about.glade debian/changelog res/com.github.alexhuntley.Plots.metainfo.xml
+git commit -m "release v$1"
+git tag -am "Plots $1" "v$1"
