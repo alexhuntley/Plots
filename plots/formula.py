@@ -632,7 +632,10 @@ class Element():
 class ElementList(Element):
     def __init__(self, elements=None, parent=None):
         super().__init__(parent)
-        self.elements = elements or []
+        if isinstance(elements, ElementList):
+            self.elements = elements.elements
+        else:
+            self.elements = elements or []
         for i, e in enumerate(self.elements):
             e.parent = self
             e.index_in_parent = i
@@ -1089,12 +1092,16 @@ class SuperscriptSubscript(Element):
     subscript_shift = 6
     superscript_adjustment = 14
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, exponent=None, subscript=None):
         super().__init__(parent)
-        self.exponent = None
-        self.subscript = None
+        self.exponent = exponent
+        self.subscript = subscript
         self.lists = []
         self._selection_acceptor = None
+        self.update_lists()
+
+    def __repr__(self):
+        return f"SuperscriptSubscript(exponent={repr(self.exponent)}, subscript={repr(self.subscript)})"
 
     def add_superscript(self, cursor):
         if self.exponent is None:
@@ -1188,6 +1195,9 @@ class Frac(Element):
         self.lists = [self.numerator, self.denominator]
         self.cursor_acceptor = self.denominator
 
+    def __repr__(self):
+        return f"Frac(numerator={self.numerator}, denominator={self.denominator})"
+
     def compute_metrics(self, ctx, metric_ctx):
         self.numerator.compute_metrics(ctx, metric_ctx)
         self.denominator.compute_metrics(ctx, metric_ctx)
@@ -1251,6 +1261,9 @@ class Radical(Element):
             self.index = None
             self.lists = [self.radicand]
         self.overline_space = 4
+
+    def __repr__(self):
+        return f"Radical({self.radicand}, index={self.index})"
 
     def compute_metrics(self, ctx, metric_ctx):
         self.radicand.compute_metrics(ctx, metric_ctx)
@@ -1317,6 +1330,9 @@ class Abs(Element):
         self.lists = [self.argument]
         self.cursor_acceptor = self.argument
 
+    def __repr__(self):
+        return f"Abs({self.argument})"
+
     def compute_metrics(self, ctx, metric_ctx):
         self.argument.compute_metrics(ctx, metric_ctx)
         self.bar = Text("|", ctx)
@@ -1353,7 +1369,7 @@ class Abs(Element):
         return arg_body, f"abs({arg_expr})"
 
     def to_latex(self):
-        return f"\left|{self.argument.to_latex()}\right|"
+        return f"\\abs{{{self.argument.to_latex()}}}"
 
 class Paren(Element):
     h_spacing = 0
@@ -1445,10 +1461,10 @@ class Paren(Element):
         return "", "(" if self.left else ")"
 
     def to_latex(self):
-        if char in "{}":
-            return ("\\left" if self.left else "\\right") + "\\" + self.char
+        if self.char in "{}":
+            return "\\" + self.char
         else:
-            return ("\\left" if self.left else "\\right") + self.char
+            return self.char
 
     @classmethod
     def is_paren(cls, element, left=None):
@@ -1463,13 +1479,16 @@ class Sum(Element):
     bottom_padding = 4
     glsl_var_counter = 0
 
-    def __init__(self, parent=None, char="∑"):
+    def __init__(self, parent=None, char="∑", top=None, bottom=None):
         super().__init__(parent=parent)
-        self.top = ElementList([], self)
-        self.bottom = ElementList([BinaryOperatorAtom("=")], self)
+        self.top = ElementList(top or [], self)
+        self.bottom = ElementList(bottom or [BinaryOperatorAtom("=")], self)
         self.lists = [self.top, self.bottom]
         self.default_list = self.bottom
         self.char = char
+
+    def __repr__(self):
+        return f"Sum(char={self.char}, top={self.top}, bottom={self.bottom})"
 
     def compute_metrics(self, ctx, metric_ctx):
         self.symbol = Text(self.char, ctx, scale=1.5)
@@ -1524,4 +1543,7 @@ class Sum(Element):
         return body, sum_var
 
     def to_latex(self):
-        return "\sum_{" + self.bottom.to_latex() + "}^{" + self.top.to_latex() + "}"
+        if self.char == "∑":
+            return "\sum_{" + self.bottom.to_latex() + "}^{" + self.top.to_latex() + "}"
+        elif self.char == "∏":
+            return "\prod_{" + self.bottom.to_latex() + "}^{" + self.top.to_latex() + "}"
