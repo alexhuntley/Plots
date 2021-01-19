@@ -506,7 +506,7 @@ class Cursor():
             if direction is Direction.RIGHT:
                 self.reparent(element.cursor_acceptor, -1)
             else:
-                self.reparent(element.cursor_acceptor, selection_length)
+                self.reparent(element.cursor_acceptor, selection_length or 0)
 
 def italify_string(s):
     def italify_char(c):
