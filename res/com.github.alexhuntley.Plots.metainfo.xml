@@ -47,6 +47,11 @@
   </provides>
 
   <releases>
+    <release version="0.4.0" date="2021-01-19">
+      <description>
+        <p>New feature: cut, copy and paste of formulae!</p>
+      </description>
+    </release>
     <release version="0.3.0" date="2021-01-18">
       <description>
         <p>New feature: variables and sliders. Easily modify the parameters
