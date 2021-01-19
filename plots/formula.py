@@ -22,6 +22,7 @@ import gi
 gi.require_version('PangoCairo', '1.0')
 from gi.repository import GLib, Gtk, Gdk, cairo, Pango, PangoCairo, GObject
 from enum import Enum
+from plots import parser
 
 desc = Pango.font_description_from_string("Latin Modern Math 20")
 DEBUG = False
@@ -192,10 +193,25 @@ class Editor(Gtk.DrawingArea):
             pass
 
         char = chr(Gdk.keyval_to_unicode(event.keyval))
-        if modifiers & Gdk.ModifierType.CONTROL_MASK and char == "a":
-            self.cursor.select_all(self.expr)
-            self.queue_draw()
-            return True
+        if modifiers & Gdk.ModifierType.CONTROL_MASK:
+            if char == "a":
+                self.cursor.select_all(self.expr)
+                self.queue_draw()
+                return True
+            elif char == "c":
+                self.cursor.copy_selection()
+                self.queue_draw()
+                return True
+            elif char == "x":
+                self.cursor.cut_selection()
+                self.queue_draw()
+                self.emit("edit")
+                return True
+            elif char == "v":
+                self.cursor.paste()
+                self.queue_draw()
+                self.emit("edit")
+                return True
         if char.isalnum():
             self.cursor.insert(Atom(char))
             self.queue_draw()
@@ -317,6 +333,7 @@ class Cursor():
         self.selection_rgba = [0.5, 0.5, 1, 0.6]
         self._position = (0., 0.)     # absolute position in widget (in pixels)
         self.position_changed = False  # set to True when self.position changes
+        self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
 
     @property
     def position(self):
@@ -327,6 +344,11 @@ class Cursor():
         if new != self._position:
             self._position = new
             self.position_changed = True
+
+    @property
+    def selection_slice(self):
+        s = self.selection_bounds
+        return slice(s.start, s.stop, s.step)
 
     def reparent(self, new_parent, position):
         self.owner = new_parent
@@ -345,6 +367,22 @@ class Cursor():
         self.secondary_owner = root
         self.selecting = True
         self.selection_bounds, self.selection_ancestor = self.calculate_selection()
+
+    def copy_selection(self):
+        elements = self.selection_ancestor.elements[self.selection_slice]
+        text = "".join(e.to_latex() for e in elements)
+        self.clipboard.set_text(text, len(text))
+
+    def cut_selection(self):
+        self.copy_selection()
+        self.backspace(None)
+
+    def paste(self):
+        text = self.clipboard.wait_for_text()
+        elements = parser.from_latex(text)
+        if self.selecting:
+            self.backspace(None)
+        self.owner.insert_elementlist(elements, self, self.pos)
 
     def mouse_select(self, element, direction, drag=False):
         if drag:
@@ -506,7 +544,7 @@ class Cursor():
             if direction is Direction.RIGHT:
                 self.reparent(element.cursor_acceptor, -1)
             else:
-                self.reparent(element.cursor_acceptor, selection_length)
+                self.reparent(element.cursor_acceptor, selection_length or 0)
 
 def italify_string(s):
     def italify_char(c):
@@ -632,7 +670,10 @@ class Element():
 class ElementList(Element):
     def __init__(self, elements=None, parent=None):
         super().__init__(parent)
-        self.elements = elements or []
+        if isinstance(elements, ElementList):
+            self.elements = elements.elements
+        else:
+            self.elements = elements or []
         for i, e in enumerate(self.elements):
             e.parent = self
             e.index_in_parent = i
@@ -936,6 +977,9 @@ class ElementList(Element):
         return ints_to_floats("".join(body_stack[-1])), \
             ints_to_floats("".join(string_stack[-1]))
 
+    def to_latex(self):
+        return "".join(e.to_latex() for e in self.elements)
+
 def part_of_number(element):
     return isinstance(element, Atom) \
         and (element.name.isdigit() or element.name == ".")
@@ -1035,6 +1079,13 @@ class BaseAtom(Element):
         else:
             return "", deitalify_string(self.name)
 
+    def to_latex(self):
+        s = deitalify_string(self.name)
+        if s in GREEK_LETTERS_INVERSE:
+            return "\\" + GREEK_LETTERS_INVERSE[s]
+        else:
+            return s
+
 class Atom(BaseAtom):
     def __init__(self, name, parent=None):
         super().__init__(italify_string(name), parent=parent)
@@ -1051,6 +1102,14 @@ class BinaryOperatorAtom(BaseAtom):
         translation = str.maketrans("−×", "-*")
         return "", self.name.translate(translation)
 
+    def to_latex(self):
+        if self.name == "−":
+            return "-"
+        elif self.name == "×":
+            return "\\times"
+        else:
+            return self.name
+
 class OperatorAtom(BaseAtom):
     h_spacing = 2
 
@@ -1061,6 +1120,9 @@ class OperatorAtom(BaseAtom):
             if i != -1:
                 return name, i
 
+    def to_latex(self):
+        return "\\operatorname{" + self.name + "}"
+
 class SuperscriptSubscript(Element):
     h_spacing = 0
     exponent_scale = 0.7
@@ -1068,12 +1130,16 @@ class SuperscriptSubscript(Element):
     subscript_shift = 6
     superscript_adjustment = 14
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, exponent=None, subscript=None):
         super().__init__(parent)
-        self.exponent = None
-        self.subscript = None
+        self.exponent = exponent
+        self.subscript = subscript
         self.lists = []
         self._selection_acceptor = None
+        self.update_lists()
+
+    def __repr__(self):
+        return f"SuperscriptSubscript(exponent={repr(self.exponent)}, subscript={repr(self.subscript)})"
 
     def add_superscript(self, cursor):
         if self.exponent is None:
@@ -1148,6 +1214,14 @@ class SuperscriptSubscript(Element):
             self.subscript = None
             self.parent.insert_elementlist(caller, cursor, self.index_in_parent, True)
 
+    def to_latex(self):
+        res = ""
+        if self.subscript:
+            res += "_{" + self.subscript.to_latex() + "}"
+        if self.exponent:
+            res += "^{" + self.exponent.to_latex() + "}"
+        return res
+
 class Frac(Element):
     vertical_separation = 4
     greedy_insert_right = greedy_insert_left = True
@@ -1158,6 +1232,9 @@ class Frac(Element):
         self.denominator = ElementList(denominator, self)
         self.lists = [self.numerator, self.denominator]
         self.cursor_acceptor = self.denominator
+
+    def __repr__(self):
+        return f"Frac(numerator={self.numerator}, denominator={self.denominator})"
 
     def compute_metrics(self, ctx, metric_ctx):
         self.numerator.compute_metrics(ctx, metric_ctx)
@@ -1204,6 +1281,9 @@ class Frac(Element):
         den_body, den_expr = self.denominator.to_glsl()
         return num_body + den_body, f"({num_expr})/({den_expr})"
 
+    def to_latex(self):
+        return "\\frac{" + self.numerator.to_latex() + "}{" + self.denominator.to_latex() + "}"
+
 class Radical(Element):
     index_y_shift = 16
     index_x_shift = 16
@@ -1219,6 +1299,9 @@ class Radical(Element):
             self.index = None
             self.lists = [self.radicand]
         self.overline_space = 4
+
+    def __repr__(self):
+        return f"Radical({self.radicand}, index={self.index})"
 
     def compute_metrics(self, ctx, metric_ctx):
         self.radicand.compute_metrics(ctx, metric_ctx)
@@ -1272,12 +1355,21 @@ class Radical(Element):
         else:
             return radicand_body, f"sqrt({radicand_expr})"
 
+    def to_latex(self):
+        if self.index:
+            return "\\sqrt[" + self.index.to_latex() + "]{" + self.radicand.to_latex() + "}"
+        else:
+            return "\\sqrt{" + self.radicand.to_latex() + "}"
+
 class Abs(Element):
     def __init__(self, argument, parent=None):
         super().__init__(parent)
         self.argument = ElementList(argument, self)
         self.lists = [self.argument]
         self.cursor_acceptor = self.argument
+
+    def __repr__(self):
+        return f"Abs({self.argument})"
 
     def compute_metrics(self, ctx, metric_ctx):
         self.argument.compute_metrics(ctx, metric_ctx)
@@ -1313,6 +1405,9 @@ class Abs(Element):
     def to_glsl(self):
         arg_body, arg_expr = self.argument.to_glsl()
         return arg_body, f"abs({arg_expr})"
+
+    def to_latex(self):
+        return f"\\abs{{{self.argument.to_latex()}}}"
 
 class Paren(Element):
     h_spacing = 0
@@ -1403,6 +1498,12 @@ class Paren(Element):
     def to_glsl(self):
         return "", "(" if self.left else ")"
 
+    def to_latex(self):
+        if self.char in "{}":
+            return "\\" + self.char
+        else:
+            return self.char
+
     @classmethod
     def is_paren(cls, element, left=None):
         if not isinstance(element, cls):
@@ -1416,13 +1517,16 @@ class Sum(Element):
     bottom_padding = 4
     glsl_var_counter = 0
 
-    def __init__(self, parent=None, char="∑"):
+    def __init__(self, parent=None, char="∑", top=None, bottom=None):
         super().__init__(parent=parent)
-        self.top = ElementList([], self)
-        self.bottom = ElementList([BinaryOperatorAtom("=")], self)
+        self.top = ElementList(top or [], self)
+        self.bottom = ElementList(bottom or [BinaryOperatorAtom("=")], self)
         self.lists = [self.top, self.bottom]
         self.default_list = self.bottom
         self.char = char
+
+    def __repr__(self):
+        return f"Sum(char={self.char}, top={self.top}, bottom={self.bottom})"
 
     def compute_metrics(self, ctx, metric_ctx):
         self.symbol = Text(self.char, ctx, scale=1.5)
@@ -1475,3 +1579,9 @@ class Sum(Element):
             {sum_var} {op} {arg_expr};
         }}"""
         return body, sum_var
+
+    def to_latex(self):
+        if self.char == "∑":
+            return "\sum_{" + self.bottom.to_latex() + "}^{" + self.top.to_latex() + "}"
+        elif self.char == "∏":
+            return "\prod_{" + self.bottom.to_latex() + "}^{" + self.top.to_latex() + "}"

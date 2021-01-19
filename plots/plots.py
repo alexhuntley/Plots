@@ -195,7 +195,7 @@ class Plots(Gtk.Application):
             fragment_shader = shaders.compileShader(
                 self.fragment_template.render(formulae=[], variables=[], sliders=[]),
                 GL_FRAGMENT_SHADER)
-            print(e.args[1][0].decode())
+            #print(e.args[1][0].decode())
         self.shader = shaders.compileProgram(self.vertex_shader, fragment_shader)
         self.gl_area.queue_draw()
 
