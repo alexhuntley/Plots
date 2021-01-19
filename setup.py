@@ -14,7 +14,7 @@ setuptools.setup(
         "plots.res": ["*.svg"],
     },
     install_requires=["PyGObject", "PyOpenGL", "Jinja2", "numpy"],
-    python_requires='~=3.7',
+    python_requires='~=3.6',
     entry_points={
         "gui_scripts": [
             "plots=plots:main"

@@ -28,7 +28,10 @@ from OpenGL.arrays import vbo
 from OpenGL.GL import shaders
 from jinja2 import Environment, FileSystemLoader, PackageLoader
 import sys
-import importlib.resources
+try:
+    import importlib.resources as resources
+except ModuleNotFoundError:
+    import importlib_resources as resources
 import re
 import math
 import numpy as np
@@ -57,7 +60,7 @@ class Plots(Gtk.Application):
         self.window = builder.get_object("main_window")
         self.add_window(self.window)
         loader = GdkPixbuf.PixbufLoader()
-        loader.write(importlib.resources.read_binary("plots.res", "com.github.alexhuntley.Plotter.svg"))
+        loader.write(resources.read_binary("plots.res", "com.github.alexhuntley.Plotter.svg"))
         loader.close()
         self.window.set_icon(loader.get_pixbuf())
         self.window.set_title("Plots")
@@ -220,7 +223,7 @@ class Plots(Gtk.Application):
         Gtk.show_uri(None, "help:plots", Gdk.CURRENT_TIME)
 
 def read_ui_file(name):
-    return importlib.resources.read_text("plots.ui", name)
+    return resources.read_text("plots.ui", name)
 
 class RowData():
     def __init__(self, type, expr=None, body=None, rgba=None, name=None):
