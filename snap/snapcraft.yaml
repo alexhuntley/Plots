@@ -25,10 +25,15 @@ parts:
       - python3-gi
       - python3-gi-cairo
       - python3-opengl
+      - python3-pip
       - libglu1-mesa
     python-packages:
       - lark-parser == 0.9.0
       - importlib_resources
+    override-build: |
+      snapcraftctl build
+      install -D -t $SNAPCRAFT_PART_INSTALL/usr/share/help/C/plots/ $SNAPCRAFT_PART_SRC/help/C/*
+      install $SNAPCRAFT_PART_INSTALL/usr/share/texmf/fonts/opentype/public/lm-math/latinmodern-math.otf $SNAPCRAFT_PART_INSTALL/usr/share/fonts/
 
 slots:
   dbus-svc:
