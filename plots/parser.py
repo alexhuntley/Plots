@@ -39,10 +39,7 @@ class LatexTransformer(Transformer):
         return formula.BinaryOperatorAtom("=")
 
     def operator(self, items):
-        return formula.OperatorAtom(items[0])
-
-    def OPNAME(self, tok):
-        return tok.value
+        return formula.OperatorAtom(items[0].value)
 
     def superscript(self, items):
         return formula.SuperscriptSubscript(exponent=items[0])
@@ -65,24 +62,22 @@ class LatexTransformer(Transformer):
     def abs(self, items):
         return formula.Abs(items[0])
 
-    def PAREN(self, tok):
-        return tok.value.replace("\\", "")
-
     def paren(self, items):
-        return formula.Paren(items[0])
+        return formula.Paren(items[0].value.replace("\\", ""))
 
     def sum(self, items):
-        return formula.Sum(char="Σ", bottom=items[0], top=items[1])
+        return formula.Sum(char="∑", bottom=items[0], top=items[1])
 
     def prod(self, items):
-        return formula.Sum(char="Π", bottom=items[0], top=items[1])
+        return formula.Sum(char="∏", bottom=items[0], top=items[1])
 
 latex_parser = Lark(r"""
 list : element*
 ?blist : "{" list "}"
 ?element : atom | binary | operator | supersub | frac | radical | abs | paren | sum | prod
 
-atom : LETTER | DIGIT | "."
+POINT : "."
+atom : LETTER | DIGIT | POINT
 
 TIMES : "\\times"
 binary : TIMES -> times
