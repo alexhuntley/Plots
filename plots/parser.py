@@ -76,8 +76,9 @@ list : element*
 ?blist : "{" list "}"
 ?element : atom | binary | operator | supersub | frac | radical | abs | paren | sum | prod
 
-POINT : "."
-atom : LETTER | DIGIT | POINT
+GREEK : "α".."ω" | "Α".."Ω"
+SYMBOL : "." | "!"
+atom : LETTER | GREEK | DIGIT | SYMBOL
 
 TIMES : "\\times"
 binary : TIMES -> times

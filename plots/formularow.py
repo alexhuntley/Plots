@@ -59,7 +59,7 @@ class FormulaRow():
         self.formula_box.show_all()
         self.formula_box.connect("realize", self.on_realize)
         self.editor.grab_focus()
-        self.old_formula = self.editor.expr.to_latex()
+        self.old = self.construct_memory()
 
     def on_realize(self, widget):
         self.slider_box.hide()
@@ -123,11 +123,21 @@ class FormulaRow():
         else:
             self.slider_box.hide()
 
+        mem = self.construct_memory()
         if record:
-            command = rowcommands.Edit(self, self.app.rows, self.old_formula)
+            command = rowcommands.Edit(self, self.app.rows, mem, self.old)
             self.app.add_to_history(command)
-            self.old_formula = self.editor.expr.to_latex()
+        self.old = mem
         self.app.update_shader()
+
+    def construct_memory(self):
+        adj = self.slider.get_adjustment()
+        return rowcommands.RowMemory(
+            formula=self.editor.expr.to_latex(),
+            rgba=self.color_picker.get_rgba(),
+            lower=adj.get_lower(),
+            upper=adj.get_upper(),
+            slider=adj.get_value())
 
     def slider_changed(self, widget):
         self.editor.cursor.cancel_selection()
@@ -145,11 +155,13 @@ class FormulaRow():
         self.app.gl_area.queue_draw()
 
     def slider_limits_changed(self, widget):
-        if widget is self.slider_upper:
-            self.slider.get_adjustment().set_upper(float(widget.get_text()))
-        elif widget is self.slider_lower:
-            self.slider.get_adjustment().set_lower(float(widget.get_text()))
-
+        try:
+            if widget is self.slider_upper:
+                self.slider.get_adjustment().set_upper(float(widget.get_text()))
+            elif widget is self.slider_lower:
+                self.slider.get_adjustment().set_lower(float(widget.get_text()))
+        except ValueError:
+            pass
 
     @property
     def value(self):

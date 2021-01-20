@@ -951,7 +951,7 @@ class ElementList(Element):
                 body_stack.append([])
                 sums.append(elem)
                 sum_paren_levels.append(0)
-            else:
+            elif not isinstance(elem, SuperscriptSubscript):
                 if (isinstance(elem, BinaryOperatorAtom) or \
                     Paren.is_paren(elem, left=False)):
                     while sums and sum_paren_levels[-1] == 0:
@@ -1081,11 +1081,7 @@ class BaseAtom(Element):
             return "", deitalify_string(self.name)
 
     def to_latex(self):
-        s = deitalify_string(self.name)
-        if s in GREEK_LETTERS_INVERSE:
-            return "\\" + GREEK_LETTERS_INVERSE[s]
-        else:
-            return s
+        return deitalify_string(self.name)
 
 class Atom(BaseAtom):
     def __init__(self, name, parent=None):
@@ -1217,9 +1213,9 @@ class SuperscriptSubscript(Element):
 
     def to_latex(self):
         res = ""
-        if self.subscript:
+        if self.subscript is not None:
             res += "_{" + self.subscript.to_latex() + "}"
-        if self.exponent:
+        if self.exponent is not None:
             res += "^{" + self.exponent.to_latex() + "}"
         return res
 
