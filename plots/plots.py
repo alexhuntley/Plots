@@ -21,7 +21,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk, Gio, GdkPixbuf
 
-from plots import formula, formularow
+from plots import formula, formularow, rowcommands
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.arrays import vbo
@@ -46,6 +46,8 @@ class Plots(Gtk.Application):
         self.fragment_template = self.jinja_env.get_template('fragment.glsl')
         self.rows = []
         self.slider_rows = []
+        self.history = []
+        self.history_position = 0 # index of the last undone command / next in line for redo
 
     def key_pressed(self, widget, event):
         if event.keyval == Gdk.KEY_Return:
@@ -67,6 +69,8 @@ class Plots(Gtk.Application):
         self.scroll = builder.get_object("equation_scroll")
         self.formula_box = builder.get_object("equation_box")
         self.add_equation_button = builder.get_object("add_equation")
+        self.undo_button = builder.get_object("undo")
+        self.redo_button = builder.get_object("redo")
         self.window.connect("key-press-event", self.key_pressed)
 
         self.gl_area = builder.get_object("gl")
@@ -74,6 +78,8 @@ class Plots(Gtk.Application):
         self.gl_area.connect("realize", self.gl_realize)
 
         self.add_equation_button.connect("clicked", self.add_equation)
+        self.undo_button.connect("clicked", self.undo)
+        self.redo_button.connect("clicked", self.redo)
 
         menu_button = builder.get_object("menu_button")
 
@@ -95,7 +101,7 @@ class Plots(Gtk.Application):
         for c in self.formula_box.get_children():
             self.formula_box.remove(c)
 
-        self.add_equation(None)
+        self.add_equation(None, record=False)
 
         self.window.set_default_size(1280,720)
         self.window.show_all()
@@ -106,6 +112,8 @@ class Plots(Gtk.Application):
         self.drag.connect("drag-begin", self.drag_begin)
         self.gl_area.add_events(Gdk.EventMask.SMOOTH_SCROLL_MASK)
         self.gl_area.connect('scroll_event', self.scroll_zoom)
+
+        self.refresh_history_buttons()
 
     def gl_render(self, area, context):
         area.make_current()
@@ -202,10 +210,18 @@ class Plots(Gtk.Application):
         self.shader = shaders.compileProgram(self.vertex_shader, fragment_shader)
         self.gl_area.queue_draw()
 
-    def add_equation(self, _):
+    def add_equation(self, _, record=True):
         row = formularow.FormulaRow(self)
         self.rows.append(row)
         self.formula_box.pack_start(row.formula_box, False, False, 0)
+        row.editor.grab_focus()
+        if record:
+            self.add_to_history(rowcommands.Add(row, self.rows))
+
+    def insert_row(self, index, row):
+        self.rows.insert(index, row)
+        self.formula_box.pack_start(row.formula_box, False, False, 0)
+        self.formula_box.reorder_child(row.formula_box, index)
         row.editor.grab_focus()
 
     def about_cb(self, action, _):
@@ -221,6 +237,35 @@ class Plots(Gtk.Application):
 
     def help_cb(self, action, _):
         Gtk.show_uri(None, "help:plots", Gdk.CURRENT_TIME)
+
+    def add_to_history(self, command):
+        if self.can_redo():
+            del self.history[self.history_position:]
+        self.history.append(command)
+        self.history_position = len(self.history)
+        self.refresh_history_buttons()
+
+    def can_undo(self):
+        return self.history_position > 0
+
+    def can_redo(self):
+        return self.history_position < len(self.history)
+
+    def undo(self, _):
+        if self.can_undo():
+            self.history_position -= 1
+            self.history[self.history_position].undo(self)
+            self.refresh_history_buttons()
+
+    def redo(self, _):
+        if self.history_position < len(self.history):
+            self.history[self.history_position].do(self)
+            self.history_position += 1
+            self.refresh_history_buttons()
+
+    def refresh_history_buttons(self):
+        self.undo_button.props.sensitive = self.can_undo()
+        self.redo_button.props.sensitive = self.can_redo()
 
 def read_ui_file(name):
     return resources.read_text("plots.ui", name)

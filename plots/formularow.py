@@ -1,7 +1,7 @@
 import gi
 from gi.repository import Gtk, Gdk, Gio, GdkPixbuf
 
-from plots import formula, plots
+from plots import formula, plots, rowcommands
 import re, math
 
 class RowData():
@@ -59,16 +59,19 @@ class FormulaRow():
         self.formula_box.show_all()
         self.formula_box.connect("realize", self.on_realize)
         self.editor.grab_focus()
+        self.old_formula = self.editor.expr.to_latex()
 
     def on_realize(self, widget):
         self.slider_box.hide()
         self.slider.set_adjustment(Gtk.Adjustment(0.5, 0, 1, 0.1, 0, 0))
 
-    def delete(self, widget):
+    def delete(self, widget, record=True, replace_if_last=True):
+        if record:
+            self.app.add_to_history(rowcommands.Delete(self, self.app.rows))
         self.app.rows.remove(self)
         self.formula_box.destroy()
-        if not self.app.rows:
-            self.app.add_equation(None)
+        if not self.app.rows and replace_if_last:
+            self.app.add_equation(None, record=False)
         self.app.update_shader()
 
     def cursor_position(self, widget, x, y):
@@ -80,7 +83,7 @@ class FormulaRow():
         elif x + 4 > adj.value + adj.page_size:
             adj.value = x - adj.page_size + 4
 
-    def edited(self, widget):
+    def edited(self, widget, record=True):
         body, expr = self.editor.expr.to_glsl()
         rgba = tuple(self.color_picker.get_rgba())
         m = re.match(r'^([a-zA-Z_]\w*) *=(.*)', expr)
@@ -112,11 +115,18 @@ class FormulaRow():
                 l = -abs(u)/10
                 if val < 0:
                     u, l = -l, -u
+                u = max(u, 10.0)
+                l = min(l, -10.0)
             self.slider_upper.set_text(str(u))
             self.slider_lower.set_text(str(l))
             self.slider.set_value(val)
         else:
             self.slider_box.hide()
+
+        if record:
+            command = rowcommands.Edit(self, self.app.rows, self.old_formula)
+            self.app.add_to_history(command)
+            self.old_formula = self.editor.expr.to_latex()
         self.app.update_shader()
 
     def slider_changed(self, widget):

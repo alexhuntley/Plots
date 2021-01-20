@@ -137,6 +137,7 @@ class Editor(Gtk.DrawingArea):
     def set_expr(self, new_expr):
         self.expr = new_expr
         self.cursor.reparent(self.expr, -1)
+        self.cursor.cancel_selection()
 
     def do_draw_cb(self, widget, ctx):
         Element.color = self.get_style_context().get_color(Gtk.StateFlags.NORMAL)
