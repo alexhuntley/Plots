@@ -193,7 +193,7 @@ class Plots(Gtk.Application):
                 self.fragment_template.render(formulae=formulae, variables=variables,
                                               sliders=sliders),
                 GL_FRAGMENT_SHADER)
-        except shaders.ShaderCompilationError as e:
+        except RuntimeError as e:
             print(e.args[0].encode('ascii', 'ignore').decode('unicode_escape'))
             fragment_shader = shaders.compileShader(
                 self.fragment_template.render(formulae=[], variables=[], sliders=[]),

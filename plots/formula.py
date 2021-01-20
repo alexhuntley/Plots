@@ -371,7 +371,7 @@ class Cursor():
     def copy_selection(self):
         elements = self.selection_ancestor.elements[self.selection_slice]
         text = "".join(e.to_latex() for e in elements)
-        self.clipboard.set_text(text, len(text))
+        self.clipboard.set_text(text, -1)
 
     def cut_selection(self):
         self.copy_selection()
@@ -551,10 +551,10 @@ def italify_string(s):
         if c == 'h':
             return 'ℎ'
         # lowercase latin
-        if c.islower() and c.isascii():
+        if c.islower() and ord(c) < 128:
             return chr(ord(c) - 0x61 + 0x1d44e)
         # uppercase latin
-        if c.isupper() and c.isascii():
+        if c.isupper() and ord(c) < 128:
             return chr(ord(c) - 0x41 + 0x1d434)
         # lowercase greek (n.b. don't italify uppers)
         if 0x3b1 <= ord(c) < 0x3b1 + 18:
@@ -1018,7 +1018,7 @@ class Text:
         self.scale = scale
         sf = scale/Pango.SCALE
         self.layout = PangoCairo.create_layout(ctx)
-        self.layout.set_text(text)
+        self.layout.set_text(text, -1)
         self.layout.set_font_description(desc)
         self.width, self.height = self.layout.get_size()
         self.width *= sf
