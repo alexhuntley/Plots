@@ -111,7 +111,8 @@ prod : "\\prod" "_" blist "^" blist
 
 %import common.WS
 %ignore WS
-""", start='list', parser="lalr", transformer=LatexTransformer())
+""", start='list') # lalr seems to have problems with ']'
 
+transformer = LatexTransformer()
 def from_latex(string):
-    return latex_parser.parse(string)
+    return transformer.transform(latex_parser.parse(string))

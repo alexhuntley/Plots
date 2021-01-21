@@ -167,6 +167,9 @@ class ElementList(Element):
     def __add__(self, other):
         return ElementList(self.elements + other.elements)
 
+    def __getitem__(self, key):
+        return self.elements[key]
+
     def children(self):
         return self.elements
 
@@ -1028,6 +1031,6 @@ class Sum(Element):
 
     def to_latex(self):
         if self.char == "∑":
-            return "\sum_{" + self.bottom.to_latex() + "}^{" + self.top.to_latex() + "}"
+            return r"\sum_{" + self.bottom.to_latex() + "}^{" + self.top.to_latex() + "}"
         elif self.char == "∏":
-            return "\prod_{" + self.bottom.to_latex() + "}^{" + self.top.to_latex() + "}"
+            return r"\prod_{" + self.bottom.to_latex() + "}^{" + self.top.to_latex() + "}"

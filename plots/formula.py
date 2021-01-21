@@ -35,8 +35,8 @@ DEBUG = False
 class Editor(Gtk.DrawingArea):
     padding = 4
     __gsignals__ = {
-        'edit': (GObject.SIGNAL_RUN_LAST, None, ()),
-        'cursor_position': (GObject.SIGNAL_RUN_FIRST, None, (float, float)),
+        'edit': (GObject.SignalFlags.RUN_LAST, None, ()),
+        'cursor_position': (GObject.SignalFlags.RUN_FIRST, None, (float, float)),
     }
     def __init__(self, expression=None):
         super().__init__()
