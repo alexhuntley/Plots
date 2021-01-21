@@ -137,6 +137,8 @@ class Editor(Gtk.DrawingArea):
                 self.queue_draw()
                 self.emit("edit")
                 return True
+            else:
+                return False
         if char.isalnum():
             self.cursor.insert(Atom(char))
             self.queue_draw()

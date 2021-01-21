@@ -50,9 +50,18 @@ class Plots(Gtk.Application):
         self.history_position = 0 # index of the last undone command / next in line for redo
 
     def key_pressed(self, widget, event):
+        modifiers = event.state & Gtk.accelerator_get_default_mod_mask()
+        char = chr(Gdk.keyval_to_unicode(event.keyval))
         if event.keyval == Gdk.KEY_Return:
             self.add_equation(None)
-            return
+            return True
+        elif modifiers & Gdk.ModifierType.CONTROL_MASK:
+            if char == "z":
+                self.undo(None)
+                return True
+            elif char == "y" or char == "Z" and modifiers & Gdk.ModifierType.SHIFT_MASK:
+                self.redo(None)
+                return True
 
     def do_activate(self):
         builder = Gtk.Builder()
