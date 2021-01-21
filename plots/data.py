@@ -70,5 +70,6 @@ GREEK_LETTERS_INVERSE = {char: name for name, char in GREEK_LETTERS.items()}
 GREEK_REGEXES = GREEK_LETTERS.copy()
 # stops a ψ being inserted while typing epsilon or upsilon
 GREEK_REGEXES['(?<![EUeu])psi'] = GREEK_REGEXES.pop('psi')
-FUNCTIONS = "sech csch coth asec acsc acosec acot arcsec arccsc arccosec arccot sec csc cosec cot asinh acosh atanh sinh cosh tanh asin acos atan arcsin arccos arctan sin cos tan exp log ln lg".split()
+# substrings must go second for regex to work
+FUNCTIONS = "asech acsch acosech acoth sech csch cosech coth asec acsc acosec acot arcsec arccsc arccosec arccot sec csc cosec cot asinh acosh atanh sinh cosh tanh asin acos atan arcsin arccos arctan sin cos tan exp log ln lg".split()
 BINARY_OPERATORS = ("+", "-", "*", "=")

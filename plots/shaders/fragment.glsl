@@ -46,7 +46,12 @@ uniform float scale;
 #define arccot(x) acot(x)
 #define sech(x) (1.0/cosh(x))
 #define csch(x) (1.0/sinh(x))
+#define cosech(x) csch(x)
 #define coth(x) (1.0/tanh(x))
+#define asech(x) acosh(1.0/(x))
+#define acsch(x) asinh(1.0/(x))
+#define acosech(x) acsch(x)
+#define acoth(x) atanh(1.0/(x))
 
 float rand(vec2 co){
     // implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
