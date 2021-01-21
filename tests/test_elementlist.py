@@ -69,3 +69,17 @@ def test_convert_specials_add_to_trig(base, template):
     elems = do_convert_specials(template.format(op))
     assert len(elems) == 1
     assert elems[0].name == template.format(base)
+
+def test_greedy_insert():
+    elems = from_latex(r"3\sqrt{x}(x(9-x))-4")
+    cursor = Cursor()
+    cursor.reparent(elems, 2)
+    cursor.greedy_insert(f.Frac)
+    assert elems.to_latex() == r"3\frac{\sqrt{x}}{(x(9-x))}-4"
+
+def test_greedy_insert_with_parens():
+    elems = from_latex(r"3(x+1)(x(9-x))-4")
+    cursor = Cursor()
+    cursor.reparent(elems, 6)
+    cursor.greedy_insert(f.Frac)
+    assert elems.to_latex() == r"3\frac{(x+1)}{(x(9-x))}-4"
