@@ -47,6 +47,11 @@
   </provides>
 
   <releases>
+    <release version="0.4.1" date="2021-01-21">
+      <description>
+        <p>New feature: undo/redo. Various bugfixes.</p>
+      </description>
+    </release>
     <release version="0.4.0" date="2021-01-19">
       <description>
         <p>New feature: cut, copy and paste of formulae!</p>
