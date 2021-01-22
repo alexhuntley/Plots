@@ -20,6 +20,10 @@ import plots.formula as f
 from plots.parser import from_latex
 from plots.utils import Direction
 
+from tests.fixtures import cursor
+
+import pytest
+
 def test_position_changed():
     cursor = Cursor()
     assert cursor.position_changed == False
@@ -46,3 +50,17 @@ def test_backspace():
     cursor.reparent(elems, 2)
     cursor.backspace(Direction.LEFT)
     assert elems.to_latex() == "acd"
+
+def test_move_to_next_list(cursor):
+    elems = from_latex(r"\frac{3}{2}")
+    cursor.reparent(elems[0].numerator, -1)
+    cursor.handle_movement(Direction.RIGHT)
+    assert cursor.owner is elems[0].denominator
+    assert cursor.pos == 0
+
+def test_move_to_previous_list(cursor):
+    elems = from_latex(r"\frac{3}{2}")
+    cursor.reparent(elems[0].denominator, 0)
+    cursor.handle_movement(Direction.LEFT)
+    assert cursor.owner is elems[0].numerator
+    assert cursor.pos == 1
