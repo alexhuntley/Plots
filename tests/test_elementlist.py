@@ -23,6 +23,8 @@ from plots.cursor import Cursor
 import plots.data
 import plots.utils
 
+from tests.fixtures import cursor
+
 def do_convert_specials(name):
     elems = from_latex(name)
     cursor = Cursor()
@@ -70,16 +72,43 @@ def test_convert_specials_add_to_trig(base, template):
     assert len(elems) == 1
     assert elems[0].name == template.format(base)
 
-def test_greedy_insert():
+def test_greedy_insert(cursor):
     elems = from_latex(r"3\sqrt{x}(x(9-x))-4")
-    cursor = Cursor()
     cursor.reparent(elems, 2)
     cursor.greedy_insert(f.Frac)
     assert elems.to_latex() == r"3\frac{\sqrt{x}}{(x(9-x))}-4"
 
-def test_greedy_insert_with_parens():
+def test_greedy_insert_with_parens(cursor):
     elems = from_latex(r"3(x+1)(x(9-x))-4")
-    cursor = Cursor()
     cursor.reparent(elems, 6)
     cursor.greedy_insert(f.Frac)
     assert elems.to_latex() == r"3\frac{(x+1)}{(x(9-x))}-4"
+
+def test_greedy_insert_with_numbers(cursor):
+    elems = from_latex(r"3.238923829-4")
+    cursor.reparent(elems, 6)
+    cursor.greedy_insert(f.Frac)
+    assert elems.to_latex() == r"\frac{3.2389}{23829}-4"
+
+def test_dissolve(cursor):
+    elems = from_latex(r"\frac{abc}{def}")
+    cursor.reparent(elems[0].numerator, 0)
+    cursor.backspace(plots.utils.Direction.LEFT)
+    assert elems.to_latex() == "abcdef"
+    assert cursor.owner is elems
+
+def test_backspace_into(cursor):
+    elems = from_latex(r"\frac{abc}{def}")
+    cursor.reparent(elems, -1)
+    cursor.backspace(plots.utils.Direction.LEFT)
+    assert elems.to_latex() == r"\frac{abc}{de}"
+    assert cursor.owner is elems[0].denominator
+    assert cursor.pos == 2
+
+def test_delete_into(cursor):
+    elems = from_latex(r"\frac{abc}{def}")
+    cursor.reparent(elems, 0)
+    cursor.backspace(plots.utils.Direction.RIGHT)
+    assert elems.to_latex() == r"\frac{bc}{def}"
+    assert cursor.owner is elems[0].numerator
+    assert cursor.pos == 0
