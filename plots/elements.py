@@ -277,63 +277,49 @@ class ElementList(Element):
         cursor.reparent(self, position)
 
     def greedy_insert(self, cls, cursor):
-        eligible = (Paren, Atom, Radical)
-        if cursor.pos > 0 and cls.greedy_insert_left and isinstance(self.elements[cursor.pos-1], eligible):
+        eligible = (Atom, Radical)
+        left, right = [], []
+        if cursor.pos > 0 and cls.greedy_insert_left and \
+           (isinstance(self.elements[cursor.pos-1], eligible) \
+            or Paren.is_paren(self.elements[cursor.pos-1], left=False)):
             paren_level = 0
-            adjustment = 0
             for n, e in enumerate(self.elements[cursor.pos-1::-1]):
-                if isinstance(e, Paren):
-                    if e.left:
-                        paren_level -= 1
-                    else:
-                        paren_level += 1
-                if isinstance(e, Atom) and (e.name.isdecimal() or e.name == "."):
-                    if n == cursor.pos - 1:
-                        # we are at the first element in the list,
-                        # so no adjustment needed
-                        adjustment = 0
-                    else:
-                        # without this the element before the number
-                        # would also be eaten
-                        adjustment = 1
+                if Paren.is_paren(e, left=True):
+                    paren_level -= 1
+                    if paren_level <= 0:
+                        break
+                elif Paren.is_paren(e, left=False):
+                    paren_level += 1
+                if Atom.part_of_number(e):
                     continue
                 if paren_level <= 0:
+                    n -= 1
                     break
-            if paren_level < 0:
-                left = []
-            else:
-                n += 1 - adjustment
+            if paren_level >= 0:
+                n = max(1, n + 1)
                 left = self.elements[cursor.pos - n:cursor.pos]
                 del self.elements[cursor.pos - n:cursor.pos]
                 cursor.pos -= n
-        else:
-            left = []
-        if cursor.pos < len(self.elements) and cls.greedy_insert_right and isinstance(self.elements[cursor.pos], eligible):
+        if cursor.pos < len(self.elements) and cls.greedy_insert_right and \
+           (isinstance(self.elements[cursor.pos], eligible) \
+            or Paren.is_paren(self.elements[cursor.pos], left=True)):
             paren_level = 0
-            adjustment = 0
             for n, e in enumerate(self.elements[cursor.pos:]):
-                if isinstance(e, Paren):
-                    if e.left:
-                        paren_level += 1
-                    else:
-                        paren_level -= 1
-                if isinstance(e, Atom) and (e.name.isdecimal() or e.name == "."):
-                    if n + cursor.pos == len(self.elements) - 1:
-                        adjustment = 0
-                    else:
-                        adjustment = 1
+                if Paren.is_paren(e, left=False):
+                    paren_level -= 1
+                    if paren_level <= 0:
+                        break
+                elif Paren.is_paren(e, left=True):
+                    paren_level += 1
+                if Atom.part_of_number(e):
                     continue
-
                 if paren_level <= 0:
+                    n -= 1
                     break
-            if paren_level < 0:
-                right = []
-            else:
-                n += 1 - adjustment
+            if paren_level >= 0:
+                n = max(1, n + 1)
                 right = self.elements[cursor.pos:cursor.pos + n]
                 del self.elements[cursor.pos:cursor.pos + n]
-        else:
-            right = []
         new = cls.make_greedily(left, right)
         self.insert(new, cursor)
         cursor.reparent(new.get_next_child(Direction.LEFT if left else Direction.RIGHT), 0)
