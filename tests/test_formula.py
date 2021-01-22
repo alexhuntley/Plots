@@ -45,6 +45,13 @@ import plots.parser
      'sin(3.0)-x'),
     ([f.OperatorAtom('sin'), f.BinaryOperatorAtom('-'), f.Atom('x')],
      'sin(-x)'),
+    ([f.Atom('y'), f.Radical([
+        f.Atom('x'), f.BinaryOperatorAtom('-'), f.Atom('1')])],
+     'y*sqrt(x-1.0)'),
+    ([f.Atom('y'), f.Radical([
+        f.Atom('x'), f.BinaryOperatorAtom('-'), f.Atom('1')],
+                             index=[f.Atom('3')])],
+     'y*pow(x-1.0, 1.0/(3.0))'),
 ])
 def test_elementlist_to_glsl(elems, expected):
     assert f.ElementList(elems).to_glsl() == ('', expected)
