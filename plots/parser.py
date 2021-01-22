@@ -47,7 +47,7 @@ class LatexTransformer(Transformer):
     def subscript(self, items):
         return formula.SuperscriptSubscript(subscript=items[0])
 
-    def superscriptsubscript(self, items):
+    def subscriptsuperscript(self, items):
         return formula.SuperscriptSubscript(subscript=items[0], exponent=items[1])
 
     def frac(self, items):
@@ -74,7 +74,17 @@ class LatexTransformer(Transformer):
 latex_parser = Lark(r"""
 list : element*
 ?blist : "{" list "}"
-?element : atom | binary | operator | supersub | frac | radical | abs | paren | sum | prod
+?element : atom
+         | binary
+         | operator
+         | supersub
+         | frac
+         | radical
+         | abs
+         | paren
+         | sum
+         | prod
+         | subscriptsuperscript
 
 GREEK : "α".."ω" | "Α".."Ω"
 SYMBOL : "." | "!"
@@ -89,9 +99,9 @@ binary : TIMES -> times
 OPNAME : LETTER+
 operator : "\\operatorname{" OPNAME "}"
 
+subscriptsuperscript.2 : "_" blist "^" blist
 supersub : "_" blist -> subscript
          | "^" blist -> superscript
-         | "_" blist "^" blist -> superscriptsubscript
 
 frac.10 : "\\frac" blist blist
 
