@@ -548,13 +548,6 @@ class BinaryOperatorAtom(BaseAtom):
 class OperatorAtom(BaseAtom):
     h_spacing = 2
 
-    @classmethod
-    def any_in_string(cls, string):
-        for name in cls.allowed_names:
-            i = string.find(name)
-            if i != -1:
-                return name, i
-
     def to_latex(self):
         return "\\operatorname{" + self.name + "}"
 
