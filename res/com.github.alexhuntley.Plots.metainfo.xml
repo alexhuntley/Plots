@@ -47,6 +47,11 @@
   </provides>
 
   <releases>
+    <release version="0.4.3" date="2021-01-23">
+      <description>
+        <p>Various bugfixes and code improvements. Added missing cosech, asech, acsch, acosech and acoth functions.</p>
+      </description>
+    </release>
     <release version="0.4.2" date="2021-01-21">
       <description>
         <p>Added keyboard shortcuts for undo and redo</p>
