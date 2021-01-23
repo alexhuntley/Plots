@@ -25,6 +25,10 @@ import plots.parser
      'x'),
     ([f.Atom('x'), f.Atom('y')],
      'x*y'),
+    ([f.Frac([f.Atom('x')], [f.Atom('y')])],
+     '(x)/(y)'),
+    ([f.Abs([f.Atom('x')])],
+     r'abs(x)'),
     ([f.Atom('x'), f.SuperscriptSubscript(
         exponent=f.ElementList([f.Atom('2')]))],
      'mypow(x, (2.0))'),

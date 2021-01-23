@@ -112,3 +112,10 @@ def test_delete_into(cursor):
     assert elems.to_latex() == r"\frac{bc}{def}"
     assert cursor.owner is elems[0].numerator
     assert cursor.pos == 0
+
+def test_frac_accept_selection(cursor):
+    elems = from_latex(r"xyz")
+    cursor.select_all(elems)
+    cursor.greedy_insert(f.Frac)
+    assert elems.to_latex() == r"\frac{xyz}{}"
+    assert cursor.owner is elems[0].denominator
