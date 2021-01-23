@@ -36,10 +36,26 @@ def test_add_to_super_after(cursor):
     assert elems.to_latex() == "x^{22}"
     assert cursor.owner is elems[1].exponent
 
+def test_add_to_super_after_alternative(cursor):
+    elems = from_latex("x^{2}2")
+    cursor.reparent(elems, 2)
+    cursor.handle_movement(Direction.RIGHT, select=True)
+    cursor.insert_superscript_subscript()
+    assert elems.to_latex() == "x^{22}"
+    assert cursor.owner is elems[1].exponent
+
 def test_add_to_super_before(cursor):
     elems = from_latex("xy^{z}")
     cursor.reparent(elems, 1)
     cursor.handle_movement(Direction.RIGHT, select=True)
+    cursor.insert_superscript_subscript()
+    assert elems.to_latex() == "x^{yz}"
+    assert cursor.owner is elems[1].exponent
+
+def test_add_to_super_before_alternative(cursor):
+    elems = from_latex("xy^{z}")
+    cursor.reparent(elems, 2)
+    cursor.handle_movement(Direction.LEFT, select=True)
     cursor.insert_superscript_subscript()
     assert elems.to_latex() == "x^{yz}"
     assert cursor.owner is elems[1].exponent
