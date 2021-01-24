@@ -47,6 +47,11 @@
   </provides>
 
   <releases>
+    <release version="0.4.4" date="2021-01-24">
+      <description>
+        <p>Added floor and ceiling functions. Bugfixes and refactoring.</p>
+      </description>
+    </release>
     <release version="0.4.3" date="2021-01-23">
       <description>
         <p>Various bugfixes and code improvements. Added missing cosech, asech, acsch, acosech and acoth functions.</p>
