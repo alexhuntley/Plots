@@ -5,8 +5,6 @@
   <object class="GtkBox" id="formula_box">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="margin_top">6</property>
-    <property name="margin_bottom">6</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkBox">
@@ -108,6 +106,7 @@
         <property name="can_focus">False</property>
         <property name="margin_left">4</property>
         <property name="margin_right">4</property>
+        <property name="margin_bottom">4</property>
         <child>
           <object class="GtkEntry" id="slider_lower">
             <property name="width_request">46</property>
@@ -157,5 +156,8 @@
         <property name="position">1</property>
       </packing>
     </child>
+    <style>
+      <class name="formula_box"/>
+    </style>
   </object>
 </interface>

@@ -115,6 +115,21 @@ class Plots(Gtk.Application):
         self.window.set_default_size(1280,720)
         self.window.show_all()
 
+        css = '''
+.formula_box {
+        background-color: @theme_base_color;
+        border-bottom-color: @borders;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+}
+'''
+        css_provider = Gtk.CssProvider()
+        css_provider.load_from_data(css.encode())
+        context = Gtk.StyleContext()
+        screen = Gdk.Screen.get_default()
+        context.add_provider_for_screen(screen, css_provider,
+                                        Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+
         self.drag = Gtk.GestureDrag(widget=self.gl_area)
         self.drag.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         self.drag.connect("drag-update", self.drag_update)
