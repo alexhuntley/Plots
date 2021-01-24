@@ -1,6 +1,12 @@
 import re
 from plots.data import GREEK_REGEXES, FUNCTIONS, BINARY_OPERATORS, GREEK_LETTERS
 
+from . import sum
+from . import radical
+from . import atom
+from . import floor
+from . import ceil
+
 def string_to_names(string):
     regex = r"sum|prod|sqrt|nthroot|floor|ceil|."
     regex = "|".join(GREEK_REGEXES) + "|" + "|".join(FUNCTIONS) + "|" + regex
@@ -30,12 +36,3 @@ def name_to_element(name):
         return atom.Atom(GREEK_LETTERS[name])
     else:
         return atom.OperatorAtom(name)
-
-from . import sum
-from . import paren
-from . import radical
-from . import frac
-from . import supersubscript
-from . import atom
-from . import floor
-from . import ceil
