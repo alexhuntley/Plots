@@ -164,7 +164,7 @@ class Cursor():
         return res
 
     def calculate_selection(self):
-        if not self.secondary_owner:
+        if self.secondary_owner is None:
             return None
         primary_ancestors = self.ancestors(self.owner)
         secondary_ancestors = self.ancestors(self.secondary_owner)
