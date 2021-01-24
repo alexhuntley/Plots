@@ -21,6 +21,7 @@ import re
 import gi
 from gi.repository import GLib, Gtk, Gdk, cairo, Pango, PangoCairo, GObject
 
+desc = Pango.font_description_from_string("Latin Modern Math 20")
 
 class Direction(Enum):
     UP = Gdk.KEY_Up
@@ -99,3 +100,42 @@ def deitalify_string(s):
 
 def ints_to_floats(string):
     return re.sub(r"(?<![\.\da-zA-Z_])(\d+)(?![\.\d])", r"\1.0", string)
+
+
+class Text:
+    def __init__(self, text, ctx, scale=1):
+        self.scale = scale
+        sf = scale/Pango.SCALE
+        self.layout = PangoCairo.create_layout(ctx)
+        self.layout.set_text(text, -1)
+        self.layout.set_font_description(desc)
+        self.width, self.height = self.layout.get_size()
+        self.width *= sf
+        self.height *= sf
+        self.ascent = self.layout.get_baseline()*sf
+        self.descent = self.height - self.ascent
+
+        # Have to do this because get_pixel_extents returns integer pixels,
+        # which are not precise enough
+        self.ink_rect, self.logical_rect = self.layout.get_extents()
+        for attr in ("x", "y", "width", "height"):
+            setattr(self.ink_rect, attr, getattr(self.ink_rect, attr)*sf)
+            setattr(self.logical_rect, attr, getattr(self.logical_rect, attr)*sf)
+
+    def draw_at_baseline(self, ctx):
+        with saved(ctx):
+            ctx.move_to(0, -self.ascent)
+            ctx.scale(self.scale, self.scale)
+            PangoCairo.show_layout(ctx, self.layout)
+
+    def draw(self, ctx):
+        with saved(ctx):
+            ctx.scale(self.scale, self.scale)
+            self.update()
+            PangoCairo.show_layout(ctx, self.layout)
+
+    def update(self):
+        self.layout.context_changed()
+
+def font_metrics(ctx):
+    return Text("x", ctx)

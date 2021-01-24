@@ -23,10 +23,10 @@ gi.require_version('PangoCairo', '1.0')
 from gi.repository import GLib, Gtk, Gdk, cairo, Pango, PangoCairo, GObject
 from enum import Enum
 from plots import parser
-from plots.elements import Element, ElementList, Text, BaseAtom, Atom, \
+from plots.elements import Element, ElementList, BaseAtom, Atom, \
     BinaryOperatorAtom, OperatorAtom, SuperscriptSubscript, Frac, Radical, \
     Abs, Paren, Sum
-from plots.utils import Direction, MetricContext
+from plots.utils import Direction, MetricContext, Text
 from plots.data import BINARY_OPERATORS
 
 class Cursor():
