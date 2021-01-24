@@ -29,7 +29,8 @@ class Element(abstractelement.AbstractElement):
 
     def compute_metrics(self, ctx, metric_ctx):
         """To be run at the end of overriding methods, if they
-        wish to have parens scale around them"""
+        wish to have parens scale around them.
+        """
         stack = metric_ctx.paren_stack
         if stack:
             stack[-1].ascent = max(self.ascent, stack[-1].ascent)
@@ -37,6 +38,8 @@ class Element(abstractelement.AbstractElement):
             stack[-1].compute_stretch()
 
     def draw(self, ctx, cursor, widget_transform):
+        """Expects (0, 0) to be at the baseline, where it should begin drawing.
+        """
         super().draw(ctx, cursor, widget_transform)
         if DEBUG:
             ctx.set_line_width(0.5)

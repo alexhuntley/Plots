@@ -23,7 +23,7 @@
 *** DONE Mouse
 *** DONE Selection via keyboard
 **** by finding common ancestor ElementList?
-*** Copy and paste
+*** DONE Copy and paste
 **** Save and restore of equations - related to copy and paste?
 **** Could store equations as LaTeX, like Desmos does (at least for copy + paste)
 ***** Would require conversion to and from LaTeX
@@ -32,7 +32,7 @@
 *** More international input
 *** Keyboard shortcuts (maybe like Geogebra, Emacs)
 **** Home, End, Ctrl-A, Ctrl-Z, Ctrl-Shift-Z (probably should be handled by app, not widget)
-*** Undo
+*** DONE Undo
 **** Have to make deep copies on each change?
 **** Standard way is to use command pattern
 ***** would this save a lot of memory? is it worth it?
@@ -58,7 +58,7 @@ http://www.reedbeta.com/blog/the-shunting-yard-algorithm/
 **** Integral will need this too
 ** Refactoring
 *** DONE Make formula editor empty by default (but probably still keep a test expression somehow for debugging)
-*** Separate classes for numbers and binary operators instead of just using Atom
+*** DONE Separate classes for numbers and binary operators instead of just using Atom
 **** DONE Give binary operators more spacing
 *** Separate left and right (and top and bottom?) spacing (primarily for Expt)
 **** Is this actually necessary?
@@ -66,17 +66,17 @@ http://www.reedbeta.com/blog/the-shunting-yard-algorithm/
 **** Probably not worth the effort. What advantage does it bring?
 *** DONE Remove code duplication for displaying text by using Text
 **** Make Paren a subclass of BaseAtom?
-*** Split formula.py into separate files
+*** DONE Split formula.py into separate files
 **** Is formula.py really too big? The individual classes aren't really reusable so maybe it doesn't make sense to make them into separate packages.
 *** DONE Get Element.font_metrics to give better bounds (use an actual Pango layout? ...like in BaseAtom)
 *** Use own copy of font instead of system's
 **** Doesn't seem possible in a portable way
-*** Add tests
+*** DONE Add tests
 *** Add type checking/asserts/make everything more robust
 *** Add documentation
 *** Use a modifiable dict of all possible special keywords, allowing for extension/addition of new classes by users
 * Graphing
-** via OpenGL (is this definitely faster? offer a cpu calculation option as well?)
+** DONE via OpenGL (is this definitely faster? offer a cpu calculation option as well?)
 ** Complex numbers?
 ** 3D?
 ** Parametric
@@ -90,8 +90,11 @@ http://www.reedbeta.com/blog/the-shunting-yard-algorithm/
 ** Matrices? Linear algebra?
 ** Physical constants?
 ** Angle units?
+** custom colour picker
+** zoom buttons
 * New name - Graphene?
-* Icon
+** Already exists.
+* DONE Icon
 * Make the formula editor into a separate widget library
 ** Make a standalone formula editor?
 *** LaTeX output
