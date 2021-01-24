@@ -205,11 +205,17 @@ class Editor(Gtk.DrawingArea):
                 return e, e.half_containing(x, y)
 
     def on_button_press(self, widget, event):
-        element, direction = self.element_at(event.x, event.y)
-        self.cursor.mouse_select(element, direction, drag=False)
-        self.restart_blink_sequence()
-        self.grab_focus()
-        self.queue_draw()
+        if event.button == 1:
+            if event.type is Gdk.EventType.DOUBLE_BUTTON_PRESS or \
+               event.type is Gdk.EventType.TRIPLE_BUTTON_PRESS:
+                self.cursor.select_all(self.expr)
+            else:
+                element, direction = self.element_at(event.x, event.y)
+                self.cursor.mouse_select(element, direction, drag=False)
+                self.restart_blink_sequence()
+                self.grab_focus()
+            self.queue_draw()
+            return True
 
     def on_pointer_move(self, widget, event):
         element, direction = self.element_at(event.x, event.y)
