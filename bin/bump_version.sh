@@ -4,7 +4,7 @@ if [ -z "$1" ]; then
     exit 1
 fi
 sed -i "s/version = '.*'/version = '$1'/" setup.py
-sed -i "s:<property name=\"version\">0.3.0</property>:<property name=\"version\">$1</property>:" plots/ui/about.glade
+sed -i "s:<property name=\"version\">[0-9.]\+</property>:<property name=\"version\">$1</property>:" plots/ui/about.glade
 dch --newversion $1 --distribution focal --maintmaint v$1
 metainfo=res/com.github.alexhuntley.Plots.metainfo.xml
 sed -i $metainfo -f - <<EOF
