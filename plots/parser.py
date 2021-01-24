@@ -17,59 +17,65 @@
 
 from lark import Lark, Transformer
 
-from plots import formula
+from plots import elements
 
 class LatexTransformer(Transformer):
     def list(self, items):
-        return formula.ElementList(elements=items)
+        return elements.ElementList(elements=items)
 
     def atom(self, items):
-        return formula.Atom(items[0])
+        return elements.Atom(items[0])
 
     def times(self, _):
-        return formula.BinaryOperatorAtom("×")
+        return elements.BinaryOperatorAtom("×")
 
     def plus(self, _):
-        return formula.BinaryOperatorAtom("+")
+        return elements.BinaryOperatorAtom("+")
 
     def minus(self, _):
-        return formula.BinaryOperatorAtom("−")
+        return elements.BinaryOperatorAtom("−")
 
     def equals(self, _):
-        return formula.BinaryOperatorAtom("=")
+        return elements.BinaryOperatorAtom("=")
 
     def operator(self, items):
-        return formula.OperatorAtom(items[0].value)
+        return elements.OperatorAtom(items[0].value)
 
     def superscript(self, items):
-        return formula.SuperscriptSubscript(exponent=items[0])
+        return elements.SuperscriptSubscript(exponent=items[0])
 
     def subscript(self, items):
-        return formula.SuperscriptSubscript(subscript=items[0])
+        return elements.SuperscriptSubscript(subscript=items[0])
 
     def subscriptsuperscript(self, items):
-        return formula.SuperscriptSubscript(subscript=items[0], exponent=items[1])
+        return elements.SuperscriptSubscript(subscript=items[0], exponent=items[1])
 
     def frac(self, items):
-        return formula.Frac(numerator=items[0], denominator=items[1])
+        return elements.Frac(numerator=items[0], denominator=items[1])
 
     def sqrt(self, items):
-        return formula.Radical(items[0])
+        return elements.Radical(items[0])
 
     def nthroot(self, items):
-        return formula.Radical(items[1], index=items[0])
+        return elements.Radical(items[1], index=items[0])
 
     def abs(self, items):
-        return formula.Abs(items[0])
+        return elements.Abs(items[0])
+
+    def floor(self, items):
+        return elements.Floor(items[0])
+
+    def ceil(self, items):
+        return elements.Ceil(items[0])
 
     def paren(self, items):
-        return formula.Paren(items[0].value.replace("\\", ""))
+        return elements.Paren(items[0].value.replace("\\", ""))
 
     def sum(self, items):
-        return formula.Sum(char="∑", bottom=items[0], top=items[1])
+        return elements.Sum(char="∑", bottom=items[0], top=items[1])
 
     def prod(self, items):
-        return formula.Sum(char="∏", bottom=items[0], top=items[1])
+        return elements.Sum(char="∏", bottom=items[0], top=items[1])
 
 latex_parser = Lark(r"""
 list : element*
@@ -81,6 +87,8 @@ list : element*
          | frac
          | radical
          | abs
+         | floor
+         | ceil
          | paren
          | sum
          | prod
@@ -109,6 +117,8 @@ radical : "\\sqrt" blist -> sqrt
         | "\\sqrt" "[" list "]" blist -> nthroot
 
 abs : "\\abs" blist
+floor : "\\floor" blist
+ceil : "\\ceil" blist
 
 PAREN : "(" | "[" | "\\{" | ")" | "]" | "\\}"
 paren : PAREN
