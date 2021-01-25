@@ -92,6 +92,9 @@ http://www.reedbeta.com/blog/the-shunting-yard-algorithm/
 ** Angle units?
 ** custom colour picker
 ** zoom buttons
+** axis labels
+** animations
+** formula row reordering
 * New name - Graphene?
 ** Already exists.
 * DONE Icon
@@ -121,3 +124,5 @@ Then show context-specific buttons next to the output, e.g.
 **** must be usable from both keyboard and mouse and preferably mathematically clean
 *** How to integrate graphing? Should the full graphing app be separate?
 **** It would be nice to have little inline graphs of functions/distributions/data
+* Packaging
+** Get snap working
