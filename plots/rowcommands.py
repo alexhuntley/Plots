@@ -38,6 +38,7 @@ class Delete():
         row.editor.set_expr(parser.from_latex(self.formula))
         row.color_picker.set_rgba(self.rgba)
         row.edited(None, record=False)
+        row.grab_focus()
 
 class Add():
     def __init__(self, row, rows):
@@ -48,6 +49,7 @@ class Add():
         row = formularow.FormulaRow(app)
         app.insert_row(self.index, row)
         row.color_picker.set_rgba(self.rgba)
+        row.editor.grab_focus()
 
     def undo(self, app):
         app.rows[-1].delete(None, record=False)
@@ -62,6 +64,7 @@ class Edit():
         row = app.rows[self.index]
         row.editor.set_expr(parser.from_latex(self.after.formula))
         row.color_picker.set_rgba(self.after.rgba)
+        row.editor.grab_focus()
         row.editor.queue_draw()
         row.edited(None, record=False)
 
@@ -69,5 +72,6 @@ class Edit():
         row = app.rows[self.index]
         row.editor.set_expr(parser.from_latex(self.before.formula))
         row.color_picker.set_rgba(self.before.rgba)
+        row.editor.grab_focus()
         row.editor.queue_draw()
         row.edited(None, record=False)

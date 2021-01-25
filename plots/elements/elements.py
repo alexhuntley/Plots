@@ -26,9 +26,13 @@ from plots.data import GREEK_REGEXES, FUNCTIONS, BINARY_OPERATORS, GREEK_LETTERS
 
 DEBUG = False
 
-class ElementList():
+from . import abstractelement
+
+class ElementList(abstractelement.AbstractElement):
+    h_spacing = 0
+
     def __init__(self, elements=None, parent=None):
-        self.parent = parent
+        super().__init__(parent)
         if isinstance(elements, ElementList):
             self.elements = elements.elements
         else:
@@ -71,10 +75,6 @@ class ElementList():
             self.descent = font_metrics(ctx).descent
             self.width = font_metrics(ctx).width
 
-    @property
-    def height(self):
-        return self.ascent + self.descent
-
     def draw_cursor(self, ctx, ascent, descent, cursor, widget_transform):
         if cursor.owner is self and cursor.visible:
             ctx.set_source_rgba(*element.Element.color)
@@ -86,6 +86,7 @@ class ElementList():
             cursor.position = widget_transform.transform_point(*ctx.user_to_device(0,0))
 
     def draw(self, ctx, cursor, widget_transform):
+        super().draw(ctx, cursor, widget_transform)
         with saved(ctx):
             for i, e in enumerate(self.elements):
                 ctx.move_to(0,0)

@@ -4,10 +4,11 @@ from gi.repository import GLib, Gtk, Gdk
 from plots.utils import saved, Direction
 
 from . import elements
+from . import abstractelement
 
 DEBUG = False
 
-class Element():
+class Element(abstractelement.AbstractElement):
     """Abstract class describing an element of an equation.
 
     Implementations must provide parent, index_in_parent, lists, ascent, descent,
@@ -17,7 +18,7 @@ class Element():
     color = Gdk.RGBA()
 
     def __init__(self, parent):
-        self.parent = parent
+        super().__init__(parent)
         self.index_in_parent = None
         self.lists = []
         self.default_list = None
@@ -36,6 +37,7 @@ class Element():
             stack[-1].compute_stretch()
 
     def draw(self, ctx, cursor, widget_transform):
+        super().draw(ctx, cursor, widget_transform)
         if DEBUG:
             ctx.set_line_width(0.5)
             ctx.set_source_rgba(1, 0, 1 if cursor.owner is self else 0, 0.6)
@@ -47,10 +49,8 @@ class Element():
             ctx.rectangle(-self.h_spacing, -self.ascent,
                           self.width + 2*self.h_spacing, self.ascent + self.descent)
             ctx.fill()
-        self.top_left = widget_transform.transform_point(*ctx.user_to_device(-self.h_spacing, -self.ascent))
-        self.bottom_right = widget_transform.transform_point(*ctx.user_to_device(self.width + self.h_spacing, self.descent))
         ctx.set_source_rgba(*Element.color)
-        ctx.move_to(0,0)
+        ctx.move_to(0, 0)
 
     def get_next_child(self, direction, previous=None):
         try:
@@ -67,17 +67,6 @@ class Element():
             else:
                 return None
 
-    def contains_device_point(self, x, y):
-        return self.top_left[0] <= x <= self.bottom_right[0] and \
-            self.top_left[1] <= y <= self.bottom_right[1]
-
-    def half_containing(self, x, y):
-        x_mid = (self.bottom_right[0] + self.top_left[0])/2
-        if x < x_mid:
-            return Direction.LEFT
-        else:
-            return Direction.RIGHT
-
     def accept_selection(self, elements, direction):
         pass
 
@@ -89,7 +78,3 @@ class Element():
                 cursor_offset = len(concatenation)
             concatenation.extend(elementlist.elements)
         self.parent.replace(self, elements.ElementList(concatenation), cursor, cursor_offset)
-
-    @property
-    def height(self):
-        return self.ascent + self.descent

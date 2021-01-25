@@ -17,48 +17,52 @@
 
 import pytest
 
-import plots.formula as f
+import plots.elements as e
 import plots.parser
 
 @pytest.mark.parametrize("elems, expected", [
-    ([f.Atom('x')],
+    ([e.Atom('x')],
      'x'),
-    ([f.Atom('x'), f.Atom('y')],
+    ([e.Atom('x'), e.Atom('y')],
      'x*y'),
-    ([f.Frac([f.Atom('x')], [f.Atom('y')])],
+    ([e.Frac([e.Atom('x')], [e.Atom('y')])],
      '(x)/(y)'),
-    ([f.Abs([f.Atom('x')])],
+    ([e.Abs([e.Atom('x')])],
      r'abs(x)'),
-    ([f.Atom('x'), f.SuperscriptSubscript(
-        exponent=f.ElementList([f.Atom('2')]))],
+    ([e.Floor([e.Atom('x')]), e.Atom('y')],
+     r'floor(x)*y'),
+    ([e.Ceil([e.Atom('x')]), e.SuperscriptSubscript(exponent=e.ElementList([e.Atom('3')]))],
+     r'mypow(ceil(x), (3.0))'),
+    ([e.Atom('x'), e.SuperscriptSubscript(
+        exponent=e.ElementList([e.Atom('2')]))],
      'mypow(x, (2.0))'),
-    ([f.Atom('x'), f.Atom('!')],
+    ([e.Atom('x'), e.Atom('!')],
      'factorial(x)'),
-    ([f.OperatorAtom('sin'), f.Atom('x')],
+    ([e.OperatorAtom('sin'), e.Atom('x')],
      'sin(x)'),
-    ([f.OperatorAtom('sin'), f.Atom('3'), f.Atom('x')],
+    ([e.OperatorAtom('sin'), e.Atom('3'), e.Atom('x')],
      'sin(3.0*x)'),
-    ([f.OperatorAtom('sin'), f.Paren("{"), f.Atom('3'), f.Atom('x'), f.Paren("}"), f.Atom('y')],
+    ([e.OperatorAtom('sin'), e.Paren("{"), e.Atom('3'), e.Atom('x'), e.Paren("}"), e.Atom('y')],
      'sin(3.0*x)*y'),
-    ([f.OperatorAtom('sin'), f.Paren("{"), f.Atom('3'), f.Atom('x'), f.Paren("}"),
-      f.SuperscriptSubscript(
-          exponent=f.ElementList([f.Atom('3'), f.Atom('z')])
+    ([e.OperatorAtom('sin'), e.Paren("{"), e.Atom('3'), e.Atom('x'), e.Paren("}"),
+      e.SuperscriptSubscript(
+          exponent=e.ElementList([e.Atom('3'), e.Atom('z')])
       )],
      'mypow(sin(3.0*x), (3.0*z))'),
-    ([f.OperatorAtom('sin'), f.Atom('3'), f.BinaryOperatorAtom('-'), f.Atom('x')],
+    ([e.OperatorAtom('sin'), e.Atom('3'), e.BinaryOperatorAtom('-'), e.Atom('x')],
      'sin(3.0)-x'),
-    ([f.OperatorAtom('sin'), f.BinaryOperatorAtom('-'), f.Atom('x')],
+    ([e.OperatorAtom('sin'), e.BinaryOperatorAtom('-'), e.Atom('x')],
      'sin(-x)'),
-    ([f.Atom('y'), f.Radical([
-        f.Atom('x'), f.BinaryOperatorAtom('-'), f.Atom('1')])],
+    ([e.Atom('y'), e.Radical([
+        e.Atom('x'), e.BinaryOperatorAtom('-'), e.Atom('1')])],
      'y*sqrt(x-1.0)'),
-    ([f.Atom('y'), f.Radical([
-        f.Atom('x'), f.BinaryOperatorAtom('-'), f.Atom('1')],
-                             index=[f.Atom('3')])],
+    ([e.Atom('y'), e.Radical([
+        e.Atom('x'), e.BinaryOperatorAtom('-'), e.Atom('1')],
+                             index=[e.Atom('3')])],
      'y*pow(x-1.0, 1.0/(3.0))'),
 ])
 def test_elementlist_to_glsl(elems, expected):
-    assert f.ElementList(elems).to_glsl() == ('', expected)
+    assert e.ElementList(elems).to_glsl() == ('', expected)
 
 @pytest.mark.parametrize('string', [
     "x",
@@ -66,6 +70,8 @@ def test_elementlist_to_glsl(elems, expected):
     "xyz^{4}",
     r"\operatorname{sin}\frac{3}{x}",
     r"\abs{y^{2}}^{2}",
+    r"3\floor{\frac{1}{x}}",
+    r"3\ceil{\frac{1}{x}}",
     r"ΑαΒβΓγΔδΕεΖζΗηΘθΙιΚκΛλΜμΝνΞξΟοΠπΡρΣσςΤτΥυΦφΧχΨψΩω",
     "33!",
     r"\operatorname{log}_{10}^{2}(x^{3})",
