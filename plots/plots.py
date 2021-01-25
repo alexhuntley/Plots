@@ -19,7 +19,7 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gdk, Gio, GdkPixbuf
+from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf
 
 from plots import formula, formularow, rowcommands
 from OpenGL.GL import *
@@ -37,10 +37,11 @@ import math
 import numpy as np
 
 class Plots(Gtk.Application):
+    INIT_SCALE = 10
     def __init__(self):
         super().__init__(application_id="com.github.alexhuntley.Plots")
-        self.scale = 10
-        self.translation = np.array([0, 0], 'f')
+        self._scale = self.INIT_SCALE
+        self._translation = np.array([0, 0], 'f')
         self.jinja_env = Environment(loader=PackageLoader('plots', 'shaders'))
         self.vertex_template = self.jinja_env.get_template('vertex.glsl')
         self.fragment_template = self.jinja_env.get_template('fragment.glsl')
@@ -48,6 +49,25 @@ class Plots(Gtk.Application):
         self.slider_rows = []
         self.history = []
         self.history_position = 0 # index of the last undone command / next in line for redo
+        self.overlay_source = None
+
+    @property
+    def scale(self):
+        return self._scale
+
+    @scale.setter
+    def scale(self, value):
+        self._scale = value
+        self.update_zoom_reset()
+
+    @property
+    def translation(self):
+        return self._translation
+
+    @translation.setter
+    def translation(self, value):
+        self._translation = value
+        self.update_zoom_reset()
 
     def key_pressed(self, widget, event):
         modifiers = event.state & Gtk.accelerator_get_default_mod_mask()
@@ -90,6 +110,17 @@ class Plots(Gtk.Application):
         self.undo_button.connect("clicked", self.undo)
         self.redo_button.connect("clicked", self.redo)
 
+        self.osd_revealer = builder.get_object("osd_revealer")
+        self.zoom_reset_revealer = builder.get_object("zoom_reset_revealer")
+        self.graph_overlay = builder.get_object("graph_overlay")
+        self.zoom_in_button = builder.get_object("zoom_in")
+        self.zoom_in_button.connect("clicked", self.zoom, -0.1)
+        self.zoom_out_button = builder.get_object("zoom_out")
+        self.zoom_out_button.connect("clicked", self.zoom, 0.1)
+        self.zoom_reset_button = builder.get_object("zoom_reset")
+        self.zoom_reset_button.connect("clicked", self.reset_zoom)
+        self.update_zoom_reset()
+
         menu_button = builder.get_object("menu_button")
 
         self.menu = Gio.Menu()
@@ -110,9 +141,11 @@ class Plots(Gtk.Application):
         for c in self.formula_box.get_children():
             self.formula_box.remove(c)
 
+        self.set_overlay_timeout()
+
         self.add_equation(None, record=False)
 
-        self.window.set_default_size(1280,720)
+        self.window.set_default_size(1280, 720)
         self.window.show_all()
 
         css = '''
@@ -121,6 +154,9 @@ class Plots(Gtk.Application):
         border-bottom-color: @borders;
         border-bottom-width: 1px;
         border-bottom-style: solid;
+}
+.zoom-box {
+        background-color: rgba(0, 0, 0, 0);
 }
 '''
         css_provider = Gtk.CssProvider()
@@ -136,6 +172,10 @@ class Plots(Gtk.Application):
         self.drag.connect("drag-begin", self.drag_begin)
         self.gl_area.add_events(Gdk.EventMask.SMOOTH_SCROLL_MASK)
         self.gl_area.connect('scroll_event', self.scroll_zoom)
+        self.gl_area.add_events(Gdk.EventMask.POINTER_MOTION_MASK)
+        self.gl_area.connect('motion-notify-event', self.motion_cb)
+        self.graph_overlay.add_events(Gdk.EventMask.ENTER_NOTIFY_MASK)
+        self.graph_overlay.connect('enter-notify-event', self.enter_overlay_cb)
 
         self.refresh_history_buttons()
 
@@ -203,8 +243,46 @@ class Plots(Gtk.Application):
 
     def scroll_zoom(self, widget, event):
         _, dx, dy = event.get_scroll_deltas()
-        self.scale *= np.exp(dy/10)
+        self.scale *= math.exp(dy/10)
         widget.queue_draw()
+
+    def zoom(self, button, factor):
+        self.scale *= math.exp(factor)
+        self.gl_area.queue_draw()
+
+    def reset_zoom(self, button):
+        self.scale = self.INIT_SCALE
+        self.translation = np.array([0, 0], 'f')
+        self.gl_area.queue_draw()
+
+    def clear_overlay_timeout(self):
+        if self.overlay_source is not None:
+            GLib.source_remove(self.overlay_source)
+            self.overlay_source = None
+
+    def set_overlay_timeout(self):
+        self.clear_overlay_timeout()
+        self.overlay_source = GLib.timeout_add(2000, self.overlay_timeout_cb)
+
+    def overlay_timeout_cb(self):
+        self.osd_revealer.set_reveal_child(False)
+        self.overlay_source = None
+
+    def motion_cb(self, widget, event):
+        if not self.osd_revealer.get_reveal_child():
+            self.osd_revealer.set_reveal_child(True)
+        self.set_overlay_timeout()
+        return False
+
+    def enter_overlay_cb(self, widget, event):
+        self.clear_overlay_timeout()
+        return False
+
+    def update_zoom_reset(self):
+        desired = self.scale != self.INIT_SCALE or self.translation.any()
+        if self.zoom_reset_revealer.get_reveal_child() != desired:
+            self.zoom_reset_revealer.set_reveal_child(desired)
+
 
     def update_shader(self):
         formulae = []
