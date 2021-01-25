@@ -53,6 +53,7 @@ uniform float scale;
 #define acosech(x) acsch(x)
 #define acoth(x) atanh(1.0/(x))
 #define sgn(x) sign(x)
+#define sinc(x) (sin(x)/(x))
 
 float rand(vec2 co){
     // implementation found at: lumina.sourceforge.net/Tutorials/Noise.html

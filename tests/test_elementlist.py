@@ -17,7 +17,7 @@
 
 import pytest
 
-import plots.formula as f
+import plots.elements as e
 from plots.parser import from_latex
 from plots.cursor import Cursor
 import plots.data
@@ -37,14 +37,14 @@ def test_convert_specials_functions(fn):
     elems = do_convert_specials(fn)
     assert len(elems) == 1
     elem = elems[0]
-    assert isinstance(elem, f.OperatorAtom) and elem.name == fn
+    assert isinstance(elem, e.OperatorAtom) and elem.name == fn
 
 @pytest.mark.parametrize("name, symbol", [tup for tup in plots.data.GREEK_LETTERS.items()])
 def test_convert_specials_greek(name, symbol):
     elems = do_convert_specials(name)
     assert len(elems) == 1
     elem = elems[0]
-    assert isinstance(elem, f.Atom) \
+    assert isinstance(elem, e.Atom) \
         and plots.utils.deitalify_string(elem.name) == symbol
 
 @pytest.mark.parametrize("name", "epsi upsi".split())
@@ -54,10 +54,12 @@ def test_convert_specials_epsilon_upsilon(name):
     assert elems.to_latex() == name
 
 @pytest.mark.parametrize("name, cls", [
-    ("sum", f.Sum),
-    ("prod", f.Sum),
-    ("sqrt", f.Radical),
-    ("nthroot", f.Radical),
+    ("sum", e.Sum),
+    ("prod", e.Sum),
+    ("sqrt", e.Radical),
+    ("nthroot", e.Radical),
+    ("floor", e.Floor),
+    ("ceil", e.Ceil),
 ])
 def test_convert_specials_misc(name, cls):
     elems = do_convert_specials(name)
@@ -75,19 +77,19 @@ def test_convert_specials_add_to_trig(base, template):
 def test_greedy_insert(cursor):
     elems = from_latex(r"3\sqrt{x}(x(9-x))-4")
     cursor.reparent(elems, 2)
-    cursor.greedy_insert(f.Frac)
+    cursor.greedy_insert(e.Frac)
     assert elems.to_latex() == r"3\frac{\sqrt{x}}{(x(9-x))}-4"
 
 def test_greedy_insert_with_parens(cursor):
     elems = from_latex(r"3(x+1)(x(9-x))-4")
     cursor.reparent(elems, 6)
-    cursor.greedy_insert(f.Frac)
+    cursor.greedy_insert(e.Frac)
     assert elems.to_latex() == r"3\frac{(x+1)}{(x(9-x))}-4"
 
 def test_greedy_insert_with_numbers(cursor):
     elems = from_latex(r"3.238923829-4")
     cursor.reparent(elems, 6)
-    cursor.greedy_insert(f.Frac)
+    cursor.greedy_insert(e.Frac)
     assert elems.to_latex() == r"\frac{3.2389}{23829}-4"
 
 def test_dissolve(cursor):
@@ -116,6 +118,6 @@ def test_delete_into(cursor):
 def test_frac_accept_selection(cursor):
     elems = from_latex(r"xyz")
     cursor.select_all(elems)
-    cursor.greedy_insert(f.Frac)
+    cursor.greedy_insert(e.Frac)
     assert elems.to_latex() == r"\frac{xyz}{}"
     assert cursor.owner is elems[0].denominator
