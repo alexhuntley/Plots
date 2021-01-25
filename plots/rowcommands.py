@@ -38,7 +38,7 @@ class Delete():
         row.editor.set_expr(parser.from_latex(self.formula))
         row.color_picker.set_rgba(self.rgba)
         row.edited(None, record=False)
-        row.grab_focus()
+        row.editor.grab_focus()
 
 class Add():
     def __init__(self, row, rows):
