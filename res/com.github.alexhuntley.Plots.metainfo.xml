@@ -47,6 +47,11 @@
   </provides>
 
   <releases>
+    <release version="0.5.1" date="2021-01-28">
+      <description>
+        <p>Fix help missing in Flatpak</p>
+      </description>
+    </release>
     <release version="0.5.0" date="2021-01-25">
       <description>
         <ul>
