@@ -18,6 +18,8 @@ of modern hardware using OpenGL.
 |:-:|:-:|:-:|
 | Ubuntu | [PPA](https://launchpad.net/~apandada1/+archive/ubuntu/plots) | [Archisman Panigrahi](https://github.com/apandada1) |
 | Debian | [.deb installer](https://launchpad.net/~apandada1/+archive/ubuntu/plots/+packages) | [Archisman Panigrahi](https://github.com/apandada1) |
+| Arch | [AUR](https://aur.archlinux.org/packages/plots/)/[AUR(git)](https://aur.archlinux.org/packages/plots-git/) | [Mubashshir](https://github.com/ahmubashshir) |
+
 
 Scroll down and click on a package name to download the .deb file from the PPA to use it in Debian.
 
