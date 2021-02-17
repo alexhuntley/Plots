@@ -106,6 +106,11 @@ class Plots(Gtk.Application):
         self.gl_area.connect("render", self.gl_render)
         self.gl_area.connect("realize", self.gl_realize)
 
+        self.errorbar = builder.get_object("errorbar")
+        self.errorbar.set_message_type(Gtk.MessageType.ERROR)
+        self.errorbar.connect("response", lambda id, data: self.errorbar.set_property("revealed", False))
+        self.errorlabel = builder.get_object("errorlabel")
+
         self.add_equation_button.connect("clicked", self.add_equation)
         self.undo_button.connect("clicked", self.undo)
         self.redo_button.connect("clicked", self.redo)
@@ -210,6 +215,11 @@ class Plots(Gtk.Application):
 
         if (area.get_error() != None):
             return
+
+        version = glGetString(GL_VERSION).decode().split(" ")[0]
+        if version < "3.3":
+            self.errorlabel.set_text(f"Warning: OpenGL {version} is unsupported. Plots supports OpenGL 3.3 or greater.")
+            self.errorbar.props.revealed = True
 
         self.vertex_shader = shaders.compileShader(
             self.vertex_template.render(), GL_VERTEX_SHADER)
