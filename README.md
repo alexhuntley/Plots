@@ -7,7 +7,7 @@ trigonometric, hyperbolic, exponential and logarithmic functions, as well as
 arbitrary sums and products.
 
 Plots is designed to integrate well with the GNOME desktop and takes advantage
-of modern hardware using OpenGL.
+of modern hardware using OpenGL, and currently supports OpenGL 3.3+.
 
 <a href='https://flathub.org/apps/details/com.github.alexhuntley.Plots'><img width='240' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
 
