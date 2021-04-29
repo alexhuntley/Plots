@@ -171,7 +171,7 @@ class Editor(Gtk.DrawingArea):
             self.queue_draw()
             self.emit("edit")
             return
-        if event.keyval == Gdk.KEY_slash:
+        if event.keyval in (Gdk.KEY_slash, Gdk.KEY_KP_Divide):
             self.cursor.greedy_insert(Frac)
             self.queue_draw()
             self.emit("edit")
