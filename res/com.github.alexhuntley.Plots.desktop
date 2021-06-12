@@ -3,4 +3,4 @@ Name=Plots
 Exec=plots
 Type=Application
 Icon=com.github.alexhuntley.Plots
-Categories=GNOME;GTK;Science;Math
+Categories=GNOME;GTK;Science;Math;Education
