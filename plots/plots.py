@@ -109,6 +109,7 @@ class Plots(Gtk.Application):
         self.errorbar = builder.get_object("errorbar")
         self.errorbar.set_message_type(Gtk.MessageType.ERROR)
         self.errorbar.connect("response", lambda id, data: self.errorbar.set_property("revealed", False))
+        self.errorbar.props.revealed = False
         self.errorlabel = builder.get_object("errorlabel")
 
         self.add_equation_button.connect("clicked", self.add_equation)
