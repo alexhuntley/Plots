@@ -77,7 +77,7 @@ class TextRenderer():
         glActiveTexture(GL_TEXTURE0)
 
         for c in range(128):
-            face.load_char(chr(c), FT_LOAD_RENDER)
+            face.load_char(chr(c), freetype.FT_LOAD_RENDER)
             glyph = face.glyph
             bitmap = glyph.bitmap
             size = bitmap.width, bitmap.rows
