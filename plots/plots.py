@@ -22,6 +22,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf
 
 from plots import formula, formularow, rowcommands
+from plots.text import TextRenderer
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.arrays import vbo
@@ -196,7 +197,10 @@ class Plots(Gtk.Application):
         glViewport(0, 0, w, h)
 
         glClearColor(0, 0, 1, 0)
-        glClear(GL_COLOR_BUFFER_BIT)
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glEnable(GL_BLEND)
+        glEnable(GL_DEPTH_TEST)
+        glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA )
 
         shaders.glUseProgram(self.shader)
         glUniform2f(glGetUniformLocation(self.shader, "viewport"), *self.viewport)
@@ -208,7 +212,7 @@ class Plots(Gtk.Application):
         glBindVertexArray(self.vao)
         glDrawArrays(GL_TRIANGLES, 0, 18)
         glBindVertexArray(0)
-
+        self.text_renderer.render(w, h)
         return True
 
     def gl_realize(self, area):
@@ -243,6 +247,8 @@ class Plots(Gtk.Application):
         glEnableVertexAttribArray(0)
         self.vbo.unbind()
         glBindVertexArray(0)
+
+        self.text_renderer = TextRenderer()
 
     def drag_update(self, gesture, dx, dy):
         dr = 2*np.array([dx, -dy], 'f')/self.viewport[0]*self.gl_area.get_scale_factor()

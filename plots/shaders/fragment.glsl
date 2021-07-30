@@ -19,7 +19,7 @@
 
 #version 330 core
 in vec2 graph_pos;
-out vec3 color;
+out vec4 rgba;
 
 uniform vec2 pixel_extent;
 uniform float scale;
@@ -91,6 +91,7 @@ float formula{{ loop.index0 }}(float x) {
 {% endfor %}
 
 void main() {
+    vec3 color;
     {% for v in variables %}
     {{ v.body }}
     {{ v.expr }};
@@ -144,5 +145,5 @@ void main() {
     color -= (1.0-vec3(0.2,0.2,1.0))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(graph_pos.y)));
     color -= (1.0-vec3(0.8,0.8,1.0))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(mod(graph_pos.x, 1.0))));
     color -= (1.0-vec3(0.8,0.8,1.0))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(mod(graph_pos.y, 1.0))));
-
+    rgba = vec4(color, 1);
 }
