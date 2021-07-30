@@ -23,6 +23,7 @@ out vec4 rgba;
 
 uniform vec2 pixel_extent;
 uniform float scale;
+uniform float major_grid;
 
 #define pi 3.141592653589793
 #define e 2.718281828459045
@@ -143,7 +144,7 @@ void main() {
     float axis_width = pixel_extent.x;
     color -= (1.0-vec3(0.2,0.2,1.0))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(graph_pos.x)));
     color -= (1.0-vec3(0.2,0.2,1.0))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(graph_pos.y)));
-    color -= (1.0-vec3(0.8,0.8,1.0))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(mod(graph_pos.x, 1.0))));
-    color -= (1.0-vec3(0.8,0.8,1.0))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(mod(graph_pos.y, 1.0))));
+    color -= (1.0-vec3(0.8,0.8,1.0))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(mod(graph_pos.x, major_grid))));
+    color -= (1.0-vec3(0.8,0.8,1.0))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(mod(graph_pos.y, major_grid))));
     rgba = vec4(color, 1);
 }

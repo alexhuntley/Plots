@@ -186,6 +186,17 @@ class Plots(Gtk.Application):
 
         self.refresh_history_buttons()
 
+    @staticmethod
+    def major_grid(pixel_extent):
+        min_extent = 100*pixel_extent
+        exponent = math.floor(math.log10(abs(min_extent)))
+        mantissa = min_extent/10**exponent
+        major = 1.0
+        for m in (2.0, 5.0, 10.0):
+            if mantissa < m:
+                major = m * 10**exponent
+                return major
+
     def gl_render(self, area, context):
         area.make_current()
         w = area.get_allocated_width() * area.get_scale_factor()
@@ -200,20 +211,24 @@ class Plots(Gtk.Application):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glEnable(GL_BLEND)
         glEnable(GL_DEPTH_TEST)
-        glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA )
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
         shaders.glUseProgram(self.shader)
-        glUniform2f(glGetUniformLocation(self.shader, "viewport"), *self.viewport)
-        glUniform2f(glGetUniformLocation(self.shader, "translation"), *self.translation)
-        glUniform2f(glGetUniformLocation(self.shader, "pixel_extent"), *pixel_extent)
-        glUniform1f(glGetUniformLocation(self.shader, "scale"), self.scale)
+        glUniform2f(self.uniform("viewport"), *self.viewport)
+        glUniform2f(self.uniform("translation"), *self.translation)
+        glUniform2f(self.uniform("pixel_extent"), *pixel_extent)
+        glUniform1f(self.uniform("scale"), self.scale)
+        glUniform1f(self.uniform("major_grid"), self.major_grid(pixel_extent[0]))
         for slider in self.slider_rows:
-            glUniform1f(glGetUniformLocation(self.shader, slider.name), slider.value)
+            glUniform1f(self.uniform(slider.name), slider.value)
         glBindVertexArray(self.vao)
         glDrawArrays(GL_TRIANGLES, 0, 18)
         glBindVertexArray(0)
         self.text_renderer.render(w, h)
         return True
+
+    def uniform(self, name):
+        return glGetUniformLocation(self.shader, name)
 
     def gl_realize(self, area):
         area.make_current()
