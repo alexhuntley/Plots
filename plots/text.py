@@ -27,6 +27,7 @@ try:
     import importlib.resources as resources
 except ModuleNotFoundError:
     import importlib_resources as resources
+from contextlib import contextmanager
 
 
 # Code based on:
@@ -40,7 +41,7 @@ class TextRenderer():
         self.width, self.height = 0, 0
         self.characters = []
         self.initgl()
-        self.fontsize = 12
+        self.fontsize = 14
         self.makefont(resources.open_binary('plots.res', 'DejaVuSans.ttf'),
                       self.fontsize)
 
@@ -76,22 +77,23 @@ class TextRenderer():
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
         glActiveTexture(GL_TEXTURE0)
 
+        self.top_bearing = 0
         for c in range(128):
             face.load_char(chr(c), freetype.FT_LOAD_RENDER)
             glyph = face.glyph
             bitmap = glyph.bitmap
             size = bitmap.width, bitmap.rows
             bearing = glyph.bitmap_left, glyph.bitmap_top
+            self.top_bearing = max(self.top_bearing, bearing[1])
             advance = glyph.advance.x
 
             # create glyph texture
             texObj = glGenTextures(1)
             glBindTexture(GL_TEXTURE_2D, texObj)
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
-            #databuffer = np.zeros((cx, width*16), dtype=np.ubyte)
             glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, *size, 0, GL_RED, GL_UNSIGNED_BYTE, bitmap.buffer)
 
             self.characters.append((texObj, size, bearing, advance))
@@ -102,23 +104,35 @@ class TextRenderer():
     def uniform(self, name):
         return glGetUniformLocation(self.shaderProgram, name)
 
+    @contextmanager
     def render(self, width, height):
         self.width, self.height = width, height
         glUseProgram(self.shaderProgram)
         proj = glm.ortho(0, self.width, self.height, 0, -1, 1)
         glUniformMatrix4fv(self.uniform("projection"),
                            1, GL_FALSE, glm.value_ptr(proj))
+        yield self
 
-        glUniform3f(self.uniform("textColor"), 0.2, .2, .2)
-        self.render_text("This is sample text", (0, 12), 1, (1, 0))
+    def width_of(self, text, scale=1):
+        return sum((self.characters[ord(c)][3] >> 6)*scale for c in text)
 
-    def render_text(self, text, pos, scale, dir):
+    def render_text(self, text, pos, scale=1, dir=(1,0), halign='left', valign='bottom'):
+        offset = glm.vec3()
+        if halign in ('center', 'right'):
+            width = self.width_of(text, scale)
+            offset.x -= width
+            if halign == 'center':
+                offset.x /= 2
+        if valign in ('center', 'top'):
+            offset.y += self.top_bearing
+            if valign == 'center':
+                offset.y /= 2
         glActiveTexture(GL_TEXTURE0)
         glBindVertexArray(self.vao)
         angle_rad = math.atan2(dir[1], dir[0])
         rotateM = glm.rotate(glm.mat4(1), angle_rad, glm.vec3(0, 0, 1))
-        transOriginM = glm.translate(glm.mat4(1), glm.vec3(*pos, 0))
-
+        transOriginM = glm.translate(glm.mat4(1), glm.vec3(*pos, 0) + offset)
+        glUniform3f(self.uniform("textColor"), .0, .0, .0)
         char_x = 0
         for c in text:
             c = ord(c)

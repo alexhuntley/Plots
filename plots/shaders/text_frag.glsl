@@ -30,5 +30,5 @@ void main()
 {
     vec2 uv = vUV.xy;
     float text = texture(u_texture, uv).r;
-    fragColor = vec4(textColor.rgb*text, text);
+    fragColor = vec4(vec3(1-text), clamp(text, 0.8, 1));
 }

@@ -193,9 +193,22 @@ class Plots(Gtk.Application):
         mantissa = min_extent/10**exponent
         major = 1.0
         for m in (2.0, 5.0, 10.0):
-            if mantissa < m:
+            if m > mantissa:
                 major = m * 10**exponent
-                return major
+                minor = major / (4 if m == 2 else 5)
+                return major, minor
+
+    def graph_to_device(self, graph_pos):
+        normalised = (graph_pos + self.translation)/self.scale
+        gl_pos = normalised / self.viewport * self.viewport[0]
+        gl_pos[1] *= -1
+        return (gl_pos/2 + 0.5) * self.viewport
+
+    def device_to_graph(self, pixel):
+        gl_pos = 2*(pixel/self.viewport - 0.5)
+        gl_pos[1] *= -1
+        normalised = gl_pos * self.viewport / self.viewport[0]
+        return normalised*self.scale - self.translation
 
     def gl_render(self, area, context):
         area.make_current()
@@ -213,18 +226,41 @@ class Plots(Gtk.Application):
         glEnable(GL_DEPTH_TEST)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
+        major_grid, minor_grid = self.major_grid(pixel_extent[0])
         shaders.glUseProgram(self.shader)
         glUniform2f(self.uniform("viewport"), *self.viewport)
         glUniform2f(self.uniform("translation"), *self.translation)
         glUniform2f(self.uniform("pixel_extent"), *pixel_extent)
         glUniform1f(self.uniform("scale"), self.scale)
-        glUniform1f(self.uniform("major_grid"), self.major_grid(pixel_extent[0]))
+        glUniform1f(self.uniform("major_grid"), major_grid)
+        glUniform1f(self.uniform("minor_grid"), minor_grid)
         for slider in self.slider_rows:
             glUniform1f(self.uniform(slider.name), slider.value)
         glBindVertexArray(self.vao)
         glDrawArrays(GL_TRIANGLES, 0, 18)
         glBindVertexArray(0)
-        self.text_renderer.render(w, h)
+        with self.text_renderer.render(w, h) as r:
+            low = major_grid * np.floor(
+                self.device_to_graph(np.array([0, h]))/major_grid)
+            high = major_grid * np.ceil(
+                self.device_to_graph(np.array([w, 0]))/major_grid)
+            n = (high - low)/major_grid
+            pad = 4
+            for i in range(round(n[0])+1):
+                x = low[0] + i*major_grid
+                pos = self.graph_to_device(np.array([x, 0]))
+                pos[1] = np.clip(pos[1] + pad, pad, self.viewport[1] - r.top_bearing - pad)
+                if x:
+                    r.render_text("%g" % x, pos, valign='top', halign='center')
+            for j in range(round(n[1])+1):
+                y = low[1] + j*major_grid
+                label = "%g" % y
+                pos = self.graph_to_device(np.array([0, y]))
+                pos[0] = np.clip(pos[0] - pad, r.width_of(label) + pad, self.viewport[0] - pad)
+                if y:
+                    r.render_text(label, pos, valign='center', halign='right')
+            r.render_text("0", self.graph_to_device(np.zeros(2)) + np.array([-pad, pad]),
+                          valign='top', halign='right')
         return True
 
     def uniform(self, name):
