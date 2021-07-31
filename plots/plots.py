@@ -39,9 +39,10 @@ import numpy as np
 
 class Plots(Gtk.Application):
     INIT_SCALE = 10
+    ZOOM_BUTTON_FACTOR = 0.3
     def __init__(self):
         super().__init__(application_id="com.github.alexhuntley.Plots")
-        self._scale = self.INIT_SCALE
+        self.scale = self._target_scale = self.INIT_SCALE
         self._translation = np.array([0, 0], 'f')
         self.jinja_env = Environment(loader=PackageLoader('plots', 'shaders'))
         self.vertex_template = self.jinja_env.get_template('vertex.glsl')
@@ -53,12 +54,12 @@ class Plots(Gtk.Application):
         self.overlay_source = None
 
     @property
-    def scale(self):
-        return self._scale
+    def target_scale(self):
+        return self._target_scale
 
-    @scale.setter
-    def scale(self, value):
-        self._scale = value
+    @target_scale.setter
+    def target_scale(self, value):
+        self._target_scale = value
         self.update_zoom_reset()
 
     @property
@@ -121,9 +122,9 @@ class Plots(Gtk.Application):
         self.zoom_reset_revealer = builder.get_object("zoom_reset_revealer")
         self.graph_overlay = builder.get_object("graph_overlay")
         self.zoom_in_button = builder.get_object("zoom_in")
-        self.zoom_in_button.connect("clicked", self.zoom, -0.1)
+        self.zoom_in_button.connect("clicked", self.zoom, -self.ZOOM_BUTTON_FACTOR)
         self.zoom_out_button = builder.get_object("zoom_out")
-        self.zoom_out_button.connect("clicked", self.zoom, 0.1)
+        self.zoom_out_button.connect("clicked", self.zoom, self.ZOOM_BUTTON_FACTOR)
         self.zoom_reset_button = builder.get_object("zoom_reset")
         self.zoom_reset_button.connect("clicked", self.reset_zoom)
         self.update_zoom_reset()
@@ -309,19 +310,33 @@ class Plots(Gtk.Application):
     def drag_begin(self, gesture, start_x, start_y):
         self.init_translation = self.translation
 
+    def smooth_scroll(self, translate_to=None):
+        speed = 0.3
+        self.scale = speed*self.target_scale + (1-speed)*self.scale
+        if translate_to is not None:
+            self.translation = speed*translate_to + (1-speed)*self.translation
+        if abs(self.scale/self.target_scale - 1) > 0.01 or \
+           (translate_to is not None and
+                (np.abs(self.translation - translate_to) > 0.01).any()):
+            GLib.timeout_add(1000/60, self.smooth_scroll, translate_to)
+        else:
+            self.scale = self.target_scale
+            if translate_to is not None:
+                self.translation = translate_to
+        self.gl_area.queue_draw()
+
     def scroll_zoom(self, widget, event):
         _, dx, dy = event.get_scroll_deltas()
-        self.scale *= math.exp(dy/10)
-        widget.queue_draw()
+        self.target_scale *= math.exp(dy/10)
+        self.smooth_scroll()
 
     def zoom(self, button, factor):
-        self.scale *= math.exp(factor)
-        self.gl_area.queue_draw()
+        self.target_scale *= math.exp(factor)
+        self.smooth_scroll()
 
     def reset_zoom(self, button):
-        self.scale = self.INIT_SCALE
-        self.translation = np.array([0, 0], 'f')
-        self.gl_area.queue_draw()
+        self.target_scale = self.INIT_SCALE
+        self.smooth_scroll(translate_to=np.array([0, 0], 'f'))
 
     def clear_overlay_timeout(self):
         if self.overlay_source is not None:
@@ -347,7 +362,7 @@ class Plots(Gtk.Application):
         return False
 
     def update_zoom_reset(self):
-        desired = self.scale != self.INIT_SCALE or self.translation.any()
+        desired = self.target_scale != self.INIT_SCALE or self.translation.any()
         if self.zoom_reset_revealer.get_reveal_child() != desired:
             self.zoom_reset_revealer.set_reveal_child(desired)
 
