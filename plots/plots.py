@@ -327,7 +327,7 @@ class Plots(Gtk.Application):
 
     def scroll_zoom(self, widget, event):
         _, dx, dy = event.get_scroll_deltas()
-        self.target_scale *= math.exp(dy/10)
+        self.target_scale *= math.exp(dy*0.2)
         self.smooth_scroll()
 
     def zoom(self, button, factor):
