@@ -17,8 +17,7 @@
 
 import numpy as np
 import freetype
-from OpenGL.GL import *
-from OpenGL.GLUT import *
+import OpenGL.GL as gl
 from OpenGL.GL import shaders
 from OpenGL.arrays import vbo
 import math
@@ -48,8 +47,8 @@ class TextRenderer():
     def initgl(self):
         vert = resources.read_text("plots.shaders", "text_vert.glsl")
         frag = resources.read_text("plots.shaders", "text_frag.glsl")
-        vert = shaders.compileShader(vert, GL_VERTEX_SHADER)
-        frag = shaders.compileShader(frag, GL_FRAGMENT_SHADER)
+        vert = shaders.compileShader(vert, gl.GL_VERTEX_SHADER)
+        frag = shaders.compileShader(frag, gl.GL_FRAGMENT_SHADER)
         self.shaderProgram = shaders.compileProgram(vert, frag)
         self.vbo = vbo.VBO(np.array([
             # x y  u  v
@@ -60,22 +59,22 @@ class TextRenderer():
             1,  0, 1, 1,
             1, -1, 1, 0
         ], 'f'), usage="GL_STATIC_DRAW")
-        self.vao = glGenVertexArrays(1)
+        self.vao = gl.glGenVertexArrays(1)
 
-        glBindVertexArray(self.vao)
+        gl.glBindVertexArray(self.vao)
         self.vbo.bind()
         self.vbo.copy_data()
-        glVertexAttribPointer(0, 4, GL_FLOAT, False, 4*self.vbo.data.itemsize, self.vbo)
-        glEnableVertexAttribArray(0)
+        gl.glVertexAttribPointer(0, 4, gl.GL_FLOAT, False, 4*self.vbo.data.itemsize, self.vbo)
+        gl.glEnableVertexAttribArray(0)
         self.vbo.unbind()
-        glBindVertexArray(0)
+        gl.glBindVertexArray(0)
 
     def makefont(self, filename, fontsize):
         face = freetype.Face(filename)
         face.set_pixel_sizes(0, fontsize)
 
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-        glActiveTexture(GL_TEXTURE0)
+        gl.glPixelStorei(gl.GL_UNPACK_ALIGNMENT, 1)
+        gl.glActiveTexture(gl.GL_TEXTURE0)
 
         self.top_bearing = 0
         for c in range(128):
@@ -88,29 +87,29 @@ class TextRenderer():
             advance = glyph.advance.x
 
             # create glyph texture
-            texObj = glGenTextures(1)
-            glBindTexture(GL_TEXTURE_2D, texObj)
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, *size, 0, GL_RED, GL_UNSIGNED_BYTE, bitmap.buffer)
+            texObj = gl.glGenTextures(1)
+            gl.glBindTexture(gl.GL_TEXTURE_2D, texObj)
+            gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR)
+            gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR)
+            gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_S, gl.GL_CLAMP_TO_EDGE)
+            gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_T, gl.GL_CLAMP_TO_EDGE)
+            gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_R8, *size, 0, gl.GL_RED, gl.GL_UNSIGNED_BYTE, bitmap.buffer)
 
             self.characters.append((texObj, size, bearing, advance))
 
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 4)
-        glBindTexture(GL_TEXTURE_2D, 0)
+        gl.glPixelStorei(gl.GL_UNPACK_ALIGNMENT, 4)
+        gl.glBindTexture(gl.GL_TEXTURE_2D, 0)
 
     def uniform(self, name):
-        return glGetUniformLocation(self.shaderProgram, name)
+        return gl.glGetUniformLocation(self.shaderProgram, name)
 
     @contextmanager
     def render(self, width, height):
         self.width, self.height = width, height
-        glUseProgram(self.shaderProgram)
+        gl.glUseProgram(self.shaderProgram)
         proj = glm.ortho(0, self.width, self.height, 0, -1, 1)
-        glUniformMatrix4fv(self.uniform("projection"),
-                           1, GL_FALSE, glm.value_ptr(proj))
+        gl.glUniformMatrix4fv(self.uniform("projection"),
+                           1, gl.GL_FALSE, glm.value_ptr(proj))
         yield self
 
     def width_of(self, text, scale=1):
@@ -127,12 +126,12 @@ class TextRenderer():
             offset.y += self.top_bearing
             if valign == 'center':
                 offset.y /= 2
-        glActiveTexture(GL_TEXTURE0)
-        glBindVertexArray(self.vao)
+        gl.glActiveTexture(gl.GL_TEXTURE0)
+        gl.glBindVertexArray(self.vao)
         angle_rad = math.atan2(dir[1], dir[0])
         rotateM = glm.rotate(glm.mat4(1), angle_rad, glm.vec3(0, 0, 1))
         transOriginM = glm.translate(glm.mat4(1), glm.vec3(*pos, 0) + offset)
-        glUniform3f(self.uniform("textColor"), .0, .0, .0)
+        gl.glUniform3f(self.uniform("textColor"), .0, .0, .0)
         char_x = 0
         for c in text:
             c = ord(c)
@@ -144,10 +143,10 @@ class TextRenderer():
             transRelM = glm.translate(glm.mat4(1), glm.vec3(xrel, yrel, 0))
             modelM = transOriginM * rotateM * transRelM * scaleM
 
-            glUniformMatrix4fv(self.uniform("model"),
-                               1, GL_FALSE, glm.value_ptr(modelM))
-            glBindTexture(GL_TEXTURE_2D, ch[0])
-            glDrawArrays(GL_TRIANGLES, 0, 6)
+            gl.glUniformMatrix4fv(self.uniform("model"),
+                               1, gl.GL_FALSE, glm.value_ptr(modelM))
+            gl.glBindTexture(gl.GL_TEXTURE_2D, ch[0])
+            gl.glDrawArrays(gl.GL_TRIANGLES, 0, 6)
 
-        glBindVertexArray(0)
-        glBindTexture(GL_TEXTURE_2D, 0)
+        gl.glBindVertexArray(0)
+        gl.glBindTexture(gl.GL_TEXTURE_2D, 0)

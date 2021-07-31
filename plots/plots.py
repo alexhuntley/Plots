@@ -23,8 +23,7 @@ from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf
 
 from plots import formula, formularow, rowcommands
 from plots.text import TextRenderer
-from OpenGL.GL import *
-from OpenGL.GLU import *
+import OpenGL.GL as gl
 from OpenGL.arrays import vbo
 from OpenGL.GL import shaders
 from jinja2 import Environment, FileSystemLoader, PackageLoader
@@ -40,6 +39,7 @@ import numpy as np
 class Plots(Gtk.Application):
     INIT_SCALE = 10
     ZOOM_BUTTON_FACTOR = 0.3
+
     def __init__(self):
         super().__init__(application_id="com.github.alexhuntley.Plots")
         self.scale = self._target_scale = self.INIT_SCALE
@@ -50,7 +50,7 @@ class Plots(Gtk.Application):
         self.rows = []
         self.slider_rows = []
         self.history = []
-        self.history_position = 0 # index of the last undone command / next in line for redo
+        self.history_position = 0  # index of the last undone command / next in line for redo
         self.overlay_source = None
 
     @property
@@ -219,27 +219,27 @@ class Plots(Gtk.Application):
         graph_extent = 2*self.viewport/self.viewport[0]*self.scale
         # extent of each pixel, in graph coordinates
         pixel_extent = graph_extent / self.viewport
-        glViewport(0, 0, w, h)
+        gl.glViewport(0, 0, w, h)
 
-        glClearColor(0, 0, 1, 0)
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        glEnable(GL_BLEND)
-        glEnable(GL_DEPTH_TEST)
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        gl.glClearColor(0, 0, 1, 0)
+        gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
+        gl.glEnable(gl.GL_BLEND)
+        gl.glEnable(gl.GL_DEPTH_TEST)
+        gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_ONE_MINUS_SRC_ALPHA)
 
         major_grid, minor_grid = self.major_grid(pixel_extent[0])
         shaders.glUseProgram(self.shader)
-        glUniform2f(self.uniform("viewport"), *self.viewport)
-        glUniform2f(self.uniform("translation"), *self.translation)
-        glUniform2f(self.uniform("pixel_extent"), *pixel_extent)
-        glUniform1f(self.uniform("scale"), self.scale)
-        glUniform1f(self.uniform("major_grid"), major_grid)
-        glUniform1f(self.uniform("minor_grid"), minor_grid)
+        gl.glUniform2f(self.uniform("viewport"), *self.viewport)
+        gl.glUniform2f(self.uniform("translation"), *self.translation)
+        gl.glUniform2f(self.uniform("pixel_extent"), *pixel_extent)
+        gl.glUniform1f(self.uniform("scale"), self.scale)
+        gl.glUniform1f(self.uniform("major_grid"), major_grid)
+        gl.glUniform1f(self.uniform("minor_grid"), minor_grid)
         for slider in self.slider_rows:
-            glUniform1f(self.uniform(slider.name), slider.value)
-        glBindVertexArray(self.vao)
-        glDrawArrays(GL_TRIANGLES, 0, 18)
-        glBindVertexArray(0)
+            gl.glUniform1f(self.uniform(slider.name), slider.value)
+        gl.glBindVertexArray(self.vao)
+        gl.glDrawArrays(gl.GL_TRIANGLES, 0, 18)
+        gl.glBindVertexArray(0)
         with self.text_renderer.render(w, h) as r:
             low = major_grid * np.floor(
                 self.device_to_graph(np.array([0, h]))/major_grid)
@@ -265,21 +265,21 @@ class Plots(Gtk.Application):
         return True
 
     def uniform(self, name):
-        return glGetUniformLocation(self.shader, name)
+        return gl.glGetUniformLocation(self.shader, name)
 
     def gl_realize(self, area):
         area.make_current()
 
-        if (area.get_error() != None):
+        if (area.get_error() is not None):
             return
 
-        version = glGetString(GL_VERSION).decode().split(" ")[0]
+        version = gl.glGetString(gl.GL_VERSION).decode().split(" ")[0]
         if version < "3.3":
             self.errorlabel.set_text(f"Warning: OpenGL {version} is unsupported. Plots supports OpenGL 3.3 or greater.")
             self.errorbar.props.revealed = True
 
         self.vertex_shader = shaders.compileShader(
-            self.vertex_template.render(), GL_VERTEX_SHADER)
+            self.vertex_template.render(), gl.GL_VERTEX_SHADER)
         self.update_shader()
 
         self.vbo = vbo.VBO(np.array([
@@ -289,16 +289,16 @@ class Plots(Gtk.Application):
             [-1, -1, 0],
             [1, -1, 0],
             [1, 1, 0]
-        ],'f'), usage="GL_STATIC_DRAW_ARB")
+        ], 'f'), usage="GL_STATIC_DRAW_ARB")
 
-        self.vao = glGenVertexArrays(1)
-        glBindVertexArray(self.vao)
+        self.vao = gl.glGenVertexArrays(1)
+        gl.glBindVertexArray(self.vao)
         self.vbo.bind()
         self.vbo.copy_data()
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*self.vbo.data.itemsize, self.vbo)
-        glEnableVertexAttribArray(0)
+        gl.glVertexAttribPointer(0, 3, gl.GL_FLOAT, gl.GL_FALSE, 3*self.vbo.data.itemsize, self.vbo)
+        gl.glEnableVertexAttribArray(0)
         self.vbo.unbind()
-        glBindVertexArray(0)
+        gl.glBindVertexArray(0)
 
         self.text_renderer = TextRenderer()
 
@@ -366,7 +366,6 @@ class Plots(Gtk.Application):
         if self.zoom_reset_revealer.get_reveal_child() != desired:
             self.zoom_reset_revealer.set_reveal_child(desired)
 
-
     def update_shader(self):
         formulae = []
         variables = []
@@ -385,13 +384,12 @@ class Plots(Gtk.Application):
             fragment_shader = shaders.compileShader(
                 self.fragment_template.render(formulae=formulae, variables=variables,
                                               sliders=sliders),
-                GL_FRAGMENT_SHADER)
+                gl.GL_FRAGMENT_SHADER)
         except RuntimeError as e:
             print(e.args[0].encode('ascii', 'ignore').decode('unicode_escape'))
             fragment_shader = shaders.compileShader(
                 self.fragment_template.render(formulae=[], variables=[], sliders=[]),
-                GL_FRAGMENT_SHADER)
-            #print(e.args[1][0].decode())
+                gl.GL_FRAGMENT_SHADER)
         self.shader = shaders.compileProgram(self.vertex_shader, fragment_shader)
         self.gl_area.queue_draw()
 
@@ -452,8 +450,10 @@ class Plots(Gtk.Application):
         self.undo_button.props.sensitive = self.can_undo()
         self.redo_button.props.sensitive = self.can_redo()
 
+
 def read_ui_file(name):
     return resources.read_text("plots.ui", name)
+
 
 if __name__ == '__main__':
     Plots().run(sys.argv)
