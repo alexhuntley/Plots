@@ -271,6 +271,18 @@ class ElementList(abstractelement.AbstractElement):
                not isinstance(prev, sum.Sum) and \
                not (isinstance(elem, atom.Atom) and elem.name == "!"):
                 string_stack[-1].append("*")
+            # subscript log base
+            if isinstance(elem, supersubscript.SuperscriptSubscript) \
+               and elem.subscript is not None \
+               and isinstance(prev, atom.OperatorAtom) \
+               and prev.name == "log":
+                assert string_stack[-1].pop() == "log"
+                b, e = elem.subscript.to_glsl()
+                body_stack[-1].append(b)
+                string_stack[-1].append(f"log_base({e},")
+                parens += 1
+                prev = None
+                continue
             if isinstance(prev, atom.OperatorAtom) and \
                not paren.Paren.is_paren(elem, left=True):
                 string_stack[-1].append("(")
@@ -278,6 +290,7 @@ class ElementList(abstractelement.AbstractElement):
             elif isinstance(elem, atom.BinaryOperatorAtom) or paren.Paren.is_paren(elem, left=False):
                 string_stack[-1].append(")"*parens)
                 parens = 0
+            # Postscripts (exponents or factorials)
             if isinstance(elem, supersubscript.SuperscriptSubscript) and elem.exponent is not None \
                or isinstance(elem, atom.Atom) and elem.name == "!":
                 parens2 = 0

@@ -31,6 +31,7 @@ uniform float minor_grid;
 
 #define ln(x) log(x)
 #define lg(x) log2(x)
+#define log_base(b, x) (log(x)/log(b))
 #define sec(x) (1.0/cos(x))
 #define csc(x) (1.0/sin(x))
 #define cosec(x) csc(x)
