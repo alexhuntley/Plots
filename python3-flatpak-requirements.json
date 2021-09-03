@@ -26,8 +26,8 @@
             "sources": [
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/b9/2e/64db92e53b86efccfaea71321f597fa2e1b2bd3853d8ce658568f7a13094/MarkupSafe-1.1.1.tar.gz",
-                    "sha256": "29872e92839765e546828bb7754a68c418d927cd064fd4708fab9fe9c8bb116b"
+                    "url": "https://files.pythonhosted.org/packages/bf/10/ff66fea6d1788c458663a84d88787bae15d45daa16f6b3ef33322a51fc7e/MarkupSafe-2.0.1.tar.gz",
+                    "sha256": "594c67807fb16238b30c44bdf74f36c02cdf22d1c8cda91ef8a0ed8dabf5620a"
                 },
                 {
                     "type": "file",
@@ -40,13 +40,13 @@
             "name": "python3-numpy",
             "buildsystem": "simple",
             "build-commands": [
-                "pip3 install --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"numpy==1.18.4\" --no-build-isolation"
+                "pip3 install --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"numpy==1.21.2\" --no-build-isolation"
             ],
             "sources": [
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/2d/f3/795e50e3ea2dc7bc9d1a2eeea9997d5dce63b801e08dfc37c2efce341977/numpy-1.18.4.zip",
-                    "sha256": "bbcc85aaf4cd84ba057decaead058f43191cc0e30d6bc5d44fe336dc3d3f4509"
+                    "url": "https://files.pythonhosted.org/packages/3a/be/650f9c091ef71cb01d735775d554e068752d3ff63d7943b26316dc401749/numpy-1.21.2.zip",
+                    "sha256": "423216d8afc5923b15df86037c6053bf030d15cc9e3224206ef868c2d63dd6dc"
                 }
             ]
         },
@@ -61,6 +61,34 @@
                     "type": "file",
                     "url": "https://files.pythonhosted.org/packages/8e/ac/c873c508dc2955da6eb85f0425e991a022cf2a4e53933ac057603d0cf890/lark-parser-0.9.0.tar.gz",
                     "sha256": "9e7589365d6b6de1cca40b0eaec31104a3fb96a37a11a9dfd5098e95b50aa6cd"
+                }
+            ]
+        },
+        {
+            "name": "python3-PyGLM",
+            "buildsystem": "simple",
+            "build-commands": [
+                "pip3 install --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"PyGLM==2.3.1\" --no-build-isolation"
+            ],
+            "sources": [
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/c7/ae/413433455fdba4dd6bb4e9bf8985e0b34f7aa3e0b3fe22298817d0e4891f/PyGLM-2.3.1.tar.gz",
+                    "sha256": "f12097dfcb709b22e31122a0e579a6ebc50f0822569ee05ac55f5347a36ee13f"
+                }
+            ]
+        },
+        {
+            "name": "python3-freetype-py",
+            "buildsystem": "simple",
+            "build-commands": [
+                "pip3 install --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"freetype-py==2.2.0\" --no-build-isolation"
+            ],
+            "sources": [
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/e8/16/d7fee48fd6ac1234af8ae4f1d664a6c8f0748e138a6ce676c194923f2104/freetype-py-2.2.0.zip",
+                    "sha256": "cf43716bc5246cd54a64b2238b942e8dc80b79eda92f814c720286fa6fab387a"
                 }
             ]
         }

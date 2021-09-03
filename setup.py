@@ -19,6 +19,8 @@ setuptools.setup(
         "Jinja2",
         "numpy",
         "lark-parser",
+        "PyGLM",
+        "freetype-py",
     ],
     python_requires='~=3.6',
     entry_points={
