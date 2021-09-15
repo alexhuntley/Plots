@@ -11,7 +11,7 @@ setuptools.setup(
     package_data={
         "plots.ui": ["*.glade"],
         "plots": ["shaders/*.glsl"],
-        "plots.res": ["*.svg"],
+        "plots.res": ["*.svg", "*.ttf"],
     },
     install_requires=[
         "PyGObject",
