@@ -23,15 +23,14 @@ from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf
 
 from plots import formula, formularow, rowcommands
 from plots.text import TextRenderer
+from plots.i18n import _
+import plots.i18n
 import OpenGL.GL as gl
 from OpenGL.arrays import vbo
 from OpenGL.GL import shaders
 from jinja2 import Environment, FileSystemLoader, PackageLoader
 import sys
-try:
-    import importlib.resources as resources
-except ModuleNotFoundError:
-    import importlib_resources as resources
+import importlib.resources as resources
 import re
 import math
 import numpy as np
@@ -88,6 +87,7 @@ class Plots(Gtk.Application):
     def do_activate(self):
         builder = Gtk.Builder()
         builder.add_from_string(read_ui_file("plots.glade"))
+        builder.set_translation_domain(plots.i18n.domain)
         builder.connect_signals(self)
 
         self.window = builder.get_object("main_window")
@@ -132,8 +132,8 @@ class Plots(Gtk.Application):
         menu_button = builder.get_object("menu_button")
 
         self.menu = Gio.Menu()
-        self.menu.append("Help", "app.help")
-        self.menu.append("About Plots", "app.about")
+        self.menu.append(_("Help"), "app.help")
+        self.menu.append(_("About Plots"), "app.about")
         menu_button.set_menu_model(self.menu)
 
         self.about_action = Gio.SimpleAction.new("about", None)
@@ -275,7 +275,8 @@ class Plots(Gtk.Application):
 
         version = gl.glGetString(gl.GL_VERSION).decode().split(" ")[0]
         if version < "3.3":
-            self.errorlabel.set_text(f"Warning: OpenGL {version} is unsupported. Plots supports OpenGL 3.3 or greater.")
+            self.errorlabel.set_text(
+                _("Warning: OpenGL {} is unsupported. Plots supports OpenGL 3.3 or greater.").format(version))
             self.errorbar.props.revealed = True
 
         self.vertex_shader = shaders.compileShader(
