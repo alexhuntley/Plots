@@ -126,6 +126,7 @@ class XFormula(RowData):
         m = re.match(r'^x *=(.+)', expr)
         return bool(m)
 
+
 class RFormula(RowData):
     calculation_template = jinja_env.get_template("r_formula_calculation.glsl")
 
@@ -148,6 +149,31 @@ class RFormula(RowData):
     def accepts(expr):
         m = re.match(r'^r *=(.+)', expr)
         return bool(m)
+
+
+class ThetaFormula(RowData):
+    calculation_template = jinja_env.get_template("theta_formula_calculation.glsl")
+
+    def __init__(self, expr, body, rgba):
+        m = re.match(r'^theta *=(.+)', expr)
+        self.expr = m.group(1)
+        self.body = body
+        self.rgba = rgba
+
+    def definition(self):
+        return f"""float formula{self.id()}(float r) {{
+    {self.body}
+    return {self.expr};
+}}"""
+
+    def calculation(self):
+        return self.calculation_template.render(formula=self)
+
+    @staticmethod
+    def accepts(expr):
+        m = re.match(r'^theta *=(.+)', expr)
+        return bool(m)
+
 
 class FormulaRow():
     PALETTE = [
@@ -220,7 +246,7 @@ class FormulaRow():
         body, expr = self.editor.expr.to_glsl()
         rgba = tuple(self.color_picker.get_rgba())
 
-        for cls in [Formula, XFormula, RFormula, Slider, Variable, Empty]:
+        for cls in [Formula, XFormula, RFormula, ThetaFormula, Slider, Variable, Empty]:
             if cls.accepts(expr):
                 self.data = cls(body=body, expr=expr, rgba=rgba)
                 break
