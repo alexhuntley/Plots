@@ -1,0 +1,28 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      xmlns:its="http://www.w3.org/2005/11/its"
+      type="guide" style="2column task"
+      id="exponential-functions">
+
+  <info>
+    <link type="guide" xref="index#functions"/>
+
+    <desc>par exemple exp, log</desc>
+  </info>
+<title>Fonctions exponentielles et logarithmiques</title>
+<p>Les fonctions suivantes peuvent être insérées en tapant leurs noms:</p>
+
+  <list>
+    <title>Fonctions disponibles</title>
+    <item>
+      <p>exp</p>
+    </item>
+    <item>
+      <p>ln, log, lg</p>
+      <p>ln and log sont des logarithmes naturels. lg est le logarithme de base 2.</p>
+      <p>log peut être suivi d'un indice (inséré en tapant le tiret bas <key>_</key>),
+      indiquant la base du logarithme.</p>
+    </item>
+  </list>
+
+
+</page>

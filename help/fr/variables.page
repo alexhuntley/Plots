@@ -1,0 +1,27 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      xmlns:its="http://www.w3.org/2005/11/its"
+      type="guide" style="2column task"
+      id="variables">
+
+  <info>
+    <link type="guide" xref="index#formulae"/>
+
+    <desc>Easily adjustable parameters</desc>
+  </info>
+  <title>Variables and sliders</title>
+
+  <p>
+    Pour declarer une variable, insérez une equation de la forme
+    <code><em>variable</em> = <em>valeur</em></code> dans une boîte de formule vide, où
+    <code><em>variable</em></code> est une seule lettre latine ou grecque, et
+    <code><em>valuer</em></code> est une expression mathématique qui ne doit pas dépendre
+    de la position, mais peut dépendre de les variables précédentes.
+  </p>
+
+  <p>
+    Si <code><em>valuer</em></code> est un nombre littéral, Plots
+    affichera un slider, permettant d'ajuster la variable de manière interactive.
+    Les limites supérieure et inférieure du slider peuvent être ajustées à l'aide les
+    champs adjacents.
+  </p>
+</page>

@@ -1,0 +1,17 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      xmlns:its="http://www.w3.org/2005/11/its"
+      type="guide" style="2column task"
+      id="theta-formulae">
+
+  <info>
+    <link type="guide" xref="index#formulae"/>
+
+    <desc>Formules explicites pour <em>θ</em> (equations polaires)</desc>
+  </info>
+  <title>Formules prenant la forme <em>θ = f(r)</em></title>
+
+  <p>
+    Celles-ci peuvent être entrées dans une boîte de formule seulement dans la forme <code>θ = f(r)</code>.
+  </p>
+
+</page>

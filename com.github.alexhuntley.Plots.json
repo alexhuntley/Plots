@@ -38,7 +38,8 @@
         "install -D res/com.github.alexhuntley.Plots.desktop -t /app/share/applications/",
         "install -D res/com.github.alexhuntley.Plots.svg -t /app/share/icons/hicolor/scalable/apps/",
         "install -D res/com.github.alexhuntley.Plots-symbolic.svg -t /app/share/icons/hicolor/symbolic/apps/",
-        "install -D -t /app/share/help/C/plots/ help/C/*"
+        "install -D -t /app/share/help/C/plots/ help/C/*",
+        "install -D -t /app/share/help/fr/plots/ help/fr/*"
       ],
       "sources": [
         {
