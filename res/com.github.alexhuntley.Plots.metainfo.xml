@@ -47,6 +47,19 @@
   </provides>
 
   <releases>
+    <release version="0.6.0" date="2021-09-18">
+      <description>
+        <ul>
+          <li>Added support for equations of the form x = f(y);</li>
+          <li>Added support for polar equations of the forms r = f(θ) and θ = f(r);</li>
+          <li>Added support for custom logarithm bases;</li>
+          <li>Added animations to zooming;</li>
+          <li>Refined the grid appearance, and added grid labels;</li>
+          <li>Added French and Dutch translations;</li>
+          <li>Minor bug fixes.</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.5.1" date="2021-01-28">
       <description>
         <p>Fix help missing in Flatpak</p>
