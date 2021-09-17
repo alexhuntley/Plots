@@ -368,27 +368,20 @@ class Plots(Gtk.Application):
 
     def update_shader(self):
         formulae = []
-        variables = []
-        sliders = []
         self.slider_rows.clear()
         for r in self.rows:
             data = r.get_data()
-            if isinstance(data, formularow.Formula):
-                formulae.append(data)
-            elif isinstance(data, formularow.Variable):
-                variables.append(data)
-            elif isinstance(data, formularow.Slider):
-                sliders.append(data)
+            formulae.append(data)
+            if isinstance(data, formularow.Slider):
                 self.slider_rows.append(r)
         try:
             fragment_shader = shaders.compileShader(
-                self.fragment_template.render(formulae=formulae, variables=variables,
-                                              sliders=sliders),
+                self.fragment_template.render(formulae=formulae),
                 gl.GL_FRAGMENT_SHADER)
         except RuntimeError as e:
             print(e.args[0].encode('ascii', 'ignore').decode('unicode_escape'))
             fragment_shader = shaders.compileShader(
-                self.fragment_template.render(formulae=[], variables=[], sliders=[]),
+                self.fragment_template.render(formulae=[]),
                 gl.GL_FRAGMENT_SHADER)
         self.shader = shaders.compileProgram(self.vertex_shader, fragment_shader)
         self.gl_area.queue_draw()

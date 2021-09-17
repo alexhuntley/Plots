@@ -28,16 +28,24 @@ class RowData():
 
 
 class Empty(RowData):
-    def __init__(self):
+    def __init__(self, **kwargs):
         self.rgba = None
 
     def definition(self):
         return ""
 
+    def calculation(self):
+        return ""
+
+    @staticmethod
+    def accepts(expr):
+        return True
+
 
 class Variable(RowData):
-    def __init__(self, name, body, expr):
-        self.name = name
+    def __init__(self, body, expr, rgba=None):
+        m = re.match(r'^([a-zA-Z_]\w*) *=(.*)', expr)
+        self.name = m.group(1)
         self.body = body
         self.expr = expr
 
@@ -47,10 +55,17 @@ class Variable(RowData):
     def calculation(self):
         return f"{self.body}\n{self.expr};\n"
 
+    @staticmethod
+    def accepts(expr):
+        m = re.match(r'^([a-zA-Z_]\w*) *=(.*)', expr)
+        return m and m.group(1) not in ["x", "y"]
+
 
 class Slider(RowData):
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, body, expr, rgba):
+        m = re.match(r'^([a-zA-Z_]\w*) *= *([+-]?([0-9]*[.])?[0-9]+)', expr)
+        self.name = m.group(1)
+        self.value = float(m.group(2))
 
     def definition(self):
         return f"uniform float {self.name};\n"
@@ -58,11 +73,17 @@ class Slider(RowData):
     def calculation(self):
         return ""
 
+    @staticmethod
+    def accepts(expr):
+        m = re.match(r'^([a-zA-Z_]\w*) *= *([+-]?([0-9]*[.])?[0-9]+)', expr)
+        return m and m.group(1) not in ["x", "y"]
+
 
 class Formula(RowData):
     calculation_template = jinja_env.get_template("formula_calculation.glsl")
     def __init__(self, expr, body, rgba):
-        self.expr = expr
+        m = re.match(r'^(?:([a-zA-Z_]\w*) *=)?(.+)', expr)
+        self.expr = m.group(2)
         self.body = body
         self.rgba = rgba
 
@@ -74,6 +95,11 @@ class Formula(RowData):
 
     def calculation(self):
         return self.calculation_template.render(formula=self)
+
+    @staticmethod
+    def accepts(expr):
+        m = re.match(r'^([a-zA-Z_]\w*) *=(.+)', expr)
+        return m and m.group(1) == "y" or "=" not in expr
 
 class FormulaRow():
     PALETTE = [
@@ -145,28 +171,21 @@ class FormulaRow():
     def edited(self, widget, record=True):
         body, expr = self.editor.expr.to_glsl()
         rgba = tuple(self.color_picker.get_rgba())
-        m = re.match(r'^([a-zA-Z_]\w*) *=(.*)', expr)
-        m2 = re.match(r'^([a-zA-Z_]\w*) *= *([+-]?([0-9]*[.])?[0-9]+)', expr)
-        if m2 and m2.group(1) not in ["x", "y"]:
-            self.data = Slider(name=m2.group(1))
-        elif m and m.group(1) not in ["x", "y"]:
-            self.data = Variable(body=body, expr=expr, name=m.group(1))
-        elif m and m.group(1) == "y":
-            self.data = Formula(body=body, expr=m.group(2), rgba=rgba)
-        elif expr:
-            self.data = Formula(body=body, expr=expr, rgba=rgba)
-        else:
-            self.data = Empty()
+
+        for cls in [Slider, Variable, Formula, Empty]:
+            if cls.accepts(expr):
+                self.data = cls(body=body, expr=expr, rgba=rgba)
+                break
 
         if hasattr(self.data, 'rgba'):
             self.color_picker.show()
         else:
             self.color_picker.hide()
-            self.name = m.group(1)
+            self.name = self.data.name
 
         if isinstance(self.data, Slider):
             self.slider_box.show()
-            val = float(m2.group(2))
+            val = self.data.value
             if val == 0:
                 u, l = 10., -10.
             else:

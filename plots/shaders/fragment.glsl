@@ -78,14 +78,6 @@ float mypow(float x, float y) {
     }
 }
 
-{% for s in sliders %}
-{{ s.definition() }}
-{% endfor %}
-
-{% for v in variables %}
-{{ v.definition() }}
-{% endfor %}
-
 {% for f in formulae %}
 {{ f.definition() }}
 {% endfor %}
@@ -96,12 +88,6 @@ void main() {
     float samples = 36;
     float step = 1.4*pixel_extent.x / samples;
     float jitter = .5;
-
-    {% for v in variables %}
-    {
-        {{ v.calculation() }}
-    }
-    {% endfor %}
 
     {% for f in formulae %}
     {
