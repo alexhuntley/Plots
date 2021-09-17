@@ -3,3 +3,4 @@ res/com.github.alexhuntley.Plots.svg /usr/share/icons/hicolor/scalable/apps/
 res/com.github.alexhuntley.Plots-symbolic.svg /usr/share/icons/hicolor/symbolic/apps/
 res/com.github.alexhuntley.Plots.metainfo.xml /usr/share/metainfo/
 help/C/* /usr/share/help/C/plots/
+help/fr/* /usr/share/help/fr/plots/
