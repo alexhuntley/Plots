@@ -28,6 +28,7 @@ class RowData():
 
 
 class Empty(RowData):
+    priority = 0
     def __init__(self, **kwargs):
         self.rgba = None
 
@@ -43,6 +44,7 @@ class Empty(RowData):
 
 
 class Variable(RowData):
+    priority = 50
     def __init__(self, body, expr, rgba=None):
         m = re.match(r'^([a-zA-Z_]\w*) *=(.*)', expr)
         self.name = m.group(1)
@@ -62,6 +64,7 @@ class Variable(RowData):
 
 
 class Slider(RowData):
+    priority = 80
     def __init__(self, body, expr, rgba):
         m = re.match(r'^([a-zA-Z_]\w*) *= *([+-]?([0-9]*[.])?[0-9]+)', expr)
         self.name = m.group(1)
@@ -80,6 +83,7 @@ class Slider(RowData):
 
 
 class Formula(RowData):
+    priority = 20
     calculation_template = jinja_env.get_template("formula_calculation.glsl")
 
     def __init__(self, expr, body, rgba):
@@ -104,6 +108,7 @@ class Formula(RowData):
 
 
 class XFormula(RowData):
+    priority = 20
     calculation_template = jinja_env.get_template("x_formula_calculation.glsl")
 
     def __init__(self, expr, body, rgba):
@@ -128,6 +133,7 @@ class XFormula(RowData):
 
 
 class RFormula(RowData):
+    priority = 20
     calculation_template = jinja_env.get_template("r_formula_calculation.glsl")
 
     def __init__(self, expr, body, rgba):
@@ -152,6 +158,7 @@ class RFormula(RowData):
 
 
 class ThetaFormula(RowData):
+    priority = 20
     calculation_template = jinja_env.get_template("theta_formula_calculation.glsl")
 
     def __init__(self, expr, body, rgba):

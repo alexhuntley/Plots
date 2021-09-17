@@ -374,6 +374,7 @@ class Plots(Gtk.Application):
             formulae.append(data)
             if isinstance(data, formularow.Slider):
                 self.slider_rows.append(r)
+        formulae.sort(key=lambda x: x.priority, reverse=True)
         try:
             fragment_shader = shaders.compileShader(
                 self.fragment_template.render(formulae=formulae),
