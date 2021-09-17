@@ -33,6 +33,29 @@ class RowData():
         if name:
             self.name = name
 
+
+class Empty():
+    pass
+
+
+class Variable():
+    def __init__(self, name, body, expr):
+        self.name = name
+        self.body = body
+        self.expr = expr
+
+
+class Slider():
+    def __init__(self, name):
+        self.name = name
+
+
+class Formula():
+    def __init__(self, expr, body, rgba):
+        self.expr = expr
+        self.body = body
+        self.rgba = rgba
+
 class FormulaRow():
     PALETTE = [
         [0,0,0     ],
@@ -106,23 +129,23 @@ class FormulaRow():
         m = re.match(r'^([a-zA-Z_]\w*) *=(.*)', expr)
         m2 = re.match(r'^([a-zA-Z_]\w*) *= *([+-]?([0-9]*[.])?[0-9]+)', expr)
         if m2 and m2.group(1) not in ["x", "y"]:
-            self.data = RowData(type="slider", name=m2.group(1))
+            self.data = Slider(name=m2.group(1))
         elif m and m.group(1) not in ["x", "y"]:
-            self.data = RowData(type="variable", body=body, expr=expr, name=m.group(1))
+            self.data = Variable(body=body, expr=expr, name=m.group(1))
         elif m and m.group(1) == "y":
-            self.data = RowData(type="formula", body=body, expr=m.group(2), rgba=rgba)
+            self.data = Formula(body=body, expr=m.group(2), rgba=rgba)
         elif expr:
-            self.data = RowData(type="formula", body=body, expr=expr, rgba=rgba)
+            self.data = Formula(body=body, expr=expr, rgba=rgba)
         else:
-            self.data = RowData(type="empty")
+            self.data = Empty()
 
-        if self.data.type in ("variable", "slider"):
+        if hasattr(self.data, 'rgba'):
+            self.color_picker.show()
+        else:
             self.color_picker.hide()
             self.name = m.group(1)
-        else:
-            self.color_picker.show()
 
-        if self.data.type == "slider":
+        if isinstance(self.data, Slider):
             self.slider_box.show()
             val = float(m2.group(2))
             if val == 0:
@@ -184,5 +207,5 @@ class FormulaRow():
     def value(self):
         return self.slider.get_value()
 
-    def data(self):
+    def get_data(self):
         return self.data

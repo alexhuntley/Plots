@@ -372,12 +372,12 @@ class Plots(Gtk.Application):
         sliders = []
         self.slider_rows.clear()
         for r in self.rows:
-            data = r.data()
-            if data.type == "formula":
+            data = r.get_data()
+            if isinstance(data, formularow.Formula):
                 formulae.append(data)
-            elif data.type == "variable":
+            elif isinstance(data, formularow.Variable):
                 variables.append(data)
-            elif data.type == "slider":
+            elif isinstance(data, formularow.Slider):
                 sliders.append(data)
                 self.slider_rows.append(r)
         try:
