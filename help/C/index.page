@@ -20,8 +20,6 @@
 
   <p>A simple graph plotting app for GNOME.</p>
 
-  <p>Plots currently supports plotting functions of the variable <em>x</em> only.</p>
-
   <section id="formulae" style="2column">
     <title>Supported formula types</title>
   </section>
