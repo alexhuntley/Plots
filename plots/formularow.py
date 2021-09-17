@@ -184,5 +184,5 @@ class FormulaRow():
     def value(self):
         return self.slider.get_value()
 
-    def to_glsl(self):
+    def data(self):
         return self.data

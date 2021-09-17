@@ -24,11 +24,11 @@ from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf
 from plots import formula, formularow, rowcommands
 from plots.text import TextRenderer
 from plots.i18n import _
+from plots.data import jinja_env
 import plots.i18n
 import OpenGL.GL as gl
 from OpenGL.arrays import vbo
 from OpenGL.GL import shaders
-from jinja2 import Environment, FileSystemLoader, PackageLoader
 import sys
 import importlib.resources as resources
 import re
@@ -43,9 +43,8 @@ class Plots(Gtk.Application):
         super().__init__(application_id="com.github.alexhuntley.Plots")
         self.scale = self._target_scale = self.INIT_SCALE
         self._translation = np.array([0, 0], 'f')
-        self.jinja_env = Environment(loader=PackageLoader('plots', 'shaders'))
-        self.vertex_template = self.jinja_env.get_template('vertex.glsl')
-        self.fragment_template = self.jinja_env.get_template('fragment.glsl')
+        self.vertex_template = jinja_env.get_template('vertex.glsl')
+        self.fragment_template = jinja_env.get_template('fragment.glsl')
         self.rows = []
         self.slider_rows = []
         self.history = []
@@ -373,7 +372,7 @@ class Plots(Gtk.Application):
         sliders = []
         self.slider_rows.clear()
         for r in self.rows:
-            data = r.to_glsl()
+            data = r.data()
             if data.type == "formula":
                 formulae.append(data)
             elif data.type == "variable":
