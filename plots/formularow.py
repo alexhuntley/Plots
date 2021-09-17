@@ -19,42 +19,61 @@ import gi
 from gi.repository import Gtk, Gdk, Gio, GdkPixbuf
 
 from plots import formula, plots, rowcommands
+from plots.data import jinja_env
 import re, math
 
 class RowData():
-    def __init__(self, type, expr=None, body=None, rgba=None, name=None):
-        self.type = type
-        if expr:
-            self.expr = expr
-        if body:
-            self.body = body
-        if rgba:
-            self.rgba = rgba
-        if name:
-            self.name = name
+    def id(self):
+        return id(self)
 
 
-class Empty():
-    pass
+class Empty(RowData):
+    def __init__(self):
+        self.rgba = None
+
+    def definition(self):
+        return ""
 
 
-class Variable():
+class Variable(RowData):
     def __init__(self, name, body, expr):
         self.name = name
         self.body = body
         self.expr = expr
 
+    def definition(self):
+        return f"float {self.name} = 0.0;\n"
 
-class Slider():
+    def calculation(self):
+        return f"{self.body}\n{self.expr};\n"
+
+
+class Slider(RowData):
     def __init__(self, name):
         self.name = name
 
+    def definition(self):
+        return f"uniform float {self.name};\n"
 
-class Formula():
+    def calculation(self):
+        return ""
+
+
+class Formula(RowData):
+    calculation_template = jinja_env.get_template("formula_calculation.glsl")
     def __init__(self, expr, body, rgba):
         self.expr = expr
         self.body = body
         self.rgba = rgba
+
+    def definition(self):
+        return f"""float formula{self.id()}(float x) {{
+    {self.body}
+    return {self.expr};
+}}"""
+
+    def calculation(self):
+        return self.calculation_template.render(formula=self)
 
 class FormulaRow():
     PALETTE = [
@@ -72,7 +91,7 @@ class FormulaRow():
 
     def __init__(self, app):
         self.app = app
-        self.data = RowData("empty")
+        self.data = Empty()
         builder = Gtk.Builder()
         builder.add_from_string(plots.read_ui_file("formula_box.glade"))
         builder.connect_signals(self)
