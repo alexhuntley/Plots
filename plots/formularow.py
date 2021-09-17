@@ -83,8 +83,8 @@ class Formula(RowData):
     calculation_template = jinja_env.get_template("formula_calculation.glsl")
 
     def __init__(self, expr, body, rgba):
-        m = re.match(r'^(?:([a-zA-Z_]\w*) *=)?(.+)', expr)
-        self.expr = m.group(2)
+        m = re.match(r'^(?:y *=)?(.+)', expr)
+        self.expr = m.group(1)
         self.body = body
         self.rgba = rgba
 
@@ -99,8 +99,8 @@ class Formula(RowData):
 
     @staticmethod
     def accepts(expr):
-        m = re.match(r'^([a-zA-Z_]\w*) *=(.+)', expr)
-        return m and m.group(1) == "y" or "=" not in expr
+        m = re.match(r'^(?:y *=)?(.+)', expr)
+        return m and "=" not in m.group(1)
 
 
 class XFormula(RowData):
@@ -124,6 +124,29 @@ class XFormula(RowData):
     @staticmethod
     def accepts(expr):
         m = re.match(r'^x *=(.+)', expr)
+        return bool(m)
+
+class RFormula(RowData):
+    calculation_template = jinja_env.get_template("r_formula_calculation.glsl")
+
+    def __init__(self, expr, body, rgba):
+        m = re.match(r'^r *=(.+)', expr)
+        self.expr = m.group(1)
+        self.body = body
+        self.rgba = rgba
+
+    def definition(self):
+        return f"""float formula{self.id()}(float theta) {{
+    {self.body}
+    return {self.expr};
+}}"""
+
+    def calculation(self):
+        return self.calculation_template.render(formula=self)
+
+    @staticmethod
+    def accepts(expr):
+        m = re.match(r'^r *=(.+)', expr)
         return bool(m)
 
 class FormulaRow():
@@ -197,7 +220,7 @@ class FormulaRow():
         body, expr = self.editor.expr.to_glsl()
         rgba = tuple(self.color_picker.get_rgba())
 
-        for cls in [Slider, Variable, Formula, XFormula, Empty]:
+        for cls in [Formula, XFormula, RFormula, Slider, Variable, Empty]:
             if cls.accepts(expr):
                 self.data = cls(body=body, expr=expr, rgba=rgba)
                 break
