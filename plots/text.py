@@ -22,10 +22,7 @@ from OpenGL.GL import shaders
 from OpenGL.arrays import vbo
 import math
 import glm
-try:
-    import importlib.resources as resources
-except ModuleNotFoundError:
-    import importlib_resources as resources
+import importlib.resources as resources
 from contextlib import contextmanager
 
 

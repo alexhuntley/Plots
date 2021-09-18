@@ -1,7 +1,7 @@
 import setuptools
 
 package = 'Plots'
-version = '0.5.1'
+version = '0.6.0'
 
 setuptools.setup(
     name=package,
@@ -11,7 +11,8 @@ setuptools.setup(
     package_data={
         "plots.ui": ["*.glade"],
         "plots": ["shaders/*.glsl"],
-        "plots.res": ["*.svg"],
+        "plots.res": ["*.svg", "*.ttf"],
+        "plots.locale": ["*/LC_MESSAGES/*.mo"],
     },
     install_requires=[
         "PyGObject",

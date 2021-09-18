@@ -1,0 +1,18 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      xmlns:its="http://www.w3.org/2005/11/its"
+      type="guide" style="2column task"
+      id="y-formulae">
+
+  <info>
+    <link type="guide" xref="index#formulae"/>
+
+    <desc>Formules explicites pour <em>y</em></desc>
+  </info>
+  <title>Formules prenant la forme <em>y = f(x)</em></title>
+
+  <p>
+    Celles-ci peuvent être entrées dans une boîte de formule soit dans la forme <code>y = f(x)</code>
+    ou simplement dans la forme <code>f(x)</code>.
+  </p>
+
+</page>

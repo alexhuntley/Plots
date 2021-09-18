@@ -18,14 +18,14 @@
     Plots
   </title>
 
-  <p>A simple graph plotting app for GNOME.</p>
+  <p>Un plotteur de graphe simple pour GNOME.</p>
 
   <section id="formulae" style="2column">
-    <title>Supported formula types</title>
+    <title>Types de formules supportés</title>
   </section>
 
   <section id="functions" style="2column">
-    <title>Available functions</title>
+    <title>Fonctions disponibles</title>
   </section>
 
 

@@ -1,0 +1,16 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      xmlns:its="http://www.w3.org/2005/11/its"
+      type="guide" style="2column task"
+      id="misc-functions">
+
+  <info>
+    <link type="guide" xref="index#functions"/>
+
+    <desc>par exemple |x|, ⌈x⌉, ⌊x⌋, sgn(x)</desc>
+  </info>
+  <title>Fonctions diverses</title>
+  <p>La valeur absolue de <em>x</em> peut être insérée en tapant <keyseq><key>|</key><key>x</key></keyseq>.</p>
+  <p>La partie entière ⌊x⌋ peut être insérée en tapant <key>floor</key>.</p>
+  <p>La partie entière par excès ⌈x⌉ peut être insérée en tapant <key>ceil</key>.</p>
+  <p>La fonction signe sgn(x) peut être insérée en tapant <key>sign</key> ou <key>sgn</key>.</p>
+</page>

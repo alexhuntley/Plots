@@ -23,15 +23,14 @@ from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf
 
 from plots import formula, formularow, rowcommands
 from plots.text import TextRenderer
+from plots.i18n import _
+from plots.data import jinja_env
+import plots.i18n
 import OpenGL.GL as gl
 from OpenGL.arrays import vbo
 from OpenGL.GL import shaders
-from jinja2 import Environment, FileSystemLoader, PackageLoader
 import sys
-try:
-    import importlib.resources as resources
-except ModuleNotFoundError:
-    import importlib_resources as resources
+import importlib.resources as resources
 import re
 import math
 import numpy as np
@@ -44,9 +43,8 @@ class Plots(Gtk.Application):
         super().__init__(application_id="com.github.alexhuntley.Plots")
         self.scale = self._target_scale = self.INIT_SCALE
         self._translation = np.array([0, 0], 'f')
-        self.jinja_env = Environment(loader=PackageLoader('plots', 'shaders'))
-        self.vertex_template = self.jinja_env.get_template('vertex.glsl')
-        self.fragment_template = self.jinja_env.get_template('fragment.glsl')
+        self.vertex_template = jinja_env.get_template('vertex.glsl')
+        self.fragment_template = jinja_env.get_template('fragment.glsl')
         self.rows = []
         self.slider_rows = []
         self.history = []
@@ -88,6 +86,7 @@ class Plots(Gtk.Application):
     def do_activate(self):
         builder = Gtk.Builder()
         builder.add_from_string(read_ui_file("plots.glade"))
+        builder.set_translation_domain(plots.i18n.domain)
         builder.connect_signals(self)
 
         self.window = builder.get_object("main_window")
@@ -132,8 +131,8 @@ class Plots(Gtk.Application):
         menu_button = builder.get_object("menu_button")
 
         self.menu = Gio.Menu()
-        self.menu.append("Help", "app.help")
-        self.menu.append("About Plots", "app.about")
+        self.menu.append(_("Help"), "app.help")
+        self.menu.append(_("About Plots"), "app.about")
         menu_button.set_menu_model(self.menu)
 
         self.about_action = Gio.SimpleAction.new("about", None)
@@ -275,7 +274,8 @@ class Plots(Gtk.Application):
 
         version = gl.glGetString(gl.GL_VERSION).decode().split(" ")[0]
         if version < "3.3":
-            self.errorlabel.set_text(f"Warning: OpenGL {version} is unsupported. Plots supports OpenGL 3.3 or greater.")
+            self.errorlabel.set_text(
+                _("Warning: OpenGL {} is unsupported. Plots supports OpenGL 3.3 or greater.").format(version))
             self.errorbar.props.revealed = True
 
         self.vertex_shader = shaders.compileShader(
@@ -368,27 +368,21 @@ class Plots(Gtk.Application):
 
     def update_shader(self):
         formulae = []
-        variables = []
-        sliders = []
         self.slider_rows.clear()
         for r in self.rows:
-            data = r.to_glsl()
-            if data.type == "formula":
-                formulae.append(data)
-            elif data.type == "variable":
-                variables.append(data)
-            elif data.type == "slider":
-                sliders.append(data)
+            data = r.get_data()
+            formulae.append(data)
+            if isinstance(data, formularow.Slider):
                 self.slider_rows.append(r)
+        formulae.sort(key=lambda x: x.priority, reverse=True)
         try:
             fragment_shader = shaders.compileShader(
-                self.fragment_template.render(formulae=formulae, variables=variables,
-                                              sliders=sliders),
+                self.fragment_template.render(formulae=formulae),
                 gl.GL_FRAGMENT_SHADER)
         except RuntimeError as e:
             print(e.args[0].encode('ascii', 'ignore').decode('unicode_escape'))
             fragment_shader = shaders.compileShader(
-                self.fragment_template.render(formulae=[], variables=[], sliders=[]),
+                self.fragment_template.render(formulae=[]),
                 gl.GL_FRAGMENT_SHADER)
         self.shader = shaders.compileProgram(self.vertex_shader, fragment_shader)
         self.gl_area.queue_draw()

@@ -78,69 +78,21 @@ float mypow(float x, float y) {
     }
 }
 
-{% for s in sliders %}
-uniform float {{ s.name }};
-{% endfor %}
-
-{% for v in variables %}
-float {{ v.name }} = 0.0/0.0;
-{% endfor %}
-
 {% for f in formulae %}
-float formula{{ loop.index0 }}(float x) {
-    {{ f.body }}
-    return {{ f.expr }};
-}
+{{ f.definition() }}
 {% endfor %}
 
 void main() {
-    vec3 color;
-    {% for v in variables %}
-    {{ v.body }}
-    {{ v.expr }};
-    {% endfor %}
+    vec3 color = vec3(1.0);
+    vec3 formula_color = vec3(0);
     float samples = 36;
     float step = 1.4*pixel_extent.x / samples;
     float jitter = .5;
 
-    {% if formulae %}
-    float inside[]= float[]({{ ([0.0] * formulae|length) | join(",") }});
-    float outside[]= float[]({{ ([0.0] * formulae|length) | join(",") }});
-    float prev[]= float[]({{ ([0.0] * formulae|length) | join(",") }});
-    int monotonic[] = int[]({{ ([0] * formulae|length) | join(",") }});
-    bool nans[] = bool[]({{ (["false"] * formulae|length) | join(",") }});
-    for (float i = 0.0; i < samples; i++) {
-            float ii = i + jitter*rand(vec2(graph_pos.x + i*step, graph_pos.y));
-            float x = graph_pos.x + ii*step;
-            float yj = jitter*rand(vec2(graph_pos.y, graph_pos.y + i*step))/samples;
-            float lower = (-0.5+yj)*pixel_extent.y;
-            float upper = (0.5+yj)*pixel_extent.y;
-            float fp, f;
-            {% for _ in formulae %}
-            f = formula{{loop.index0}}(x) - graph_pos.y;
-            if (lower < f && f < upper)
-                inside[{{loop.index0}}] += 1.0;
-            else
-                outside[{{loop.index0}}] += sign(f);
-            fp = prev[{{loop.index0}}];
-            if (i != 0.0)
-                monotonic[{{loop.index0}}] += int(sign(f - fp));
-            prev[{{loop.index0}}] = f;
-            nans[{{loop.index0}}] = nans[{{loop.index0}}] || isinf(f) || isnan(f);
-            {% endfor %}
-    }
-    {% endif %}
-    color = vec3(1.0);
-    vec3 formula_color = vec3(0);
     {% for f in formulae %}
-    formula_color = vec3({{ f.rgba[:3] | join(",") }});
-    if (abs(monotonic[{{loop.index0}}]) != int(samples) - 3 && !nans[{{loop.index0}}]) {
-        if (inside[{{loop.index0}}] > 0.0)
-            color = mix(color, formula_color, inside[{{loop.index0}}]/samples);
-        if (abs(outside[{{loop.index0}}]) != samples)
-            color = mix(color, formula_color, 1. - abs(outside[{{loop.index0}}])/samples);
+    {
+        {{ f.calculation() }}
     }
-
     {% endfor %}
 
     float axis_width = pixel_extent.x;

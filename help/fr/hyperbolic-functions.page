@@ -6,13 +6,13 @@
   <info>
     <link type="guide" xref="index#functions"/>
 
-    <desc>e.g. sinh, cosh, tanh</desc>
+    <desc>par exemple sinh, cosh, tanh</desc>
   </info>
-<title>Hyperbolic functions</title>
-<p>The following hyperbolic functions can be inserted simply by typing their name:</p>
+<title>Fonctions hyperboliques</title>
+<p>Les fonctions hyperboliques suivantes peuvent être insérées en tapant simplement leurs noms:</p>
 
   <list>
-    <title>Supported hyperbolic functions</title>
+    <title>Fonctions hyperboliques disponibles</title>
     <item>
       <p>sinh, cosh, tanh</p>
     </item>

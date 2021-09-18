@@ -1,0 +1,31 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      xmlns:its="http://www.w3.org/2005/11/its"
+      type="guide" style="2column task"
+      id="sum-functions">
+
+  <info>
+    <link type="guide" xref="index#functions"/>
+
+    <desc>dans les notations Σ et Π</desc>
+  </info>
+<title>Sommes et produits</title>
+<steps>
+<title>Comment insérer une somme ou un produit</title>
+<item>
+<p>Tapez <key>sum</key> or <key>prod</key> pour insérer l'opérateur</p>
+</item>
+<item>
+<p>Tapez le nom d'une variable et une valeur initiale en bas du Σ ou Π, par example i = 0</p>
+</item>
+<item>
+<p>Utilisez les touches flèches pour bouger au champ supérieur du Σ ou Π</p>
+</item>
+<item>
+<p>Insérez la valeur maximale de la variable dans ce champ supérieur</p>
+</item>
+<item>
+<p>Utilisez les touches flèches pour bouger à la droite de l'opérateur, et insérez le corps de la somme ou le produit.</p>
+</item>
+</steps>
+<p>L'indice de sommation/multiplication ne doit être appelé seulement à l'intérieur de l'expression.</p>
+</page>
