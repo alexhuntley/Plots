@@ -29,7 +29,8 @@ msgstr "À propos de Plots"
 #: plots/plots.py:280
 msgid ""
 "Warning: OpenGL {} is unsupported. Plots supports OpenGL 3.3 or greater."
-msgstr "Attention: OpenGL {} n'est pas supporté. Plots nećissite au moins OpenGL 3.3."
+msgstr ""
+"Attention: OpenGL {} n'est pas supporté. Plots nećissite au moins OpenGL 3.3."
 
 #: plots/ui/about.glade.h:1
 msgid "Copyright © 2021 Alexander Huntley"

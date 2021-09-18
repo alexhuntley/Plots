@@ -9,14 +9,14 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-16 16:28+0100\n"
 "PO-Revision-Date: 2021-09-17 13:25+0200\n"
+"Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
 "Language-Team: \n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.0\n"
-"Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: nl\n"
 
 #: plots/plots.py:136
 msgid "Help"
@@ -27,8 +27,11 @@ msgid "About Plots"
 msgstr "Over Plots"
 
 #: plots/plots.py:280
-msgid "Warning: OpenGL {} is unsupported. Plots supports OpenGL 3.3 or greater."
-msgstr "Waarschuwing: OpenGL {} wordt niet ondersteund. Plots ondersteunt OpenGL 3.3 en hoger."
+msgid ""
+"Warning: OpenGL {} is unsupported. Plots supports OpenGL 3.3 or greater."
+msgstr ""
+"Waarschuwing: OpenGL {} wordt niet ondersteund. Plots ondersteunt OpenGL 3.3 "
+"en hoger."
 
 #: plots/ui/about.glade.h:1
 msgid "Copyright © 2021 Alexander Huntley"
