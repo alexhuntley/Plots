@@ -1,4 +1,4 @@
-# Plots ![CI](https://github.com/alexhuntley/Plots/workflows/CI/badge.svg)
+# Plots ![CI](https://github.com/alexhuntley/Plots/workflows/CI/badge.svg) [![Translation status](https://hosted.weblate.org/widgets/plots/-/plots/svg-badge.svg)](https://hosted.weblate.org/engage/plots/)
 ![Plots icon](res/com.github.alexhuntley.Plots.svg)
 
 Plots is a graph plotting app for GNOME. Plots makes it easy to visualise
@@ -57,4 +57,4 @@ $ flatpak-builder --user --install build --force-clean com.github.alexhuntley.Pl
 ### Translations
 Would you like to see Plots in your own language? We welcome translators' contributions to Plots.
 
-We recommend you use [Weblate](https://hosted.weblate.org/projects/plots/plots/).
+We recommend you use [Weblate](https://hosted.weblate.org/engage/plots/).
