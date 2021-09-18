@@ -54,3 +54,7 @@ Then build and install the Flatpak using
 ```bash
 $ flatpak-builder --user --install build --force-clean com.github.alexhuntley.Plots.json
 ```
+### Translations
+Would you like to see Plots in your own language? We welcome translators' contributions to Plots.
+
+We recommend you use [Weblate](https://hosted.weblate.org/projects/plots/plots/).
