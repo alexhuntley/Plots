@@ -60,3 +60,5 @@ Would you like to see Plots in your own language? We welcome translators' contri
 We recommend you use [Weblate](https://hosted.weblate.org/engage/plots/).
 
 The `.desktop` file is [here](/res/com.github.alexhuntley.Plots.desktop).
+
+When translating help files using Weblate, you have to create a new translation for each file. Do not forget `index.page`, as it is mandatory for the help files to work.
