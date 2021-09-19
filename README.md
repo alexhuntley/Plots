@@ -58,3 +58,5 @@ $ flatpak-builder --user --install build --force-clean com.github.alexhuntley.Pl
 Would you like to see Plots in your own language? We welcome translators' contributions to Plots.
 
 We recommend you use [Weblate](https://hosted.weblate.org/engage/plots/).
+
+The `.desktop` file is [here](/main/res/com.github.alexhuntley.Plots.desktop).
