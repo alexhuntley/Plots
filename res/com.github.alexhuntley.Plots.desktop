@@ -1,8 +1,12 @@
 [Desktop Entry]
 Name=Plots
+Name[eo]=Grafikaĵoj
 Name[hu]=Ábrák
+Name[it]=Grafici
 Comment=Simple graph plotting
+Comment[eo]=Simpla grafikaĵilo
 Comment[hu]=Egyszerű ábrákrajzolás
+Comment[it]=Semplice disegnatore di grafici
 Exec=plots
 Type=Application
 Icon=com.github.alexhuntley.Plots
