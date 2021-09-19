@@ -1,4 +1,4 @@
-# Plots ![CI](https://github.com/alexhuntley/Plots/workflows/CI/badge.svg) [![Translation status](https://hosted.weblate.org/widgets/plots/-/plots/svg-badge.svg)](https://hosted.weblate.org/engage/plots/)
+# Plots ![CI](https://github.com/alexhuntley/Plots/workflows/CI/badge.svg) [![Translation status](https://hosted.weblate.org/widgets/plots/-/svg-badge.svg)](https://hosted.weblate.org/engage/plots/)
 ![Plots icon](res/com.github.alexhuntley.Plots.svg)
 
 Plots is a graph plotting app for GNOME. Plots makes it easy to visualise
