@@ -1,5 +1,8 @@
 [Desktop Entry]
 Name=Plots
+Name[hu]=Ábrák
+Comment=Simple graph plotting
+Comment[hu]=Egyszerű ábrákrajzolás
 Exec=plots
 Type=Application
 Icon=com.github.alexhuntley.Plots
