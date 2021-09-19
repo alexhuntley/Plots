@@ -59,4 +59,4 @@ Would you like to see Plots in your own language? We welcome translators' contri
 
 We recommend you use [Weblate](https://hosted.weblate.org/engage/plots/).
 
-The `.desktop` file is [here](/main/res/com.github.alexhuntley.Plots.desktop).
+The `.desktop` file is [here](/res/com.github.alexhuntley.Plots.desktop).
