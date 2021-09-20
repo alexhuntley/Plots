@@ -1,17 +1,13 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="symbols">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="symbols">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#functions" />
 
-    <desc>Symboles avec significations spéciales</desc>
+    <desc>Symbols with special meaning</desc>
   </info>
   <title>Symboles</title>
-  <p>Les lettres grecques peuvent être insérées en tapent leurs noms anglais.</p>
+  <p>Les lettres grecques peuvent être insérées en tapant leur nom anglais.</p>
   <p>Les constantes <em>π</em> et <em>e</em> ont leurs valeurs habituelles.</p>
-  <p>Les variables <em>x</em>, <em>y</em>, <em>r</em>, et <em>θ</em>
-  peuvent être utilisées dans vos formules.</p>
+  <p>Les variables <em>x</em>, <em>y</em>, <em>r</em>, et <em>θ</em> peuvent être utilisées dans vos formules.</p>
 
 </page>
