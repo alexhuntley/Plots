@@ -1,12 +1,9 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="basic-functions">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="basic-functions">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#functions" />
 
-    <desc>Opérateurs simples</desc>
+    <desc>Simple operators</desc>
   </info>
 <title>Opérations arithmétiques de base</title>
 <p>Ces operateurs peuvent être insérés en tapant:</p>
