@@ -47,6 +47,14 @@
   </provides>
 
   <releases>
+    <release version="0.6.1" date="2021-09-21">
+      <description>
+        <ul>
+          <li>New feature: implicit equations in x and y;</li>
+          <li>Added Czech, Hungarian, Italian, Lithuanian, Norwegian and Turkish translations.</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.6.0" date="2021-09-18">
       <description>
         <ul>
