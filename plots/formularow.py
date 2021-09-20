@@ -182,6 +182,31 @@ class ThetaFormula(RowData):
         return bool(m)
 
 
+class ImplicitFormula(RowData):
+    priority = 20
+    calculation_template = jinja_env.get_template("implicit_formula_calculation.glsl")
+
+    def __init__(self, expr, body, rgba):
+        m = re.match(r'^([^=]+)=([^=]+)$', expr)
+        self.body = body
+        self.rgba = rgba
+        self.expr = "{} - {}".format(m.group(1), m.group(2));
+
+    @staticmethod
+    def accepts(expr):
+        m = re.match(r'^([^=]+)=([^=]+)$', expr)
+        return bool(m)
+
+    def definition(self):
+        return f"""float formula{self.id()}(float x, float y) {{
+    {self.body}
+    return {self.expr};
+}}"""
+
+    def calculation(self):
+        return self.calculation_template.render(formula=self)
+
+
 class FormulaRow():
     PALETTE = [
         [0,0,0     ],
@@ -253,7 +278,8 @@ class FormulaRow():
         body, expr = self.editor.expr.to_glsl()
         rgba = tuple(self.color_picker.get_rgba())
 
-        for cls in [Formula, XFormula, RFormula, ThetaFormula, Slider, Variable, Empty]:
+        for cls in [Formula, XFormula, RFormula, ThetaFormula,
+                    Slider, Variable, ImplicitFormula, Empty]:
             if cls.accepts(expr):
                 self.data = cls(body=body, expr=expr, rgba=rgba)
                 break
