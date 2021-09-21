@@ -12,7 +12,8 @@
     <p>
       Plots makes it easy to visualise mathematical formulae. In addition to basic
       arithmetic operations, it supports trigonometric, hyperbolic, exponential and
-      logarithmic functions, as well as arbitrary sums and products.
+      logarithmic functions, as well as arbitrary sums and products. It can display
+      polar equations, and both implicit and explicit Cartesian equations.
     </p>
     <p>
       Plots is designed to integrate well with the GNOME desktop and takes advantage
