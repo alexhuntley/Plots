@@ -5,8 +5,10 @@
   <metadata_license>FSFAP</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <name>Plots</name>
+  <name xml:lang="fr">Plots</name>
   <developer_name>Alex Huntley</developer_name>
   <summary>Simple graph plotting</summary>
+  <summary xml:lang="fr">Traceur de fonction simple</summary>
 
   <description>
     <p>
@@ -18,6 +20,18 @@
     <p>
       Plots is designed to integrate well with the GNOME desktop and takes advantage
       of modern hardware using OpenGL.
+    </p>
+
+    <p xml:lang="fr">
+      Plots permet de visualiser facilement des formules mathémathiques. En plus des
+      opérations arithmétiques de base, il prend en charge les fonctions trigonométriques,
+      hyperboliques, exponentielles et logarithmiques, ainsi que les sommes et produits
+      arbitraires. Il peut afficher des equations polaires et des equations cartésiennes,
+      implicites et explicites.
+    </p>
+    <p xml:lang="fr">
+      Plots est conçu pour bien s'intégrer au bureau GNOME et exploite le matériel
+      moderne en utilisant OpenGL.
     </p>
   </description>
 
@@ -40,6 +54,7 @@
 
   <url type="homepage">https://github.com/alexhuntley/Plots</url>
   <url type="bugtracker">https://github.com/alexhuntley/Plots/issues</url>
+  <url type="translate">https://hosted.weblate.org/engage/plots/</url>
 
   <content_rating type="oars-1.0" />
 
