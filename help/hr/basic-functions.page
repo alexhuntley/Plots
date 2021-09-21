@@ -5,20 +5,20 @@
 
     <desc>Simple operators</desc>
   </info>
-<title>Osnovni aritmetički operatori</title>
-<p>Jednostavni operatori mogu se umetnuti pomoću sljedećih tipki:</p>
+<title>Basic arithmetic operators</title>
+<p>Simple operators can be inserted using the following keystrokes:</p>
     <table>
     <tr>
     <td><p>×</p></td>
-    <td><p><key>*</key></p></td>
+    <td><p><key>÷</key></p></td>
     </tr>
     <tr>
     <td><p>÷</p></td>
-    <td><p><key>/</key></p></td>
+    <td><p><key>^</key></p></td>
     </tr>
     <tr>
-    <td><p>^</p></td>
-    <td><p><key>^</key></p></td>
+    <td><p>√</p></td>
+    <td><p><key>√</key></p></td>
     </tr>
     <tr>
     <td><p>√</p></td>
@@ -27,10 +27,6 @@
     <tr>
     <td><p>³√</p></td>
     <td><p><keyseq><key>nthroot</key><key>3</key></keyseq></p></td>
-    </tr>
-    <tr>
-    <td><p>(</p></td>
-    <td><p><key>(</key></p></td>
     </tr>
     <tr>
     <td><p>)</p></td>
@@ -47,6 +43,10 @@
     <tr>
     <td><p>{</p></td>
     <td><p><key>{</key></p></td>
+    </tr>
+    <tr>
+    <td><p>}</p></td>
+    <td><p><key>}</key></p></td>
     </tr>
     <tr>
     <td><p>}</p></td>
