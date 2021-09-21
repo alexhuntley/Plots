@@ -4,7 +4,8 @@
 Plots is a graph plotting app for GNOME. Plots makes it easy to visualise
 mathematical formulae. In addition to basic arithmetic operations, it supports
 trigonometric, hyperbolic, exponential and logarithmic functions, as well as
-arbitrary sums and products.
+arbitrary sums and products. It can display polar equations, and both implicit
+and explicit Cartesian equations.
 
 Plots is designed to integrate well with the GNOME desktop and takes advantage
 of modern hardware using OpenGL, and currently supports OpenGL 3.3+.
