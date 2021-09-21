@@ -1,19 +1,14 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="implicit-formulae">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="implicit-formulae">
 
   <info>
-    <link type="guide" xref="index#formulae"/>
+    <link type="guide" xref="index#formulae" />
 
     <desc>Implicit formulae for <em>x</em> and <em>y</em></desc>
   </info>
-  <title>Implicit formulae of the form <em>f(x,y) = g(x,y)</em></title>
+  <title>Implicitne formule U obliku <em>f(x,y) = g(x,y)</em></title>
 
   <p>
-    These can be entered into any regular formula box. They are the most general
-    type of formula. <em>x</em> and <em>y</em> may appear anywhere in the
-    equation.
+    Mogu se upisati u bilo koje regularno polje formule. To su najopćenitije vrste formula. <em>x</em> i <em>y</em> mogu se pojaviti bilo gdje u jednadžbi.
   </p>
 
 </page>
