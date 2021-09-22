@@ -60,6 +60,8 @@ Would you like to see Plots in your own language? We welcome translators' contri
 
 We recommend you use [Weblate](https://hosted.weblate.org/engage/plots/).
 
-The `.desktop` file is [here](/res/com.github.alexhuntley.Plots.desktop).
-
 When translating help files using Weblate, you have to create a new translation for each file. Do not forget `index.page`, as it is mandatory for the help files to work.
+
+The `.desktop` file can be translated [here](/res/com.github.alexhuntley.Plots.desktop).
+
+The AppStream metainfo file (containing the title, summary and description used in GNOME Software, the [Flathub Store](https://flathub.org/apps/details/com.github.alexhuntley.Plots), [Apps for GNOME](https://apps.gnome.org/en/app/com.github.alexhuntley.Plots/) etc.) can be translated [here](res/com.github.alexhuntley.Plots.metainfo.xml).
