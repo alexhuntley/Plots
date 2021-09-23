@@ -1,31 +1,28 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="sum-functions">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="sum-functions">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#functions" />
 
     <desc>in Σ and Π notation</desc>
   </info>
-<title>Sums and Products</title>
+<title>Sumas y productos</title>
 <steps>
-<title>How to insert a sum or product</title>
+<title>Cómo insertar una suma o un producto</title>
 <item>
-<p>Type <key>sum</key> or <key>prod</key> to insert the operator</p>
+<p>Escriba <key>sum</key> o <key>prod</key> para insertar el operador</p>
 </item>
 <item>
-<p>Type a variable name and initial value into the bottom of the Σ or Π, e.g. i = 0</p>
+<p>Escriba un nombre de variable y un valor inicial en la parte inferior del Σ o Π, por ejemplo, i = 0</p>
 </item>
 <item>
-<p>Use the arrow keys to move to the upper box of the Σ or Π</p>
+<p>Use las teclas de flecha para desplazarse a la casilla superior de Σ o Π</p>
 </item>
 <item>
-<p>Type the maximum value for the variable in the upper box</p>
+<p>Escriba el valor máximo de la variable en la casilla superior</p>
 </item>
 <item>
-<p>Use the arrow keys to move to the right of the operator, and insert the body of the sum/product.</p>
+<p>Use las teclas de flecha para moverse a la derecha del operador, e inserte el cuerpo de la suma/producto.</p>
 </item>
 </steps>
-<p>The variable being iterated over should only be referred to inside the sum/product body.</p>
+<p>La variable sobre la que se itera sólo debe ser referida dentro del cuerpo de la suma/producto.</p>
 </page>
