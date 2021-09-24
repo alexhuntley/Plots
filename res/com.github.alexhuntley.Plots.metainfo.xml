@@ -5,10 +5,12 @@
   <metadata_license>FSFAP</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <name>Plots</name>
+  <name xml:lang="es">Plots</name>
   <name xml:lang="fr">Plots</name>
   <name xml:lang="hr">Grafikoni</name>
   <developer_name>Alex Huntley</developer_name>
   <summary>Simple graph plotting</summary>
+  <summary xml:lang="es">Trazado sencillo de funciones</summary>
   <summary xml:lang="fr">Traceur de fonction simple</summary>
   <summary xml:lang="hr">Jednostavno crtanje grafikona</summary>
 
@@ -22,6 +24,18 @@
     <p>
       Plots is designed to integrate well with the GNOME desktop and takes advantage
       of modern hardware using OpenGL.
+    </p>
+
+    <p xml:lang="es">
+      Plots facilita la visualización de fórmulas matemáticas. Además de las
+      operaciones aritméticas básicas, admite funciones trigonométricas,
+      hiperbólicas, exponenciales y logarítmicas, así como sumas y productos
+      arbitrarios. Puede mostrar ecuaciones polares y ecuaciones cartesianas
+      implícitas y explícitas.
+    </p>
+    <p xml:lang="es">
+      Plots está diseñado para integrarse bien con el escritorio GNOME y aprovecha
+      el hardware moderno usando OpenGL.
     </p>
 
     <p xml:lang="fr">
