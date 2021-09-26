@@ -1,27 +1,17 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="variables">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="variables">
 
   <info>
-    <link type="guide" xref="index#formulae"/>
+    <link type="guide" xref="index#formulae" />
 
     <desc>Easily adjustable parameters</desc>
   </info>
-  <title>Variables and sliders</title>
+  <title>Incognite e variabili</title>
 
   <p>
-    To declare a variable, type an equation of the form
-    <code><em>variable</em> = <em>value</em></code> into an empty formula box, where
-    <code><em>variable</em></code> is a single Latin or Greek letter, and
-    <code><em>value</em></code> is an expression which must not depend on position, but
-    may depend on preceding variables.
+    Per dichiarare un'incognita, basta inserire un'equazione nella forma <code><em>incognita</em> = <em>valore</em></code> in un box per le formule vuoto, dove <code><em>incognita</em></code>è una singola lettera latina o greca e <code><em>valore</em></code> è un'espressione che non deve dipendere dalla posizione ma può dipendere da precedenti incognite.
   </p>
 
   <p>
-    If <code><em>value</em></code> is a literal integer or decimal number, Plots will
-    display an adjustable slider control, allowing the variable to be adjusted
-    interactively. The upper and lower limits of the slider can be edited using the
-    adjacent fields.
+    Se <code><em>valore</em></code> è un numero, intero o razionale, Grafici mostrerà una leva che permette di aggiustare il valore della variabile in maniera interattiva. I limiti inferiore e superiore possono essere modificati usando i campi adiacenti ai valori.
   </p>
 </page>
