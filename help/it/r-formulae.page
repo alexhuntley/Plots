@@ -1,17 +1,14 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="r-formulae">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="r-formulae">
 
   <info>
-    <link type="guide" xref="index#formulae"/>
+    <link type="guide" xref="index#formulae" />
 
     <desc>Explicit formulae for <em>r</em> (polar equations)</desc>
   </info>
-  <title>Formulae of the form <em>r = f(θ)</em></title>
+  <title>Formule nella forma <em>r = f(θ)</em></title>
 
   <p>
-    These can be entered into a formula box only in the form <code>r = f(θ)</code>.
+    Queste formule possono essere inserite nel box per le formule solo nella forma <code>r = f(θ)</code>.
   </p>
 
 </page>
