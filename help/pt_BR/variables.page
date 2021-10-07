@@ -1,27 +1,17 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="variables">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="variables">
 
   <info>
-    <link type="guide" xref="index#formulae"/>
+    <link type="guide" xref="index#formulae" />
 
     <desc>Easily adjustable parameters</desc>
   </info>
-  <title>Variables and sliders</title>
+  <title>Variáveis e controles deslizantes</title>
 
   <p>
-    To declare a variable, type an equation of the form
-    <code><em>variable</em> = <em>value</em></code> into an empty formula box, where
-    <code><em>variable</em></code> is a single Latin or Greek letter, and
-    <code><em>value</em></code> is an expression which must not depend on position, but
-    may depend on preceding variables.
+    Para declarar uma variável, digite uma equação da forma <code><em>variable</em> = <em>value</em></code> numa caixa de fórmula vazia, onde <code><em>variable</em></code> é uma única letra latina ou grega, e <code><em>value</em></code> é uma expressão que não deve depender da posição, mas pode depender de variáveis anteriores.
   </p>
 
   <p>
-    If <code><em>value</em></code> is a literal integer or decimal number, Plots will
-    display an adjustable slider control, allowing the variable to be adjusted
-    interactively. The upper and lower limits of the slider can be edited using the
-    adjacent fields.
+    Se <code><em>value</em></code> for um número literal inteiro ou decimal, Plots exibirá um controle deslizante ajustável, permitindo que a variável seja ajustada interativamente. Os limites superiores e inferiores do controle deslizante podem ser editados usando os campos adjacentes.
   </p>
 </page>
