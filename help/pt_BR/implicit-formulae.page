@@ -5,10 +5,10 @@
 
     <desc>Implicit formulae for <em>x</em> and <em>y</em></desc>
   </info>
-  <title>Implicit formulae of the form <em>f(x,y) = g(x,y)</em></title>
+  <title>Fórmulas implícitas no formato <em>f(x,y) = g(x,y)</em></title>
 
   <p>
-    Queste formule possono essere inserite nei box per le formule. Sono inoltre il tipo più generale di formula. <em>x</em> e <em>y</em> possono apparire ovunque nella formula.
+    Essas fórmulas podem ser inseridas em qualquer caixa de fórmula regular. São o tipo fórmula mais geral. <em> x </em> e <em> y </em> podem aparecer em qualquer lugar na equação.
   </p>
 
 </page>
