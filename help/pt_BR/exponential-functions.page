@@ -1,25 +1,22 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="exponential-functions">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="exponential-functions">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#functions" />
 
     <desc>e.g. exp, log</desc>
   </info>
-<title>Exponential and logarithmic functions</title>
-<p>The following functions can be inserted simply by typing their name:</p>
+<title>Funções exponenciais e logarítmicas</title>
+<p>As seguintes funções podem ser inseridas simplesmente digitando seus nomes:</p>
 
   <list>
-    <title>Supported functions</title>
+    <title>Funções suportadas</title>
     <item>
       <p>exp</p>
     </item>
     <item>
       <p>ln, log, lg</p>
-      <p>ln and log are natural logarithms. lg is the base-2 logarithm.</p>
-      <p>log may be followed by a subscript (entered using an underscore), denoting the base of the logarithm.</p>
+      <p>ln e log são logaritmos naturais. lg é o logaritmo de base 2.</p>
+      <p>log pode ser seguido de um índice (inserido com um underscore), que denota a base do logaritmo.</p>
     </item>
   </list>
 
