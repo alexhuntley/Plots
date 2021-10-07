@@ -1,18 +1,15 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="hyperbolic-functions">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="hyperbolic-functions">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#functions" />
 
     <desc>e.g. sinh, cosh, tanh</desc>
   </info>
-<title>Hyperbolic functions</title>
-<p>The following hyperbolic functions can be inserted simply by typing their name:</p>
+<title>Funções hiperbólicas</title>
+<p>As seguintes funções hiperbólicas podem ser inseridas simplesmente digitando seus nomes:</p>
 
   <list>
-    <title>Supported hyperbolic functions</title>
+    <title>Funções hiperbólicas suportadas</title>
     <item>
       <p>sinh, cosh, tanh</p>
     </item>
