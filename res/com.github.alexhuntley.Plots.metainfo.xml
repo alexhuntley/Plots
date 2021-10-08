@@ -8,11 +8,13 @@
   <name xml:lang="es">Plots</name>
   <name xml:lang="fr">Plots</name>
   <name xml:lang="hr">Grafikoni</name>
+  <name xml:lang="pt_BR">Plots</name>
   <developer_name>Alex Huntley</developer_name>
   <summary>Simple graph plotting</summary>
   <summary xml:lang="es">Trazado sencillo de funciones</summary>
   <summary xml:lang="fr">Traceur de fonction simple</summary>
   <summary xml:lang="hr">Jednostavno crtanje grafikona</summary>
+  <summary xml:lang="pt_BR">Simples traçador de gráficos</summary>
 
   <description>
     <p>
@@ -59,6 +61,17 @@
     <p xml:lang="hr">
       Program Grafikoni izrađen je na način da se dobro integrira u GNOME okruženje te
       koristi prednosti modernog hardvera pomoću OpenGL-a.
+    </p>
+
+    <p xml:lang="pt_BR">
+      Plots permite a fácil visualização de fórmulas matemáticas. Além das operações
+      aritméticas básicas, suporta funções trigonométricas, hiperbólicas, exponenciais
+      e logarítmicas, bem como somas e produtos arbitrários. Também é capaz de exibir
+      equações polares e equações cartesianas, implícitas e explícitas.
+    </p>
+    <p xml:lang="pt_BR">
+      Plots foi projetado para integrar-se bem com o ambiente GNOME e tirar proveito
+      de hardware moderno usando OpenGL.
     </p>
   </description>
 
