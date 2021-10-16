@@ -1,18 +1,14 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="y-formulae">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="y-formulae">
 
   <info>
-    <link type="guide" xref="index#formulae"/>
+    <link type="guide" xref="index#formulae" />
 
     <desc>Explicit formulae for <em>y</em></desc>
   </info>
-  <title>Formulae of the form <em>y = f(x)</em></title>
+  <title>Formule nella forma <em>y = f(x)</em></title>
 
   <p>
-    These can be entered into a formula box either in the form <code>y = f(x)</code>
-    or simply in the form <code>f(x)</code>.
+    Queste formule possono essere inserite nel box delle formule o nella forma <code>x = f(y)</code> o semplicemente nella forma <code>f(x)</code>.
   </p>
 
 </page>
