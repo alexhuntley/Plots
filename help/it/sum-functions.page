@@ -1,31 +1,28 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="sum-functions">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="sum-functions">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#functions" />
 
     <desc>in Σ and Π notation</desc>
   </info>
-<title>Sums and Products</title>
+<title>Sommatorie e produttorie</title>
 <steps>
-<title>How to insert a sum or product</title>
+<title>Come inserire una sommatoria o una produttoria</title>
 <item>
-<p>Type <key>sum</key> or <key>prod</key> to insert the operator</p>
+<p>Inserisci <key>sum</key> o <key>prod</key> per inserire rispettivamente l'operatore della sommatoria o quello della produttoria</p>
 </item>
 <item>
-<p>Type a variable name and initial value into the bottom of the Σ or Π, e.g. i = 0</p>
+<p>Inserisci il nome di una variabile e un valore iniziale della variabile muta sita sotto Σ o Π, ad esempio i = 0</p>
 </item>
 <item>
-<p>Use the arrow keys to move to the upper box of the Σ or Π</p>
+<p>Usa le frecce per muoverti nella parte superiore di Σ o Π</p>
 </item>
 <item>
-<p>Type the maximum value for the variable in the upper box</p>
+<p>Inserisci il massimo valore per la variabile muta nella parte alta</p>
 </item>
 <item>
-<p>Use the arrow keys to move to the right of the operator, and insert the body of the sum/product.</p>
+<p>Usa le frecce per muoverti a destra dell'operatore e inserisci la formula.</p>
 </item>
 </steps>
-<p>The variable being iterated over should only be referred to inside the sum/product body.</p>
+<p>La variabile muta su cui avviene l'iterazione deve stare solo dentro la formula della sommatoria o della produttoria.</p>
 </page>
