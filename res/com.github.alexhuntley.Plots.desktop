@@ -2,12 +2,14 @@
 Name=Plots
 Name[eo]=Grafikaĵoj
 Name[es]=Plots
+Name[fr]=Plots
 Name[hr]=Grafikoni
 Name[hu]=Ábrák
 Name[it]=Grafici
 Comment=Simple graph plotting
 Comment[eo]=Simpla grafikaĵilo
 Comment[es]=Trazado sencillo de funciones
+Comment[fr]=Traceur de fonction simple
 Comment[hr]=Jednostavno crtanje grafikona
 Comment[hu]=Egyszerű ábrákrajzolás
 Comment[it]=Semplice disegnatore di grafici
