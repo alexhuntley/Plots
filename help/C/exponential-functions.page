@@ -15,7 +15,7 @@
     <title>Supported functions</title>
     <item>
       <p>exp, e</p>
-      <p>e is the Euler's number. It can be used as a function when followed by an exponent (entered using ^).</p>
+      <p>e is Euler's number. It can be used as a function when followed by an exponent (entered using ^).</p>
     </item>
     <item>
       <p>ln, log, lg</p>
