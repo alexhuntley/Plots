@@ -5,15 +5,21 @@
   <metadata_license>FSFAP</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <name>Plots</name>
+  <name xml:lang="eo">Grafikaĵoj</name>
   <name xml:lang="es">Plots</name>
   <name xml:lang="fr">Plots</name>
   <name xml:lang="hr">Grafikoni</name>
+  <name xml:lang="hu">Ábrák</name>
+  <name xml:lang="it">Grafici</name>
   <name xml:lang="pt_BR">Plots</name>
   <developer_name>Alex Huntley</developer_name>
   <summary>Simple graph plotting</summary>
+  <summary xml:lang="eo">Simpla grafikaĵilo</summary>
   <summary xml:lang="es">Trazado sencillo de funciones</summary>
   <summary xml:lang="fr">Traceur de fonction simple</summary>
   <summary xml:lang="hr">Jednostavno crtanje grafikona</summary>
+  <summary xml:lang="hu">Egyszerű ábrákrajzolás</summary>
+  <summary xml:lang="it">Semplice disegnatore di grafici</summary>
   <summary xml:lang="pt_BR">Simples traçador de gráficos</summary>
 
   <description>
@@ -63,6 +69,18 @@
       koristi prednosti modernog hardvera pomoću OpenGL-a.
     </p>
 
+    <p xml:lang="hu">
+      Ábrák megkönnyíti a matematikai képletek megjelenítését. Az alapvető számtani
+      műveletek mellett támogatja a trigonometriai, hiperbolikus, exponenciális és
+      logaritmikus függvényeket, valamint tetszőleges összegeket és szorzatokat.
+      Poláris egyenleteket, valamint implicit és explicit derékszögű egyenleteket is
+      megjeleníthet. 
+    </p>
+    <p xml:lang="hu">
+      Tervezték az Ábrák, hogy jól illeszkedjen a GNOME asztalhoz, és kihasználja az
+      OpenGL-t használó modern hardverek előnyeit.
+    </p>
+
     <p xml:lang="pt_BR">
       Plots permite a fácil visualização de fórmulas matemáticas. Além das operações
       aritméticas básicas, suporta funções trigonométricas, hiperbólicas, exponenciais
@@ -73,6 +91,7 @@
       Plots foi projetado para integrar-se bem com o ambiente GNOME e tirar proveito
       de hardware moderno usando OpenGL.
     </p>
+
   </description>
 
   <launchable type="desktop-id">com.github.alexhuntley.Plots.desktop</launchable>

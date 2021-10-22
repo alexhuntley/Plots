@@ -1,0 +1,28 @@
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="sum-functions">
+
+  <info>
+    <link type="guide" xref="index#functions" />
+
+    <desc>in Σ and Π notation</desc>
+  </info>
+<title>Sommatorie e produttorie</title>
+<steps>
+<title>Come inserire una sommatoria o una produttoria</title>
+<item>
+<p>Inserisci <key>sum</key> o <key>prod</key> per inserire rispettivamente l'operatore della sommatoria o quello della produttoria</p>
+</item>
+<item>
+<p>Inserisci il nome di una variabile e un valore iniziale della variabile muta sita sotto Σ o Π, ad esempio i = 0</p>
+</item>
+<item>
+<p>Usa le frecce per muoverti nella parte superiore di Σ o Π</p>
+</item>
+<item>
+<p>Inserisci il massimo valore per la variabile muta nella parte alta</p>
+</item>
+<item>
+<p>Usa le frecce per muoverti a destra dell'operatore e inserisci la formula.</p>
+</item>
+</steps>
+<p>La variabile muta su cui avviene l'iterazione deve stare solo dentro la formula della sommatoria o della produttoria.</p>
+</page>
