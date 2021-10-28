@@ -5,18 +5,19 @@
 
     <desc>e.g. exp, log</desc>
   </info>
-<title>Exponential and logarithmic functions</title>
-<p>Sljedeće funkcije mogu se umetnuti upisivanjem njihovih naziva:</p>
+<title>Eksponencijalne i logaritamske funkcije</title>
+<p>Sljedeće se funkcije mogu umetnuti upisivanjem njihovih naziva:</p>
 
   <list>
-    <title>Supported functions</title>
-    <item>
-      <p>ln, log, lg</p>
-    </item>
+    <title>Podržane funkcije</title>
     <item>
       <p>ln, log, lg</p>
       <p>ln and log are natural logarithms. lg is the base-2 logarithm.</p>
-      <p>log may be followed by a subscript (entered using an underscore), denoting the base of the logarithm.</p>
+    </item>
+    <item>
+      <p>ln, log, lg</p>
+      <p>ln i log su prirodni logaritmi. lg je logaritam baze 2.</p>
+      <p>log-u može slijediti indeks (upisan koristeći podcrtu), koji označava bazu logaritma.</p>
     </item>
   </list>
 
