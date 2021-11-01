@@ -11,7 +11,8 @@
   <list>
     <title>Funzioni supportate</title>
     <item>
-      <p>exp</p>
+      <p>ln, log, lg</p>
+      <p>ln e log sono logaritmi naturali. lg è il logaritmo in base 2.</p>
     </item>
     <item>
       <p>ln, log, lg</p>
