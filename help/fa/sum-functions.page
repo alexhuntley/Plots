@@ -1,31 +1,28 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="sum-functions">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="sum-functions">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#functions" />
 
     <desc>in Σ and Π notation</desc>
   </info>
-<title>Sums and Products</title>
+<title>حاصل‌جمع‌ها و حاصل‌ضرب‌ها</title>
 <steps>
-<title>How to insert a sum or product</title>
+<title>چگونگی افزودن یک حاصل‌جمع یا حاصل‌ضرب</title>
 <item>
-<p>Type <key>sum</key> or <key>prod</key> to insert the operator</p>
+<p>‏برای افزودن عملگر، <key>sum</key> یا <key>prod</key> را بنویسید</p>
 </item>
 <item>
-<p>Type a variable name and initial value into the bottom of the Σ or Π, e.g. i = 0</p>
+<p>یک نام متغیر و مقدار اولیه پایین Σ یا Π بنویسید؛ مثلاً i = 0</p>
 </item>
 <item>
-<p>Use the arrow keys to move to the upper box of the Σ or Π</p>
+<p>از کلیدهای پیکان برای انتقال به جعبهٔ بالایی Σ یا Π استفاده کنید</p>
 </item>
 <item>
-<p>Type the maximum value for the variable in the upper box</p>
+<p>بیشینهٔ مقدار متغیر را در جعبهٔ بالایی بنویسید</p>
 </item>
 <item>
-<p>Use the arrow keys to move to the right of the operator, and insert the body of the sum/product.</p>
+<p>با استفاده از کلیدهای پیکان به سمت راست عملگر منتقل شوید، و بدنهٔ حاصل‌جمع/حاصل‌ضرب را اضافه کنید.</p>
 </item>
 </steps>
-<p>The variable being iterated over should only be referred to inside the sum/product body.</p>
+<p>متغیری که در حال تکرار است، فقط باید در داخل بدنهٔ حاصل‌جمع/حاصل‌ضرب ارجاع داده شود.</p>
 </page>
