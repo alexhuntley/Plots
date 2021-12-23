@@ -5,19 +5,19 @@
 
     <desc>e.g. exp, log</desc>
   </info>
-<title>توابع نمایی و لگاریتمی</title>
-<p>توابع زیر می‌توانند به‌سادگی با نوشتن نام‌شان افزوده شوند:</p>
+<title>Exponential and logarithmic functions</title>
+<p>The following functions can be inserted simply by typing their name:</p>
 
   <list>
-    <title>توابع پشتیبانی شده</title>
+    <title>Supported functions</title>
     <item>
-      <p>exp, e</p>
-      <p>‏e عدد اویلر است. هنگامی می‌توان از آن به عنوان تابع استفاده کرد، که با یک توان (ورود با استفاده از ^) همراه باشد.</p>
+      <p>‏exp، e</p>
+      <p>ln, log, lg</p>
     </item>
     <item>
       <p>ln, log, lg</p>
-      <p>‏ln و log لگاریتم‌های طبیعی‌اند. lg لگاریتم پایهٔ ۲ است.</p>
-      <p>‏log ممکن است بعد از یک زیرنویس (ورود با استفاده از زیرخط) باشد، که نشان‌دهندهٔ پایهٔ لگاریتم است.</p>
+      <p>ln and log are natural logarithms. lg is the base-2 logarithm.</p>
+      <p>log may be followed by a subscript (entered using an underscore), denoting the base of the logarithm.</p>
     </item>
   </list>
 
