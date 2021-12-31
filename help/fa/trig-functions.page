@@ -1,32 +1,29 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="trig-functions">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="trig-functions">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#functions" />
 
     <desc>e.g. sin, cos, tan</desc>
   </info>
-  <title>Trigonometric functions</title>
-  <p>The following trigonometric functions can be inserted simply by typing their name:</p>
+  <title>توابع مثلثاتی</title>
+  <p>توابع مثلثاتی زیر می‌توانند به‌سادگی با نوشتن نام‌شان افزوده شوند:</p>
 
   <list>
-    <title>Supported trigonometric functions</title>
+    <title>توابع مثلثاتی پشتیبانی شده</title>
     <item>
-      <p>sin, cos, tan</p>
+      <p>‏sin، ‏cos، ‏tan</p>
     </item>
     <item>
-      <p>asin, arcsin, acos, arccos, atan, arctan</p>
+      <p>‏asin، ‏arcsin، ‏acos، ‏arccos، ‏atan، ‏arctan</p>
     </item>
     <item>
-      <p>sec, cosec, csc, tan</p>
+      <p>‏sec، ‏cosec، ‏csc، ‏tan</p>
     </item>
     <item>
-      <p>asec, arcsec, acosec, arccosec, acsc, arccsc, acot, arccot</p>
+      <p>‏asec، ‏arcsec، ‏acosec، ‏arccosec، ‏acsc، ‏arccsc، ‏acot، ‏arccot</p>
     </item>
     <item>
-      <p>sinc</p>
+      <p>‏sinc</p>
     </item>
   </list>
 
