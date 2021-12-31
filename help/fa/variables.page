@@ -1,27 +1,17 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="variables">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="variables">
 
   <info>
-    <link type="guide" xref="index#formulae"/>
+    <link type="guide" xref="index#formulae" />
 
     <desc>Easily adjustable parameters</desc>
   </info>
-  <title>Variables and sliders</title>
+  <title>متغیرها و لغزنده‌ها</title>
 
   <p>
-    To declare a variable, type an equation of the form
-    <code><em>variable</em> = <em>value</em></code> into an empty formula box, where
-    <code><em>variable</em></code> is a single Latin or Greek letter, and
-    <code><em>value</em></code> is an expression which must not depend on position, but
-    may depend on preceding variables.
+    برای تعریف یک متغیر، یک معادله به صورت <code><em>متغیر</em> = <em>مقدار</em></code> در یک جعبهٔ فرمول خالی بنویسید، که <code><em>متغیر</em></code> یک تک‌نویسهٔ لاتین یا یونانی است، و <code><em>مقدار</em></code> یک عبارت است که نباید به موقعیت وابسته باشد، ولی می‌تواند به متغیرهای قبلی وابسته باشد.
   </p>
 
   <p>
-    If <code><em>value</em></code> is a literal integer or decimal number, Plots will
-    display an adjustable slider control, allowing the variable to be adjusted
-    interactively. The upper and lower limits of the slider can be edited using the
-    adjacent fields.
+    اگر <code><em>مقدار</em></code> یک عدد صحیح یا یک عدد اعشاری باشد، نمودارها یک لغزندهٔ قابل تنظیم، که اجازهٔ تنظیم متغیر به صورت تعاملی را می‌دهد، نشان خواهد داد. محدودهٔ کمینه و بیشینهٔ لغزنده می‌تواند از طریق فیلدهای مجاور ویرایش شود.
   </p>
 </page>
