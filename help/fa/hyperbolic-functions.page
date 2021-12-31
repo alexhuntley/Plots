@@ -11,16 +11,16 @@
   <list>
     <title>Supported hyperbolic functions</title>
     <item>
-      <p>‏inh، cosh، tanh</p>
+      <p>‏sinh، ‏cosh، ‏tanh</p>
     </item>
     <item>
-      <p>‏sech، cosech، csch، coth</p>
+      <p>‏asinh، ‏acosh، ‏atanh</p>
     </item>
     <item>
-      <p>‏asech، acosech، acsch، acoth</p>
+      <p>‏sech، ‏cosech، ‏csch، ‏coth</p>
     </item>
     <item>
-      <p>asech, acosech, acsch, acoth</p>
+      <p>‏asech، ‏acosech، ‏acsch، ‏acoth</p>
     </item>
   </list>
 
