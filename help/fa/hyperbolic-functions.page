@@ -5,22 +5,22 @@
 
     <desc>e.g. sinh, cosh, tanh</desc>
   </info>
-<title>توابع هذلولی</title>
-<p>توابع هذلولی زیر می‌توانند به‌سادگی با نوشتن نام‌شان افزوده شوند:</p>
+<title>Hyperbolic functions</title>
+<p>The following hyperbolic functions can be inserted simply by typing their name:</p>
 
   <list>
-    <title>توابع هذلولی پشتیبانی شده</title>
+    <title>Supported hyperbolic functions</title>
     <item>
-      <p>‏sinh، cosh، tanh</p>
-    </item>
-    <item>
-      <p>‏asinh، acosh، atanh</p>
+      <p>‏inh، cosh، tanh</p>
     </item>
     <item>
       <p>‏sech، cosech، csch، coth</p>
     </item>
     <item>
       <p>‏asech، acosech، acsch، acoth</p>
+    </item>
+    <item>
+      <p>asech, acosech, acsch, acoth</p>
     </item>
   </list>
 
