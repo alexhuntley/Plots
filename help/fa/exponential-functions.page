@@ -11,11 +11,11 @@
   <list>
     <title>Supported functions</title>
     <item>
-      <p>‏exp، e</p>
+      <p>‏exp، ‏e</p>
       <p>ln, log, lg</p>
     </item>
     <item>
-      <p>ln, log, lg</p>
+      <p>‏ln، ‏log، ‏lg</p>
       <p>ln and log are natural logarithms. lg is the base-2 logarithm.</p>
       <p>log may be followed by a subscript (entered using an underscore), denoting the base of the logarithm.</p>
     </item>
