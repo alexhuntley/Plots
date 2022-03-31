@@ -19,7 +19,7 @@ setuptools.setup(
         "PyOpenGL",
         "Jinja2",
         "numpy",
-        "lark-parser",
+        "lark",
         "PyGLM",
         "freetype-py",
     ],
