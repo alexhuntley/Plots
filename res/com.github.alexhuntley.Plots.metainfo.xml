@@ -79,6 +79,16 @@
       OpenGL-t használó modern hardverek előnyeit.
     </p>
 
+    <p xml:lang="it">
+      Grafici rende facile la visulizzazione di formule matematiche. Assieme alle
+      operazioni aritmetiche di base, ha il supporto delle funzioni trigonometriche,
+      iperboliche, esponenziali e logaritmiche, oltre a somme e prodotti arbitrari.
+      Può mostrare equazioni polari ed equazioni cartesiane esplicie e implicite.
+    </p>
+    <p xml:lang="it">
+      Grafici è stato progettato per integrarsi perfettamente con l'ambiente desktop GNOME e sfrutta
+      l'uso di hardware moderno usando OpenGL.
+    </p>
   </description>
 
   <launchable type="desktop-id">com.github.alexhuntley.Plots.desktop</launchable>
