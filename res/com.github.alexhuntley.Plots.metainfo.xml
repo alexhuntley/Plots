@@ -12,6 +12,7 @@
   <name xml:lang="hr">Grafikoni</name>
   <name xml:lang="hu">Ábrák</name>
   <name xml:lang="it">Grafici</name>
+  <name xml:lang="pt_BR">Plots</name>
   <developer_name>Alex Huntley</developer_name>
   <summary>Simple graph plotting</summary>
   <summary xml:lang="eo">Simpla grafikaĵilo</summary>
@@ -21,6 +22,7 @@
   <summary xml:lang="hr">Jednostavno crtanje grafikona</summary>
   <summary xml:lang="hu">Egyszerű ábrákrajzolás</summary>
   <summary xml:lang="it">Semplice disegnatore di grafici</summary>
+  <summary xml:lang="pt_BR">Simples traçador de gráficos</summary>
 
   <description>
     <p>
@@ -45,7 +47,7 @@
       Plots está diseñado para integrarse bien con el escritorio GNOME y aprovecha
       el hardware moderno usando OpenGL.
     </p>
-    
+
     <p xml:lang="fa">
       نمودارها، دیداری کردن فرمول‌های ریاضیاتی را ساده می‌کند.
       علاوه بر عملگرهای حسابیِ ساده، از توابع مثلثاتی، هذلولی، نمایی و لگاریتمی،
@@ -85,7 +87,7 @@
       műveletek mellett támogatja a trigonometriai, hiperbolikus, exponenciális és
       logaritmikus függvényeket, valamint tetszőleges összegeket és szorzatokat.
       Poláris egyenleteket, valamint implicit és explicit derékszögű egyenleteket is
-      megjeleníthet. 
+      megjeleníthet.
     </p>
     <p xml:lang="hu">
       Tervezték az Ábrák, hogy jól illeszkedjen a GNOME asztalhoz, és kihasználja az
@@ -102,6 +104,17 @@
       Grafici è stato progettato per integrarsi perfettamente con l'ambiente desktop GNOME e sfrutta
       l'uso di hardware moderno usando OpenGL.
     </p>
+    <p xml:lang="pt_BR">
+      Plots permite a fácil visualização de fórmulas matemáticas. Além das operações
+      aritméticas básicas, suporta funções trigonométricas, hiperbólicas, exponenciais
+      e logarítmicas, bem como somas e produtos arbitrários. Também é capaz de exibir
+      equações polares e equações cartesianas, implícitas e explícitas.
+    </p>
+    <p xml:lang="pt_BR">
+      Plots foi projetado para integrar-se bem com o ambiente GNOME e tirar proveito
+      de hardware moderno usando OpenGL.
+    </p>
+
   </description>
 
   <launchable type="desktop-id">com.github.alexhuntley.Plots.desktop</launchable>
