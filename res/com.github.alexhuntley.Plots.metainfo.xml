@@ -7,6 +7,7 @@
   <name>Plots</name>
   <name xml:lang="eo">Grafikaĵoj</name>
   <name xml:lang="es">Plots</name>
+  <name xml:lang="fa">نمودارها</name>
   <name xml:lang="fr">Plots</name>
   <name xml:lang="hr">Grafikoni</name>
   <name xml:lang="hu">Ábrák</name>
@@ -15,6 +16,7 @@
   <summary>Simple graph plotting</summary>
   <summary xml:lang="eo">Simpla grafikaĵilo</summary>
   <summary xml:lang="es">Trazado sencillo de funciones</summary>
+  <summary xml:lang="fa">رسم نمودار ساده</summary>
   <summary xml:lang="fr">Traceur de fonction simple</summary>
   <summary xml:lang="hr">Jednostavno crtanje grafikona</summary>
   <summary xml:lang="hu">Egyszerű ábrákrajzolás</summary>
@@ -42,6 +44,17 @@
     <p xml:lang="es">
       Plots está diseñado para integrarse bien con el escritorio GNOME y aprovecha
       el hardware moderno usando OpenGL.
+    </p>
+    
+    <p xml:lang="fa">
+      نمودارها، دیداری کردن فرمول‌های ریاضیاتی را ساده می‌کند.
+      علاوه بر عملگرهای حسابیِ ساده، از توابع مثلثاتی، هذلولی، نمایی و لگاریتمی،
+      و همچنین حاصل‌جمع‌ها و حاصل‌ضرب‌های سفارشی نیز پشتیبانی می‌کند.
+      می‌تواند معادلات متقارن، و جفت معادلات ضمنی و صریح دکارتی را نمایش دهد.
+    </p>
+    <p xml:lang="fa">
+      نمودارها ساخته شده تا به‌خوبی با میزکار گنوم یک‌پارچه شود
+      و با استفاده از OpenGL از سخت‌افزار نوین بهره ببرد.
     </p>
 
     <p xml:lang="fr">
