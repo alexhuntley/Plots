@@ -145,6 +145,16 @@
   </provides>
 
   <releases>
+    <release version="0.6.2" date="2022-04-04">
+      <description>
+        <ul>
+          <li>Bug fixes;</li>
+          <li>Runtime and dependency updates;</li>
+          <li>Added Croatian, Farsi, Spanish and Portuguese translations;</li>
+          <li>Updated other translations.</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.6.1" date="2021-09-21">
       <description>
         <ul>
