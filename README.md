@@ -39,6 +39,8 @@ Note that this method does not currently install the icon, font or .desktop file
 ![Screenshot showing variables with sliders](res/screenshot_variables.png)
 
 ## Development
+Pull requests are welcome! The following sections detail how to run or build the project. The dependencies are in the [setup file](setup.py) and also the [Flatpak requirements file](flatpak-requirements.txt).
+
 ### Running from source
 To run directly without installation, open a terminal in the root of the repository and run
 ```bash
