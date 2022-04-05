@@ -1,7 +1,7 @@
 float positives = 0, sample_count = 0;
 float sqrt_samples = round(sqrt(samples)/2);
 bool nans = false;
-float _step = 6*step, _jitter = 4*jitter;
+float _step = 2*6*step, _jitter = 4*jitter;
 for (float i = -sqrt_samples; i < sqrt_samples; i++) {
     for (float j = -sqrt_samples; j < sqrt_samples; j++) {
         vec2 v = vec2(graph_pos.x + i*_step, graph_pos.y + j*_step);

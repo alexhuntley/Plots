@@ -6,9 +6,9 @@ bool nans = false;
 for (float i = 0.0; i < samples; i++) {
     float ii = i + jitter*rand(vec2(graph_pos.x, graph_pos.y + i*step));
     float y = graph_pos.y + ii*step;
-    float xj = jitter*rand(vec2(graph_pos.x + i*step, graph_pos.y))/samples;
-    float lower = (-0.5+xj)*pixel_extent.x;
-    float upper = (0.5+xj)*pixel_extent.x;
+    float xj = jitter*rand(vec2(graph_pos.x + i*step, graph_pos.y));
+    float lower = (-0.5+xj)*sample_extent;
+    float upper = (0.5+xj)*sample_extent;
     float fp, f;
 
     f = formula{{formula.id()}}(y) - graph_pos.x;

@@ -9,9 +9,9 @@ float theta0 = atan(graph_pos.y, graph_pos.x);
 for (float i = 0.0; i < samples; i++) {
     float ii = i + jitter*rand(vec2(graph_pos.x, graph_pos.y + i*step));
     float theta = theta0 + ii*angular_step;
-    float rj = jitter*rand(vec2(graph_pos.x + i*step, graph_pos.y))/samples;
-    float lower = (-0.5+rj)*1.414*pixel_extent.x;
-    float upper = (0.5+rj)*1.414*pixel_extent.x;
+    float rj = jitter*rand(vec2(graph_pos.x + i*step, graph_pos.y));
+    float lower = (-0.5+rj)*sample_extent;
+    float upper = (0.5+rj)*sample_extent;
     float f = formula{{formula.id()}}(theta) - radius;
 
     if (lower < f && f < upper)

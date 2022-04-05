@@ -86,7 +86,8 @@ void main() {
     vec3 color = vec3(1.0);
     vec3 formula_color = vec3(0);
     float samples = 36;
-    float step = 1.4*pixel_extent.x / samples;
+    float sample_extent = 2.5*pixel_extent.x;
+    float step = sample_extent / samples;
     float jitter = .5;
 
     {% for f in formulae %}
