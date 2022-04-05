@@ -60,7 +60,12 @@ uniform float minor_grid;
 
 float rand(vec2 co){
     // implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
-    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+    return 2*fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453) - 1;
+}
+
+float zmod(float x, float y) {
+    // mod(x,y), but centered on zero
+    return mod(x + y/2, y) - y/2;
 }
 
 float factorial(float x) {
@@ -86,9 +91,9 @@ void main() {
     vec3 color = vec3(1.0);
     vec3 formula_color = vec3(0);
     float samples = 36;
-    float sample_extent = 2.5*pixel_extent.x;
+    float sample_extent = 3*pixel_extent.x;
     float step = sample_extent / samples;
-    float jitter = .5;
+    float jitter = .4;
 
     {% for f in formulae %}
     {
@@ -99,9 +104,9 @@ void main() {
     float axis_width = pixel_extent.x;
     color -= (1.0-vec3(0.2,0.2,0.2))*(1.0-smoothstep(axis_width*.6, axis_width*.65, abs(graph_pos.x)));
     color -= (1.0-vec3(0.2,0.2,0.2))*(1.0-smoothstep(axis_width*.6, axis_width*.65, abs(graph_pos.y)));
-    color -= (1.0-vec3(0.7,0.7,0.7))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(mod(graph_pos.x, major_grid))));
-    color -= (1.0-vec3(0.7,0.7,0.7))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(mod(graph_pos.y, major_grid))));
-    color -= (1.0-vec3(0.9,0.9,0.9))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(mod(graph_pos.x, minor_grid))));
-    color -= (1.0-vec3(0.9,0.9,0.9))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(mod(graph_pos.y, minor_grid))));
+    color -= (1.0-vec3(0.7,0.7,0.7))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(zmod(graph_pos.x, major_grid))));
+    color -= (1.0-vec3(0.7,0.7,0.7))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(zmod(graph_pos.y, major_grid))));
+    color -= (1.0-vec3(0.9,0.9,0.9))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(zmod(graph_pos.x, minor_grid))));
+    color -= (1.0-vec3(0.9,0.9,0.9))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(zmod(graph_pos.y, minor_grid))));
     rgba = vec4(color, 1);
 }
