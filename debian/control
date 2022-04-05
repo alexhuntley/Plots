@@ -7,7 +7,7 @@ Standards-Version: 4.5.0
 
 Package: plots
 Architecture: all
-Depends: ${python3:Depends}, ${misc:Depends}, gir1.2-gtk-3.0, fonts-lmodern
+Depends: ${python3:Depends}, ${misc:Depends}, gir1.2-gtk-3.0, fonts-lmodern, python3-jinja2, python3-numpy, python3-lark, python3-pytest, python3-freetype, python3-pyglm
 Description: Simple graph plotting
  Plots makes it easy to visualise mathematical formulae. In addition to basic arithmetic operations, it supports trigonometric, hyperbolic, exponential and logarithmic functions, as well as arbitrary sums and products.
  .
