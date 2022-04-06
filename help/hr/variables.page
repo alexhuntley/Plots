@@ -12,6 +12,6 @@
   </p>
 
   <p>
-    Ako je <code><em>vrijednost</em></code> cijeli broj ili decimalni broj, Grafikoni će prikazati podesivu kontrolu klizača za interaktivno prilagođavanje varijable. Gornja i donja granica klizača mogu se odrediti u odgovarajućim poljima.
+    Ako je <code><em>vrijednost</em></code> cijeli broj ili decimalni broj, program Grafikoni će prikazati podesivu kontrolu klizača za interaktivno prilagođavanje varijable. Gornja i donja granica klizača mogu se odrediti u odgovarajućim poljima.
   </p>
 </page>
