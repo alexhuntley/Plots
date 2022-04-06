@@ -9,9 +9,6 @@
 <steps>
 <title>Kako umetnuti zbroj ili ummožak</title>
 <item>
-<p>Za umetanje operatora utipkaj <key>sum</key> ili <key>prod</key></p>
-</item>
-<item>
 <p>Upiši varijablu i početnu vrijednost ispod Σ ili Π, npr. i = 0</p>
 </item>
 <item>
@@ -21,8 +18,11 @@
 <p>Upiši najveću vrijednost za varijablu</p>
 </item>
 <item>
-<p>Pomoću tipki sa strelicama premjesti se desno od operatora i umetni izraz zbroja/umnoška.</p>
+<p>Upiši maksimalnu vrijednost za varijablu u gornje polje</p>
+</item>
+<item>
+<p>Pomoću tipki sa strelicama premjesti se desno od operatora i umetni sadržaj zbroja/umnoška.</p>
 </item>
 </steps>
-<p>Indeksirana varijabla poziva se samo unutar izraza zbroja/umnoška.</p>
+<p>Ponavljajuća varijabla se treba pozivati samo unutar sadržaja zbroja/umnoška.</p>
 </page>
