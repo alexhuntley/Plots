@@ -11,13 +11,13 @@
   <list>
     <title>Podržane hiperboličke funkcije</title>
     <item>
-      <p>sinh, cosh, tanh</p>
-    </item>
-    <item>
       <p>asinh, acosh, atanh</p>
     </item>
     <item>
       <p>sech, cosech, csch, coth</p>
+    </item>
+    <item>
+      <p>asech, acosech, acsch, acoth</p>
     </item>
     <item>
       <p>asech, acosech, acsch, acoth</p>
