@@ -5,9 +5,9 @@
 
     <desc>e.g. |x|, ⌈x⌉, ⌊x⌋, sgn(x)</desc>
   </info>
-  <title>Miscellaneous functions</title>
-  <p>Za apsolutnu vrijednost <em>x</em> upiši <keyseq><key>|</key><key>x</key></keyseq>.</p>
-  <p>Za funkciju pod ⌊x⌋ upiši <key>floor</key>.</p>
-  <p>Za funkciju strop ⌈x⌉ upiši <key>ceil</key>.</p>
-  <p>Za funkciju signum sgn(x) upiši <key>sign</key> ili <key>sgn</key>.</p>
+  <title>Razne funkcije</title>
+  <p>Apsolutna vrijednost <em>x</em> može se umetnuti upisivanjem <keyseq><key>|</key><key>x</key></keyseq>.</p>
+  <p>Zaokruživanje funkcije ⌊x⌋ prema dolje može se umetnuti upisom <key>floor</key>.</p>
+  <p>Zaokruživanje funkcije ⌊x⌋ prema gore može se umetnuti upisom <key>ceil</key>.</p>
+  <p>Funkcija znaka sgn(x) može se umetnuti upisivanjem <key>sign</key> ili <key>sgn</key>.</p>
 </page>
