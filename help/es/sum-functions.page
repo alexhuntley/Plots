@@ -9,13 +9,13 @@
 <steps>
 <title>Cómo insertar una suma o un producto</title>
 <item>
-<p>Escriba <key>sum</key> o <key>prod</key> para insertar el operador</p>
-</item>
-<item>
 <p>Escriba un nombre de variable y un valor inicial en la parte inferior del Σ o Π, por ejemplo, i = 0</p>
 </item>
 <item>
 <p>Use las teclas de flecha para desplazarse a la casilla superior de Σ o Π</p>
+</item>
+<item>
+<p>Escriba el valor máximo de la variable en la casilla superior</p>
 </item>
 <item>
 <p>Escriba el valor máximo de la variable en la casilla superior</p>
