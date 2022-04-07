@@ -12,6 +12,6 @@
   </p>
 
   <p>
-    Si <code><em>valor</em></code> es un número literal entero o decimal, Plots mostrará un control deslizante ajustable, permitiendo que la variable sea ajustada interactivamente. Los límites superior e inferior del deslizador pueden editarse utilizando los campos adyacentes.
+    Si <code><em>valor</em></code> es un número literal entero o decimal, Plots mostrará un control deslizante ajustable, permitiendo que la variable sea ajustada interactivamente. Los límites superior e inferior del deslizador pueden editarse usando los campos adyacentes.
   </p>
 </page>
