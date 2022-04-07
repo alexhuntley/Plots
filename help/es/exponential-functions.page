@@ -12,7 +12,7 @@
     <title>Funciones soportadas</title>
     <item>
       <p>exp, e</p>
-      <p>ln y log son logaritmos naturales. lg es el logaritmo de base 2.</p>
+      <p>e es el número de Euler. Puede usarse como función cuando va seguido de un exponente (introducido con ^).</p>
     </item>
     <item>
       <p>ln, log, lg</p>
