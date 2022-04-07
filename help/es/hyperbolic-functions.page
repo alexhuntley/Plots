@@ -11,10 +11,10 @@
   <list>
     <title>Funciones hiperbólicas soportadas</title>
     <item>
-      <p>sinh, cosh, tanh</p>
+      <p>asinh, acosh, atanh</p>
     </item>
     <item>
-      <p>asinh, acosh, atanh</p>
+      <p>sech, cosech, csch, coth</p>
     </item>
     <item>
       <p>sech, cosech, csch, coth</p>
