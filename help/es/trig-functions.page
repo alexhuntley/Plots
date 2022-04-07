@@ -11,10 +11,10 @@
   <list>
     <title>Funciones trigonométricas soportadas</title>
     <item>
-      <p>sin, cos, tan</p>
+      <p>sen, cos, tan</p>
     </item>
     <item>
-      <p>asin, arcsin, acos, arccos, atan, arctan</p>
+      <p>asen, arcsen, acos, arccos, atan, arctan</p>
     </item>
     <item>
       <p>sec, cosec, csc, tan</p>
