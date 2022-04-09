@@ -223,9 +223,19 @@ class Plots(Gtk.Application):
         w = area.get_allocated_width() * area.get_scale_factor()
         h = area.get_allocated_height() * area.get_scale_factor()
         self.viewport = np.array([w, h], 'f')
+        self.render()
+        return True
+
+    def get_fbo(self):
+        return gl.glGetIntegerv(gl.GL_FRAMEBUFFER_BINDING)
+
+    def render(self):
+        self.gl_area_fbo = self.get_fbo()
         graph_extent = 2*self.viewport/self.viewport[0]*self.scale
         # extent of each pixel, in graph coordinates
         pixel_extent = graph_extent / self.viewport
+        w, h = self.viewport.astype(int)
+
         gl.glViewport(0, 0, w, h)
 
         gl.glClearColor(0, 0, 1, 0)
@@ -247,6 +257,7 @@ class Plots(Gtk.Application):
         gl.glBindVertexArray(self.vao)
         gl.glDrawArrays(gl.GL_TRIANGLES, 0, 18)
         gl.glBindVertexArray(0)
+        return
         with self.text_renderer.render(w, h) as r:
             low = major_grid * np.floor(
                 self.device_to_graph(np.array([0, h]))/major_grid)
@@ -269,7 +280,7 @@ class Plots(Gtk.Application):
                     r.render_text(label, pos, valign='center', halign='right')
             r.render_text("0", self.graph_to_device(np.zeros(2)) + np.array([-pad, pad]),
                           valign='top', halign='right')
-        return True
+
 
     def uniform(self, name):
         return gl.glGetUniformLocation(self.shader, name)
@@ -310,8 +321,6 @@ class Plots(Gtk.Application):
 
         self.text_renderer = TextRenderer()
 
-        w_width = 400
-        w_height = 400
         self.plane_texture = gl.glGenTextures(1)
         gl.glBindTexture(gl.GL_TEXTURE_2D, self.plane_texture)
         # texture wrapping params
@@ -320,18 +329,12 @@ class Plots(Gtk.Application):
         # texture filtering params
         gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR)
         gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR)
-        gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, w_width, w_height, 0, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, None)
         gl.glBindTexture(gl.GL_TEXTURE_2D, 0)
 
-        depth_buff = gl.glGenRenderbuffers(1)
-        gl.glBindRenderbuffer(gl.GL_RENDERBUFFER, depth_buff)
-        gl.glRenderbufferStorage(gl.GL_RENDERBUFFER, gl.GL_DEPTH_COMPONENT, w_width, w_height)
+        self.depth_buff = gl.glGenRenderbuffers(1)
 
         self.fbo = gl.glGenFramebuffers(1)
-        gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, self.fbo)
-        gl.glFramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_COLOR_ATTACHMENT0, gl.GL_TEXTURE_2D, self.plane_texture, 0)
-        gl.glFramebufferRenderbuffer(gl.GL_FRAMEBUFFER, gl.GL_DEPTH_ATTACHMENT, gl.GL_RENDERBUFFER, depth_buff)
-        gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, 0)
+
 
     def drag_update(self, gesture, dx, dy):
         dr = 2*np.array([dx, -dy], 'f')/self.viewport[0]*self.gl_area.get_scale_factor()
@@ -468,8 +471,8 @@ class Plots(Gtk.Application):
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
             filename = dialog.get_filename()
-            window = self.gl_area.get_window()
-            width, height = window.get_width(), window.get_height()
+            width, height = self.viewport.astype(int)
+
             # surface = Gdk.Window.create_similar_surface(
             #     window, cairo.Content.COLOR, width, height)
             # #cairo_context = cairo.Context(target=surface)
@@ -481,11 +484,19 @@ class Plots(Gtk.Application):
             # pixbuf.savev(filename, "png", [])
 
             default_ID = gl.glGetIntegerv(gl.GL_FRAMEBUFFER_BINDING)
-            gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, self.fbo)
-            gl.glClearColor(1.0, 0.0, 1.0, 1.0)
-            gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
 
-            width = height = 400
+            gl.glBindTexture(gl.GL_TEXTURE_2D, self.plane_texture)
+            gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, width, height, 0, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, None)
+            gl.glBindTexture(gl.GL_TEXTURE_2D, 0)
+
+            gl.glBindRenderbuffer(gl.GL_RENDERBUFFER, self.depth_buff)
+            gl.glRenderbufferStorage(gl.GL_RENDERBUFFER, gl.GL_DEPTH_COMPONENT, width, height)
+            gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, self.fbo)
+            gl.glFramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_COLOR_ATTACHMENT0, gl.GL_TEXTURE_2D, self.plane_texture, 0)
+            gl.glFramebufferRenderbuffer(gl.GL_FRAMEBUFFER, gl.GL_DEPTH_ATTACHMENT, gl.GL_RENDERBUFFER, self.depth_buff)
+
+            self.render()
+
             pixels = gl.glReadPixels(0, 0, width, height, gl.GL_RGB, gl.GL_UNSIGNED_BYTE)
             image = Image.frombytes("RGB", (width, height), pixels)
             image = image.transpose(Image.FLIP_TOP_BOTTOM)
