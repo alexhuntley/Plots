@@ -19,7 +19,7 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf
+from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf, cairo
 
 from plots import formula, formularow, rowcommands
 from plots.text import TextRenderer
@@ -34,6 +34,8 @@ import importlib.resources as resources
 import re
 import math
 import numpy as np
+
+from PIL import Image
 
 class Plots(Gtk.Application):
     INIT_SCALE = 10
@@ -131,6 +133,7 @@ class Plots(Gtk.Application):
         menu_button = builder.get_object("menu_button")
 
         self.menu = Gio.Menu()
+        self.menu.append(_("_Export…"), "app.export")
         self.menu.append(_("Help"), "app.help")
         self.menu.append(_("About Plots"), "app.about")
         menu_button.set_menu_model(self.menu)
@@ -144,6 +147,11 @@ class Plots(Gtk.Application):
         help_action.connect("activate", self.help_cb)
         help_action.set_enabled(True)
         self.add_action(help_action)
+
+        export_action = Gio.SimpleAction.new("export", None)
+        export_action.connect("activate", self.export_cb)
+        export_action.set_enabled(True)
+        self.add_action(export_action)
 
         for c in self.formula_box.get_children():
             self.formula_box.remove(c)
@@ -414,6 +422,49 @@ class Plots(Gtk.Application):
 
     def help_cb(self, action, _):
         Gtk.show_uri(None, "help:plots", Gdk.CURRENT_TIME)
+
+    def export_cb(self, action, parameter):
+        dialog = Gtk.FileChooserDialog(
+            title=_("Export image"),
+            parent=self.window,
+            action=Gtk.FileChooserAction.SAVE
+        )
+        dialog.add_buttons(
+            _("Cancel"),
+            Gtk.ResponseType.CANCEL,
+            _("Export"),
+            Gtk.ResponseType.OK,
+        )
+        filter_png = Gtk.FileFilter()
+        filter_png.set_name(_("PNG image"))
+        filter_png.add_mime_type("image/png")
+        dialog.add_filter(filter_png)
+        dialog.set_current_name(_("Untitled plot") + ".png")
+
+        response = dialog.run()
+        if response == Gtk.ResponseType.OK:
+            filename = dialog.get_filename()
+            window = self.gl_area.get_window()
+            width, height = window.get_width(), window.get_height()
+            # surface = Gdk.Window.create_similar_surface(
+            #     window, cairo.Content.COLOR, width, height)
+            # #cairo_context = cairo.Context(target=surface)
+            # #Gdk.cairo_set_source_window(cairo_context, window, 0, 0)
+            # #cairo_context.paint()
+
+            # #surface.write_to_png(filename)
+            # pixbuf = Gdk.pixbuf_get_from_surface(surface, 0, 0, width, height)
+            # pixbuf.savev(filename, "png", [])
+
+            pixels = gl.glReadPixels(0, 0, width, height, gl.GL_RGB, gl.GL_UNSIGNED_BYTE)
+            image = Image.frombytes("RGB", (width, height), pixels)
+            image = image.transpose(Image.FLIP_TOP_BOTTOM)
+            image.save(filename)
+
+        elif response == Gtk.ResponseType.CANCEL:
+            pass
+
+        dialog.destroy()
 
     def add_to_history(self, command):
         if self.can_redo():
