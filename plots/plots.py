@@ -310,6 +310,29 @@ class Plots(Gtk.Application):
 
         self.text_renderer = TextRenderer()
 
+        w_width = 400
+        w_height = 400
+        self.plane_texture = gl.glGenTextures(1)
+        gl.glBindTexture(gl.GL_TEXTURE_2D, self.plane_texture)
+        # texture wrapping params
+        gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_S, gl.GL_REPEAT)
+        gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_T, gl.GL_REPEAT)
+        # texture filtering params
+        gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR)
+        gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR)
+        gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, w_width, w_height, 0, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, None)
+        gl.glBindTexture(gl.GL_TEXTURE_2D, 0)
+
+        depth_buff = gl.glGenRenderbuffers(1)
+        gl.glBindRenderbuffer(gl.GL_RENDERBUFFER, depth_buff)
+        gl.glRenderbufferStorage(gl.GL_RENDERBUFFER, gl.GL_DEPTH_COMPONENT, w_width, w_height)
+
+        self.fbo = gl.glGenFramebuffers(1)
+        gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, self.fbo)
+        gl.glFramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_COLOR_ATTACHMENT0, gl.GL_TEXTURE_2D, self.plane_texture, 0)
+        gl.glFramebufferRenderbuffer(gl.GL_FRAMEBUFFER, gl.GL_DEPTH_ATTACHMENT, gl.GL_RENDERBUFFER, depth_buff)
+        gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, 0)
+
     def drag_update(self, gesture, dx, dy):
         dr = 2*np.array([dx, -dy], 'f')/self.viewport[0]*self.gl_area.get_scale_factor()
         self.translation = self.init_translation + dr*self.scale
@@ -435,6 +458,7 @@ class Plots(Gtk.Application):
             _("Export"),
             Gtk.ResponseType.OK,
         )
+        dialog.set_do_overwrite_confirmation(True)
         filter_png = Gtk.FileFilter()
         filter_png.set_name(_("PNG image"))
         filter_png.add_mime_type("image/png")
@@ -456,10 +480,18 @@ class Plots(Gtk.Application):
             # pixbuf = Gdk.pixbuf_get_from_surface(surface, 0, 0, width, height)
             # pixbuf.savev(filename, "png", [])
 
+            default_ID = gl.glGetIntegerv(gl.GL_FRAMEBUFFER_BINDING)
+            gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, self.fbo)
+            gl.glClearColor(1.0, 0.0, 1.0, 1.0)
+            gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
+
+            width = height = 400
             pixels = gl.glReadPixels(0, 0, width, height, gl.GL_RGB, gl.GL_UNSIGNED_BYTE)
             image = Image.frombytes("RGB", (width, height), pixels)
             image = image.transpose(Image.FLIP_TOP_BOTTOM)
             image.save(filename)
+
+            gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, default_ID)
 
         elif response == Gtk.ResponseType.CANCEL:
             pass
