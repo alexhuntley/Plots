@@ -32,12 +32,12 @@ from contextlib import contextmanager
 # - LearnOpenGL Text Rendering
 #   https://learnopengl.com/In-Practice/Text-Rendering
 class TextRenderer():
-    def __init__(self):
+    def __init__(self, fontsize=14, scale_factor=1):
         self.base, self.texid = 0, 0
         self.width, self.height = 0, 0
         self.characters = []
         self.initgl()
-        self.fontsize = 14
+        self.fontsize = fontsize * scale_factor
         self.makefont(resources.open_binary('plots.res', 'DejaVuSans.ttf'),
                       self.fontsize)
 

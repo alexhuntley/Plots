@@ -257,7 +257,7 @@ class Plots(Gtk.Application):
         gl.glBindVertexArray(self.vao)
         gl.glDrawArrays(gl.GL_TRIANGLES, 0, 18)
         gl.glBindVertexArray(0)
-        return
+
         with self.text_renderer.render(w, h) as r:
             low = major_grid * np.floor(
                 self.device_to_graph(np.array([0, h]))/major_grid)
@@ -319,22 +319,7 @@ class Plots(Gtk.Application):
         self.vbo.unbind()
         gl.glBindVertexArray(0)
 
-        self.text_renderer = TextRenderer()
-
-        self.plane_texture = gl.glGenTextures(1)
-        gl.glBindTexture(gl.GL_TEXTURE_2D, self.plane_texture)
-        # texture wrapping params
-        gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_S, gl.GL_REPEAT)
-        gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_T, gl.GL_REPEAT)
-        # texture filtering params
-        gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR)
-        gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR)
-        gl.glBindTexture(gl.GL_TEXTURE_2D, 0)
-
-        self.depth_buff = gl.glGenRenderbuffers(1)
-
-        self.fbo = gl.glGenFramebuffers(1)
-
+        self.text_renderer = TextRenderer(scale_factor=area.get_scale_factor())
 
     def drag_update(self, gesture, dx, dy):
         dr = 2*np.array([dx, -dy], 'f')/self.viewport[0]*self.gl_area.get_scale_factor()
@@ -484,18 +469,7 @@ class Plots(Gtk.Application):
             # pixbuf.savev(filename, "png", [])
 
             default_ID = gl.glGetIntegerv(gl.GL_FRAMEBUFFER_BINDING)
-
-            gl.glBindTexture(gl.GL_TEXTURE_2D, self.plane_texture)
-            gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, width, height, 0, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, None)
-            gl.glBindTexture(gl.GL_TEXTURE_2D, 0)
-
-            gl.glBindRenderbuffer(gl.GL_RENDERBUFFER, self.depth_buff)
-            gl.glRenderbufferStorage(gl.GL_RENDERBUFFER, gl.GL_DEPTH_COMPONENT, width, height)
-            gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, self.fbo)
-            gl.glFramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_COLOR_ATTACHMENT0, gl.GL_TEXTURE_2D, self.plane_texture, 0)
-            gl.glFramebufferRenderbuffer(gl.GL_FRAMEBUFFER, gl.GL_DEPTH_ATTACHMENT, gl.GL_RENDERBUFFER, self.depth_buff)
-
-            self.render()
+            gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, self.gl_area_fbo)
 
             pixels = gl.glReadPixels(0, 0, width, height, gl.GL_RGB, gl.GL_UNSIGNED_BYTE)
             image = Image.frombytes("RGB", (width, height), pixels)
