@@ -18,7 +18,7 @@
 import gi
 from gi.repository import Gtk, Gdk, Gio, GdkPixbuf
 
-from plots import formula, plots, rowcommands
+from plots import formula, plots, rowcommands, colorpicker
 from plots.data import jinja_env
 import re, math
 
@@ -231,8 +231,9 @@ class FormulaRow():
         self.delete_button = builder.get_object("delete_button")
         self.viewport = builder.get_object("editor_viewport")
         button_box = builder.get_object("button_box")
-        self.color_picker = Gtk.ColorButton()
+        self.color_picker = colorpicker.PopoverColorPicker()#Gtk.ColorButton()
         button_box.pack_start(self.color_picker, False, False, 0)
+        #button_box.pack_start(colorpicker.PopoverColorPicker(), False, False, 0)
         self.slider_box = builder.get_object("slider_box")
         self.slider = builder.get_object("slider")
         self.slider_upper = builder.get_object("slider_upper")
@@ -244,7 +245,7 @@ class FormulaRow():
         self.editor.connect("edit", self.edited)
         self.editor.connect("cursor_position", self.cursor_position)
         self.delete_button.connect("clicked", self.delete)
-        self.color_picker.connect("color-set", self.edited)
+        self.color_picker.connect("color-activated", self.on_color_activated)
         self.slider.connect("value-changed", self.slider_changed)
         self.slider_upper.connect("changed", self.slider_limits_changed)
         self.slider_lower.connect("changed", self.slider_limits_changed)
@@ -275,6 +276,9 @@ class FormulaRow():
             adj.value = x - 4
         elif x + 4 > adj.value + adj.page_size:
             adj.value = x - adj.page_size + 4
+
+    def on_color_activated(self, widget, chooser, color):
+        self.edited(widget)
 
     def edited(self, widget, record=True):
         body, expr = self.editor.expr.to_glsl()
