@@ -19,7 +19,7 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf
+from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf, cairo
 
 from plots import formula, formularow, rowcommands
 from plots.text import TextRenderer
@@ -131,6 +131,7 @@ class Plots(Gtk.Application):
         menu_button = builder.get_object("menu_button")
 
         self.menu = Gio.Menu()
+        self.menu.append(_("_Export…"), "app.export")
         self.menu.append(_("Help"), "app.help")
         self.menu.append(_("About Plots"), "app.about")
         menu_button.set_menu_model(self.menu)
@@ -144,6 +145,11 @@ class Plots(Gtk.Application):
         help_action.connect("activate", self.help_cb)
         help_action.set_enabled(True)
         self.add_action(help_action)
+
+        export_action = Gio.SimpleAction.new("export", None)
+        export_action.connect("activate", self.export_cb)
+        export_action.set_enabled(True)
+        self.add_action(export_action)
 
         for c in self.formula_box.get_children():
             self.formula_box.remove(c)
@@ -215,9 +221,19 @@ class Plots(Gtk.Application):
         w = area.get_allocated_width() * area.get_scale_factor()
         h = area.get_allocated_height() * area.get_scale_factor()
         self.viewport = np.array([w, h], 'f')
+        self.render()
+        return True
+
+    def get_fbo(self):
+        return gl.glGetIntegerv(gl.GL_FRAMEBUFFER_BINDING)
+
+    def render(self):
+        self.gl_area_fbo = self.get_fbo()
         graph_extent = 2*self.viewport/self.viewport[0]*self.scale
         # extent of each pixel, in graph coordinates
         pixel_extent = graph_extent / self.viewport
+        w, h = self.viewport.astype(int)
+
         gl.glViewport(0, 0, w, h)
 
         gl.glClearColor(0, 0, 1, 0)
@@ -239,6 +255,7 @@ class Plots(Gtk.Application):
         gl.glBindVertexArray(self.vao)
         gl.glDrawArrays(gl.GL_TRIANGLES, 0, 18)
         gl.glBindVertexArray(0)
+
         with self.text_renderer.render(w, h) as r:
             low = major_grid * np.floor(
                 self.device_to_graph(np.array([0, h]))/major_grid)
@@ -261,7 +278,7 @@ class Plots(Gtk.Application):
                     r.render_text(label, pos, valign='center', halign='right')
             r.render_text("0", self.graph_to_device(np.zeros(2)) + np.array([-pad, pad]),
                           valign='top', halign='right')
-        return True
+
 
     def uniform(self, name):
         return gl.glGetUniformLocation(self.shader, name)
@@ -300,7 +317,7 @@ class Plots(Gtk.Application):
         self.vbo.unbind()
         gl.glBindVertexArray(0)
 
-        self.text_renderer = TextRenderer()
+        self.text_renderer = TextRenderer(scale_factor=area.get_scale_factor())
 
     def drag_update(self, gesture, dx, dy):
         dr = 2*np.array([dx, -dy], 'f')/self.viewport[0]*self.gl_area.get_scale_factor()
@@ -414,6 +431,39 @@ class Plots(Gtk.Application):
 
     def help_cb(self, action, _):
         Gtk.show_uri(None, "help:plots", Gdk.CURRENT_TIME)
+
+    def export_cb(self, action, parameter):
+        dialog = Gtk.FileChooserNative.new(
+            _("Export image"),
+            self.window,
+            Gtk.FileChooserAction.SAVE,
+            _("_Export"),
+            _("_Cancel")
+        )
+        dialog.set_do_overwrite_confirmation(True)
+        dialog.set_current_name(_("Untitled plot") + ".png")
+
+        response = dialog.run()
+        if response == Gtk.ResponseType.ACCEPT:
+            filename = dialog.get_filename()
+            width, height = self.viewport.astype(int)
+
+            # read out the GLArea custom framebuffer, then switch back
+            prev_fbo = gl.glGetIntegerv(gl.GL_FRAMEBUFFER_BINDING)
+            gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, self.gl_area_fbo)
+            pixels = gl.glReadPixels(0, 0, width, height, gl.GL_RGB, gl.GL_UNSIGNED_BYTE)
+            gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, prev_fbo)
+
+            pixbuf = GdkPixbuf.Pixbuf.new_from_data(
+                pixels, GdkPixbuf.Colorspace.RGB, False, 8,
+                width, height, width*3, None, None
+            ).flip(horizontal=False)
+            pixbuf.savev(filename, "png", [])
+
+        elif response == Gtk.ResponseType.CANCEL:
+            pass
+
+        dialog.destroy()
 
     def add_to_history(self, command):
         if self.can_redo():
