@@ -435,26 +435,18 @@ class Plots(Gtk.Application):
         Gtk.show_uri(None, "help:plots", Gdk.CURRENT_TIME)
 
     def export_cb(self, action, parameter):
-        dialog = Gtk.FileChooserDialog(
-            title=_("Export image"),
-            parent=self.window,
-            action=Gtk.FileChooserAction.SAVE
-        )
-        dialog.add_buttons(
-            _("Cancel"),
-            Gtk.ResponseType.CANCEL,
-            _("Export"),
-            Gtk.ResponseType.OK,
+        dialog = Gtk.FileChooserNative.new(
+            _("Export image"),
+            self.window,
+            Gtk.FileChooserAction.SAVE,
+            _("_Export"),
+            _("_Cancel")
         )
         dialog.set_do_overwrite_confirmation(True)
-        filter_png = Gtk.FileFilter()
-        filter_png.set_name(_("PNG image"))
-        filter_png.add_mime_type("image/png")
-        dialog.add_filter(filter_png)
         dialog.set_current_name(_("Untitled plot") + ".png")
 
         response = dialog.run()
-        if response == Gtk.ResponseType.OK:
+        if response == Gtk.ResponseType.ACCEPT:
             filename = dialog.get_filename()
             width, height = self.viewport.astype(int)
 
