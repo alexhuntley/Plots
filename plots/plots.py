@@ -35,8 +35,6 @@ import re
 import math
 import numpy as np
 
-from PIL import Image
-
 class Plots(Gtk.Application):
     INIT_SCALE = 10
     ZOOM_BUTTON_FACTOR = 0.3
@@ -450,25 +448,17 @@ class Plots(Gtk.Application):
             filename = dialog.get_filename()
             width, height = self.viewport.astype(int)
 
-            # surface = Gdk.Window.create_similar_surface(
-            #     window, cairo.Content.COLOR, width, height)
-            # #cairo_context = cairo.Context(target=surface)
-            # #Gdk.cairo_set_source_window(cairo_context, window, 0, 0)
-            # #cairo_context.paint()
-
-            # #surface.write_to_png(filename)
-            # pixbuf = Gdk.pixbuf_get_from_surface(surface, 0, 0, width, height)
-            # pixbuf.savev(filename, "png", [])
-
-            default_ID = gl.glGetIntegerv(gl.GL_FRAMEBUFFER_BINDING)
+            # read out the GLArea custom framebuffer, then switch back
+            prev_fbo = gl.glGetIntegerv(gl.GL_FRAMEBUFFER_BINDING)
             gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, self.gl_area_fbo)
-
             pixels = gl.glReadPixels(0, 0, width, height, gl.GL_RGB, gl.GL_UNSIGNED_BYTE)
-            image = Image.frombytes("RGB", (width, height), pixels)
-            image = image.transpose(Image.FLIP_TOP_BOTTOM)
-            image.save(filename)
+            gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, prev_fbo)
 
-            gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, default_ID)
+            pixbuf = GdkPixbuf.Pixbuf.new_from_data(
+                pixels, GdkPixbuf.Colorspace.RGB, False, 8,
+                width, height, width*3, None, None
+            ).flip(horizontal=False)
+            pixbuf.savev(filename, "png", [])
 
         elif response == Gtk.ResponseType.CANCEL:
             pass
