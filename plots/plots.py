@@ -52,7 +52,11 @@ class Plots(Gtk.Application):
         self.history_position = 0  # index of the last undone command / next in line for redo
         self.overlay_source = None
         Handy.init()
-        Handy.StyleManager.get_default ().set_color_scheme(Handy.ColorScheme.PREFER_LIGHT)
+        try:
+            Handy.StyleManager.get_default().set_color_scheme(
+                Handy.ColorScheme.PREFER_LIGHT)
+        except AttributeError: # StyleManager requires Handy v1.6
+            pass
 
     @property
     def target_scale(self):
