@@ -19,7 +19,8 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf, cairo
+gi.require_version('Handy', '1')
+from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf, cairo, Handy
 
 from plots import formula, formularow, rowcommands
 from plots.text import TextRenderer
@@ -50,6 +51,7 @@ class Plots(Gtk.Application):
         self.history = []
         self.history_position = 0  # index of the last undone command / next in line for redo
         self.overlay_source = None
+        Handy.init()
 
     @property
     def target_scale(self):
