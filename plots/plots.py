@@ -139,6 +139,7 @@ class Plots(Gtk.Application):
 
         self.menu = Gio.Menu()
         self.menu.append(_("_Export…"), "app.export")
+        self.menu.append(_("_Preferences"), "app.preferences")
         self.menu.append(_("Help"), "app.help")
         self.menu.append(_("About Plots"), "app.about")
         menu_button.set_menu_model(self.menu)
@@ -157,6 +158,11 @@ class Plots(Gtk.Application):
         export_action.connect("activate", self.export_cb)
         export_action.set_enabled(True)
         self.add_action(export_action)
+
+        prefs_action = Gio.SimpleAction.new("preferences", None)
+        prefs_action.connect("activate", self.prefs_cb)
+        prefs_action.set_enabled(True)
+        self.add_action(prefs_action)
 
         for c in self.formula_box.get_children():
             self.formula_box.remove(c)
@@ -435,6 +441,18 @@ class Plots(Gtk.Application):
         about_dialog.set_logo(self.window.get_icon())
         about_dialog.run()
         about_dialog.destroy()
+
+    def prefs_cb(self, action, param):
+        builder = Gtk.Builder()
+        builder.add_from_string(read_ui_file("preferences.glade"))
+        builder.set_translation_domain(plots.i18n.domain)
+        builder.connect_signals(self)
+
+        prefs_window = builder.get_object("prefs_window")
+        prefs_window.set_transient_for(self.window)
+        prefs_window.props.modal = True
+        prefs_window.show()
+        self.add_window(prefs_window)
 
     def help_cb(self, action, _):
         Gtk.show_uri(None, "help:plots", Gdk.CURRENT_TIME)
