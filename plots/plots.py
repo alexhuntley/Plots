@@ -22,7 +22,7 @@ gi.require_version('Gtk', '3.0')
 gi.require_version('Handy', '1')
 from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf, cairo, Handy
 
-from plots import formula, formularow, rowcommands
+from plots import formula, formularow, rowcommands, preferences
 from plots.text import TextRenderer
 from plots.i18n import _
 from plots.data import jinja_env
@@ -163,6 +163,7 @@ class Plots(Gtk.Application):
         prefs_action.connect("activate", self.prefs_cb)
         prefs_action.set_enabled(True)
         self.add_action(prefs_action)
+        self.prefs = preferences.Preferences(self.window)
 
         for c in self.formula_box.get_children():
             self.formula_box.remove(c)
@@ -443,16 +444,7 @@ class Plots(Gtk.Application):
         about_dialog.destroy()
 
     def prefs_cb(self, action, param):
-        builder = Gtk.Builder()
-        builder.add_from_string(read_ui_file("preferences.glade"))
-        builder.set_translation_domain(plots.i18n.domain)
-        builder.connect_signals(self)
-
-        prefs_window = builder.get_object("prefs_window")
-        prefs_window.set_transient_for(self.window)
-        prefs_window.props.modal = True
-        prefs_window.show()
-        self.add_window(prefs_window)
+        self.prefs.show()
 
     def help_cb(self, action, _):
         Gtk.show_uri(None, "help:plots", Gdk.CURRENT_TIME)
