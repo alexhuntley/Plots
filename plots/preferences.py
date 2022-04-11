@@ -21,6 +21,7 @@ import gi
 from gi.repository import Gtk
 
 import importlib.resources as resources
+import copy
 
 from plots.i18n import _
 import plots.i18n
@@ -29,23 +30,56 @@ def read_ui_file(name):
     return resources.read_text("plots.ui", name)
 
 class Preferences:
+    DEFAULTS = {
+        "rendering": {
+            "line_thickness": 2.0,
+            "samples": 32,
+        }
+    }
+
     def __init__(self, parent):
         self.parent = parent
+        self.data = copy.deepcopy(self.DEFAULTS)
 
     def show(self):
-        self.window = PreferencesWindow(self.parent)
+        self.window = PreferencesWindow(self, self.parent)
         self.window.show()
 
+    def __getitem__(self, key):
+        return self.data[key]
+
+    def __setitem__(self, key, value):
+        self.data[key] = value
+
 class PreferencesWindow:
-    def __init__(self, parent):
+    def __init__(self, prefs, parent_window):
+        self.prefs = prefs
+
         builder = Gtk.Builder()
         builder.add_from_string(read_ui_file("preferences.glade"))
         builder.set_translation_domain(plots.i18n.domain)
         builder.connect_signals(self)
 
         self.prefs_window = builder.get_object("prefs_window")
-        self.prefs_window.set_transient_for(parent)
+        self.prefs_window.set_transient_for(parent_window)
         self.prefs_window.props.modal = True
+        self.prefs_window.connect("delete-event", self.delete_cb)
+
+        self.line_thickness_scale = builder.get_object("line_thickness_scale")
+        self.line_thickness_scale.set_range(1, 10)
+        self.line_thickness_scale.set_increments(0.5, 3)
+        self.line_thickness_scale.set_value(prefs["rendering"]["line_thickness"])
+
+        self.samples_scale = builder.get_object("samples_scale")
+        self.samples_scale.set_range(4, 128)
+        self.samples_scale.set_value(prefs["rendering"]["samples"])
+        self.samples_scale.set_digits(0)
+        self.samples_scale.set_increments(1, 10)
 
     def show(self):
         self.prefs_window.show()
+
+    def delete_cb(self, widget, event):
+        r = self.prefs["rendering"]
+        r["line_thickness"] = self.line_thickness_scale.get_value()
+        r["samples"] = int(self.samples_scale.get_value())

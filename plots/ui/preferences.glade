@@ -35,14 +35,14 @@
               </object>
             </child>
             <child>
-              <object class="HdyActionRow" id="samples_scale">
+              <object class="HdyActionRow">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="title" translatable="yes">Samples per pixel</property>
                 <property name="subtitle" translatable="yes">Reduce to improve performance</property>
                 <property name="use-underline">True</property>
                 <child>
-                  <object class="GtkScale">
+                  <object class="GtkScale" id="samples_scale">
                     <property name="width-request">200</property>
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
