@@ -109,6 +109,7 @@ class Plots(Gtk.Application):
         self.undo_button = builder.get_object("undo")
         self.redo_button = builder.get_object("redo")
         self.window.connect("key-press-event", self.key_pressed)
+        self.window.connect("delete-event", self.delete_cb)
 
         self.gl_area = builder.get_object("gl")
         self.gl_area.connect("render", self.gl_render)
@@ -264,6 +265,8 @@ class Plots(Gtk.Application):
         gl.glUniform1f(self.uniform("scale"), self.scale)
         gl.glUniform1f(self.uniform("major_grid"), major_grid)
         gl.glUniform1f(self.uniform("minor_grid"), minor_grid)
+        gl.glUniform1f(self.uniform("samples"), self.prefs["rendering"]["samples"])
+        gl.glUniform1f(self.uniform("line_thickness"), self.prefs["rendering"]["line_thickness"])
         for slider in self.slider_rows:
             gl.glUniform1f(self.uniform(slider.name), slider.value)
         gl.glBindVertexArray(self.vao)
@@ -481,6 +484,9 @@ class Plots(Gtk.Application):
             pass
 
         dialog.destroy()
+
+    def delete_cb(self, widget, event):
+        self.prefs.save_config()
 
     def add_to_history(self, command):
         if self.can_redo():

@@ -22,12 +22,21 @@ from gi.repository import Gtk
 
 import importlib.resources as resources
 import copy
+import os
+import configparser
 
 from plots.i18n import _
 import plots.i18n
 
 def read_ui_file(name):
     return resources.read_text("plots.ui", name)
+
+def xdg_config_home():
+    varname = "XDG_CONFIG_HOME"
+    if varname in os.environ:
+        return os.environ[varname]
+    else:
+        return "{}/.config".format(os.environ["HOME"])
 
 class Preferences:
     DEFAULTS = {
@@ -36,10 +45,33 @@ class Preferences:
             "samples": 32,
         }
     }
+    CONFIG_DIR = "plots"
+    CONFIG_FILENAME = "config.ini"
 
     def __init__(self, parent):
         self.parent = parent
         self.data = copy.deepcopy(self.DEFAULTS)
+        self.load_config()
+
+    def load_config(self):
+        filename = f"{xdg_config_home()}/{self.CONFIG_DIR}/{self.CONFIG_FILENAME}"
+        config = configparser.ConfigParser()
+        config.read(filename)
+        for sec in self.data.keys() & config.keys():
+            datasec = self.data[sec]
+            for option in datasec.keys() & config[sec].keys():
+                if option in datasec:
+                    t = type(datasec[option])
+                    datasec[option] = t(config[sec][option])
+
+    def save_config(self):
+        conf_dir = f"{xdg_config_home()}/{self.CONFIG_DIR}"
+        os.makedirs(conf_dir, exist_ok=True)
+        filename = f"{conf_dir}/{self.CONFIG_FILENAME}"
+        config = configparser.ConfigParser()
+        config.read_dict(self.data)
+        with open(filename, "w") as f:
+            config.write(f)
 
     def show(self):
         self.window = PreferencesWindow(self, self.parent)

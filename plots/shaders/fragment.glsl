@@ -25,6 +25,8 @@ uniform vec2 pixel_extent;
 uniform float scale;
 uniform float major_grid;
 uniform float minor_grid;
+uniform float samples;
+uniform float line_thickness;
 
 #define pi 3.141592653589793
 #define e 2.718281828459045
@@ -90,8 +92,7 @@ float mypow(float x, float y) {
 void main() {
     vec3 color = vec3(1.0);
     vec3 formula_color = vec3(0);
-    float samples = 36;
-    float sample_extent = 3*pixel_extent.x;
+    float sample_extent = line_thickness*pixel_extent.x;
     float step = sample_extent / samples;
     float jitter = .4;
 
