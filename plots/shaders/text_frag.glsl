@@ -22,7 +22,8 @@
 in vec2 vUV;
 
 uniform sampler2D u_texture;
-uniform vec3 textColor;
+uniform vec3 fg_color;
+uniform vec3 bg_color;
 
 out vec4 fragColor;
 
@@ -30,5 +31,5 @@ void main()
 {
     vec2 uv = vUV.xy;
     float text = texture(u_texture, uv).r;
-    fragColor = vec4(vec3(1-text), clamp(text, 0.8, 1));
+    fragColor = mix(vec4(bg_color, 1), vec4(fg_color, 1), text);
 }

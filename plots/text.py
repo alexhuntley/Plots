@@ -112,7 +112,8 @@ class TextRenderer():
     def width_of(self, text, scale=1):
         return sum((self.characters[ord(c)][3] >> 6)*scale for c in text)
 
-    def render_text(self, text, pos, scale=1, dir=(1,0), halign='left', valign='bottom'):
+    def render_text(self, text, pos, scale=1, dir=(1,0), halign='left',
+                    valign='bottom', text_color=(.0, .0, .0), bg_color=(1., 1., 1.)):
         offset = glm.vec3()
         if halign in ('center', 'right'):
             width = self.width_of(text, scale)
@@ -128,7 +129,8 @@ class TextRenderer():
         angle_rad = math.atan2(dir[1], dir[0])
         rotateM = glm.rotate(glm.mat4(1), angle_rad, glm.vec3(0, 0, 1))
         transOriginM = glm.translate(glm.mat4(1), glm.vec3(*pos, 0) + offset)
-        gl.glUniform3f(self.uniform("textColor"), .0, .0, .0)
+        gl.glUniform3f(self.uniform("fg_color"), *text_color)
+        gl.glUniform3f(self.uniform("bg_color"), *bg_color)
         char_x = 0
         for c in text:
             c = ord(c)

@@ -236,6 +236,8 @@ class Plots(Gtk.Application):
         w = area.get_allocated_width() * area.get_scale_factor()
         h = area.get_allocated_height() * area.get_scale_factor()
         self.viewport = np.array([w, h], 'f')
+        self.fg_color = tuple(self.window.get_style_context().get_color(Gtk.StateFlags.ACTIVE))[:3]
+        self.bg_color = tuple(self.window.get_style_context().get_background_color(Gtk.StateFlags.ACTIVE))[:3]
         self.render()
         return True
 
@@ -267,6 +269,8 @@ class Plots(Gtk.Application):
         gl.glUniform1f(self.uniform("minor_grid"), minor_grid)
         gl.glUniform1f(self.uniform("samples"), self.prefs["rendering"]["samples"])
         gl.glUniform1f(self.uniform("line_thickness"), self.prefs["rendering"]["line_thickness"])
+        gl.glUniform3f(self.uniform("fg_color"), *self.fg_color)
+        gl.glUniform3f(self.uniform("bg_color"), *self.bg_color)
         for slider in self.slider_rows:
             gl.glUniform1f(self.uniform(slider.name), slider.value)
         gl.glBindVertexArray(self.vao)
@@ -285,16 +289,18 @@ class Plots(Gtk.Application):
                 pos = self.graph_to_device(np.array([x, 0]))
                 pos[1] = np.clip(pos[1] + pad, pad, self.viewport[1] - r.top_bearing - pad)
                 if x:
-                    r.render_text("%g" % x, pos, valign='top', halign='center')
+                    r.render_text("%g" % x, pos, valign='top', halign='center',
+                                  text_color=self.fg_color, bg_color=self.bg_color)
             for j in range(round(n[1])+1):
                 y = low[1] + j*major_grid
                 label = "%g" % y
                 pos = self.graph_to_device(np.array([0, y]))
                 pos[0] = np.clip(pos[0] - pad, r.width_of(label) + pad, self.viewport[0] - pad)
                 if y:
-                    r.render_text(label, pos, valign='center', halign='right')
+                    r.render_text(label, pos, valign='center', halign='right',
+                                  text_color=self.fg_color, bg_color=self.bg_color)
             r.render_text("0", self.graph_to_device(np.zeros(2)) + np.array([-pad, pad]),
-                          valign='top', halign='right')
+                          valign='top', halign='right', text_color=self.fg_color, bg_color=self.bg_color)
 
 
     def uniform(self, name):

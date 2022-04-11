@@ -27,6 +27,8 @@ uniform float major_grid;
 uniform float minor_grid;
 uniform float samples;
 uniform float line_thickness;
+uniform vec3 fg_color;
+uniform vec3 bg_color;
 
 #define pi 3.141592653589793
 #define e 2.718281828459045
@@ -90,7 +92,7 @@ float mypow(float x, float y) {
 {% endfor %}
 
 void main() {
-    vec3 color = vec3(1.0);
+    vec3 color = bg_color;
     vec3 formula_color = vec3(0);
     float sample_extent = line_thickness*pixel_extent.x;
     float step = sample_extent / samples;
@@ -103,11 +105,14 @@ void main() {
     {% endfor %}
 
     float axis_width = pixel_extent.x;
-    color -= (1.0-vec3(0.2,0.2,0.2))*(1.0-smoothstep(axis_width*.6, axis_width*.65, abs(graph_pos.x)));
-    color -= (1.0-vec3(0.2,0.2,0.2))*(1.0-smoothstep(axis_width*.6, axis_width*.65, abs(graph_pos.y)));
-    color -= (1.0-vec3(0.7,0.7,0.7))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(zmod(graph_pos.x, major_grid))));
-    color -= (1.0-vec3(0.7,0.7,0.7))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(zmod(graph_pos.y, major_grid))));
-    color -= (1.0-vec3(0.9,0.9,0.9))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(zmod(graph_pos.x, minor_grid))));
-    color -= (1.0-vec3(0.9,0.9,0.9))*(1.0-smoothstep(axis_width, axis_width*1.05, abs(zmod(graph_pos.y, minor_grid))));
+    vec3 minor_color = mix(fg_color, bg_color, 0.6);
+    color = mix(minor_color, color, smoothstep(axis_width*.4, axis_width*.6, abs(zmod(graph_pos.x, minor_grid))));
+    color = mix(minor_color, color, smoothstep(axis_width*.4, axis_width*.6, abs(zmod(graph_pos.y, minor_grid))));
+    vec3 major_color = mix(fg_color, bg_color, 0.4);
+    color = mix(major_color, color, smoothstep(axis_width, axis_width*1.05, abs(zmod(graph_pos.x, major_grid))));
+    color = mix(major_color, color, smoothstep(axis_width, axis_width*1.05, abs(zmod(graph_pos.y, major_grid))));
+    vec3 axis_color = fg_color;
+    color = mix(axis_color, color, smoothstep(axis_width*.6, axis_width*.65, abs(graph_pos.x)));
+    color = mix(axis_color, color, smoothstep(axis_width*.6, axis_width*.65, abs(graph_pos.y)));
     rgba = vec4(color, 1);
 }
