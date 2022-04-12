@@ -208,8 +208,10 @@ class ImplicitFormula(RowData):
 
 
 class FormulaRow():
+    BLACK = [0,0,0]
+    WHITE = [238, 238, 236]
     PALETTE = [
-        [0,0,0     ],
+        BLACK,
         [28,113,216],
         [46,194,126],
         [245,194,17],
@@ -218,7 +220,9 @@ class FormulaRow():
         [129,61,156],
         [134,94,60 ],
     ]
+    DARK_PALETTE = [WHITE] + PALETTE[1:]
     PALETTE = [Gdk.RGBA(*(color/255 for color in colors)) for colors in PALETTE]
+    DARK_PALETTE = [Gdk.RGBA(*(color/255 for color in colors)) for colors in DARK_PALETTE]
     _palette_use_next = 0
 
     def __init__(self, app):
@@ -231,9 +235,8 @@ class FormulaRow():
         self.delete_button = builder.get_object("delete_button")
         self.viewport = builder.get_object("editor_viewport")
         button_box = builder.get_object("button_box")
-        self.color_picker = colorpicker.PopoverColorPicker()#Gtk.ColorButton()
+        self.color_picker = colorpicker.PopoverColorPicker()
         button_box.pack_start(self.color_picker, False, False, 0)
-        #button_box.pack_start(colorpicker.PopoverColorPicker(), False, False, 0)
         self.slider_box = builder.get_object("slider_box")
         self.slider = builder.get_object("slider")
         self.slider_upper = builder.get_object("slider_upper")
@@ -254,8 +257,10 @@ class FormulaRow():
         self.formula_box.connect("realize", self.on_realize)
         self.editor.grab_focus()
         self.old = self.construct_memory()
+        self.dark_style = False
 
     def on_realize(self, widget):
+        self.formula_box.connect("style-updated", self.style_cb)
         self.slider_box.hide()
         self.slider.set_adjustment(Gtk.Adjustment(0.5, 0, 1, 0.1, 0, 0))
 
@@ -360,3 +365,22 @@ class FormulaRow():
 
     def get_data(self):
         return self.data
+
+    def style_cb(self, widget):
+        style = self.style_is_dark()
+        if style != self.dark_style:
+            self.dark_style = style
+            new_palette = [self.PALETTE, self.DARK_PALETTE][self.dark_style]
+            old_palette = [self.PALETTE, self.DARK_PALETTE][not self.dark_style]
+            if self.color_picker.get_rgba() == old_palette[0]:
+                self.color_picker.set_rgba(new_palette[0])
+                self.edited(None, record=False)
+            self.color_picker.add_palette(Gtk.Orientation.HORIZONTAL, 9, None)
+            self.color_picker.add_palette(Gtk.Orientation.HORIZONTAL, 9, new_palette)
+
+
+    def style_is_dark(self):
+        context = self.formula_box.get_style_context()
+        fg = context.get_color(Gtk.StateFlags.ACTIVE)
+        bg = context.get_background_color(Gtk.StateFlags.ACTIVE)
+        return sum([*fg][:3]) > sum([*bg][:3])
