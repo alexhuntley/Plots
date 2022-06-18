@@ -1,0 +1,60 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      xmlns:its="http://www.w3.org/2005/11/its"
+      type="guide" style="2column task"
+      id="basic-functions">
+
+  <info>
+    <link type="guide" xref="index#functions"/>
+
+    <desc>Simple operators</desc>
+  </info>
+<title>Basic arithmetic operators</title>
+<p>Simple operators can be inserted using the following keystrokes:</p>
+    <table>
+    <tr>
+    <td><p>×</p></td>
+    <td><p><key>*</key></p></td>
+    </tr>
+    <tr>
+    <td><p>÷</p></td>
+    <td><p><key>/</key></p></td>
+    </tr>
+    <tr>
+    <td><p>^</p></td>
+    <td><p><key>^</key></p></td>
+    </tr>
+    <tr>
+    <td><p>√</p></td>
+    <td><p><keyseq><key>sqrt</key></keyseq></p></td>
+    </tr>
+    <tr>
+    <td><p>³√</p></td>
+    <td><p><keyseq><key>nthroot</key><key>3</key></keyseq></p></td>
+    </tr>
+    <tr>
+    <td><p>(</p></td>
+    <td><p><key>(</key></p></td>
+    </tr>
+    <tr>
+    <td><p>)</p></td>
+    <td><p><key>)</key></p></td>
+    </tr>
+    <tr>
+    <td><p>[</p></td>
+    <td><p><key>[</key></p></td>
+    </tr>
+    <tr>
+    <td><p>]</p></td>
+    <td><p><key>]</key></p></td>
+    </tr>
+    <tr>
+    <td><p>{</p></td>
+    <td><p><key>{</key></p></td>
+    </tr>
+    <tr>
+    <td><p>}</p></td>
+    <td><p><key>}</key></p></td>
+    </tr>
+    </table>
+
+</page>
