@@ -5,9 +5,9 @@
 
     <desc>e.g. |x|, ⌈x⌉, ⌊x⌋, sgn(x)</desc>
   </info>
-  <title>Miscellaneous functions</title>
-  <p>The modulus of <em>x</em> can be inserted by typing <keyseq><key>|</key><key>x</key></keyseq>.</p>
-  <p>De floor functie  ⌊x⌋ wordt ingevoegd door <key>floor</key> te typen.</p>
-  <p>The ceiling function ⌈x⌉ can be inserted by typing <key>ceil</key>.</p>
-  <p>The sign function sgn(x) can be inserted by typing <key>sign</key> or <key>sgn</key>.</p>
+  <title>Diverse functies</title>
+  <p>De modulus van <em>x</em> kan worden ingevoegd door de combinatie <keyseq><key>|</key><key>x</key></keyseq> te typen.</p>
+  <p>De floor functie ⌊x⌋ wordt ingevoegd door <key>floor</key> te typen.</p>
+  <p>De ceiling functie ⌈x⌉ wordt ingevoegd door <key>ceil</key> te typen.</p>
+  <p>De sign functie sgn(x) kan worden ingevoegd door <key>sign</key> of <key>sgn</key> te typen.</p>
 </page>
