@@ -16,14 +16,14 @@
     Plots
   </title>
 
-  <p>Een eenvoudige grafiek-plot-app voor GNOME.</p>
+  <p>Een eenvoudige app om grafieken te plotten voor Gnome.</p>
 
   <section id="formulae" style="2column">
-    <title>Ondersteunde formuletypes</title>
+    <title>Supported formula types</title>
   </section>
 
   <section id="functions" style="2column">
-    <title>Beschikbare functies</title>
+    <title>Available functions</title>
   </section>
 
 
