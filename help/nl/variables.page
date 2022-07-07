@@ -5,13 +5,13 @@
 
     <desc>Easily adjustable parameters</desc>
   </info>
-  <title>Variabelen en schuifregelaars</title>
+  <title>Variables and sliders</title>
 
   <p>
-    Om een variabele te declareren typt u een vergelijking van de vorm <code><em>variable</em> = <em>value</em></code> in een leeg formulevak, waarbij <code><em>variable</em></code> een enkele Latijnse of Griekse letter is, en <code><em>value</em></code> een uitdrukking is die niet van positie mag afhangen, maar wel van voorafgaande variabelen.
+    To declare a variable, type an equation of the form <code><em>variable</em> = <em>value</em></code> into an empty formula box, where <code><em>variable</em></code> is a single Latin or Greek letter, and <code><em>value</em></code> is an expression which must not depend on position, but may depend on preceding variables.
   </p>
 
   <p>
-    If <code><em>value</em></code> is a literal integer or decimal number, Plots will display an adjustable slider control, allowing the variable to be adjusted interactively. The upper and lower limits of the slider can be edited using the adjacent fields.
+    Als <code><em>waarde</em></code> een literal geheel getal of een decimaal getal is, dan toont Plots een instelbare schuifregelaar, waarmee de variabele interactief kan worden aangepast. De boven- en ondergrens van de schuifregelaar kunnen worden aangepast met behulp van de aangrenzende velden.
   </p>
 </page>
