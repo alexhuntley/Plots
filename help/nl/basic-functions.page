@@ -5,8 +5,8 @@
 
     <desc>Simple operators</desc>
   </info>
-<title>Elementaire rekenkundige operatoren</title>
-<p>Eenvoudige operatoren kunnen worden ingevoegd met de volgende toetsaanslagen:</p>
+<title>Basic arithmetic operators</title>
+<p>Simple operators can be inserted using the following keystrokes:</p>
     <table>
     <tr>
     <td><p>×</p></td>
@@ -22,7 +22,7 @@
     </tr>
     <tr>
     <td><p>√</p></td>
-    <td><p><keyseq><key>wortel</key></keyseq></p></td>
+    <td><p><keyseq><key>sqrt</key></keyseq></p></td>
     </tr>
     <tr>
     <td><p>³√</p></td>
