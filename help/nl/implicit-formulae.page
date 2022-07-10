@@ -5,10 +5,10 @@
 
     <desc>Implicit formulae for <em>x</em> and <em>y</em></desc>
   </info>
-  <title>Implicit formulae of the form <em>f(x,y) = g(x,y)</em></title>
+  <title>Impliciete formules in de vorm <em>f(x,y) = g(x,y)</em></title>
 
   <p>
-    These can be entered into any regular formula box. They are the most general type of formula. <em>x</em> and <em>y</em> may appear anywhere in the equation.
+    Deze kunnen in elke normale formuleinvoer ingevoerd worden. Ze zijn het meest gebruikelijke type formule. <em>x</em> en <em>y</em> mogen overal in de formule voorkomen.
   </p>
 
 </page>
