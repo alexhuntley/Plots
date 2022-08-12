@@ -1,0 +1,32 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      xmlns:its="http://www.w3.org/2005/11/its"
+      type="guide" id="index">
+
+  <info>
+    <title type="link">Plots</title>
+    <title type="text">Plots</title>
+
+    <credit type="author">
+      <name>Alexander Huntley</name>
+      <email its:translate="no">huntley.alexander@gmail.com</email>
+      <years>2021</years>
+    </credit>
+    <include href="legal.xml" xmlns="http://www.w3.org/2001/XInclude"/>
+  </info>
+
+  <title>
+    Plots
+  </title>
+
+  <p>A simple graph plotting app for GNOME.</p>
+
+  <section id="formulae" style="2column">
+    <title>Supported formula types</title>
+  </section>
+
+  <section id="functions" style="2column">
+    <title>Available functions</title>
+  </section>
+
+
+</page>
