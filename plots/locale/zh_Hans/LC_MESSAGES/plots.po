@@ -8,39 +8,42 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-16 16:28+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2022-08-13 15:14+0000\n"
+"Last-Translator: liu lizhi <kz-xy@163.com>\n"
+"Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
+"plots/plots/zh_Hans/>\n"
 "Language: zh_Hans\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.14-dev\n"
 
 #: plots/plots.py:136
 msgid "Help"
-msgstr ""
+msgstr "帮助"
 
 #: plots/plots.py:137
 msgid "About Plots"
-msgstr ""
+msgstr "关于 Plots"
 
 #: plots/plots.py:280
 msgid ""
 "Warning: OpenGL {} is unsupported. Plots supports OpenGL 3.3 or greater."
-msgstr ""
+msgstr "警告：不支持 OpenGL {}。 Plots 支持 OpenGL 3.3 及更高版本。"
 
 #: plots/ui/about.glade.h:1
 msgid "Copyright © 2021 Alexander Huntley"
-msgstr ""
+msgstr "版权所有 © 2021 Alexander Huntley"
 
 #: plots/ui/about.glade.h:2
 msgid "A graph plotter for GNOME."
-msgstr ""
+msgstr "GNOME 桌面的绘图软件。"
 
 #: plots/ui/plots.glade.h:1
 msgid "Plots"
-msgstr ""
+msgstr "Plots"
 
 #: plots/ui/plots.glade.h:2
 msgid "Error:"
-msgstr ""
+msgstr "错误："
