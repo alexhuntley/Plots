@@ -139,6 +139,13 @@ class Editor(Gtk.DrawingArea):
                 return True
             else:
                 return False
+        if char in "²³":
+            self.cursor.insert_superscript_subscript(superscript=True)
+            translation = str.maketrans("²³", "23")
+            self.cursor.insert(Atom(char.translate(translation)))
+            self.queue_draw()
+            self.emit("edit")
+            return
         if char.isalnum():
             self.cursor.insert(Atom(char))
             self.queue_draw()
