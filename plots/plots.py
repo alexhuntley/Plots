@@ -236,10 +236,12 @@ class Plots(Gtk.Application):
         w = area.get_allocated_width() * area.get_scale_factor()
         h = area.get_allocated_height() * area.get_scale_factor()
         self.viewport = np.array([w, h], 'f')
-        self.fg_color = tuple(self.window.get_style_context().get_color(Gtk.StateFlags.ACTIVE))[:3]
-        self.bg_color = tuple(self.window.get_style_context().get_background_color(Gtk.StateFlags.ACTIVE))[:3]
         self.render()
         return True
+
+    def style_cb(self, widget):
+        self.fg_color = tuple(self.window.get_style_context().get_color(Gtk.StateFlags.ACTIVE))[:3]
+        self.bg_color = tuple(self.window.get_style_context().get_background_color(Gtk.StateFlags.ACTIVE))[:3]
 
     def get_fbo(self):
         return gl.glGetIntegerv(gl.GL_FRAMEBUFFER_BINDING)
@@ -308,6 +310,8 @@ class Plots(Gtk.Application):
 
     def gl_realize(self, area):
         area.make_current()
+        area.connect("style-updated", self.style_cb)
+        self.style_cb(area)
 
         if (area.get_error() is not None):
             return
