@@ -143,6 +143,7 @@ class Editor(Gtk.DrawingArea):
             self.cursor.insert_superscript_subscript(superscript=True)
             translation = str.maketrans("²³", "23")
             self.cursor.insert(Atom(char.translate(translation)))
+            self.cursor.handle_movement(Direction(Gdk.KEY_Right), select=False) # reset cursor level
             self.queue_draw()
             self.emit("edit")
             return
