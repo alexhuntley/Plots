@@ -12,6 +12,7 @@
   <name xml:lang="hr">Grafikoni</name>
   <name xml:lang="hu">Ábrák</name>
   <name xml:lang="it">Grafici</name>
+  <name xml:lang="nl">Plots</name>
   <name xml:lang="pt_BR">Plots</name>
   <developer_name>Alex Huntley</developer_name>
   <summary>Simple graph plotting</summary>
@@ -22,6 +23,7 @@
   <summary xml:lang="hr">Jednostavno crtanje grafikona</summary>
   <summary xml:lang="hu">Egyszerű ábrákrajzolás</summary>
   <summary xml:lang="it">Semplice disegnatore di grafici</summary>
+  <summary xml:lang="nl">Eenvoudig grafieken plotten</summary>
   <summary xml:lang="pt_BR">Simples traçador de gráficos</summary>
 
   <description>
@@ -104,6 +106,18 @@
       Grafici è stato progettato per integrarsi perfettamente con l'ambiente desktop GNOME e sfrutta
       l'uso di hardware moderno usando OpenGL.
     </p>
+    
+    <p xml:lang="nl">
+      Plots maakt het eenvoudig om wiskundige formules te visualiseren. Naast de rekenkundige
+      basisbewerkingen, ondersteunt het trigonometrische, hyperbolische, exponentiële en
+      logaritmische functies, evenals willekeurige sommen en producten. Het kan polaire
+      vergelijkingen en zowel impliciete als expliciete cartesiaanse vergelijkingen weergeven.
+    </p>
+    <p xml:lang="nl">
+      Plots is ontworpen om goed te integreren met Gnome en maakt gebruik van van moderne hardware
+      via OpenGL.
+    </p>
+    
     <p xml:lang="pt_BR">
       Plots permite a fácil visualização de fórmulas matemáticas. Além das operações
       aritméticas básicas, suporta funções trigonométricas, hiperbólicas, exponenciais
