@@ -20,6 +20,7 @@ of modern hardware using OpenGL, and currently supports OpenGL 3.3+.
 | Ubuntu | [PPA](https://launchpad.net/~apandada1/+archive/ubuntu/plots) | [Archisman Panigrahi](https://github.com/apandada1) |
 | Debian | [.deb installer](https://launchpad.net/~apandada1/+archive/ubuntu/plots/+packages) | [Archisman Panigrahi](https://github.com/apandada1) |
 | Arch | [AUR](https://aur.archlinux.org/packages/plots/)/[AUR(git)](https://aur.archlinux.org/packages/plots-git/) | [Mubashshir](https://github.com/ahmubashshir) |
+| GNU Guix | [`guix install gnome-plots`](https://hpc.guix.info/package/gnome-plots) | Guix Community |
 
 
 Scroll down and click on a package name to download the .deb file from the PPA to use it in Debian.
