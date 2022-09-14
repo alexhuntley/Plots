@@ -414,6 +414,8 @@ class Plots(Gtk.Application):
         formulae = []
         self.slider_rows.clear()
         for r in self.rows:
+            if r.row_status == formularow.RowStatus.BAD:
+                continue
             data = r.get_data()
             formulae.append(data)
             if isinstance(data, formularow.Slider):
@@ -423,11 +425,19 @@ class Plots(Gtk.Application):
             fragment_shader = shaders.compileShader(
                 self.fragment_template.render(formulae=formulae),
                 gl.GL_FRAGMENT_SHADER)
+            for f in formulae:
+                if f.owner.row_status == formularow.RowStatus.UNKNOWN:
+                    f.owner.row_status = formularow.RowStatus.GOOD
         except RuntimeError as e:
             print(e.args[0].encode('ascii', 'ignore').decode('unicode_escape'))
+            good_formulae = [f for f in formulae
+                             if f.owner.row_status == formularow.RowStatus.GOOD]
             fragment_shader = shaders.compileShader(
-                self.fragment_template.render(formulae=[]),
+                self.fragment_template.render(formulae=good_formulae),
                 gl.GL_FRAGMENT_SHADER)
+            for f in formulae:
+                if f.owner.row_status == formularow.RowStatus.UNKNOWN:
+                    f.owner.row_status = formularow.RowStatus.BAD
         self.shader = shaders.compileProgram(self.vertex_shader, fragment_shader)
         self.gl_area.queue_draw()
 

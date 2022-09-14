@@ -21,6 +21,7 @@ from gi.repository import Gtk, Gdk, Gio, GdkPixbuf
 from plots import formula, plots, rowcommands, colorpicker
 from plots.data import jinja_env
 import re, math
+from enum import Enum
 
 class RowData():
     def id(self):
@@ -29,7 +30,8 @@ class RowData():
 
 class Empty(RowData):
     priority = 0
-    def __init__(self, **kwargs):
+    def __init__(self, owner, **kwargs):
+        self.owner = owner
         self.rgba = None
 
     def definition(self):
@@ -45,7 +47,8 @@ class Empty(RowData):
 
 class Variable(RowData):
     priority = 50
-    def __init__(self, body, expr, rgba=None):
+    def __init__(self, owner, body, expr, rgba=None):
+        self.owner = owner
         m = re.match(r'^([a-zA-Z_]\w*) *=(.*)', expr)
         self.name = m.group(1)
         self.body = body
@@ -65,7 +68,8 @@ class Variable(RowData):
 
 class Slider(RowData):
     priority = 80
-    def __init__(self, body, expr, rgba):
+    def __init__(self, owner, body, expr, rgba):
+        self.owner = owner
         m = re.match(r'^([a-zA-Z_]\w*) *= *([+-]?([0-9]*[.])?[0-9]+)', expr)
         self.name = m.group(1)
         self.value = float(m.group(2))
@@ -86,7 +90,8 @@ class Formula(RowData):
     priority = 20
     calculation_template = jinja_env.get_template("formula_calculation.glsl")
 
-    def __init__(self, expr, body, rgba):
+    def __init__(self, owner, expr, body, rgba):
+        self.owner = owner
         m = re.match(r'^(?:y *=)?(.+)', expr)
         self.expr = m.group(1)
         self.body = body
@@ -111,7 +116,8 @@ class XFormula(RowData):
     priority = 20
     calculation_template = jinja_env.get_template("x_formula_calculation.glsl")
 
-    def __init__(self, expr, body, rgba):
+    def __init__(self, owner, expr, body, rgba):
+        self.owner = owner
         m = re.match(r'^x *=(.+)', expr)
         self.expr = m.group(1)
         self.body = body
@@ -136,7 +142,8 @@ class RFormula(RowData):
     priority = 20
     calculation_template = jinja_env.get_template("r_formula_calculation.glsl")
 
-    def __init__(self, expr, body, rgba):
+    def __init__(self, owner, expr, body, rgba):
+        self.owner = owner
         m = re.match(r'^r *=(.+)', expr)
         self.expr = m.group(1)
         self.body = body
@@ -161,7 +168,8 @@ class ThetaFormula(RowData):
     priority = 20
     calculation_template = jinja_env.get_template("theta_formula_calculation.glsl")
 
-    def __init__(self, expr, body, rgba):
+    def __init__(self, owner, expr, body, rgba):
+        self.owner = owner
         m = re.match(r'^theta *=(.+)', expr)
         self.expr = m.group(1)
         self.body = body
@@ -186,7 +194,8 @@ class ImplicitFormula(RowData):
     priority = 20
     calculation_template = jinja_env.get_template("implicit_formula_calculation.glsl")
 
-    def __init__(self, expr, body, rgba):
+    def __init__(self, owner, expr, body, rgba):
+        self.owner = owner
         m = re.match(r'^([^=]+)=([^=]+)$', expr)
         self.body = body
         self.rgba = rgba
@@ -205,6 +214,12 @@ class ImplicitFormula(RowData):
 
     def calculation(self):
         return self.calculation_template.render(formula=self)
+
+
+class RowStatus(Enum):
+    GOOD = 1
+    BAD = 2
+    UNKNOWN = 3
 
 
 class FormulaRow():
@@ -227,7 +242,7 @@ class FormulaRow():
 
     def __init__(self, app):
         self.app = app
-        self.data = Empty()
+        self.data = Empty(self)
         builder = Gtk.Builder()
         builder.add_from_string(plots.read_ui_file("formula_box.glade"))
         builder.connect_signals(self)
@@ -258,6 +273,7 @@ class FormulaRow():
         self.editor.grab_focus()
         self.old = self.construct_memory()
         self.dark_style = False
+        self.row_status = RowStatus.UNKNOWN
 
     def on_realize(self, widget):
         self.formula_box.connect("style-updated", self.style_cb)
@@ -292,7 +308,7 @@ class FormulaRow():
         for cls in [Formula, XFormula, RFormula, ThetaFormula,
                     Slider, Variable, ImplicitFormula, Empty]:
             if cls.accepts(expr):
-                self.data = cls(body=body, expr=expr, rgba=rgba)
+                self.data = cls(self, body=body, expr=expr, rgba=rgba)
                 break
 
         if hasattr(self.data, 'rgba'):
@@ -324,6 +340,7 @@ class FormulaRow():
             command = rowcommands.Edit(self, self.app.rows, mem, self.old)
             self.app.add_to_history(command)
         self.old = mem
+        self.row_status = RowStatus.UNKNOWN
         self.app.update_shader()
 
     def construct_memory(self):
@@ -377,7 +394,6 @@ class FormulaRow():
                 self.edited(None, record=False)
             self.color_picker.add_palette(Gtk.Orientation.HORIZONTAL, 9, None)
             self.color_picker.add_palette(Gtk.Orientation.HORIZONTAL, 9, new_palette)
-
 
     def style_is_dark(self):
         context = self.formula_box.get_style_context()
