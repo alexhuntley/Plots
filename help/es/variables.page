@@ -5,13 +5,13 @@
 
     <desc>Easily adjustable parameters</desc>
   </info>
-  <title>Variables y deslizadores</title>
+  <title>Variables and sliders</title>
 
   <p>
-    Para declarar una variable, escriba una ecuación de la forma <code><em>variable</em> = <em>value</em></code> en un cuadro de fórmula vacío, donde <code><em>variable</em></code> es una sola letra latina o griega, y <code><em>value</em></code> es una expresión que no debe depender de la posición, pero puede depender de las variables anteriores.
+    To declare a variable, type an equation of the form <code><em>variable</em> = <em>value</em></code> into an empty formula box, where <code><em>variable</em></code> is a single Latin or Greek letter, and <code><em>value</em></code> is an expression which must not depend on position, but may depend on preceding variables.
   </p>
 
   <p>
-    Si <code><em>valor</em></code> es un número literal entero o decimal, Plots mostrará un control deslizante ajustable, permitiendo que la variable sea ajustada interactivamente. Los límites superior e inferior del deslizador pueden editarse usando los campos adyacentes.
+    Si <code><em>valor</em></code> es un número literal entero o decimal, Gráfico mostrará un control deslizante ajustable, permitiendo que la variable sea ajustada interactivamente. Los límites superior e inferior del deslizador pueden editarse usando los campos adyacentes.
   </p>
 </page>
