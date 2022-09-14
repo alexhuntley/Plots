@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-16 16:28+0100\n"
+"POT-Creation-Date: 2022-09-14 16:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,21 +17,45 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: plots/plots.py:136
+#: plots/plots.py:142
+msgid "_Export…"
+msgstr ""
+
+#: plots/plots.py:143
+msgid "_Preferences"
+msgstr ""
+
+#: plots/plots.py:144
 msgid "Help"
 msgstr ""
 
-#: plots/plots.py:137
+#: plots/plots.py:145
 msgid "About Plots"
 msgstr ""
 
-#: plots/plots.py:280
+#: plots/plots.py:322
 msgid ""
 "Warning: OpenGL {} is unsupported. Plots supports OpenGL 3.3 or greater."
 msgstr ""
 
+#: plots/plots.py:477
+msgid "Export image"
+msgstr ""
+
+#: plots/plots.py:480
+msgid "_Export"
+msgstr ""
+
+#: plots/plots.py:481
+msgid "_Cancel"
+msgstr ""
+
+#: plots/plots.py:484
+msgid "Untitled plot"
+msgstr ""
+
 #: plots/ui/about.glade.h:1
-msgid "Copyright © 2021 Alexander Huntley"
+msgid "Copyright © 2021-2022 Alexander Huntley"
 msgstr ""
 
 #: plots/ui/about.glade.h:2
@@ -44,4 +68,28 @@ msgstr ""
 
 #: plots/ui/plots.glade.h:2
 msgid "Error:"
+msgstr ""
+
+#: plots/ui/preferences.glade.h:1
+msgid "Preferences affecting graph rendering"
+msgstr ""
+
+#: plots/ui/preferences.glade.h:2
+msgid "Rendering"
+msgstr ""
+
+#: plots/ui/preferences.glade.h:3
+msgid "Line thickness"
+msgstr ""
+
+#: plots/ui/preferences.glade.h:4
+msgid "Approximate thickness of the graphs"
+msgstr ""
+
+#: plots/ui/preferences.glade.h:5
+msgid "Samples per pixel"
+msgstr ""
+
+#: plots/ui/preferences.glade.h:6
+msgid "Reduce to improve performance"
 msgstr ""
