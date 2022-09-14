@@ -31,7 +31,6 @@
                 </child>
               </object>
               <packing>
-                <property name="expand">False</property>
                 <property name="position">0</property>
               </packing>
             </child>
@@ -56,7 +55,6 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
@@ -75,13 +73,11 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
               </object>
               <packing>
-                <property name="expand">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -154,6 +150,7 @@
               <object class="GtkOverlay" id="graph_overlay">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="vexpand">True</property>
                 <child>
                   <object class="GtkGLArea" id="gl">
                     <property name="visible">True</property>
@@ -211,7 +208,6 @@
                                 </style>
                               </object>
                               <packing>
-                                <property name="expand">False</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
@@ -233,7 +229,6 @@
                                 </style>
                               </object>
                               <packing>
-                                <property name="expand">False</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
@@ -243,7 +238,6 @@
                             </style>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
@@ -276,7 +270,6 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
@@ -286,7 +279,6 @@
                 </child>
               </object>
               <packing>
-                <property name="expand">True</property>
                 <property name="pack_type">end</property>
                 <property name="position">0</property>
               </packing>
@@ -308,7 +300,6 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
@@ -329,13 +320,11 @@
                         <property name="label" translatable="yes">Error:</property>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
@@ -344,7 +333,6 @@
                 </child>
               </object>
               <packing>
-                <property name="expand">False</property>
                 <property name="position">1</property>
               </packing>
             </child>

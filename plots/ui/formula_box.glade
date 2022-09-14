@@ -40,7 +40,6 @@
                 </child>
               </object>
               <packing>
-                <property name="expand">False</property>
                 <property name="position">0</property>
               </packing>
             </child>
@@ -49,7 +48,6 @@
             </child>
           </object>
           <packing>
-            <property name="expand">False</property>
             <property name="pack-type">end</property>
             <property name="position">0</property>
           </packing>
@@ -62,6 +60,7 @@
             <property name="hexpand">True</property>
             <property name="vscrollbar-policy">never</property>
             <property name="propagate-natural-height">True</property>
+            <property name="hexpand">True</property>
             <child>
               <object class="GtkViewport" id="editor_viewport">
                 <property name="visible">True</property>
@@ -73,13 +72,11 @@
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
             <property name="position">1</property>
           </packing>
         </child>
       </object>
       <packing>
-        <property name="expand">False</property>
         <property name="position">0</property>
       </packing>
     </child>
@@ -101,7 +98,6 @@
             <property name="halign">GTK_ALIGN_FILL</property>
           </object>
           <packing>
-            <property name="expand">False</property>
             <property name="position">0</property>
           </packing>
         </child>
@@ -112,9 +108,9 @@
             <property name="round-digits">3</property>
             <property name="draw-value">False</property>
             <property name="halign">GTK_ALIGN_FILL</property>
+            <property name="hexpand">True</property>
           </object>
           <packing>
-            <property name="expand">True</property>
             <property name="position">1</property>
           </packing>
         </child>
@@ -129,13 +125,11 @@
             <property name="halign">GTK_ALIGN_FILL</property>
           </object>
           <packing>
-            <property name="expand">False</property>
             <property name="position">2</property>
           </packing>
         </child>
       </object>
       <packing>
-        <property name="expand">False</property>
         <property name="position">1</property>
       </packing>
     </child>
