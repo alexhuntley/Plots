@@ -76,10 +76,10 @@ class Plots(Gtk.Application):
         self._translation = value
         self.update_zoom_reset()
 
-    def key_pressed(self, widget, event):
-        modifiers = event.state & Gtk.accelerator_get_default_mod_mask()
-        char = chr(Gdk.keyval_to_unicode(event.keyval))
-        if event.keyval == Gdk.KEY_Return:
+    def key_pressed(self, ctl, keyval, keycode, state):
+        modifiers = state & Gtk.accelerator_get_default_mod_mask()
+        char = chr(Gdk.keyval_to_unicode(keyval))
+        if keyval == Gdk.KEY_Return:
             self.add_equation(None)
             return True
         elif modifiers & Gdk.ModifierType.CONTROL_MASK:
@@ -108,7 +108,8 @@ class Plots(Gtk.Application):
         self.add_equation_button = builder.get_object("add_equation")
         self.undo_button = builder.get_object("undo")
         self.redo_button = builder.get_object("redo")
-        self.window.connect("key-press-event", self.key_pressed)
+        self.key_ctl = Gtk.EventControllerKey.new(self.window)
+        self.key_ctl.connect("key-pressed", self.key_pressed)
         self.window.connect("delete-event", self.delete_cb)
 
         self.gl_area = builder.get_object("gl")

@@ -47,11 +47,13 @@ class Editor(Gtk.DrawingArea):
             self.expr = ElementList()
         self.cursor.reparent(self.expr, -1)
         self.props.can_focus = True
-        self.connect("key-press-event", self.on_key_press)
+        self.key_ctl = Gtk.EventControllerKey.new(self)
+        self.key_ctl.connect("key-pressed", self.on_key_press)
         self.connect('draw', self.do_draw_cb)
         self.connect("button-press-event", self.on_button_press)
         self.connect("realize", self.on_realise)
-        self.connect("motion-notify-event", self.on_pointer_move)
+        self.motion_ctl = Gtk.EventControllerMotion.new(self)
+        self.motion_ctl.connect("motion", self.on_pointer_move)
         self.connect("focus-in-event", self.focus_in)
         self.connect("focus-out-event", self.focus_out)
         self.blink_source = None
@@ -101,15 +103,15 @@ class Editor(Gtk.DrawingArea):
             GLib.source_remove(self.blink_source)
         self.blink_source = GLib.timeout_add(Cursor.BLINK_DELAY, self.blink_cursor_cb)
 
-    def on_key_press(self, widget, event):
+    def on_key_press(self, event_cont, keyval, keycode, state):
         self.restart_blink_sequence()
-        modifiers = event.state & Gtk.accelerator_get_default_mod_mask()
+        modifiers = state & Gtk.accelerator_get_default_mod_mask()
         if DEBUG:
-            print(Gdk.keyval_name(event.keyval))
+            print(Gdk.keyval_name(keyval))
         if modifiers & (Gdk.ModifierType.MOD1_MASK | Gdk.ModifierType.MOD4_MASK):
             return False
         try:
-            direction = Direction(event.keyval)
+            direction = Direction(keyval)
             select = bool(modifiers & Gdk.ModifierType.SHIFT_MASK)
             res = self.cursor.handle_movement(direction, select=select)
             self.queue_draw()
@@ -117,7 +119,7 @@ class Editor(Gtk.DrawingArea):
         except ValueError:
             pass
 
-        char = chr(Gdk.keyval_to_unicode(event.keyval))
+        char = chr(Gdk.keyval_to_unicode(keyval))
         if modifiers & Gdk.ModifierType.CONTROL_MASK:
             if char == "a":
                 self.cursor.select_all(self.expr)
@@ -169,22 +171,22 @@ class Editor(Gtk.DrawingArea):
             self.queue_draw()
             self.emit("edit")
             return
-        if event.keyval == Gdk.KEY_BackSpace:
+        if keyval == Gdk.KEY_BackSpace:
             self.cursor.backspace(Direction.LEFT)
             self.queue_draw()
             self.emit("edit")
             return
-        if event.keyval == Gdk.KEY_Delete:
+        if keyval == Gdk.KEY_Delete:
             self.cursor.backspace(Direction.RIGHT)
             self.queue_draw()
             self.emit("edit")
             return
-        if event.keyval in (Gdk.KEY_slash, Gdk.KEY_KP_Divide):
+        if keyval in (Gdk.KEY_slash, Gdk.KEY_KP_Divide):
             self.cursor.greedy_insert(Frac)
             self.queue_draw()
             self.emit("edit")
             return
-        if char == "^" or event.keyval == Gdk.KEY_dead_circumflex:
+        if char == "^" or keyval == Gdk.KEY_dead_circumflex:
             self.cursor.insert_superscript_subscript(superscript=True)
             self.queue_draw()
             self.emit("edit")
@@ -225,8 +227,8 @@ class Editor(Gtk.DrawingArea):
             self.queue_draw()
             return True
 
-    def on_pointer_move(self, widget, event):
-        element, direction = self.element_at(event.x, event.y)
+    def on_pointer_move(self, ctl, x, y):
+        element, direction = self.element_at(x, y)
         self.cursor.mouse_select(element, direction, drag=True)
         self.restart_blink_sequence()
         self.queue_draw()
