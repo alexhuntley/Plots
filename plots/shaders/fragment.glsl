@@ -85,6 +85,7 @@ float mypow(float x, float y) {
     else if (floor(y) == y) {
         return int(y) % 2 == 0 ? pow(-x, y) : -pow(-x, y);
     }
+    return 1e999;
 }
 
 {% for f in formulae %}
