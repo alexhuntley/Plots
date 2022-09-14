@@ -392,8 +392,10 @@ class FormulaRow():
             if self.color_picker.get_rgba() == old_palette[0]:
                 self.color_picker.set_rgba(new_palette[0])
                 self.edited(None, record=False)
+            old_color = self.color_picker.get_rgba()
             self.color_picker.add_palette(Gtk.Orientation.HORIZONTAL, 9, None)
             self.color_picker.add_palette(Gtk.Orientation.HORIZONTAL, 9, new_palette)
+            self.color_picker.set_rgba(old_color)  # prevent color being reset
 
     def style_is_dark(self):
         context = self.formula_box.get_style_context()
