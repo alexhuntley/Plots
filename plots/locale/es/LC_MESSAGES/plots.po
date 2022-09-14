@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-16 16:28+0100\n"
-"PO-Revision-Date: 2021-09-24 00:31+0000\n"
+"PO-Revision-Date: 2022-09-14 15:40+0000\n"
 "Last-Translator: Óscar Fernández Díaz <oscfdezdz@tuta.io>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/plots/plots/es/>"
 "\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9-dev\n"
+"X-Generator: Weblate 4.14.1-dev\n"
 
 #: plots/plots.py:136
 msgid "Help"
@@ -25,13 +25,13 @@ msgstr "Ayuda"
 
 #: plots/plots.py:137
 msgid "About Plots"
-msgstr "Acerca de Plots"
+msgstr "Acerca de Gráfico"
 
 #: plots/plots.py:280
 msgid ""
 "Warning: OpenGL {} is unsupported. Plots supports OpenGL 3.3 or greater."
 msgstr ""
-"Advertencia: OpenGL {} no está soportado. Plots soporta OpenGL 3.3 o "
+"Advertencia: OpenGL {} no está soportado. Gráfico soporta OpenGL 3.3 o "
 "superior."
 
 #: plots/ui/about.glade.h:1
@@ -44,7 +44,7 @@ msgstr "Un trazador de gráficos para GNOME."
 
 #: plots/ui/plots.glade.h:1
 msgid "Plots"
-msgstr "Plots"
+msgstr "Gráfico"
 
 #: plots/ui/plots.glade.h:2
 msgid "Error:"
