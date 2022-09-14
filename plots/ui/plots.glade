@@ -21,6 +21,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="halign">GTK_ALIGN_FILL</property>
                 <child>
                   <object class="GtkImage">
                     <property name="visible">True</property>
@@ -31,7 +32,6 @@
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
             </child>
@@ -40,11 +40,13 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="layout_style">expand</property>
+                <property name="halign">GTK_ALIGN_FILL</property>
                 <child>
                   <object class="GtkButton" id="undo">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="halign">GTK_ALIGN_FILL</property>
                     <child>
                       <object class="GtkImage">
                         <property name="visible">True</property>
@@ -55,7 +57,6 @@
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">True</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
@@ -64,6 +65,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="halign">GTK_ALIGN_FILL</property>
                     <child>
                       <object class="GtkImage">
                         <property name="visible">True</property>
@@ -74,14 +76,12 @@
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -192,11 +192,13 @@
                             <property name="orientation">vertical</property>
                             <property name="homogeneous">True</property>
                             <property name="layout_style">expand</property>
+                            <property name="valign">GTK_ALIGN_FILL</property>
                             <child>
                               <object class="GtkButton" id="zoom_in">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="valign">GTK_ALIGN_FILL</property>
                                 <child>
                                   <object class="GtkImage">
                                     <property name="visible">True</property>
@@ -210,7 +212,6 @@
                               </object>
                               <packing>
                                 <property name="expand">False</property>
-                                <property name="fill">True</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
@@ -219,6 +220,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="valign">GTK_ALIGN_FILL</property>
                                 <child>
                                   <object class="GtkImage">
                                     <property name="visible">True</property>
@@ -232,7 +234,6 @@
                               </object>
                               <packing>
                                 <property name="expand">False</property>
-                                <property name="fill">True</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
@@ -243,7 +244,6 @@
                           </object>
                           <packing>
                             <property name="expand">False</property>
-                            <property name="fill">True</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
@@ -253,6 +253,7 @@
                             <property name="can_focus">False</property>
                             <property name="transition_type">crossfade</property>
                             <property name="reveal_child">True</property>
+                            <property name="valign">GTK_ALIGN_FILL</property>
                             <child>
                               <object class="GtkButton" id="zoom_reset">
                                 <property name="visible">True</property>
@@ -260,6 +261,7 @@
                                 <property name="receives_default">True</property>
                                 <property name="halign">end</property>
                                 <property name="valign">start</property>
+                                <property name="valign">GTK_ALIGN_FILL</property>
                                 <child>
                                   <object class="GtkImage">
                                     <property name="visible">True</property>
@@ -275,7 +277,6 @@
                           </object>
                           <packing>
                             <property name="expand">False</property>
-                            <property name="fill">True</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
@@ -286,7 +287,6 @@
               </object>
               <packing>
                 <property name="expand">True</property>
-                <property name="fill">True</property>
                 <property name="pack_type">end</property>
                 <property name="position">0</property>
               </packing>
@@ -297,6 +297,7 @@
                 <property name="can_focus">False</property>
                 <property name="message_type">error</property>
                 <property name="show_close_button">True</property>
+                <property name="valign">GTK_ALIGN_FILL</property>
                 <child internal-child="action_area">
                   <object class="GtkButtonBox">
                     <property name="can_focus">False</property>
@@ -308,7 +309,6 @@
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">False</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
@@ -330,14 +330,12 @@
                       </object>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="fill">True</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">False</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
@@ -347,7 +345,6 @@
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
             </child>

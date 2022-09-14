@@ -14,6 +14,7 @@
         <property name="margin-end">4</property>
         <property name="margin-top">4</property>
         <property name="margin-bottom">4</property>
+        <property name="halign">GTK_ALIGN_FILL</property>
         <child>
           <object class="GtkButtonBox" id="button_box">
             <property name="visible">True</property>
@@ -27,7 +28,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="valign">center</property>
+                <property name="valign">GTK_ALIGN_FILL</property>
                 <child>
                   <object class="GtkImage">
                     <property name="visible">True</property>
@@ -40,7 +41,6 @@
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
             </child>
@@ -50,7 +50,6 @@
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">False</property>
             <property name="pack-type">end</property>
             <property name="position">0</property>
           </packing>
@@ -75,14 +74,12 @@
           </object>
           <packing>
             <property name="expand">True</property>
-            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>
       </object>
       <packing>
         <property name="expand">False</property>
-        <property name="fill">True</property>
         <property name="position">0</property>
       </packing>
     </child>
@@ -93,6 +90,7 @@
         <property name="margin-start">4</property>
         <property name="margin-end">4</property>
         <property name="margin-bottom">4</property>
+        <property name="valign">GTK_ALIGN_FILL</property>
         <child>
           <object class="GtkEntry" id="slider_lower">
             <property name="width-request">46</property>
@@ -100,10 +98,10 @@
             <property name="can-focus">True</property>
             <property name="width-chars">3</property>
             <property name="input-purpose">number</property>
+            <property name="halign">GTK_ALIGN_FILL</property>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
@@ -113,10 +111,10 @@
             <property name="can-focus">True</property>
             <property name="round-digits">3</property>
             <property name="draw-value">False</property>
+            <property name="halign">GTK_ALIGN_FILL</property>
           </object>
           <packing>
             <property name="expand">True</property>
-            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>
@@ -128,17 +126,16 @@
             <property name="width-chars">3</property>
             <property name="caps-lock-warning">False</property>
             <property name="input-purpose">number</property>
+            <property name="halign">GTK_ALIGN_FILL</property>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">True</property>
             <property name="position">2</property>
           </packing>
         </child>
       </object>
       <packing>
         <property name="expand">False</property>
-        <property name="fill">True</property>
         <property name="position">1</property>
       </packing>
     </child>
