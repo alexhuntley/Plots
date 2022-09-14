@@ -18,9 +18,9 @@
 # along with Plots.  If not, see <https://www.gnu.org/licenses/>.
 
 import gi
-gi.require_version('Gtk', '3.0')
-gi.require_version('Handy', '1')
-from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf, cairo, Handy
+gi.require_version('Gtk', '4.0')
+#gi.require_version('Handy', '1')
+from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf, cairo#, Handy
 
 from plots import formula, formularow, rowcommands, preferences
 from plots.text import TextRenderer
@@ -51,6 +51,7 @@ class Plots(Gtk.Application):
         self.history = []
         self.history_position = 0  # index of the last undone command / next in line for redo
         self.overlay_source = None
+        return
         Handy.init()
         try:
             Handy.StyleManager.get_default().set_color_scheme(
@@ -95,23 +96,23 @@ class Plots(Gtk.Application):
         builder = Gtk.Builder()
         builder.add_from_string(read_ui_file("plots.glade"))
         builder.set_translation_domain(plots.i18n.domain)
-        builder.connect_signals(self)
 
         self.window = builder.get_object("main_window")
         self.add_window(self.window)
         loader = GdkPixbuf.PixbufLoader()
         loader.write(resources.read_binary("plots.res", "com.github.alexhuntley.Plotter.svg"))
         loader.close()
-        self.window.set_icon(loader.get_pixbuf())
+        #self.window.set_icon(loader.get_pixbuf())
         self.window.set_title("Plots")
         self.scroll = builder.get_object("equation_scroll")
         self.formula_box = builder.get_object("equation_box")
         self.add_equation_button = builder.get_object("add_equation")
         self.undo_button = builder.get_object("undo")
         self.redo_button = builder.get_object("redo")
-        self.key_ctl = Gtk.EventControllerKey.new(self.window)
+        self.key_ctl = Gtk.EventControllerKey()
         self.key_ctl.connect("key-pressed", self.key_pressed)
-        self.window.connect("delete-event", self.delete_cb)
+        self.window.add_controller(self.key_ctl)
+        self.window.connect("close-request", self.delete_cb)
 
         self.gl_area = builder.get_object("gl")
         self.gl_area.connect("render", self.gl_render)
@@ -168,15 +169,14 @@ class Plots(Gtk.Application):
         self.add_action(prefs_action)
         self.prefs = preferences.Preferences(self.window)
 
-        for c in self.formula_box.get_children():
-            self.formula_box.remove(c)
+        #for c in self.formula_box.get_children():
+        #    self.formula_box.remove(c)
 
         self.set_overlay_timeout()
 
         self.add_equation(None, record=False)
 
         self.window.set_default_size(1280, 720)
-        self.window.show_all()
 
         css = '''
 .formula_box {
@@ -192,22 +192,24 @@ class Plots(Gtk.Application):
         css_provider = Gtk.CssProvider()
         css_provider.load_from_data(css.encode())
         context = Gtk.StyleContext()
-        screen = Gdk.Screen.get_default()
-        context.add_provider_for_screen(screen, css_provider,
-                                        Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-
-        self.drag = Gtk.GestureDrag(widget=self.gl_area)
+        # screen = Gdk.Screen.get_default()
+        # context.add_provider_for_screen(screen, css_provider,
+        #                                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        context.add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        self.drag = Gtk.GestureDrag()
         self.drag.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         self.drag.connect("drag-update", self.drag_update)
         self.drag.connect("drag-begin", self.drag_begin)
-        self.gl_area.add_events(Gdk.EventMask.SMOOTH_SCROLL_MASK)
-        self.gl_area.connect('scroll_event', self.scroll_zoom)
-        self.gl_area.add_events(Gdk.EventMask.POINTER_MOTION_MASK)
-        self.gl_area.connect('motion-notify-event', self.motion_cb)
-        self.graph_overlay.add_events(Gdk.EventMask.ENTER_NOTIFY_MASK)
-        self.graph_overlay.connect('enter-notify-event', self.enter_overlay_cb)
+        self.gl_area.add_controller(self.drag)
+        # self.gl_area.add_events(Gdk.EventMask.SMOOTH_SCROLL_MASK)
+        # self.gl_area.connect('scroll_event', self.scroll_zoom)
+        # self.gl_area.add_events(Gdk.EventMask.POINTER_MOTION_MASK)
+        # self.gl_area.connect('motion-notify-event', self.motion_cb)
+        # self.graph_overlay.add_events(Gdk.EventMask.ENTER_NOTIFY_MASK)
+        # self.graph_overlay.connect('enter-notify-event', self.enter_overlay_cb)
 
         self.refresh_history_buttons()
+        self.window.show()
 
     @staticmethod
     def major_grid(pixel_extent):
@@ -446,21 +448,20 @@ class Plots(Gtk.Application):
     def add_equation(self, _, record=True):
         row = formularow.FormulaRow(self)
         self.rows.append(row)
-        self.formula_box.pack_start(row.formula_box, False, False, 0)
+        self.formula_box.prepend(row.formula_box)
         row.editor.grab_focus()
         if record:
             self.add_to_history(rowcommands.Add(row, self.rows))
 
     def insert_row(self, index, row):
         self.rows.insert(index, row)
-        self.formula_box.pack_start(row.formula_box, False, False, 0)
+        self.formula_box.prepend(row.formula_box)
         self.formula_box.reorder_child(row.formula_box, index)
         row.editor.grab_focus()
 
     def about_cb(self, action, _):
         builder = Gtk.Builder()
         builder.add_from_string(read_ui_file("about.glade"))
-        builder.connect_signals(self)
         about_dialog = builder.get_object("about_dialog")
         about_dialog.props.modal = True
         about_dialog.set_transient_for(self.window)

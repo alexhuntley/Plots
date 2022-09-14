@@ -47,15 +47,18 @@ class Editor(Gtk.DrawingArea):
             self.expr = ElementList()
         self.cursor.reparent(self.expr, -1)
         self.props.can_focus = True
-        self.key_ctl = Gtk.EventControllerKey.new(self)
+        self.key_ctl = Gtk.EventControllerKey()
         self.key_ctl.connect("key-pressed", self.on_key_press)
-        self.connect('draw', self.do_draw_cb)
-        self.connect("button-press-event", self.on_button_press)
+        self.add_controller(self.key_ctl)
+        #self.connect('draw', self.do_draw_cb)
+        self.set_draw_func(self.do_draw_cb)
+        #self.connect("button-press-event", self.on_button_press)
         self.connect("realize", self.on_realise)
-        self.motion_ctl = Gtk.EventControllerMotion.new(self)
+        self.motion_ctl = Gtk.EventControllerMotion()
         self.motion_ctl.connect("motion", self.on_pointer_move)
-        self.connect("focus-in-event", self.focus_in)
-        self.connect("focus-out-event", self.focus_out)
+        self.add_controller(self.motion_ctl)
+        #self.connect("focus-in-event", self.focus_in)
+        #self.connect("focus-out-event", self.focus_out)
         self.blink_source = None
         self.restart_blink_sequence()
         self.set_size_request(16, 20)
@@ -65,7 +68,7 @@ class Editor(Gtk.DrawingArea):
         self.cursor.reparent(self.expr, -1)
         self.cursor.cancel_selection()
 
-    def do_draw_cb(self, widget, ctx):
+    def do_draw_cb(self, widget, ctx, w, h):
         Element.color = self.get_style_context().get_color(Gtk.StateFlags.NORMAL)
         widget_transform = ctx.get_matrix()
         widget_transform.invert()

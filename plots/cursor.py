@@ -45,7 +45,7 @@ class Cursor():
         self.selection_rgba = [0.5, 0.5, 1, 0.6]
         self._position = (0., 0.)     # absolute position in widget (in pixels)
         self.position_changed = False  # set to True when self.position changes
-        self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
+        #self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
 
     @property
     def position(self):
