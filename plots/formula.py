@@ -139,9 +139,9 @@ class Editor(Gtk.DrawingArea):
                 return True
             else:
                 return False
-        if char in "²³":
+        if char in "⁰¹²³⁴⁵⁶⁷⁸⁹":
             self.cursor.insert_superscript_subscript(superscript=True)
-            translation = str.maketrans("²³", "23")
+            translation = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹", "0123456789")
             self.cursor.insert(Atom(char.translate(translation)))
             self.cursor.handle_movement(Direction(Gdk.KEY_Right), select=False) # reset cursor level
             self.queue_draw()
