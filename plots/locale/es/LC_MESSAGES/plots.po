@@ -8,10 +8,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-14 16:38+0100\n"
-"PO-Revision-Date: 2022-09-14 15:40+0000\n"
+"PO-Revision-Date: 2022-09-15 11:38+0000\n"
 "Last-Translator: Óscar Fernández Díaz <oscfdezdz@tuta.io>\n"
-"Language-Team: Spanish <https://hosted.weblate.org/projects/plots/plots/es/"
-">\n"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/plots/plots/es/>"
+"\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,11 +21,11 @@ msgstr ""
 
 #: plots/plots.py:142
 msgid "_Export…"
-msgstr ""
+msgstr "_Exportar…"
 
 #: plots/plots.py:143
 msgid "_Preferences"
-msgstr ""
+msgstr "_Preferencias"
 
 #: plots/plots.py:144
 msgid "Help"
@@ -44,25 +44,23 @@ msgstr ""
 
 #: plots/plots.py:477
 msgid "Export image"
-msgstr ""
+msgstr "Exportar imagen"
 
 #: plots/plots.py:480
 msgid "_Export"
-msgstr ""
+msgstr "_Exportar"
 
 #: plots/plots.py:481
 msgid "_Cancel"
-msgstr ""
+msgstr "_Cancelar"
 
 #: plots/plots.py:484
 msgid "Untitled plot"
-msgstr ""
+msgstr "Gráfico sin título"
 
 #: plots/ui/about.glade.h:1
-#, fuzzy
-#| msgid "Copyright © 2021 Alexander Huntley"
 msgid "Copyright © 2021-2022 Alexander Huntley"
-msgstr "Copyright © 2021 Alexander Huntley"
+msgstr "Copyright © 2021-2022 Alexander Huntley"
 
 #: plots/ui/about.glade.h:2
 msgid "A graph plotter for GNOME."
@@ -78,24 +76,24 @@ msgstr "Error:"
 
 #: plots/ui/preferences.glade.h:1
 msgid "Preferences affecting graph rendering"
-msgstr ""
+msgstr "Preferencias que afectan a la representación de gráficos"
 
 #: plots/ui/preferences.glade.h:2
 msgid "Rendering"
-msgstr ""
+msgstr "Renderizado"
 
 #: plots/ui/preferences.glade.h:3
 msgid "Line thickness"
-msgstr ""
+msgstr "Grosor de la línea"
 
 #: plots/ui/preferences.glade.h:4
 msgid "Approximate thickness of the graphs"
-msgstr ""
+msgstr "Grosor aproximado de los gráficos"
 
 #: plots/ui/preferences.glade.h:5
 msgid "Samples per pixel"
-msgstr ""
+msgstr "Muestras por píxel"
 
 #: plots/ui/preferences.glade.h:6
 msgid "Reduce to improve performance"
-msgstr ""
+msgstr "Reducir para mejorar el rendimiento"
