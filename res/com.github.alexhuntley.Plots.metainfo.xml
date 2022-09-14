@@ -6,7 +6,7 @@
   <project_license>GPL-3.0-or-later</project_license>
   <name>Plots</name>
   <name xml:lang="eo">Grafikaĵoj</name>
-  <name xml:lang="es">Plots</name>
+  <name xml:lang="es">Gráfico</name>
   <name xml:lang="fa">نمودارها</name>
   <name xml:lang="fr">Plots</name>
   <name xml:lang="hr">Grafikoni</name>
@@ -39,14 +39,14 @@
     </p>
 
     <p xml:lang="es">
-      Plots facilita la visualización de fórmulas matemáticas. Además de las
+      Gráfico facilita la visualización de fórmulas matemáticas. Además de las
       operaciones aritméticas básicas, admite funciones trigonométricas,
       hiperbólicas, exponenciales y logarítmicas, así como sumas y productos
       arbitrarios. Puede mostrar ecuaciones polares y ecuaciones cartesianas
       implícitas y explícitas.
     </p>
     <p xml:lang="es">
-      Plots está diseñado para integrarse bien con el escritorio GNOME y aprovecha
+      Gráfico está diseñado para integrarse bien con el escritorio GNOME y aprovecha
       el hardware moderno usando OpenGL.
     </p>
 
