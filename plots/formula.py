@@ -55,9 +55,10 @@ class Editor(Gtk.DrawingArea):
         click_ctl.connect("pressed", self.on_button_press)
         self.add_controller(click_ctl)
         self.connect("realize", self.on_realise)
-        self.motion_ctl = Gtk.EventControllerMotion()
-        self.motion_ctl.connect("motion", self.on_pointer_move)
-        self.add_controller(self.motion_ctl)
+        self.drag_ctl = Gtk.GestureDrag()
+        self.drag_ctl.connect("drag-begin", self.on_drag_begin)
+        self.drag_ctl.connect("drag-update", self.on_pointer_move)
+        self.add_controller(self.drag_ctl)
         focus_ctl = Gtk.EventControllerFocus()
         focus_ctl.connect("enter", self.focus_in)
         focus_ctl.connect("leave", self.focus_out)
@@ -222,7 +223,6 @@ class Editor(Gtk.DrawingArea):
                 return e, e.half_containing(x, y)
 
     def on_button_press(self, ctl, n_press, x, y):
-        print("click")
         if n_press > 1:
             self.cursor.select_all(self.expr)
         else:
@@ -233,8 +233,13 @@ class Editor(Gtk.DrawingArea):
         self.queue_draw()
         return True
 
+    def on_drag_begin(self, ctl, start_x, start_y):
+        self.drag_start_x = start_x
+        self.drag_start_y = start_y
+
     def on_pointer_move(self, ctl, x, y):
-        element, direction = self.element_at(x, y)
+        element, direction = self.element_at(
+            self.drag_start_x + x, self.drag_start_y + y)
         self.cursor.mouse_select(element, direction, drag=True)
         self.restart_blink_sequence()
         self.queue_draw()
