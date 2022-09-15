@@ -36,7 +36,7 @@ import re
 import math
 import numpy as np
 
-class Plots(Gtk.Application):
+class Plots(Adw.Application):
     INIT_SCALE = 10
     ZOOM_BUTTON_FACTOR = 0.3
 
@@ -51,7 +51,7 @@ class Plots(Gtk.Application):
         self.history = []
         self.history_position = 0  # index of the last undone command / next in line for redo
         self.overlay_source = None
-        Adw.init()
+        self.export_target = None
         Adw.StyleManager.get_default().set_color_scheme(
             Adw.ColorScheme.PREFER_LIGHT)
         plots.i18n.bind()
@@ -240,6 +240,16 @@ class Plots(Gtk.Application):
         h = area.get_allocated_height() * area.get_scale_factor()
         self.viewport = np.array([w, h], 'f')
         self.render()
+
+        if self.export_target:
+            width, height = self.viewport.astype(int)
+            pixels = gl.glReadPixels(0, 0, width, height, gl.GL_RGB, gl.GL_UNSIGNED_BYTE)
+            pixbuf = GdkPixbuf.Pixbuf.new_from_data(
+                pixels, GdkPixbuf.Colorspace.RGB, False, 8,
+                width, height, width*3, None, None
+            ).flip(horizontal=False)
+            pixbuf.savev(self.export_target, "png", [])
+            self.export_target = None
         return True
 
     def style_cb(self, widget):
@@ -475,37 +485,26 @@ class Plots(Gtk.Application):
         Gtk.show_uri(None, "help:plots", Gdk.CURRENT_TIME)
 
     def export_cb(self, action, parameter):
-        dialog = Gtk.FileChooserNative.new(
-            _("Export image"),
-            self.window,
-            Gtk.FileChooserAction.SAVE,
-            _("_Export"),
-            _("_Cancel")
+        self.export_dialog = Gtk.FileChooserNative.new(
+            title=_("Export image"),
+            parent=self.window,
+            action=Gtk.FileChooserAction.SAVE,
+            accept_label=_("_Export"),
+            cancel_label=_("_Cancel")
         )
-        dialog.set_do_overwrite_confirmation(True)
-        dialog.set_current_name(_("Untitled plot") + ".png")
+        self.export_dialog.set_current_name(_("Untitled plot") + ".png")
+        self.export_dialog.connect("response", self.export_response)
+        self.export_dialog.set_modal(True)
+        self.export_dialog.show()
 
-        response = dialog.run()
+    def export_response(self, dialog, response):
         if response == Gtk.ResponseType.ACCEPT:
-            filename = dialog.get_filename()
-            width, height = self.viewport.astype(int)
-
-            # read out the GLArea custom framebuffer, then switch back
-            prev_fbo = gl.glGetIntegerv(gl.GL_FRAMEBUFFER_BINDING)
-            gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, self.gl_area_fbo)
-            pixels = gl.glReadPixels(0, 0, width, height, gl.GL_RGB, gl.GL_UNSIGNED_BYTE)
-            gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, prev_fbo)
-
-            pixbuf = GdkPixbuf.Pixbuf.new_from_data(
-                pixels, GdkPixbuf.Colorspace.RGB, False, 8,
-                width, height, width*3, None, None
-            ).flip(horizontal=False)
-            pixbuf.savev(filename, "png", [])
-
+            self.export_target = dialog.get_file().get_path()
+            self.gl_area.queue_draw()
         elif response == Gtk.ResponseType.CANCEL:
             pass
-
         dialog.destroy()
+        self.export_dialog = None
 
     def delete_cb(self, window):
         self.prefs.save_config()
