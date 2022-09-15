@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-14 16:38+0100\n"
-"PO-Revision-Date: 2022-09-15 11:38+0000\n"
+"PO-Revision-Date: 2022-09-16 12:15+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/plots/plots/hr/>"
 "\n"
@@ -57,7 +57,7 @@ msgstr "_Odustani"
 
 #: plots/plots.py:484
 msgid "Untitled plot"
-msgstr ""
+msgstr "Grafikon bez naslova"
 
 #: plots/ui/about.glade.h:1
 msgid "Copyright © 2021-2022 Alexander Huntley"
@@ -77,24 +77,24 @@ msgstr "Greška:"
 
 #: plots/ui/preferences.glade.h:1
 msgid "Preferences affecting graph rendering"
-msgstr ""
+msgstr "Postavke koje utječu na iscrtavanje grafikona"
 
 #: plots/ui/preferences.glade.h:2
 msgid "Rendering"
-msgstr ""
+msgstr "Iscrtavanje"
 
 #: plots/ui/preferences.glade.h:3
 msgid "Line thickness"
-msgstr ""
+msgstr "Debljina linija"
 
 #: plots/ui/preferences.glade.h:4
 msgid "Approximate thickness of the graphs"
-msgstr ""
+msgstr "Približna debljina grafikona"
 
 #: plots/ui/preferences.glade.h:5
 msgid "Samples per pixel"
-msgstr ""
+msgstr "Uzorci po pikselu"
 
 #: plots/ui/preferences.glade.h:6
 msgid "Reduce to improve performance"
-msgstr ""
+msgstr "Smanji za poboljšavanje izvođenja"
