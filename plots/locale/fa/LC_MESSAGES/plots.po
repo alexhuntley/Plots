@@ -8,24 +8,24 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-14 16:38+0100\n"
-"PO-Revision-Date: 2021-12-21 04:48+0000\n"
-"Last-Translator: MSKF <walkingdeadstudio@outlook.com>\n"
-"Language-Team: Persian <https://hosted.weblate.org/projects/plots/plots/fa/"
-">\n"
+"PO-Revision-Date: 2022-09-15 11:38+0000\n"
+"Last-Translator: MohammadSaleh Kamyab <mskf1383@envs.net>\n"
+"Language-Team: Persian <https://hosted.weblate.org/projects/plots/plots/fa/>"
+"\n"
 "Language: fa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.10\n"
+"X-Generator: Weblate 4.14.1-dev\n"
 
 #: plots/plots.py:142
 msgid "_Export…"
-msgstr ""
+msgstr "_برون‌ریزی…"
 
 #: plots/plots.py:143
 msgid "_Preferences"
-msgstr ""
+msgstr "_ترجیحات"
 
 #: plots/plots.py:144
 msgid "Help"
@@ -44,25 +44,23 @@ msgstr ""
 
 #: plots/plots.py:477
 msgid "Export image"
-msgstr ""
+msgstr "برون‌ریزی تصویر"
 
 #: plots/plots.py:480
 msgid "_Export"
-msgstr ""
+msgstr "_برون‌ریزی"
 
 #: plots/plots.py:481
 msgid "_Cancel"
-msgstr ""
+msgstr "_لغو"
 
 #: plots/plots.py:484
 msgid "Untitled plot"
-msgstr ""
+msgstr "نمودار بی‌عنوان"
 
 #: plots/ui/about.glade.h:1
-#, fuzzy
-#| msgid "Copyright © 2021 Alexander Huntley"
 msgid "Copyright © 2021-2022 Alexander Huntley"
-msgstr "حق رونوشت © ۲۰۲۱ الکساندر هانتلی"
+msgstr "حق رونوشت © ‎۲۰۲۱-۲۰۲۲ الکساندر هانتلی"
 
 #: plots/ui/about.glade.h:2
 msgid "A graph plotter for GNOME."
@@ -78,24 +76,24 @@ msgstr "خطا:"
 
 #: plots/ui/preferences.glade.h:1
 msgid "Preferences affecting graph rendering"
-msgstr ""
+msgstr "ترجیحات تأثیرگذار بر پردازش نمودار"
 
 #: plots/ui/preferences.glade.h:2
 msgid "Rendering"
-msgstr ""
+msgstr "پردازش"
 
 #: plots/ui/preferences.glade.h:3
 msgid "Line thickness"
-msgstr ""
+msgstr "ضخامت خط"
 
 #: plots/ui/preferences.glade.h:4
 msgid "Approximate thickness of the graphs"
-msgstr ""
+msgstr "ضخامت تقریبی نمودارها"
 
 #: plots/ui/preferences.glade.h:5
 msgid "Samples per pixel"
-msgstr ""
+msgstr "نمونه در هر پیکسل"
 
 #: plots/ui/preferences.glade.h:6
 msgid "Reduce to improve performance"
-msgstr ""
+msgstr "برای بهبود کارایی، کم کنید"
