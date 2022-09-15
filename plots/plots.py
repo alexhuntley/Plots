@@ -22,7 +22,7 @@ gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf, cairo, Adw
 
-from plots import formula, formularow, rowcommands, preferences
+from plots import formula, formularow, rowcommands, preferences, utils
 from plots.text import TextRenderer
 from plots.i18n import _
 from plots.data import jinja_env
@@ -243,10 +243,9 @@ class Plots(Gtk.Application):
         return True
 
     def style_cb(self, widget):
-        #self.fg_color = tuple(self.window.get_style_context().get_color(Gtk.StateFlags.ACTIVE))[:3]
-        #self.bg_color = tuple(self.window.get_style_context().get_background_color(Gtk.StateFlags.ACTIVE))[:3]
-        self.fg_color = (0.,0.,0.)
-        self.bg_color = (1.,1.,1.)
+        ctx = self.window.get_style_context()
+        self.fg_color = utils.rgba_to_tuple(ctx.lookup_color("window_fg_color").color)[:3]
+        self.bg_color = utils.rgba_to_tuple(ctx.lookup_color("window_bg_color").color)[:3]
 
     def get_fbo(self):
         return gl.glGetIntegerv(gl.GL_FRAMEBUFFER_BINDING)
