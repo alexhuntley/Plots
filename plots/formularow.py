@@ -250,7 +250,7 @@ class FormulaRow():
         self.viewport = builder.get_object("editor_viewport")
         button_box = builder.get_object("button_box")
         self.color_picker = colorpicker.PopoverColorPicker()
-        button_box.prepend(self.color_picker)
+        button_box.append(self.color_picker)
         self.slider_box = builder.get_object("slider_box")
         self.slider = builder.get_object("slider")
         self.slider_upper = builder.get_object("slider_upper")

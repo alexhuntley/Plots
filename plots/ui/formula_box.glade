@@ -10,13 +10,32 @@
         <property name="margin-top">4</property>
         <property name="margin-bottom">4</property>
         <child>
+          <object class="GtkScrolledWindow" id="editor_scroll">
+            <property name="focusable">1</property>
+            <property name="valign">center</property>
+            <property name="hexpand">1</property>
+            <property name="vscrollbar-policy">never</property>
+            <property name="propagate-natural-height">1</property>
+            <property name="hexpand">1</property>
+            <property name="child">
+              <object class="GtkViewport" id="editor_viewport">
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
           <object class="GtkBox" id="button_box">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">end</property>
             <property name="valign">start</property>
             <property name="orientation">vertical</property>
-            <!-- <property name="layout-style">expand</property> -->
+            <style>
+              <class name="linked"/>
+            </style>
             <child>
               <object class="GtkButton" id="delete_button">
                 <property name="focusable">1</property>
@@ -33,23 +52,6 @@
             <child>
               <placeholder/>
             </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkScrolledWindow" id="editor_scroll">
-            <property name="focusable">1</property>
-            <property name="valign">center</property>
-            <property name="hexpand">1</property>
-            <property name="vscrollbar-policy">never</property>
-            <property name="propagate-natural-height">1</property>
-            <property name="hexpand">1</property>
-            <property name="child">
-              <object class="GtkViewport" id="editor_viewport">
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-            </property>
           </object>
         </child>
       </object>
