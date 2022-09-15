@@ -201,6 +201,9 @@ class Plots(Gtk.Application):
         # self.gl_area.connect('scroll_event', self.scroll_zoom)
         # self.gl_area.add_events(Gdk.EventMask.POINTER_MOTION_MASK)
         # self.gl_area.connect('motion-notify-event', self.motion_cb)
+        motion_ctl = Gtk.EventControllerMotion()
+        motion_ctl.connect("motion", self.motion_cb)
+        self.gl_area.add_controller(motion_ctl)
         # self.graph_overlay.add_events(Gdk.EventMask.ENTER_NOTIFY_MASK)
         # self.graph_overlay.connect('enter-notify-event', self.enter_overlay_cb)
 
@@ -397,7 +400,7 @@ class Plots(Gtk.Application):
         self.osd_revealer.set_reveal_child(False)
         self.overlay_source = None
 
-    def motion_cb(self, widget, event):
+    def motion_cb(self, ctl, x, y):
         if not self.osd_revealer.get_reveal_child():
             self.osd_revealer.set_reveal_child(True)
         self.set_overlay_timeout()
