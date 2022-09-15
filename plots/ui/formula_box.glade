@@ -63,14 +63,15 @@
         <property name="margin-bottom">4</property>
         <child>
           <object class="GtkEntry" id="slider_lower">
-            <property name="width-request">46</property>
             <property name="focusable">1</property>
-            <property name="width-chars">3</property>
+            <property name="width-chars">4</property>
             <property name="input-purpose">number</property>
+            <property name="width-request">10</property>
           </object>
         </child>
         <child>
           <object class="GtkScale" id="slider">
+            <property name="width-request">120</property>
             <property name="focusable">1</property>
             <property name="round-digits">3</property>
             <property name="hexpand">1</property>
@@ -78,10 +79,11 @@
         </child>
         <child>
           <object class="GtkEntry" id="slider_upper">
-            <property name="width-request">46</property>
             <property name="focusable">1</property>
-            <property name="width-chars">3</property>
+            <property name="width-chars">4</property>
             <property name="input-purpose">number</property>
+            <property name="hexpand">0</property>
+
           </object>
         </child>
       </object>
