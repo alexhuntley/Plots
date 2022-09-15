@@ -50,7 +50,7 @@ class PopoverColorPicker(Gtk.Button):
 
 
     def update_color(self):
-        css = f'button {{ background: {self.get_rgba().to_string()} }}'
+        css = f'button {{ background: {self.get_rgba().to_string()}; }}'
         self.provider.load_from_data(css.encode())
 
     def on_click(self, button):
