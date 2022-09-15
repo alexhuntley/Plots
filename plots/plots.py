@@ -197,16 +197,18 @@ class Plots(Gtk.Application):
         self.drag.connect("drag-update", self.drag_update)
         self.drag.connect("drag-begin", self.drag_begin)
         self.gl_area.add_controller(self.drag)
-        # self.gl_area.add_events(Gdk.EventMask.SMOOTH_SCROLL_MASK)
-        # self.gl_area.connect('scroll_event', self.scroll_zoom)
-        # self.gl_area.add_events(Gdk.EventMask.POINTER_MOTION_MASK)
-        # self.gl_area.connect('motion-notify-event', self.motion_cb)
+        scroll_ctl = Gtk.EventControllerScroll()
+        scroll_ctl.connect("scroll", self.scroll_zoom)
+        scroll_ctl.set_flags(Gtk.EventControllerScrollFlags.VERTICAL)
+        self.gl_area.add_controller(scroll_ctl)
         motion_ctl = Gtk.EventControllerMotion()
         motion_ctl.connect("motion", self.motion_cb)
         self.gl_area.add_controller(motion_ctl)
         # self.graph_overlay.add_events(Gdk.EventMask.ENTER_NOTIFY_MASK)
         # self.graph_overlay.connect('enter-notify-event', self.enter_overlay_cb)
-
+        overlay_motion_ctl = Gtk.EventControllerMotion()
+        overlay_motion_ctl.connect("enter", self.enter_overlay_cb)
+        self.graph_overlay.add_controller(overlay_motion_ctl)
         self.refresh_history_buttons()
         self.window.show()
 
@@ -374,8 +376,7 @@ class Plots(Gtk.Application):
                 self.translation = translate_to
         self.gl_area.queue_draw()
 
-    def scroll_zoom(self, widget, event):
-        _, dx, dy = event.get_scroll_deltas()
+    def scroll_zoom(self, ctl, dx, dy):
         self.target_scale *= math.exp(dy*0.2)
         self.smooth_scroll()
 
@@ -406,7 +407,7 @@ class Plots(Gtk.Application):
         self.set_overlay_timeout()
         return False
 
-    def enter_overlay_cb(self, widget, event):
+    def enter_overlay_cb(self, ctl, x, y):
         self.clear_overlay_timeout()
         return False
 
