@@ -11,6 +11,9 @@
               <object class="GtkButton" id="add_equation">
                 <property name="focusable">1</property>
                 <property name="receives_default">1</property>
+                <style>
+                  <class name="flat"/>
+                </style>
                 <child>
                   <object class="GtkImage">
                     <property name="icon_name">list-add-symbolic</property>
@@ -30,6 +33,9 @@
                   <object class="GtkButton" id="undo">
                     <property name="focusable">1</property>
                     <property name="receives_default">1</property>
+                    <style>
+                      <class name="flat"/>
+                    </style>
                     <child>
                       <object class="GtkImage">
                         <property name="icon_name">edit-undo-symbolic</property>
@@ -41,6 +47,9 @@
                   <object class="GtkButton" id="redo">
                     <property name="focusable">1</property>
                     <property name="receives_default">1</property>
+                    <style>
+                      <class name="flat"/>
+                    </style>
                     <child>
                       <object class="GtkImage">
                         <property name="icon_name">edit-redo-symbolic</property>
