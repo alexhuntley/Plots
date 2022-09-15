@@ -138,8 +138,10 @@
                             <property name="valign">start</property>
                             <property name="orientation">vertical</property>
                             <property name="homogeneous">True</property>
-                            <!-- <property name="layout_style">expand</property> -->
                             <property name="valign">GTK_ALIGN_FILL</property>
+                            <style>
+                              <class name="linked"/>
+                            </style>
                             <child>
                               <object class="GtkButton" id="zoom_in">
                                 <property name="focusable">1</property>
@@ -211,7 +213,6 @@
                   <object class="GtkBox">
                     <property name="can_focus">False</property>
                     <property name="spacing">6</property>
-                    <!-- <property name="layout_style">end</property> -->
                     <child>
                       <placeholder/>
                     </child>
