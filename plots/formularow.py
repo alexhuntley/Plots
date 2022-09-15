@@ -236,8 +236,8 @@ class FormulaRow():
         [134,94,60 ],
     ]
     DARK_PALETTE = [WHITE] + PALETTE[1:]
-    PALETTE = [Gdk.RGBA(*(color/255 for color in colors)) for colors in PALETTE]
-    DARK_PALETTE = [Gdk.RGBA(*(color/255 for color in colors)) for colors in DARK_PALETTE]
+    PALETTE = [utils.create_rgba(*(color/255 for color in colors)) for colors in PALETTE]
+    DARK_PALETTE = [utils.create_rgba(*(color/255 for color in colors)) for colors in DARK_PALETTE]
     _palette_use_next = 0
 
     def __init__(self, app):

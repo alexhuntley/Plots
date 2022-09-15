@@ -142,3 +142,11 @@ def font_metrics(ctx):
 
 def rgba_to_tuple(rgba):
     return (rgba.red, rgba.green, rgba.blue, rgba.alpha)
+
+def create_rgba(r, g, b, a=1.0):
+    res = Gdk.RGBA()
+    res.red = r
+    res.green = g
+    res.blue = b
+    res.alpha = a
+    return res

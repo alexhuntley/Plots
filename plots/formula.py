@@ -111,7 +111,6 @@ class Editor(Gtk.DrawingArea):
         self.blink_source = GLib.timeout_add(Cursor.BLINK_DELAY, self.blink_cursor_cb)
 
     def on_key_press(self, event_cont, keyval, keycode, state):
-        print("key")
         self.restart_blink_sequence()
         modifiers = state & Gtk.accelerator_get_default_mod_mask()
         if DEBUG:

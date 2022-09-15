@@ -48,7 +48,7 @@ class Element(abstractelement.AbstractElement):
             ctx.stroke()
         if cursor.selecting and self.parent is cursor.selection_ancestor and \
            self.index_in_parent in cursor.selection_bounds:
-            Gdk.cairo_set_source_rgba(ctx, cursor.selection_rgba)
+            ctx.set_source_rgba(*cursor.selection_rgba)
             ctx.rectangle(-self.h_spacing, -self.ascent,
                           self.width + 2*self.h_spacing, self.ascent + self.descent)
             ctx.fill()
