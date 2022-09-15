@@ -1,51 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.38.2 -->
 <interface>
-  <requires lib="gtk+" version="3.0"/>
-  <requires lib="libhandy" version="0.0"/>
-  <object class="HdyPreferencesWindow" id="prefs_window">
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <object class="AdwPreferencesWindow" id="prefs_window">
     <property name="can-focus">False</property>
-    <property name="can-swipe-back">True</property>
+    <property name="can-navigate-back">True</property>
     <child>
-      <object class="HdyPreferencesPage">
+      <object class="AdwPreferencesPage">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="icon-name">preferences-window-layout-symbolic</property>
         <property name="title">General</property>
         <child>
-          <object class="HdyPreferencesGroup">
+          <object class="AdwPreferencesGroup">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="description" translatable="yes">Preferences affecting graph rendering</property>
-            <property name="title" translatable="yes">Rendering</property>
+            <property name="description" translatable="1">Preferences affecting graph rendering</property>
+            <property name="title" translatable="1">Rendering</property>
             <child>
-              <object class="HdyActionRow">
+              <object class="AdwActionRow">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="title" translatable="yes">Line thickness</property>
-                <property name="subtitle" translatable="yes">Approximate thickness of the graphs</property>
+                <property name="title" translatable="1">Line thickness</property>
+                <property name="subtitle" translatable="1">Approximate thickness of the graphs</property>
                 <property name="use-underline">True</property>
                 <child>
                   <object class="GtkScale" id="line_thickness_scale">
+                    <property name="draw-value">1</property>
                     <property name="width-request">200</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
                   </object>
                 </child>
               </object>
             </child>
             <child>
-              <object class="HdyActionRow">
+              <object class="AdwActionRow">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="title" translatable="yes">Samples per pixel</property>
-                <property name="subtitle" translatable="yes">Reduce to improve performance</property>
+                <property name="title" translatable="1">Samples per pixel</property>
+                <property name="subtitle" translatable="1">Reduce to improve performance</property>
                 <property name="use-underline">True</property>
                 <child>
                   <object class="GtkScale" id="samples_scale">
+                    <property name="draw-value">1</property>
                     <property name="width-request">200</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
                   </object>
                 </child>
               </object>
@@ -56,4 +54,3 @@
     </child>
   </object>
 </interface>
-

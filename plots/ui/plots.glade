@@ -22,8 +22,10 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <!-- <property name="layout_style">expand</property> -->
                 <property name="halign">GTK_ALIGN_FILL</property>
+                <style>
+                  <class name="linked"/>
+                </style>
                 <child>
                   <object class="GtkButton" id="undo">
                     <property name="focusable">1</property>

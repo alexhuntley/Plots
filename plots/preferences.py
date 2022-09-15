@@ -90,12 +90,11 @@ class PreferencesWindow:
         builder = Gtk.Builder()
         builder.add_from_string(read_ui_file("preferences.glade"))
         builder.set_translation_domain(plots.i18n.domain)
-        builder.connect_signals(self)
 
         self.prefs_window = builder.get_object("prefs_window")
         self.prefs_window.set_transient_for(parent_window)
         self.prefs_window.props.modal = True
-        self.prefs_window.connect("delete-event", self.delete_cb)
+        self.prefs_window.connect("close-request", self.delete_cb)
 
         self.line_thickness_scale = builder.get_object("line_thickness_scale")
         self.line_thickness_scale.set_range(1, 10)
@@ -111,7 +110,7 @@ class PreferencesWindow:
     def show(self):
         self.prefs_window.show()
 
-    def delete_cb(self, widget, event):
+    def delete_cb(self, window):
         r = self.prefs["rendering"]
         r["line_thickness"] = self.line_thickness_scale.get_value()
         r["samples"] = int(self.samples_scale.get_value())

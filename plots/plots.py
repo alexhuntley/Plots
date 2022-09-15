@@ -19,8 +19,8 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-#gi.require_version('Handy', '1')
-from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf, cairo#, Handy
+gi.require_version('Adw', '1')
+from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf, cairo, Adw
 
 from plots import formula, formularow, rowcommands, preferences
 from plots.text import TextRenderer
@@ -51,13 +51,9 @@ class Plots(Gtk.Application):
         self.history = []
         self.history_position = 0  # index of the last undone command / next in line for redo
         self.overlay_source = None
-        return
-        Handy.init()
-        try:
-            Handy.StyleManager.get_default().set_color_scheme(
-                Handy.ColorScheme.PREFER_LIGHT)
-        except AttributeError: # StyleManager requires Handy v1.6
-            pass
+        Adw.init()
+        Adw.StyleManager.get_default().set_color_scheme(
+            Adw.ColorScheme.PREFER_LIGHT)
         plots.i18n.bind()
 
     @property
@@ -510,7 +506,7 @@ class Plots(Gtk.Application):
 
         dialog.destroy()
 
-    def delete_cb(self, widget, event):
+    def delete_cb(self, window):
         self.prefs.save_config()
 
     def add_to_history(self, command):
