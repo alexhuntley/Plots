@@ -204,8 +204,6 @@ class Plots(Gtk.Application):
         motion_ctl = Gtk.EventControllerMotion()
         motion_ctl.connect("motion", self.motion_cb)
         self.gl_area.add_controller(motion_ctl)
-        # self.graph_overlay.add_events(Gdk.EventMask.ENTER_NOTIFY_MASK)
-        # self.graph_overlay.connect('enter-notify-event', self.enter_overlay_cb)
         overlay_motion_ctl = Gtk.EventControllerMotion()
         overlay_motion_ctl.connect("enter", self.enter_overlay_cb)
         self.graph_overlay.add_controller(overlay_motion_ctl)
@@ -450,7 +448,7 @@ class Plots(Gtk.Application):
     def add_equation(self, _, record=True):
         row = formularow.FormulaRow(self)
         self.rows.append(row)
-        self.formula_box.prepend(row.formula_box)
+        self.formula_box.append(row.formula_box)
         row.editor.grab_focus()
         if record:
             self.add_to_history(rowcommands.Add(row, self.rows))
