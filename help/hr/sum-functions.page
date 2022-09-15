@@ -5,12 +5,9 @@
 
     <desc>in Σ and Π notation</desc>
   </info>
-<title>Zbrojevi i umnošci</title>
+<title>Sums and Products</title>
 <steps>
-<title>Kako umetnuti zbroj ili ummožak</title>
-<item>
-<p>Upiši varijablu i početnu vrijednost ispod Σ ili Π, npr. i = 0</p>
-</item>
+<title>Kako umetnuti zbroj ili umnožak</title>
 <item>
 <p>Pomoću tipki sa strelicama premjesti se u iznad Σ ili Π</p>
 </item>
@@ -23,6 +20,9 @@
 <item>
 <p>Pomoću tipki sa strelicama premjesti se desno od operatora i umetni sadržaj zbroja/umnoška.</p>
 </item>
+<item>
+<p>Use the arrow keys to move to the right of the operator, and insert the body of the sum/product.</p>
+</item>
 </steps>
-<p>Ponavljajuća varijabla se treba pozivati samo unutar sadržaja zbroja/umnoška.</p>
+<p>The variable being iterated over should only be referred to inside the sum/product body.</p>
 </page>
