@@ -282,7 +282,7 @@ class FormulaRow():
         if record:
             self.app.add_to_history(rowcommands.Delete(self, self.app.rows))
         self.app.rows.remove(self)
-        self.formula_box.destroy()
+        self.app.formula_box.remove(self.formula_box)
         if not self.app.rows and replace_if_last:
             self.app.add_equation(None, record=False)
         self.app.update_shader()
