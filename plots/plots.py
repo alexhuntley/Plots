@@ -471,12 +471,13 @@ class Plots(Adw.Application):
     def about_cb(self, action, _):
         builder = Gtk.Builder()
         builder.add_from_string(read_ui_file("about.glade"))
-        about_dialog = builder.get_object("about_dialog")
-        about_dialog.props.modal = True
-        about_dialog.set_transient_for(self.window)
-        about_dialog.set_logo(self.window.get_icon())
-        about_dialog.run()
-        about_dialog.destroy()
+        self.about_dialog = builder.get_object("about_dialog")
+        self.about_dialog.props.modal = True
+        self.about_dialog.set_transient_for(self.window)
+        self.about_dialog.set_modal(True)
+        #about_dialog.set_logo(self.window.get_icon())
+        self.about_dialog.show()
+        #about_dialog.destroy()
 
     def prefs_cb(self, action, param):
         self.prefs.show()
