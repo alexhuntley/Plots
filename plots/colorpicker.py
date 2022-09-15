@@ -31,9 +31,9 @@ class PopoverColorPicker(Gtk.Button):
         self.chooser = Gtk.ColorChooserWidget.new()
         self.chooser.show()
         self.chooser.connect("color-activated", self.on_color_activated)
-        #self.chooser.connect("button-press-event", self.on_button)
-        #self.chooser.connect("touch-event", self.on_button)
-        #self.chooser.props.margin = 4
+        click_ctl = Gtk.GestureClick()
+        click_ctl.connect("pressed", self.on_button)
+        self.chooser.add_controller(click_ctl)
 
         self.popover = Gtk.Popover()
         self.popover.set_position(Gtk.PositionType.BOTTOM)
@@ -74,5 +74,5 @@ class PopoverColorPicker(Gtk.Button):
         self.emit("color-activated", chooser, color)
         self.set_rgba(color)
 
-    def on_button(self, widget, event):
+    def on_button(self, ctl, n_press, x, y):
         self.on_color_activated(self.chooser, self.get_rgba())
