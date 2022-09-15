@@ -18,7 +18,7 @@
 import gi
 from gi.repository import Gtk, Gdk, Gio, GdkPixbuf
 
-from plots import formula, plots, rowcommands, colorpicker
+from plots import formula, plots, rowcommands, colorpicker, utils
 from plots.data import jinja_env
 import re, math
 from enum import Enum
@@ -274,9 +274,9 @@ class FormulaRow():
         self.row_status = RowStatus.UNKNOWN
 
     def on_realize(self, widget):
-        self.formula_box.connect("style-updated", self.style_cb)
+        #self.formula_box.connect("style-updated", self.style_cb)
         self.slider_box.hide()
-        self.slider.set_adjustment(Gtk.Adjustment(0.5, 0, 1, 0.1, 0, 0))
+        #self.slider.set_adjustment(Gtk.Adjustment.new(0.5, 0, 1, 0.1, 0, 0))
 
     def delete(self, widget, record=True, replace_if_last=True):
         if record:
@@ -301,7 +301,7 @@ class FormulaRow():
 
     def edited(self, widget, record=True):
         body, expr = self.editor.expr.to_glsl()
-        rgba = tuple(self.color_picker.get_rgba())
+        rgba = utils.rgba_to_tuple(self.color_picker.get_rgba())
 
         for cls in [Formula, XFormula, RFormula, ThetaFormula,
                     Slider, Variable, ImplicitFormula, Empty]:

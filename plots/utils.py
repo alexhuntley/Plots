@@ -139,3 +139,6 @@ class Text:
 
 def font_metrics(ctx):
     return Text("x", ctx)
+
+def rgba_to_tuple(rgba):
+    return (rgba.red, rgba.green, rgba.blue, rgba.alpha)

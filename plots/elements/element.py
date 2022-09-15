@@ -48,11 +48,11 @@ class Element(abstractelement.AbstractElement):
             ctx.stroke()
         if cursor.selecting and self.parent is cursor.selection_ancestor and \
            self.index_in_parent in cursor.selection_bounds:
-            ctx.set_source_rgba(*cursor.selection_rgba)
+            Gdk.cairo_set_source_rgba(ctx, cursor.selection_rgba)
             ctx.rectangle(-self.h_spacing, -self.ascent,
                           self.width + 2*self.h_spacing, self.ascent + self.descent)
             ctx.fill()
-        ctx.set_source_rgba(*Element.color)
+        Gdk.cairo_set_source_rgba(ctx, Element.color)
         ctx.move_to(0, 0)
 
     def get_next_child(self, direction, previous=None):

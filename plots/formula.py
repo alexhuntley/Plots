@@ -50,18 +50,22 @@ class Editor(Gtk.DrawingArea):
         self.key_ctl = Gtk.EventControllerKey()
         self.key_ctl.connect("key-pressed", self.on_key_press)
         self.add_controller(self.key_ctl)
-        #self.connect('draw', self.do_draw_cb)
         self.set_draw_func(self.do_draw_cb)
-        #self.connect("button-press-event", self.on_button_press)
+        click_ctl = Gtk.GestureClick()
+        click_ctl.connect("pressed", self.on_button_press)
+        self.add_controller(click_ctl)
         self.connect("realize", self.on_realise)
         self.motion_ctl = Gtk.EventControllerMotion()
         self.motion_ctl.connect("motion", self.on_pointer_move)
         self.add_controller(self.motion_ctl)
-        #self.connect("focus-in-event", self.focus_in)
-        #self.connect("focus-out-event", self.focus_out)
+        focus_ctl = Gtk.EventControllerFocus()
+        focus_ctl.connect("enter", self.focus_in)
+        focus_ctl.connect("leave", self.focus_out)
+        self.add_controller(focus_ctl)
         self.blink_source = None
         self.restart_blink_sequence()
         self.set_size_request(16, 20)
+        self.set_focusable(True)
 
     def set_expr(self, new_expr):
         self.expr = new_expr
@@ -69,7 +73,7 @@ class Editor(Gtk.DrawingArea):
         self.cursor.cancel_selection()
 
     def do_draw_cb(self, widget, ctx, w, h):
-        Element.color = self.get_style_context().get_color(Gtk.StateFlags.NORMAL)
+        Element.color = self.get_style_context().get_color()
         widget_transform = ctx.get_matrix()
         widget_transform.invert()
         ctx.translate(self.padding, self.padding) # a bit of padding
@@ -84,10 +88,10 @@ class Editor(Gtk.DrawingArea):
             self.emit("cursor_position", *self.cursor.position)
             self.cursor.position_changed = False
 
-    def focus_in(self, widget, event):
+    def focus_in(self, ctl):
         self.restart_blink_sequence()
 
-    def focus_out(self, widget, event):
+    def focus_out(self, ctl):
         GLib.source_remove(self.blink_source)
         self.blink_source = None
         self.cursor.cancel_selection()
@@ -107,11 +111,12 @@ class Editor(Gtk.DrawingArea):
         self.blink_source = GLib.timeout_add(Cursor.BLINK_DELAY, self.blink_cursor_cb)
 
     def on_key_press(self, event_cont, keyval, keycode, state):
+        print("key")
         self.restart_blink_sequence()
         modifiers = state & Gtk.accelerator_get_default_mod_mask()
         if DEBUG:
             print(Gdk.keyval_name(keyval))
-        if modifiers & (Gdk.ModifierType.MOD1_MASK | Gdk.ModifierType.MOD4_MASK):
+        if modifiers & (Gdk.ModifierType.ALT_MASK | Gdk.ModifierType.SUPER_MASK):
             return False
         try:
             direction = Direction(keyval)
@@ -217,18 +222,17 @@ class Editor(Gtk.DrawingArea):
             else:
                 return e, e.half_containing(x, y)
 
-    def on_button_press(self, widget, event):
-        if event.button == 1:
-            if event.type is Gdk.EventType.DOUBLE_BUTTON_PRESS or \
-               event.type is Gdk.EventType.TRIPLE_BUTTON_PRESS:
-                self.cursor.select_all(self.expr)
-            else:
-                element, direction = self.element_at(event.x, event.y)
-                self.cursor.mouse_select(element, direction, drag=False)
-                self.restart_blink_sequence()
-                self.grab_focus()
-            self.queue_draw()
-            return True
+    def on_button_press(self, ctl, n_press, x, y):
+        print("click")
+        if n_press > 1:
+            self.cursor.select_all(self.expr)
+        else:
+            element, direction = self.element_at(x, y)
+            self.cursor.mouse_select(element, direction, drag=False)
+            self.restart_blink_sequence()
+            self.grab_focus()
+        self.queue_draw()
+        return True
 
     def on_pointer_move(self, ctl, x, y):
         element, direction = self.element_at(x, y)
@@ -237,6 +241,7 @@ class Editor(Gtk.DrawingArea):
         self.queue_draw()
 
     def on_realise(self, widget):
+        return
         w = self.get_window()
         w.set_events(w.get_events() | \
                      Gdk.EventMask.KEY_PRESS_MASK | \

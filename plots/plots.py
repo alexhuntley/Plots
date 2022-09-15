@@ -244,8 +244,10 @@ class Plots(Gtk.Application):
         return True
 
     def style_cb(self, widget):
-        self.fg_color = tuple(self.window.get_style_context().get_color(Gtk.StateFlags.ACTIVE))[:3]
-        self.bg_color = tuple(self.window.get_style_context().get_background_color(Gtk.StateFlags.ACTIVE))[:3]
+        #self.fg_color = tuple(self.window.get_style_context().get_color(Gtk.StateFlags.ACTIVE))[:3]
+        #self.bg_color = tuple(self.window.get_style_context().get_background_color(Gtk.StateFlags.ACTIVE))[:3]
+        self.fg_color = (0.,0.,0.)
+        self.bg_color = (1.,1.,1.)
 
     def get_fbo(self):
         return gl.glGetIntegerv(gl.GL_FRAMEBUFFER_BINDING)
@@ -314,7 +316,7 @@ class Plots(Gtk.Application):
 
     def gl_realize(self, area):
         area.make_current()
-        area.connect("style-updated", self.style_cb)
+        #area.connect("style-updated", self.style_cb)
         self.style_cb(area)
 
         if (area.get_error() is not None):
