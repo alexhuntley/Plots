@@ -187,11 +187,11 @@ class Plots(Gtk.Application):
 '''
         css_provider = Gtk.CssProvider()
         css_provider.load_from_data(css.encode())
-        context = Gtk.StyleContext()
-        # screen = Gdk.Screen.get_default()
-        # context.add_provider_for_screen(screen, css_provider,
-        #                                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-        context.add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        context = self.window.get_style_context()
+        display = self.window.get_display()
+        context.add_provider_for_display(display, css_provider,
+                                         Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+
         self.drag = Gtk.GestureDrag()
         self.drag.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         self.drag.connect("drag-update", self.drag_update)
