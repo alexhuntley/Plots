@@ -455,8 +455,8 @@ class Plots(Gtk.Application):
 
     def insert_row(self, index, row):
         self.rows.insert(index, row)
-        self.formula_box.prepend(row.formula_box)
-        self.formula_box.reorder_child(row.formula_box, index)
+        prev = self.rows[index-1].formula_box if index > 0 else None
+        self.formula_box.insert_child_after(row.formula_box, prev)
         row.editor.grab_focus()
 
     def about_cb(self, action, _):
