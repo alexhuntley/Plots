@@ -16,7 +16,7 @@
 # along with Plots.  If not, see <https://www.gnu.org/licenses/>.
 
 import gi
-from gi.repository import Gtk, Gdk, Gio, GdkPixbuf
+from gi.repository import Gtk, Gdk, Gio, GdkPixbuf, Adw
 
 from plots import formula, plots, rowcommands, colorpicker, utils
 from plots.data import jinja_env
@@ -273,13 +273,11 @@ class FormulaBox(Gtk.Box):
         self.connect("realize", self.on_realize)
         self.editor.grab_focus()
         self.old = self.construct_memory()
-        self.dark_style = False
+        self.use_dark_style = False
         self.row_status = RowStatus.UNKNOWN
 
     def on_realize(self, widget):
-        #self.connect("style-updated", self.style_cb)
         self.slider_box.hide()
-        #self.slider.set_adjustment(Gtk.Adjustment.new(0.5, 0, 1, 0.1, 0, 0))
 
     def delete(self, widget, record=True, replace_if_last=True):
         if record:
@@ -384,22 +382,20 @@ class FormulaBox(Gtk.Box):
     def get_data(self):
         return self.data
 
-    def style_cb(self, widget):
+    def do_css_changed(self, change):
         style = self.style_is_dark()
-        if style != self.dark_style:
-            self.dark_style = style
-            new_palette = [self.PALETTE, self.DARK_PALETTE][self.dark_style]
-            old_palette = [self.PALETTE, self.DARK_PALETTE][not self.dark_style]
-            if self.color_picker.get_rgba() == old_palette[0]:
-                self.color_picker.set_rgba(new_palette[0])
-                self.edited(None, record=False)
-            old_color = self.color_picker.get_rgba()
+        if style != self.use_dark_style:
+            self.use_dark_style = style
+            new_palette = [self.PALETTE, self.DARK_PALETTE][self.use_dark_style]
+            old_palette = [self.PALETTE, self.DARK_PALETTE][not self.use_dark_style]
+            new_color = old_color = self.color_picker.get_rgba()
+            if old_color.equal(old_palette[0]):
+                new_color = new_palette[0]
             self.color_picker.add_palette(Gtk.Orientation.HORIZONTAL, 9, None)
             self.color_picker.add_palette(Gtk.Orientation.HORIZONTAL, 9, new_palette)
-            self.color_picker.set_rgba(old_color)  # prevent color being reset
+            print(old_color, new_color)
+            self.color_picker.set_rgba(new_color)
+            self.edited(None, record=False)
 
     def style_is_dark(self):
-        context = self.get_style_context()
-        fg = context.get_color(Gtk.StateFlags.ACTIVE)
-        bg = context.get_background_color(Gtk.StateFlags.ACTIVE)
-        return sum([*fg][:3]) > sum([*bg][:3])
+        return Adw.StyleManager.get_default().get_dark()
