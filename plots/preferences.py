@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Plots.  If not, see <https://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk
+from gi.repository import Gtk, Adw
 
 import copy
 import os
@@ -32,6 +32,7 @@ def xdg_config_home():
         return os.environ[varname]
     else:
         return "{}/.config".format(os.environ["HOME"])
+
 
 class Preferences:
     DEFAULTS = {
@@ -78,32 +79,34 @@ class Preferences:
     def __setitem__(self, key, value):
         self.data[key] = value
 
-class PreferencesWindow:
+
+@Gtk.Template(string=utils.read_ui_file("preferences.glade"))
+class PreferencesWindow(Adw.PreferencesWindow):
+    __gtype_name__ = "PreferencesWindow"
+
+    line_thickness_scale = Gtk.Template.Child()
+    samples_scale = Gtk.Template.Child()
+
     def __init__(self, prefs, parent_window):
+        super().__init__()
         self.prefs = prefs
 
-        builder = Gtk.Builder()
-        builder.add_from_string(utils.read_ui_file("preferences.glade"))
-        builder.set_translation_domain(plots.i18n.domain)
+        #builder = Gtk.Builder()
+        #builder.add_from_string()
+        #builder.set_translation_domain(plots.i18n.domain)
 
-        self.prefs_window = builder.get_object("prefs_window")
-        self.prefs_window.set_transient_for(parent_window)
-        self.prefs_window.props.modal = True
-        self.prefs_window.connect("close-request", self.delete_cb)
+        self.set_transient_for(parent_window)
+        self.props.modal = True
+        self.connect("close-request", self.delete_cb)
 
-        self.line_thickness_scale = builder.get_object("line_thickness_scale")
         self.line_thickness_scale.set_range(1, 10)
         self.line_thickness_scale.set_increments(0.5, 3)
         self.line_thickness_scale.set_value(prefs["rendering"]["line_thickness"])
 
-        self.samples_scale = builder.get_object("samples_scale")
         self.samples_scale.set_range(4, 128)
         self.samples_scale.set_value(prefs["rendering"]["samples"])
         self.samples_scale.set_digits(0)
         self.samples_scale.set_increments(1, 10)
-
-    def show(self):
-        self.prefs_window.show()
 
     def delete_cb(self, window):
         r = self.prefs["rendering"]

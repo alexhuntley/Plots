@@ -3,7 +3,7 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
-  <object class="AdwPreferencesWindow" id="prefs_window">
+  <template class="PreferencesWindow" parent="AdwPreferencesWindow">
     <property name="can-focus">False</property>
     <property name="can-navigate-back">True</property>
     <child>
@@ -52,5 +52,5 @@
         </child>
       </object>
     </child>
-  </object>
+  </template>
 </interface>
