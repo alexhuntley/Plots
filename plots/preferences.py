@@ -17,19 +17,14 @@
 # You should have received a copy of the GNU General Public License
 # along with Plots.  If not, see <https://www.gnu.org/licenses/>.
 
-import gi
 from gi.repository import Gtk
 
-import importlib.resources as resources
 import copy
 import os
 import configparser
 
-from plots.i18n import _
 import plots.i18n
-
-def read_ui_file(name):
-    return resources.read_text("plots.ui", name)
+from plots import utils
 
 def xdg_config_home():
     varname = "XDG_CONFIG_HOME"
@@ -88,7 +83,7 @@ class PreferencesWindow:
         self.prefs = prefs
 
         builder = Gtk.Builder()
-        builder.add_from_string(read_ui_file("preferences.glade"))
+        builder.add_from_string(utils.read_ui_file("preferences.glade"))
         builder.set_translation_domain(plots.i18n.domain)
 
         self.prefs_window = builder.get_object("prefs_window")

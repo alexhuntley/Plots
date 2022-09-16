@@ -33,7 +33,7 @@ class Delete():
     def undo(self, app):
         if self.last:
             app.rows[0].delete(None, record=False, replace_if_last=False)
-        row = formularow.FormulaRow(app)
+        row = formularow.FormulaBox(app)
         app.insert_row(self.index, row)
         row.editor.set_expr(parser.from_latex(self.formula))
         row.color_picker.set_rgba(self.rgba)
@@ -46,7 +46,7 @@ class Add():
         self.rgba = row.color_picker.get_rgba()
 
     def do(self, app):
-        row = formularow.FormulaRow(app)
+        row = formularow.FormulaBox(app)
         app.insert_row(self.index, row)
         row.color_picker.set_rgba(self.rgba)
         row.editor.grab_focus()

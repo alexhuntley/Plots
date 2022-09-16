@@ -458,17 +458,17 @@ class Plots(Adw.Application):
         self.gl_area.queue_draw()
 
     def add_equation(self, _, record=True):
-        row = formularow.FormulaRow(self)
+        row = formularow.FormulaBox(self)
         self.rows.append(row)
-        self.formula_box.append(row.formula_box)
+        self.formula_box.append(row)
         row.editor.grab_focus()
         if record:
             self.add_to_history(rowcommands.Add(row, self.rows))
 
     def insert_row(self, index, row):
         self.rows.insert(index, row)
-        prev = self.rows[index-1].formula_box if index > 0 else None
-        self.formula_box.insert_child_after(row.formula_box, prev)
+        prev = self.rows[index-1] if index > 0 else None
+        self.formula_box.insert_child_after(row, prev)
         row.editor.grab_focus()
 
     def about_cb(self, action, _):

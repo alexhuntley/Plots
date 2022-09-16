@@ -222,7 +222,10 @@ class RowStatus(Enum):
     UNKNOWN = 3
 
 
-class FormulaRow():
+@Gtk.Template(string=utils.read_ui_file("formula_box.glade"))
+class FormulaBox(Gtk.Box):
+    __gtype_name__ = "FormulaBox"
+
     BLACK = [0,0,0]
     WHITE = [238, 238, 236]
     PALETTE = [
@@ -240,24 +243,24 @@ class FormulaRow():
     DARK_PALETTE = [utils.create_rgba(*(color/255 for color in colors)) for colors in DARK_PALETTE]
     _palette_use_next = 0
 
+    delete_button = Gtk.Template.Child()
+    viewport = Gtk.Template.Child("editor_viewport")
+    button_box = Gtk.Template.Child()
+    slider = Gtk.Template.Child()
+    slider_upper = Gtk.Template.Child()
+    slider_lower = Gtk.Template.Child()
+    slider_box = Gtk.Template.Child()
+
     def __init__(self, app):
+        super().__init__()
         self.app = app
         self.data = Empty(self)
-        builder = Gtk.Builder()
-        builder.add_from_string(plots.read_ui_file("formula_box.glade"))
-        self.formula_box = builder.get_object("formula_box")
-        self.delete_button = builder.get_object("delete_button")
-        self.viewport = builder.get_object("editor_viewport")
-        button_box = builder.get_object("button_box")
+
         self.color_picker = colorpicker.PopoverColorPicker()
-        button_box.append(self.color_picker)
-        self.slider_box = builder.get_object("slider_box")
-        self.slider = builder.get_object("slider")
-        self.slider_upper = builder.get_object("slider_upper")
-        self.slider_lower = builder.get_object("slider_lower")
-        self.color_picker.add_palette(Gtk.Orientation.HORIZONTAL, 9, FormulaRow.PALETTE)
-        self.color_picker.set_rgba(FormulaRow.PALETTE[FormulaRow._palette_use_next])
-        FormulaRow._palette_use_next = (FormulaRow._palette_use_next + 1) % len(FormulaRow.PALETTE)
+        self.button_box.append(self.color_picker)
+        self.color_picker.add_palette(Gtk.Orientation.HORIZONTAL, 9, FormulaBox.PALETTE)
+        self.color_picker.set_rgba(FormulaBox.PALETTE[FormulaBox._palette_use_next])
+        FormulaBox._palette_use_next = (FormulaBox._palette_use_next + 1) % len(FormulaBox.PALETTE)
         self.editor = formula.Editor()
         self.editor.connect("edit", self.edited)
         self.editor.connect("cursor_position", self.cursor_position)
@@ -267,14 +270,14 @@ class FormulaRow():
         self.slider_upper.connect("changed", self.slider_limits_changed)
         self.slider_lower.connect("changed", self.slider_limits_changed)
         self.viewport.set_child(self.editor)
-        self.formula_box.connect("realize", self.on_realize)
+        self.connect("realize", self.on_realize)
         self.editor.grab_focus()
         self.old = self.construct_memory()
         self.dark_style = False
         self.row_status = RowStatus.UNKNOWN
 
     def on_realize(self, widget):
-        #self.formula_box.connect("style-updated", self.style_cb)
+        #self.connect("style-updated", self.style_cb)
         self.slider_box.hide()
         #self.slider.set_adjustment(Gtk.Adjustment.new(0.5, 0, 1, 0.1, 0, 0))
 
@@ -282,7 +285,7 @@ class FormulaRow():
         if record:
             self.app.add_to_history(rowcommands.Delete(self, self.app.rows))
         self.app.rows.remove(self)
-        self.app.formula_box.remove(self.formula_box)
+        self.app.formula_box.remove(self)
         if not self.app.rows and replace_if_last:
             self.app.add_equation(None, record=False)
         self.app.update_shader()
@@ -396,7 +399,7 @@ class FormulaRow():
             self.color_picker.set_rgba(old_color)  # prevent color being reset
 
     def style_is_dark(self):
-        context = self.formula_box.get_style_context()
+        context = self.get_style_context()
         fg = context.get_color(Gtk.StateFlags.ACTIVE)
         bg = context.get_background_color(Gtk.StateFlags.ACTIVE)
         return sum([*fg][:3]) > sum([*bg][:3])

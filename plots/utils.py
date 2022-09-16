@@ -20,6 +20,7 @@ import re
 
 import gi
 from gi.repository import GLib, Gtk, Gdk, cairo, Pango, PangoCairo, GObject
+import importlib.resources as resources
 
 desc = Pango.font_description_from_string("Latin Modern Math 20")
 
@@ -150,3 +151,6 @@ def create_rgba(r, g, b, a=1.0):
     res.blue = b
     res.alpha = a
     return res
+
+def read_ui_file(name):
+    return resources.read_text("plots.ui", name)
