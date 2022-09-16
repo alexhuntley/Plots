@@ -40,7 +40,7 @@ class Editor(Gtk.DrawingArea):
     }
     def __init__(self, expression=None):
         super().__init__()
-        self.cursor = Cursor()
+        self.cursor = Cursor(self)
         if expression:
             self.expr = expression
         else:
@@ -144,7 +144,6 @@ class Editor(Gtk.DrawingArea):
                 return True
             elif char == "v":
                 self.cursor.paste()
-                self.queue_draw()
                 self.emit("edit")
                 return True
             else:

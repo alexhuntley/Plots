@@ -33,8 +33,9 @@ class Cursor():
     WIDTH = 1
     BLINK_DELAY = 600
 
-    def __init__(self):
+    def __init__(self, editor_widget):
         self.owner = None
+        self.editor = editor_widget
         self.visible = True
         self.pos = 0
         self.secondary_pos = None
@@ -45,7 +46,7 @@ class Cursor():
         self.selection_rgba = [0.5, 0.5, 1, 0.6]
         self._position = (0., 0.)     # absolute position in widget (in pixels)
         self.position_changed = False  # set to True when self.position changes
-        #self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
+        self.clipboard = self.editor.get_clipboard()
 
     @property
     def position(self):
@@ -83,18 +84,23 @@ class Cursor():
     def copy_selection(self):
         elements = self.selection_ancestor.elements[self.selection_slice]
         text = "".join(e.to_latex() for e in elements)
-        self.clipboard.set_text(text, -1)
+        self.clipboard.set(text)
 
     def cut_selection(self):
         self.copy_selection()
         self.backspace(None)
 
     def paste(self):
-        text = self.clipboard.wait_for_text()
+        self.clipboard.read_text_async(None, self.paste_cb)
+
+    def paste_cb(self, source, res):
+        text = self.clipboard.read_text_finish(res)
         elements = parser.from_latex(text)
         if self.selecting:
             self.backspace(None)
         self.owner.insert_elementlist(elements, self, self.pos)
+        self.editor.queue_draw()
+        return True
 
     def mouse_select(self, element, direction, drag=False):
         if drag:
