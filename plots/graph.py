@@ -20,6 +20,7 @@ import OpenGL.GL as gl
 from OpenGL.arrays import vbo
 from OpenGL.GL import shaders
 from plots.data import jinja_env
+from plots.i18n import _
 import math
 import numpy as np
 
@@ -104,7 +105,6 @@ class GraphArea(Gtk.GLArea):
 
     def gl_realize(self, area):
         area.make_current()
-        #area.connect("style-updated", self.style_cb)
         self.style_cb(area)
 
         if (area.get_error() is not None):
@@ -112,10 +112,9 @@ class GraphArea(Gtk.GLArea):
 
         version = gl.glGetString(gl.GL_VERSION).decode().split(" ")[0]
         if version < "3.3":
-            print("FIX ME")
-            self.errorlabel.set_text(
+            self.app.errorlabel.set_text(
                 _("Warning: OpenGL {} is unsupported. Plots supports OpenGL 3.3 or greater.").format(version))
-            self.errorbar.props.revealed = True
+            self.app.errorbar.props.revealed = True
 
         self.vertex_shader = shaders.compileShader(
             self.vertex_template.render(), gl.GL_VERTEX_SHADER)
