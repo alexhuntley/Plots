@@ -111,7 +111,7 @@
               <object class="GtkOverlay" id="graph_overlay">
                 <property name="vexpand">1</property>
                 <property name="child">
-                  <object class="GtkGLArea" id="gl">
+                  <object class="GraphArea" id="gl">
                     <!-- <property name="app_paintable">True</property> -->
                   </object>
                 </property>

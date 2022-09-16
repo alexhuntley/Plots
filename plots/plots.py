@@ -22,7 +22,7 @@ gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf, cairo, Adw
 
-from plots import formula, formularow, rowcommands, preferences, utils
+from plots import formula, formularow, rowcommands, preferences, utils, graph
 from plots.text import TextRenderer
 from plots.i18n import _
 from plots.data import jinja_env
