@@ -267,6 +267,7 @@ class GraphArea(Gtk.GLArea):
 
     def update_fragment_shader(self, formulae):
         if self.vertex_shader:
+            self.make_current()
             fragment_shader = shaders.compileShader(
                 self.fragment_template.render(formulae=formulae),
                 gl.GL_FRAGMENT_SHADER)
