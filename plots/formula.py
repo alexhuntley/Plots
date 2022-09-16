@@ -1,4 +1,4 @@
-# Copyright 2021 Alexander Huntley
+# Copyright 2021-2022 Alexander Huntley
 
 # This file is part of Plots.
 
