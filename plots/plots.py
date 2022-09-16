@@ -149,6 +149,13 @@ class Plots(Adw.Application):
         self.about_action.set_enabled(True)
         self.add_action(self.about_action)
 
+        about_builder = Gtk.Builder()
+        about_builder.add_from_string(read_ui_file("about.glade"))
+        self.about_dialog = about_builder.get_object("about_dialog")
+        self.about_dialog.props.modal = True
+        self.about_dialog.set_transient_for(self.window)
+        self.about_dialog.set_modal(True)
+
         help_action = Gio.SimpleAction.new("help", None)
         help_action.connect("activate", self.help_cb)
         help_action.set_enabled(True)
@@ -469,15 +476,8 @@ class Plots(Adw.Application):
         row.editor.grab_focus()
 
     def about_cb(self, action, _):
-        builder = Gtk.Builder()
-        builder.add_from_string(read_ui_file("about.glade"))
-        self.about_dialog = builder.get_object("about_dialog")
-        self.about_dialog.props.modal = True
-        self.about_dialog.set_transient_for(self.window)
-        self.about_dialog.set_modal(True)
         #about_dialog.set_logo(self.window.get_icon())
         self.about_dialog.show()
-        #about_dialog.destroy()
 
     def prefs_cb(self, action, param):
         self.prefs.show()
