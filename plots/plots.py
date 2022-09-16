@@ -61,10 +61,6 @@ class Plots(Adw.Application):
 
         self.window = builder.get_object("main_window")
         self.add_window(self.window)
-        loader = GdkPixbuf.PixbufLoader()
-        loader.write(resources.read_binary("plots.res", "com.github.alexhuntley.Plotter.svg"))
-        loader.close()
-        #self.window.set_icon(loader.get_pixbuf())
         self.window.set_title("Plots")
         self.scroll = builder.get_object("equation_scroll")
         self.formula_box = builder.get_object("equation_box")
@@ -120,6 +116,10 @@ class Plots(Adw.Application):
         self.about_dialog.props.modal = True
         self.about_dialog.set_transient_for(self.window)
         self.about_dialog.set_modal(True)
+
+        with resources.path("plots.res", "com.github.alexhuntley.Plotter.svg") as p:
+            texture = Gdk.Texture.new_from_filename(str(p))
+            self.about_dialog.set_logo(texture)
 
         help_action = Gio.SimpleAction.new("help", None)
         help_action.connect("activate", self.help_cb)
@@ -233,7 +233,6 @@ class Plots(Adw.Application):
         row.editor.grab_focus()
 
     def about_cb(self, action, _):
-        #about_dialog.set_logo(self.window.get_icon())
         self.about_dialog.show()
 
     def prefs_cb(self, action, param):
