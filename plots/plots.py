@@ -90,7 +90,7 @@ class Plots(Adw.Application):
 
     def do_activate(self):
         builder = Gtk.Builder()
-        builder.add_from_string(read_ui_file("plots.glade"))
+        builder.add_from_string(utils.read_ui_file("plots.glade"))
         builder.set_translation_domain(plots.i18n.domain)
 
         self.window = builder.get_object("main_window")
@@ -150,7 +150,7 @@ class Plots(Adw.Application):
         self.add_action(self.about_action)
 
         about_builder = Gtk.Builder()
-        about_builder.add_from_string(read_ui_file("about.glade"))
+        about_builder.add_from_string(utils.read_ui_file("about.glade"))
         self.about_dialog = about_builder.get_object("about_dialog")
         self.about_dialog.props.modal = True
         self.about_dialog.set_transient_for(self.window)
@@ -534,10 +534,6 @@ class Plots(Adw.Application):
     def refresh_history_buttons(self):
         self.undo_button.props.sensitive = self.can_undo()
         self.redo_button.props.sensitive = self.can_redo()
-
-
-def read_ui_file(name):
-    return resources.read_text("plots.ui", name)
 
 
 if __name__ == '__main__':
