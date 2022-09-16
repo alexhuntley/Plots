@@ -264,11 +264,7 @@ class Plots(Adw.Application):
         self.fg_color = utils.rgba_to_tuple(ctx.lookup_color("window_fg_color").color)[:3]
         self.bg_color = utils.rgba_to_tuple(ctx.lookup_color("window_bg_color").color)[:3]
 
-    def get_fbo(self):
-        return gl.glGetIntegerv(gl.GL_FRAMEBUFFER_BINDING)
-
     def render(self):
-        self.gl_area_fbo = self.get_fbo()
         graph_extent = 2*self.viewport/self.viewport[0]*self.scale
         # extent of each pixel, in graph coordinates
         pixel_extent = graph_extent / self.viewport
