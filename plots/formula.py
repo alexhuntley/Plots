@@ -244,10 +244,4 @@ class Editor(Gtk.DrawingArea):
         self.queue_draw()
 
     def on_realise(self, widget):
-        return
-        w = self.get_window()
-        w.set_events(w.get_events() | \
-                     Gdk.EventMask.KEY_PRESS_MASK | \
-                     Gdk.EventMask.BUTTON_PRESS_MASK | \
-                     Gdk.EventMask.BUTTON_MOTION_MASK)
-        w.set_cursor(Gdk.Cursor.new_from_name(Gdk.Display.get_default(), "text"))
+        self.set_cursor(Gdk.Cursor.new_from_name("text", None))
