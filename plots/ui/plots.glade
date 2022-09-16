@@ -91,7 +91,6 @@
             <property name="min_content_width">200</property>
             <property name="child">
               <object class="GtkViewport">
-                <!-- <property name="shadow_type">none</property> -->
                 <property name="child">
                   <object class="GtkBox" id="equation_box">
                     <property name="orientation">vertical</property>
@@ -153,6 +152,8 @@
                                 </child>
                                 <style>
                                   <class name="osd"/>
+                                  <class name="zoom-button"/>
+                                  <class name="linked"/>
                                 </style>
                               </object>
                             </child>
@@ -167,6 +168,8 @@
                                 </child>
                                 <style>
                                   <class name="osd"/>
+                                  <class name="zoom-button"/>
+                                  <class name="linked"/>
                                 </style>
                               </object>
                             </child>
@@ -193,6 +196,7 @@
                                 </child>
                                 <style>
                                   <class name="osd"/>
+                                  <class name="zoom-button"/>
                                 </style>
                               </object>
                             </property>

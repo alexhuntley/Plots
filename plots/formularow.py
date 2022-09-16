@@ -393,7 +393,6 @@ class FormulaBox(Gtk.Box):
                 new_color = new_palette[0]
             self.color_picker.add_palette(Gtk.Orientation.HORIZONTAL, 9, None)
             self.color_picker.add_palette(Gtk.Orientation.HORIZONTAL, 9, new_palette)
-            print(old_color, new_color)
             self.color_picker.set_rgba(new_color)
             self.edited(None, record=False)
 

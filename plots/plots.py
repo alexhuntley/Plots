@@ -153,6 +153,9 @@ class Plots(Adw.Application):
 .zoom-box {
         background-color: rgba(0, 0, 0, 0);
 }
+.zoom-button {
+        padding: 4px;
+}
 '''
         css_provider = Gtk.CssProvider()
         css_provider.load_from_data(css.encode())
