@@ -5,10 +5,10 @@
 
     <desc>Easily adjustable parameters</desc>
   </info>
-  <title>Variables and sliders</title>
+  <title>Variables y deslizadores</title>
 
   <p>
-    To declare a variable, type an equation of the form <code><em>variable</em> = <em>value</em></code> into an empty formula box, where <code><em>variable</em></code> is a single Latin or Greek letter, and <code><em>value</em></code> is an expression which must not depend on position, but may depend on preceding variables.
+    Para declarar una variable, escriba una ecuación de la forma <code><em>variable</em> = <em>value</em></code> en un cuadro de fórmula vacío, donde <code><em>variable</em></code> es una sola letra latina o griega, y <code><em>value</em></code> es una expresión que no debe depender de la posición, pero puede depender de las variables anteriores.
   </p>
 
   <p>
