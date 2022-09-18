@@ -106,7 +106,7 @@
       Grafici è stato progettato per integrarsi perfettamente con l'ambiente desktop GNOME e sfrutta
       l'uso di hardware moderno usando OpenGL.
     </p>
-    
+
     <p xml:lang="nl">
       Plots maakt het eenvoudig om wiskundige formules te visualiseren. Naast de rekenkundige
       basisbewerkingen, ondersteunt het trigonometrische, hyperbolische, exponentiële en
@@ -117,7 +117,7 @@
       Plots is ontworpen om goed te integreren met Gnome en maakt gebruik van van moderne hardware
       via OpenGL.
     </p>
-    
+
     <p xml:lang="pt_BR">
       Plots permite a fácil visualização de fórmulas matemáticas. Além das operações
       aritméticas básicas, suporta funções trigonométricas, hiperbólicas, exponenciais
@@ -159,6 +159,20 @@
   </provides>
 
   <releases>
+    <release version="0.7.0" date="2022-09-18">
+      <description>
+        <ul>
+          <li>New image export feature;</li>
+          <li>New, more convenient color picker;</li>
+          <li>Dark mode support;</li>
+          <li>New settings window, allowing the line thickness and quality to be customized;</li>
+          <li>Improved graphical accuracy;</li>
+          <li>Bug fixes;</li>
+          <li>Added Chinese (Simplified) translation;</li>
+          <li>Updated existing translations.</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.6.2" date="2022-04-04">
       <description>
         <ul>
