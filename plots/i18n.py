@@ -21,6 +21,8 @@ import importlib.resources as resources
 
 domain = "plots"
 localedir = resources.path("plots.locale", "__init__.py").__enter__().parent
-locale.setlocale(locale.LC_ALL, "")
-locale.bindtextdomain(domain, localedir)
-locale.textdomain(domain)
+
+def bind():
+    locale.setlocale(locale.LC_ALL, "")
+    locale.bindtextdomain(domain, localedir)
+    locale.textdomain(domain)

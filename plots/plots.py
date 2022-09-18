@@ -57,6 +57,7 @@ class Plots(Gtk.Application):
                 Handy.ColorScheme.PREFER_LIGHT)
         except AttributeError: # StyleManager requires Handy v1.6
             pass
+        plots.i18n.bind()
 
     @property
     def target_scale(self):
