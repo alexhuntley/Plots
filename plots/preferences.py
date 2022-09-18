@@ -91,10 +91,6 @@ class PreferencesWindow(Adw.PreferencesWindow):
         super().__init__()
         self.prefs = prefs
 
-        #builder = Gtk.Builder()
-        #builder.add_from_string()
-        #builder.set_translation_domain(plots.i18n.domain)
-
         self.set_transient_for(parent_window)
         self.props.modal = True
         self.connect("close-request", self.delete_cb)

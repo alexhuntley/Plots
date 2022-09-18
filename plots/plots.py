@@ -57,7 +57,6 @@ class Plots(Adw.Application):
     def do_activate(self):
         builder = Gtk.Builder()
         builder.add_from_string(utils.read_ui_file("plots.glade"))
-        builder.set_translation_domain(plots.i18n.domain)
 
         self.window = builder.get_object("main_window")
         self.add_window(self.window)
