@@ -72,8 +72,7 @@ class PopoverColorPicker(Gtk.Button):
 
     def on_color_activated(self, chooser, color):
         self.emit("color-activated", chooser, color)
-        self.popover.popdown()
-        self.update_color()
+        self.set_rgba(color)
 
     def on_button(self, widget, event):
         self.on_color_activated(self.chooser, self.get_rgba())
