@@ -38,6 +38,7 @@ class Plots(Adw.Application):
         self.overlay_source = None
         Adw.StyleManager.get_default().set_color_scheme(
             Adw.ColorScheme.PREFER_LIGHT)
+        utils.install_excepthook()
         plots.i18n.bind()
 
     def key_pressed(self, ctl, keyval, keycode, state):
