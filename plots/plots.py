@@ -213,7 +213,7 @@ class Plots(Adw.Application):
                 if f.owner.row_status == formularow.RowStatus.UNKNOWN:
                     f.owner.row_status = formularow.RowStatus.GOOD
         except RuntimeError as e:
-            print(e.args[0].encode('ascii', 'ignore').decode('unicode_escape'))
+            #print(e.args[0].encode('ascii', 'ignore').decode('unicode_escape'))
             good_formulae = [f for f in formulae
                              if f.owner.row_status == formularow.RowStatus.GOOD]
             self.gl_area.update_fragment_shader(good_formulae)
