@@ -3,4 +3,13 @@ res/com.github.alexhuntley.Plots.svg /usr/share/icons/hicolor/scalable/apps/
 res/com.github.alexhuntley.Plots-symbolic.svg /usr/share/icons/hicolor/symbolic/apps/
 res/com.github.alexhuntley.Plots.metainfo.xml /usr/share/metainfo/
 help/C/* /usr/share/help/C/plots/
+help/de/* /usr/share/help/de/plots/
+help/es/* /usr/share/help/es/plots/
+help/fa/* /usr/share/help/fa/plots/
 help/fr/* /usr/share/help/fr/plots/
+help/hr/* /usr/share/help/hr/plots/
+help/it/* /usr/share/help/it/plots/
+help/nb_NO/* /usr/share/help/nb_NO/plots/
+help/nl/* /usr/share/help/nl/plots/
+help/pt_BR/* /usr/share/help/pt_BR/plots/
+help/zh_Hans/* /usr/share/help/zh_Hans/plots/
