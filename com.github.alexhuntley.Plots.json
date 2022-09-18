@@ -48,7 +48,7 @@
         "install -D -t /app/share/help/nb_NO/plots/ help/nb_NO/*",
         "install -D -t /app/share/help/nl/plots/ help/nl/*",
         "install -D -t /app/share/help/pt_BR/plots/ help/pt_BR/*",
-        "install -D -t /app/share/help/zh_Hans/plots/ help/zh_Hans/*",
+        "install -D -t /app/share/help/zh_Hans/plots/ help/zh_Hans/*"
       ],
       "sources": [
         {
