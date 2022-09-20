@@ -89,7 +89,7 @@ class Preferences(GObject.GObject):
         return False
 
 
-@Gtk.Template(string=utils.read_ui_file("preferences.glade"))
+@Gtk.Template(string=utils.read_ui_file("preferences.ui"))
 class PreferencesWindow(Adw.PreferencesWindow):
     __gtype_name__ = "PreferencesWindow"
 

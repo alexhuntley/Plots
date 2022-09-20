@@ -57,7 +57,7 @@ class Plots(Adw.Application):
 
     def do_activate(self):
         builder = Gtk.Builder()
-        builder.add_from_string(utils.read_ui_file("plots.glade"))
+        builder.add_from_string(utils.read_ui_file("plots.ui"))
 
         self.window = builder.get_object("main_window")
         self.add_window(self.window)
@@ -111,7 +111,7 @@ class Plots(Adw.Application):
         self.add_action(self.about_action)
 
         about_builder = Gtk.Builder()
-        about_builder.add_from_string(utils.read_ui_file("about.glade"))
+        about_builder.add_from_string(utils.read_ui_file("about.ui"))
         self.about_dialog = about_builder.get_object("about_dialog")
         self.about_dialog.props.modal = True
         self.about_dialog.set_transient_for(self.window)

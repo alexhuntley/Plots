@@ -9,7 +9,7 @@ setuptools.setup(
     description="A graph plotting app for GNOME",
     packages=setuptools.find_packages(exclude=['tests']),
     package_data={
-        "plots.ui": ["*.glade"],
+        "plots.ui": ["*.ui"],
         "plots": ["shaders/*.glsl"],
         "plots.res": ["*.svg", "*.ttf"],
         "plots.locale": ["*/LC_MESSAGES/*.mo"],

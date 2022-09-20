@@ -222,7 +222,7 @@ class RowStatus(Enum):
     UNKNOWN = 3
 
 
-@Gtk.Template(string=utils.read_ui_file("formula_box.glade"))
+@Gtk.Template(string=utils.read_ui_file("formula_box.ui"))
 class FormulaBox(Gtk.Box):
     __gtype_name__ = "FormulaBox"
 
