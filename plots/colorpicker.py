@@ -1,4 +1,4 @@
-# Copyright 2021 Alexander Huntley
+# Copyright 2021-2022 Alexander Huntley
 
 # This file is part of Plots.
 
@@ -31,14 +31,14 @@ class PopoverColorPicker(Gtk.Button):
         self.chooser = Gtk.ColorChooserWidget.new()
         self.chooser.show()
         self.chooser.connect("color-activated", self.on_color_activated)
-        self.chooser.connect("button-press-event", self.on_button)
-        self.chooser.connect("touch-event", self.on_button)
-        self.chooser.props.margin = 4
+        click_ctl = Gtk.GestureClick()
+        click_ctl.connect("pressed", self.on_button)
+        self.chooser.add_controller(click_ctl)
 
         self.popover = Gtk.Popover()
         self.popover.set_position(Gtk.PositionType.BOTTOM)
-        self.popover.set_relative_to(self)
-        self.popover.add(self.chooser)
+        self.popover.set_parent(self)
+        self.popover.set_child(self.chooser)
         self.popover.connect("closed", self.on_close)
 
         self.connect("clicked", self.on_click)
@@ -50,7 +50,7 @@ class PopoverColorPicker(Gtk.Button):
 
 
     def update_color(self):
-        css = f'button {{ background: {self.get_rgba().to_string()} }}'
+        css = f'button {{ background: {self.get_rgba().to_string()}; }}'
         self.provider.load_from_data(css.encode())
 
     def on_click(self, button):
@@ -74,5 +74,5 @@ class PopoverColorPicker(Gtk.Button):
         self.emit("color-activated", chooser, color)
         self.set_rgba(color)
 
-    def on_button(self, widget, event):
+    def on_button(self, ctl, n_press, x, y):
         self.on_color_activated(self.chooser, self.get_rgba())

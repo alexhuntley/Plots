@@ -1,4 +1,4 @@
-# Copyright 2021 Alexander Huntley
+# Copyright 2021-2022 Alexander Huntley
 
 # This file is part of Plots.
 
@@ -17,9 +17,11 @@
 
 from enum import Enum
 import re
+import sys
 
 import gi
-from gi.repository import GLib, Gtk, Gdk, cairo, Pango, PangoCairo, GObject
+from gi.repository import GLib, Gtk, Gdk, cairo, Pango, PangoCairo, GObject, Gio
+import importlib.resources as resources
 
 desc = Pango.font_description_from_string("Latin Modern Math 20")
 
@@ -139,3 +141,27 @@ class Text:
 
 def font_metrics(ctx):
     return Text("x", ctx)
+
+def rgba_to_tuple(rgba):
+    return (rgba.red, rgba.green, rgba.blue, rgba.alpha)
+
+def create_rgba(r, g, b, a=1.0):
+    res = Gdk.RGBA()
+    res.red = r
+    res.green = g
+    res.blue = b
+    res.alpha = a
+    return res
+
+def read_ui_file(name):
+    return resources.read_text("plots.ui", name)
+
+def install_excepthook():
+    old_hook = sys.excepthook
+
+    def new_hook(etype, evalue, etb):
+        old_hook(etype, evalue, etb)
+        if (app := Gio.Application.get_default()) is not None:
+            app.quit()
+        sys.exit()
+    sys.excepthook = new_hook

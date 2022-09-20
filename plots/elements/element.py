@@ -52,7 +52,7 @@ class Element(abstractelement.AbstractElement):
             ctx.rectangle(-self.h_spacing, -self.ascent,
                           self.width + 2*self.h_spacing, self.ascent + self.descent)
             ctx.fill()
-        ctx.set_source_rgba(*Element.color)
+        Gdk.cairo_set_source_rgba(ctx, Element.color)
         ctx.move_to(0, 0)
 
     def get_next_child(self, direction, previous=None):

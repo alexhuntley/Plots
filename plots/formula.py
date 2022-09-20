@@ -1,4 +1,4 @@
-# Copyright 2021 Alexander Huntley
+# Copyright 2021-2022 Alexander Huntley
 
 # This file is part of Plots.
 
@@ -40,33 +40,41 @@ class Editor(Gtk.DrawingArea):
     }
     def __init__(self, expression=None):
         super().__init__()
-        self.cursor = Cursor()
+        self.cursor = Cursor(self)
         if expression:
             self.expr = expression
         else:
             self.expr = ElementList()
         self.cursor.reparent(self.expr, -1)
         self.props.can_focus = True
-        self.key_ctl = Gtk.EventControllerKey.new(self)
+        self.key_ctl = Gtk.EventControllerKey()
         self.key_ctl.connect("key-pressed", self.on_key_press)
-        self.connect('draw', self.do_draw_cb)
-        self.connect("button-press-event", self.on_button_press)
+        self.add_controller(self.key_ctl)
+        self.set_draw_func(self.do_draw_cb)
+        click_ctl = Gtk.GestureClick()
+        click_ctl.connect("pressed", self.on_button_press)
+        self.add_controller(click_ctl)
         self.connect("realize", self.on_realise)
-        self.motion_ctl = Gtk.EventControllerMotion.new(self)
-        self.motion_ctl.connect("motion", self.on_pointer_move)
-        self.connect("focus-in-event", self.focus_in)
-        self.connect("focus-out-event", self.focus_out)
+        self.drag_ctl = Gtk.GestureDrag()
+        self.drag_ctl.connect("drag-begin", self.on_drag_begin)
+        self.drag_ctl.connect("drag-update", self.on_pointer_move)
+        self.add_controller(self.drag_ctl)
+        focus_ctl = Gtk.EventControllerFocus()
+        focus_ctl.connect("enter", self.focus_in)
+        focus_ctl.connect("leave", self.focus_out)
+        self.add_controller(focus_ctl)
         self.blink_source = None
         self.restart_blink_sequence()
         self.set_size_request(16, 20)
+        self.set_focusable(True)
 
     def set_expr(self, new_expr):
         self.expr = new_expr
         self.cursor.reparent(self.expr, -1)
         self.cursor.cancel_selection()
 
-    def do_draw_cb(self, widget, ctx):
-        Element.color = self.get_style_context().get_color(Gtk.StateFlags.NORMAL)
+    def do_draw_cb(self, widget, ctx, w, h):
+        Element.color = self.get_style_context().get_color()
         widget_transform = ctx.get_matrix()
         widget_transform.invert()
         ctx.translate(self.padding, self.padding) # a bit of padding
@@ -81,10 +89,10 @@ class Editor(Gtk.DrawingArea):
             self.emit("cursor_position", *self.cursor.position)
             self.cursor.position_changed = False
 
-    def focus_in(self, widget, event):
+    def focus_in(self, ctl):
         self.restart_blink_sequence()
 
-    def focus_out(self, widget, event):
+    def focus_out(self, ctl):
         GLib.source_remove(self.blink_source)
         self.blink_source = None
         self.cursor.cancel_selection()
@@ -108,7 +116,7 @@ class Editor(Gtk.DrawingArea):
         modifiers = state & Gtk.accelerator_get_default_mod_mask()
         if DEBUG:
             print(Gdk.keyval_name(keyval))
-        if modifiers & (Gdk.ModifierType.MOD1_MASK | Gdk.ModifierType.MOD4_MASK):
+        if modifiers & (Gdk.ModifierType.ALT_MASK | Gdk.ModifierType.SUPER_MASK):
             return False
         try:
             direction = Direction(keyval)
@@ -136,7 +144,6 @@ class Editor(Gtk.DrawingArea):
                 return True
             elif char == "v":
                 self.cursor.paste()
-                self.queue_draw()
                 self.emit("edit")
                 return True
             else:
@@ -214,29 +221,27 @@ class Editor(Gtk.DrawingArea):
             else:
                 return e, e.half_containing(x, y)
 
-    def on_button_press(self, widget, event):
-        if event.button == 1:
-            if event.type is Gdk.EventType.DOUBLE_BUTTON_PRESS or \
-               event.type is Gdk.EventType.TRIPLE_BUTTON_PRESS:
-                self.cursor.select_all(self.expr)
-            else:
-                element, direction = self.element_at(event.x, event.y)
-                self.cursor.mouse_select(element, direction, drag=False)
-                self.restart_blink_sequence()
-                self.grab_focus()
-            self.queue_draw()
-            return True
+    def on_button_press(self, ctl, n_press, x, y):
+        if n_press > 1:
+            self.cursor.select_all(self.expr)
+        else:
+            element, direction = self.element_at(x, y)
+            self.cursor.mouse_select(element, direction, drag=False)
+            self.restart_blink_sequence()
+            self.grab_focus()
+        self.queue_draw()
+        return True
+
+    def on_drag_begin(self, ctl, start_x, start_y):
+        self.drag_start_x = start_x
+        self.drag_start_y = start_y
 
     def on_pointer_move(self, ctl, x, y):
-        element, direction = self.element_at(x, y)
+        element, direction = self.element_at(
+            self.drag_start_x + x, self.drag_start_y + y)
         self.cursor.mouse_select(element, direction, drag=True)
         self.restart_blink_sequence()
         self.queue_draw()
 
     def on_realise(self, widget):
-        w = self.get_window()
-        w.set_events(w.get_events() | \
-                     Gdk.EventMask.KEY_PRESS_MASK | \
-                     Gdk.EventMask.BUTTON_PRESS_MASK | \
-                     Gdk.EventMask.BUTTON_MOTION_MASK)
-        w.set_cursor(Gdk.Cursor.new_from_name(Gdk.Display.get_default(), "text"))
+        self.set_cursor(Gdk.Cursor.new_from_name("text", None))
