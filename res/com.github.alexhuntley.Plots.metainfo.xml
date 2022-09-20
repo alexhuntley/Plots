@@ -156,6 +156,15 @@
   </provides>
 
   <releases>
+    <release version="0.8.0" date="2022-09-20">
+      <description>
+        <ul>
+          <li>Port to GTK 4 and Libadwaita, for improved performance and a cleaner look</li>
+          <li>Bug fixes</li>
+          <li>Updated translations</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.7.0" date="2022-09-18">
       <description>
         <ul>
