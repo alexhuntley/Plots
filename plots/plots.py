@@ -136,6 +136,7 @@ class Plots(Adw.Application):
         prefs_action.set_enabled(True)
         self.add_action(prefs_action)
         self.prefs = preferences.Preferences(self.window)
+        self.prefs.connect("updated", self.prefs_updated)
 
         self.set_overlay_timeout()
 
@@ -300,6 +301,9 @@ class Plots(Adw.Application):
     def refresh_history_buttons(self):
         self.undo_button.props.sensitive = self.can_undo()
         self.redo_button.props.sensitive = self.can_redo()
+
+    def prefs_updated(self, prefs):
+        self.gl_area.queue_draw()
 
 
 if __name__ == '__main__':

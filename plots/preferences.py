@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Plots.  If not, see <https://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk, Adw
+from gi.repository import Gtk, Adw, GObject
 
 import copy
 import os
@@ -34,7 +34,10 @@ def xdg_config_home():
         return "{}/.config".format(os.environ["HOME"])
 
 
-class Preferences:
+class Preferences(GObject.GObject):
+    __gsignals__ = {
+        "updated": (GObject.SIGNAL_RUN_FIRST, None, ())
+    }
     DEFAULTS = {
         "rendering": {
             "line_thickness": 2.0,
@@ -45,6 +48,7 @@ class Preferences:
     CONFIG_FILENAME = "config.ini"
 
     def __init__(self, parent):
+        super().__init__()
         self.parent = parent
         self.data = copy.deepcopy(self.DEFAULTS)
         self.load_config()
@@ -71,6 +75,7 @@ class Preferences:
 
     def show(self):
         self.window = PreferencesWindow(self, self.parent)
+        self.window.connect("close-request", self.close_cb)
         self.window.show()
 
     def __getitem__(self, key):
@@ -78,6 +83,10 @@ class Preferences:
 
     def __setitem__(self, key, value):
         self.data[key] = value
+
+    def close_cb(self, prefs_window):
+        self.emit("updated")
+        return False
 
 
 @Gtk.Template(string=utils.read_ui_file("preferences.glade"))
