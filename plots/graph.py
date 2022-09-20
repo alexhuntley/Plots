@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Plots.  If not, see <https://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk, Gdk, GLib
+from gi.repository import Gtk, Gdk, GLib, GdkPixbuf
 import OpenGL.GL as gl
 from OpenGL.arrays import vbo
 from OpenGL.GL import shaders
