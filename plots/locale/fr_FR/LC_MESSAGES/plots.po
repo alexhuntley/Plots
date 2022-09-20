@@ -9,23 +9,23 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-14 16:38+0100\n"
-"PO-Revision-Date: 2021-09-20 11:08+0000\n"
-"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
+"PO-Revision-Date: 2022-09-21 06:16+0000\n"
+"Last-Translator: rene-coty <irenee.thirion@e.email>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/plots/plots/fr/>\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.9-dev\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #: plots/plots.py:142
 msgid "_Export…"
-msgstr ""
+msgstr "_Exporter…"
 
 #: plots/plots.py:143
 msgid "_Preferences"
-msgstr ""
+msgstr "_Préférences"
 
 #: plots/plots.py:144
 msgid "Help"
@@ -44,25 +44,23 @@ msgstr ""
 
 #: plots/plots.py:477
 msgid "Export image"
-msgstr ""
+msgstr "Exporter l’image"
 
 #: plots/plots.py:480
 msgid "_Export"
-msgstr ""
+msgstr "_Exporter"
 
 #: plots/plots.py:481
 msgid "_Cancel"
-msgstr ""
+msgstr "_Annuler"
 
 #: plots/plots.py:484
 msgid "Untitled plot"
 msgstr ""
 
 #: plots/ui/about.glade.h:1
-#, fuzzy
-#| msgid "Copyright © 2021 Alexander Huntley"
 msgid "Copyright © 2021-2022 Alexander Huntley"
-msgstr "Copyright © 2021 Alexander Huntley"
+msgstr "Copyright © 2021-2022 Alexander Huntley"
 
 #: plots/ui/about.glade.h:2
 msgid "A graph plotter for GNOME."
@@ -78,24 +76,24 @@ msgstr "Erreur :"
 
 #: plots/ui/preferences.glade.h:1
 msgid "Preferences affecting graph rendering"
-msgstr ""
+msgstr "Préférences affectant le rendu des graphiques"
 
 #: plots/ui/preferences.glade.h:2
 msgid "Rendering"
-msgstr ""
+msgstr "Rendu"
 
 #: plots/ui/preferences.glade.h:3
 msgid "Line thickness"
-msgstr ""
+msgstr "Épaisseur de la ligne"
 
 #: plots/ui/preferences.glade.h:4
 msgid "Approximate thickness of the graphs"
-msgstr ""
+msgstr "Épaisseur approximative des graphiques"
 
 #: plots/ui/preferences.glade.h:5
 msgid "Samples per pixel"
-msgstr ""
+msgstr "Échantillons par pixel"
 
 #: plots/ui/preferences.glade.h:6
 msgid "Reduce to improve performance"
-msgstr ""
+msgstr "Réduire pour améliorer les performances"
