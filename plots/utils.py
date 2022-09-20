@@ -165,3 +165,6 @@ def install_excepthook():
             app.quit()
         sys.exit()
     sys.excepthook = new_hook
+
+def shader_error_str(error):
+    return error.args[0].encode('ascii', 'ignore').decode('unicode_escape')

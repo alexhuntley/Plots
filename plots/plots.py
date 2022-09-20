@@ -197,29 +197,32 @@ class Plots(Adw.Application):
         return False
 
     def update_shader(self):
-        formulae = []
+        good, bad, unknown = [], [], []
         self.slider_rows.clear()
         for r in self.rows:
-            if r.row_status == formularow.RowStatus.BAD:
-                continue
             data = r.get_data()
-            formulae.append(data)
+            if r.row_status == formularow.RowStatus.GOOD:
+                good.append(data)
+            elif r.row_status == formularow.RowStatus.BAD:
+                bad.append(data)
+            elif r.row_status == formularow.RowStatus.UNKNOWN:
+                unknown.append(data)
             if isinstance(data, formularow.Slider):
                 self.slider_rows.append(r)
-        formulae.sort(key=lambda x: x.priority, reverse=True)
-        try:
+
+        def attempt(formulae):
+            formulae.sort(key=lambda x: x.priority, reverse=True)
             self.gl_area.update_fragment_shader(formulae)
             for f in formulae:
-                if f.owner.row_status == formularow.RowStatus.UNKNOWN:
-                    f.owner.row_status = formularow.RowStatus.GOOD
-        except RuntimeError as e:
-            #print(e.args[0].encode('ascii', 'ignore').decode('unicode_escape'))
-            good_formulae = [f for f in formulae
-                             if f.owner.row_status == formularow.RowStatus.GOOD]
-            self.gl_area.update_fragment_shader(good_formulae)
-            for f in formulae:
-                if f.owner.row_status == formularow.RowStatus.UNKNOWN:
-                    f.owner.row_status = formularow.RowStatus.BAD
+                f.owner.row_status = formularow.RowStatus.GOOD
+
+        try:
+            attempt(good + bad + unknown)
+        except RuntimeError:
+            try:
+                attempt(good + unknown)
+            except RuntimeError:
+                attempt(good)
 
     def add_equation(self, _, record=True):
         row = formularow.FormulaBox(self)
