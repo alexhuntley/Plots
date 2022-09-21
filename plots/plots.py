@@ -61,7 +61,7 @@ class Plots(Adw.Application):
 
         self.window = builder.get_object("main_window")
         self.add_window(self.window)
-        self.window.set_title("Plots")
+        self.window.set_title(_("Plots"))
         self.scroll = builder.get_object("equation_scroll")
         self.formula_box = builder.get_object("equation_box")
         self.add_equation_button = builder.get_object("add_equation")
