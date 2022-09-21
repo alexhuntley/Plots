@@ -3,7 +3,7 @@
   <requires lib="gtk" version="4.0"/>
   <object class="GtkAboutDialog" id="about_dialog">
     <property name="program-name">Plots</property>
-    <property name="version">0.8.0</property>
+    <property name="version">0.8.1</property>
     <property name="copyright" translatable="1">Copyright © 2021-2022 Alexander Huntley</property>
     <property name="comments" translatable="1">A graph plotter for GNOME.</property>
     <property name="website">https://github.com/alexhuntley/Plots</property>

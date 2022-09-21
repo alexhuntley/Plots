@@ -156,6 +156,14 @@
   </provides>
 
   <releases>
+    <release version="0.8.1" date="2022-09-21">
+      <description>
+        <ul>
+          <li>Bug fixes</li>
+          <li>Updated translations</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.8.0" date="2022-09-20">
       <description>
         <ul>
