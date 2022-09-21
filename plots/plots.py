@@ -116,6 +116,7 @@ class Plots(Adw.Application):
         self.about_dialog.props.modal = True
         self.about_dialog.set_transient_for(self.window)
         self.about_dialog.set_modal(True)
+        self.about_dialog.connect("close-request", self.about_close)
 
         with resources.path("plots.res", "com.github.alexhuntley.Plotter.svg") as p:
             texture = Gdk.Texture.new_from_filename(str(p))
@@ -240,7 +241,11 @@ class Plots(Adw.Application):
         row.editor.grab_focus()
 
     def about_cb(self, action, _):
-        self.about_dialog.show()
+        self.about_dialog.present()
+
+    def about_close(self, window):
+        window.hide()
+        return True
 
     def prefs_cb(self, action, param):
         self.prefs.show()
