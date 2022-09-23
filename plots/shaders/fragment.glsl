@@ -99,12 +99,6 @@ void main() {
     float step = sample_extent / samples;
     float jitter = .4;
 
-    {% for f in formulae %}
-    {
-        {{ f.calculation() }}
-    }
-    {% endfor %}
-
     float axis_width = pixel_extent.x;
     vec3 minor_color = mix(fg_color, bg_color, 0.6);
     color = mix(minor_color, color, smoothstep(axis_width*.4, axis_width*.6, abs(zmod(graph_pos.x, minor_grid))));
@@ -115,5 +109,12 @@ void main() {
     vec3 axis_color = fg_color;
     color = mix(axis_color, color, smoothstep(axis_width*.6, axis_width*.65, abs(graph_pos.x)));
     color = mix(axis_color, color, smoothstep(axis_width*.6, axis_width*.65, abs(graph_pos.y)));
+
+    {% for f in formulae %}
+    {
+        {{ f.calculation() }}
+    }
+    {% endfor %}
+
     rgba = vec4(color, 1);
 }
