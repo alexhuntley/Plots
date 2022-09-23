@@ -50,7 +50,6 @@ class Sum(element.Element):
         init_body, init_expr = self.bottom.to_glsl()
         end_body, end_expr = self.top.to_glsl()
         var = init_expr.split('=')[0].strip()
-        assert var.isidentifier()
         sum_var = f"sum{Sum.glsl_var_counter}"
         Sum.glsl_var_counter += 1
         if Sum.glsl_var_counter > 100000:
