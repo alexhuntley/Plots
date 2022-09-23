@@ -16,14 +16,14 @@
           <object class="AdwPreferencesGroup">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="description" translatable="1">Preferences affecting graph rendering</property>
-            <property name="title" translatable="1">Rendering</property>
+            <property name="description" translatable="yes">Preferences affecting graph rendering</property>
+            <property name="title" translatable="yes">Rendering</property>
             <child>
               <object class="AdwActionRow">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="title" translatable="1">Line thickness</property>
-                <property name="subtitle" translatable="1">Approximate thickness of the graphs</property>
+                <property name="title" translatable="yes">Line thickness</property>
+                <property name="subtitle" translatable="yes">Approximate thickness of the graphs</property>
                 <property name="use-underline">True</property>
                 <child>
                   <object class="GtkScale" id="line_thickness_scale">
@@ -37,8 +37,8 @@
               <object class="AdwActionRow">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="title" translatable="1">Samples per pixel</property>
-                <property name="subtitle" translatable="1">Reduce to improve performance</property>
+                <property name="title" translatable="yes">Samples per pixel</property>
+                <property name="subtitle" translatable="yes">Reduce to improve performance</property>
                 <property name="use-underline">True</property>
                 <child>
                   <object class="GtkScale" id="samples_scale">
