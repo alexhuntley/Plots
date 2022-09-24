@@ -28,6 +28,7 @@ from plots.elements import Element, ElementList, BaseAtom, Atom, \
     Abs, Paren, Sum
 from plots.utils import Direction, MetricContext, Text
 from plots.data import BINARY_OPERATORS
+import lark.exceptions
 
 class Cursor():
     WIDTH = 1
@@ -95,12 +96,14 @@ class Cursor():
 
     def paste_cb(self, source, res):
         text = self.clipboard.read_text_finish(res)
-        elements = parser.from_latex(text)
+        try:
+            elements = parser.from_latex(text)
+        except lark.exceptions.UnexpectedInput:
+            return
         if self.selecting:
             self.backspace(None)
         self.owner.insert_elementlist(elements, self, self.pos)
         self.editor.queue_draw()
-        return True
 
     def mouse_select(self, element, direction, drag=False):
         if drag:
