@@ -23,6 +23,9 @@ from plots.data import jinja_env
 import re, math
 from enum import Enum
 
+# Monkey-patch Gdk.RGBA to fix equality
+Gdk.RGBA.__eq__ = Gdk.RGBA.equal
+
 class RowData():
     def id(self):
         return id(self)
@@ -389,8 +392,8 @@ class FormulaBox(Gtk.Box):
             new_palette = [self.PALETTE, self.DARK_PALETTE][self.use_dark_style]
             old_palette = [self.PALETTE, self.DARK_PALETTE][not self.use_dark_style]
             new_color = old_color = self.color_picker.get_rgba()
-            if old_color.equal(old_palette[0]):
-                new_color = new_palette[0]
+            if old_color in old_palette:
+                new_color = new_palette[old_palette.index(old_color)]
             self.color_picker.add_palette(Gtk.Orientation.HORIZONTAL, 9, None)
             self.color_picker.add_palette(Gtk.Orientation.HORIZONTAL, 9, new_palette)
             self.color_picker.set_rgba(new_color)
