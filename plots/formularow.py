@@ -229,21 +229,8 @@ class RowStatus(Enum):
 class FormulaBox(Gtk.Box):
     __gtype_name__ = "FormulaBox"
 
-    BLACK = [0,0,0]
-    WHITE = [238, 238, 236]
-    PALETTE = [
-        BLACK,
-        [28,113,216],
-        [46,194,126],
-        [245,194,17],
-        [230,97,0  ],
-        [192,28,40 ],
-        [129,61,156],
-        [134,94,60 ],
-    ]
-    DARK_PALETTE = [WHITE] + PALETTE[1:]
-    PALETTE = [utils.create_rgba(*(color/255 for color in colors)) for colors in PALETTE]
-    DARK_PALETTE = [utils.create_rgba(*(color/255 for color in colors)) for colors in DARK_PALETTE]
+    PALETTE      = "blue_5 green_5 yellow_5 orange_5 red_5 purple_5 brown_5 dark_5".split()
+    DARK_PALETTE = "blue_1 green_1 yellow_1 orange_1 red_1 purple_1 brown_1 light_2".split()
     _palette_use_next = 0
 
     delete_button = Gtk.Template.Child()
@@ -259,11 +246,16 @@ class FormulaBox(Gtk.Box):
         self.app = app
         self.data = Empty(self)
 
+        self.style_ctx = self.get_style_context()
+        print(self.style_ctx.lookup_color("orange_1").color)
+        self.PALETTE = [self.style_ctx.lookup_color(c).color for c in self.PALETTE]
+        self.DARK_PALETTE = [self.style_ctx.lookup_color(c).color for c in self.DARK_PALETTE]
+
         self.color_picker = colorpicker.PopoverColorPicker()
         self.button_box.append(self.color_picker)
-        self.color_picker.add_palette(Gtk.Orientation.HORIZONTAL, 9, FormulaBox.PALETTE)
-        self.color_picker.set_rgba(FormulaBox.PALETTE[FormulaBox._palette_use_next])
-        FormulaBox._palette_use_next = (FormulaBox._palette_use_next + 1) % len(FormulaBox.PALETTE)
+        self.color_picker.add_palette(Gtk.Orientation.HORIZONTAL, 9, self.PALETTE)
+        self.color_picker.set_rgba(self.PALETTE[FormulaBox._palette_use_next])
+        FormulaBox._palette_use_next = (FormulaBox._palette_use_next + 1) % len(self.PALETTE)
         self.editor = formula.Editor()
         self.editor.connect("edit", self.edited)
         self.editor.connect("cursor_position", self.cursor_position)
