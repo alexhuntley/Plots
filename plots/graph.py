@@ -110,6 +110,11 @@ class GraphArea(Gtk.GLArea):
         if (area.get_error() is not None):
             return
 
+        ctx = self.get_context()
+        v = ctx.get_version()
+        es = ctx.get_use_es()
+        print("OpenGL {}version: {}.{}".format("ES " if es else "", *v))
+
         version = gl.glGetString(gl.GL_VERSION).decode().split(" ")[0]
         if version < "3.3":
             self.app.errorlabel.set_text(
