@@ -294,7 +294,7 @@ class ElementList(abstractelement.AbstractElement):
             # Postscripts (exponents or factorials)
             if isinstance(elem, supersubscript.SuperscriptSubscript) and elem.exponent is not None \
                or isinstance(elem, atom.Atom) and elem.name == "!":
-                parens2 = 0
+                parens2 = i = 0
                 for i, s in reversed(list(enumerate(string_stack[-1]))):
                     if s == ")":
                         parens2 += 1
