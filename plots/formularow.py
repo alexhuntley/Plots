@@ -247,7 +247,6 @@ class FormulaBox(Gtk.Box):
         self.data = Empty(self)
 
         self.style_ctx = self.get_style_context()
-        print(self.style_ctx.lookup_color("orange_1").color)
         self.PALETTE = [self.style_ctx.lookup_color(c).color for c in self.PALETTE]
         self.DARK_PALETTE = [self.style_ctx.lookup_color(c).color for c in self.DARK_PALETTE]
 
