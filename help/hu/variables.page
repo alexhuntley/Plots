@@ -1,27 +1,17 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="variables">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="variables">
 
   <info>
-    <link type="guide" xref="index#formulae"/>
+    <link type="guide" xref="index#formulae" />
 
     <desc>Easily adjustable parameters</desc>
   </info>
-  <title>Variables and sliders</title>
+  <title>Változók és csúszkák</title>
 
   <p>
-    To declare a variable, type an equation of the form
-    <code><em>variable</em> = <em>value</em></code> into an empty formula box, where
-    <code><em>variable</em></code> is a single Latin or Greek letter, and
-    <code><em>value</em></code> is an expression which must not depend on position, but
-    may depend on preceding variables.
+    Változó deklarálásához írjon be egy <code><em>változó</em> = <em>érték</em></code> alakú egyenletet egy üres képletszerkesztő mezőbe, ahol a <code><em>változó</em></code> egyetlen latin vagy görög betű, az <code><em>érték</em></code> pedig olyan kifejezés, amely nem függhet a pozíciótól, de függhet az előző változóktól.
   </p>
 
   <p>
-    If <code><em>value</em></code> is a literal integer or decimal number, Plots will
-    display an adjustable slider control, allowing the variable to be adjusted
-    interactively. The upper and lower limits of the slider can be edited using the
-    adjacent fields.
+    Ha az <code><em>érték</em></code> egy literális egész szám vagy tizedes szám, akkor Ábrák egy állítható csúszkavezérlőt jelenít meg, amely lehetővé teszi a változó interaktív beállítását. A csúszka felső és alsó határa a szomszédos mezők segítségével szerkeszthető.
   </p>
 </page>
