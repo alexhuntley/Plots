@@ -1,31 +1,28 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="sum-functions">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="sum-functions">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#functions" />
 
     <desc>in Σ and Π notation</desc>
   </info>
-<title>Sums and Products</title>
+<title>Összegzéssorozatok és szorzássorozatok</title>
 <steps>
-<title>How to insert a sum or product</title>
+<title>Hogyan helyezzünk be összegzéssorozatot vagy szorzássorozatot</title>
 <item>
-<p>Type <key>sum</key> or <key>prod</key> to insert the operator</p>
+<p>Az operátor beszúrásához írja be a <key>sum</key> vagy a <key>prod</key> parancsot</p>
 </item>
 <item>
-<p>Type a variable name and initial value into the bottom of the Σ or Π, e.g. i = 0</p>
+<p>Írjon be egy indexmutató változónevet és kezdőértéket a Σ vagy Π alsó mezőjébe, pl. i = 0</p>
 </item>
 <item>
-<p>Use the arrow keys to move to the upper box of the Σ or Π</p>
+<p>A nyílbillentyűkkel lépjen a Σ vagy a Π felső mezőjére</p>
 </item>
 <item>
-<p>Type the maximum value for the variable in the upper box</p>
+<p>Írja be a indexmutató változó legnagyobb értékét a felső mezőbe</p>
 </item>
 <item>
-<p>Use the arrow keys to move to the right of the operator, and insert the body of the sum/product.</p>
+<p>A nyílbillentyűkkel lépjen az operátortól jobbra, és illessze be az összegzéssorozat/szorzássorozat törzsét.</p>
 </item>
 </steps>
-<p>The variable being iterated over should only be referred to inside the sum/product body.</p>
+<p>Az indexmutató változóra csak az összegzéssorozat/szorzássorozat törzsén belül kell hivatkozni.</p>
 </page>
