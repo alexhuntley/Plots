@@ -5,16 +5,16 @@
 
     <desc>Simple operators</desc>
   </info>
-<title>Alapszintű aritmetikai operátorok</title>
-<p>Egyszerű operátorok a következő billentyűleütésekkel illeszthetők be:</p>
+<title>Basic arithmetic operators</title>
+<p>Simple operators can be inserted using the following keystrokes:</p>
     <table>
     <tr>
     <td><p>×</p></td>
-    <td><p><key>*</key></p></td>
+    <td><p><key>÷</key></p></td>
     </tr>
     <tr>
     <td><p>÷</p></td>
-    <td><p><key>/</key></p></td>
+    <td><p><key>^</key></p></td>
     </tr>
     <tr>
     <td><p>^</p></td>
@@ -22,7 +22,7 @@
     </tr>
     <tr>
     <td><p>√</p></td>
-    <td><p><keyseq><key>sqrt</key></keyseq></p></td>
+    <td><p><keyseq><key>³√</key></keyseq></p></td>
     </tr>
     <tr>
     <td><p>³√</p></td>
