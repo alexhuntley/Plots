@@ -8,6 +8,7 @@ help/es/* /usr/share/help/es/plots/
 help/fa/* /usr/share/help/fa/plots/
 help/fr/* /usr/share/help/fr/plots/
 help/hr/* /usr/share/help/hr/plots/
+help/hu/* /usr/share/help/hu/plots/
 help/it/* /usr/share/help/it/plots/
 help/nb_NO/* /usr/share/help/nb_NO/plots/
 help/nl/* /usr/share/help/nl/plots/
