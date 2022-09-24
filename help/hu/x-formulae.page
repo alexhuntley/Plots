@@ -1,17 +1,14 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="x-formulae">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="x-formulae">
 
   <info>
-    <link type="guide" xref="index#formulae"/>
+    <link type="guide" xref="index#formulae" />
 
     <desc>Explicit formulae for <em>x</em></desc>
   </info>
-  <title>Formulae of the form <em>x = f(y)</em></title>
+  <title>Az <em>x = f(y)</em> alakú képletek</title>
 
   <p>
-    These can be entered into a formula box only in the form <code>x = f(y)</code>.
+    Ezeket csak <code>x = f(y)</code> formában lehet beírni a képletszerkesztő mezőbe.
   </p>
 
 </page>
