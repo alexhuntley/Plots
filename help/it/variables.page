@@ -5,13 +5,13 @@
 
     <desc>Easily adjustable parameters</desc>
   </info>
-  <title>Incognite e variabili</title>
+  <title>Variabili e cursori</title>
 
   <p>
-    Per dichiarare un'incognita, basta inserire un'equazione nella forma <code><em>incognita</em> = <em>valore</em></code> in un box per le formule vuoto, dove <code><em>incognita</em></code>è una singola lettera latina o greca e <code><em>valore</em></code> è un'espressione che non deve dipendere dalla posizione ma può dipendere da precedenti incognite.
+    Per dichiariare una variabile, digitare un'equazione della forma <code><em>variabile</em> = <em>valore</em></code> in una casella vuota, dove <code><em>variabile</em></code> è una singola lettera latina o greca, e <code><em>valore</em></code> è un'espressione che non può dipendere dalle posizione, ma può dipendere da variabili precedenti.
   </p>
 
   <p>
-    Se <code><em>valore</em></code> è un numero, intero o razionale, Grafici mostrerà una leva che permette di aggiustare il valore della variabile in maniera interattiva. I limiti inferiore e superiore possono essere modificati usando i campi adiacenti ai valori.
+    Se <code><em>valore</em></code> è un numero intero o decimale, Grafici mostrerà una barra con un cursore che permette di aggiustare il valore della variabile in maniera interattiva. I limiti inferiore e superiore possono essere modificati usando i campi adiacenti alla barra.
   </p>
 </page>
