@@ -1,8 +1,8 @@
 <page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" id="index">
 
   <info>
-    <title type="link">Grafici</title>
-    <title type="text">Grafici</title>
+    <title type="link">Plots</title>
+    <title type="text">Plots</title>
 
     <credit type="author">
       <name>Alexander Huntley</name>
@@ -13,10 +13,10 @@
   </info>
 
   <title>
-    Grafici
+    Plots
   </title>
 
-  <p>Un semplice tracciatore di grafici per GNOME.</p>
+  <p>Un tracciatore di grafici semplice per GNOME.</p>
 
   <section id="formulae" style="2column">
     <title>Tipi di formule supportati</title>
