@@ -9,22 +9,24 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-14 16:38+0100\n"
-"PO-Revision-Date: 2021-09-18 11:48+0100\n"
-"Last-Translator: Michael Moroni <michaelmoroni@disroot.org>\n"
-"Language-Team: Italian\n"
+"PO-Revision-Date: 2022-09-26 20:41+0000\n"
+"Last-Translator: Davide <davide.ferracin@protonmail.com>\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/plots/plots/it/>"
+"\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #: plots/plots.py:142
 msgid "_Export…"
-msgstr ""
+msgstr "_Esporta…"
 
 #: plots/plots.py:143
 msgid "_Preferences"
-msgstr ""
+msgstr "_Preferenze"
 
 #: plots/plots.py:144
 msgid "Help"
@@ -43,25 +45,23 @@ msgstr ""
 
 #: plots/plots.py:477
 msgid "Export image"
-msgstr ""
+msgstr "Esporta immagine"
 
 #: plots/plots.py:480
 msgid "_Export"
-msgstr ""
+msgstr "_Esporta"
 
 #: plots/plots.py:481
 msgid "_Cancel"
-msgstr ""
+msgstr "A_nnulla"
 
 #: plots/plots.py:484
 msgid "Untitled plot"
-msgstr ""
+msgstr "Grafico senza titolo"
 
 #: plots/ui/about.glade.h:1
-#, fuzzy
-#| msgid "Copyright © 2021 Alexander Huntley"
 msgid "Copyright © 2021-2022 Alexander Huntley"
-msgstr "Copyright © 2021 Alexander Huntley"
+msgstr "Copyright © 2021-2022 Alexander Huntley"
 
 #: plots/ui/about.glade.h:2
 msgid "A graph plotter for GNOME."
@@ -77,24 +77,24 @@ msgstr "Errore:"
 
 #: plots/ui/preferences.glade.h:1
 msgid "Preferences affecting graph rendering"
-msgstr ""
+msgstr "Preferenze che influiscono sul rendering dei grafici"
 
 #: plots/ui/preferences.glade.h:2
 msgid "Rendering"
-msgstr ""
+msgstr "Rendering"
 
 #: plots/ui/preferences.glade.h:3
 msgid "Line thickness"
-msgstr ""
+msgstr "Spessore della linea"
 
 #: plots/ui/preferences.glade.h:4
 msgid "Approximate thickness of the graphs"
-msgstr ""
+msgstr "Spessore approssimativo dei grafici"
 
 #: plots/ui/preferences.glade.h:5
 msgid "Samples per pixel"
-msgstr ""
+msgstr "Campioni per pixel"
 
 #: plots/ui/preferences.glade.h:6
 msgid "Reduce to improve performance"
-msgstr ""
+msgstr "Ridurre per migliorare le prestazioni"
