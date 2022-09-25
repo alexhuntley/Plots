@@ -5,14 +5,11 @@
 
     <desc>e.g. sin, cos, tan</desc>
   </info>
-  <title>Trigonometric functions</title>
-  <p>The following trigonometric functions can be inserted simply by typing their name:</p>
+  <title>Funzioni trigonometriche</title>
+  <p>Le seguenti funzioni trigonometriche possono essere inserite semplicemente scrivendo il loro nome:</p>
 
   <list>
-    <title>Supported trigonometric functions</title>
-    <item>
-      <p>sin, cos, tan</p>
-    </item>
+    <title>Funzioni trigonometriche supportate</title>
     <item>
       <p>asin, arcsin, acos, arccos, atan, arctan</p>
     </item>
@@ -21,6 +18,9 @@
     </item>
     <item>
       <p>asec, arcsec, acosec, arccosec, acsc, arccsc, acot, arccot</p>
+    </item>
+    <item>
+      <p>sinc</p>
     </item>
     <item>
       <p>sinc</p>
