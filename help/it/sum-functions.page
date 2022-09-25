@@ -9,9 +9,6 @@
 <steps>
 <title>Come inserire una sommatoria o una produttoria</title>
 <item>
-<p>Inserisci <key>sum</key> o <key>prod</key> per inserire rispettivamente l'operatore della sommatoria o quello della produttoria</p>
-</item>
-<item>
 <p>Inserisci il nome di una variabile e un valore iniziale della variabile muta sita sotto Σ o Π, ad esempio i = 0</p>
 </item>
 <item>
@@ -23,6 +20,9 @@
 <item>
 <p>Usa le frecce per muoverti a destra dell'operatore e inserisci la formula.</p>
 </item>
+<item>
+<p>Usare le frecce per muoversi a destra dell'operatore, quindi inserire la formula.</p>
+</item>
 </steps>
-<p>La variabile muta su cui avviene l'iterazione deve stare solo dentro la formula della sommatoria o della produttoria.</p>
+<p>La variabile muta su cui avviene l'iterazione deve stare solo all'interno della formula della sommatoria o della produttoria.</p>
 </page>
