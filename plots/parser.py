@@ -98,7 +98,7 @@ GREEK : "α".."ω" | "Α".."Ω"
 SYMBOL : "." | "!"
 atom : LETTER | GREEK | DIGIT | SYMBOL
 
-TIMES : "\\times"
+TIMES : "\\times" | "*"
 binary : TIMES -> times
        | "+" -> plus
        | "-" -> minus
