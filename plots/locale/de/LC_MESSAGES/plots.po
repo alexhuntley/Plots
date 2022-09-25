@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-14 16:38+0100\n"
-"PO-Revision-Date: 2022-09-25 07:24+0200\n"
+"PO-Revision-Date: 2022-09-25 07:34+0200\n"
 "Last-Translator: Cacozelia <cacozelia@pm.me>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/plots/plots/de/"
 ">\n"
@@ -25,7 +25,7 @@ msgstr "E_xportieren…"
 
 #: plots/plots.py:143
 msgid "_Preferences"
-msgstr "Einstellungen"
+msgstr "_Einstellungen"
 
 #: plots/plots.py:144
 msgid "Help"
