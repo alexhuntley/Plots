@@ -50,6 +50,9 @@ class LatexTransformer(Transformer):
     def subscriptsuperscript(self, items):
         return elements.SuperscriptSubscript(subscript=items[0], exponent=items[1])
 
+    def superscriptsubscript(self, items):
+        return elements.SuperscriptSubscript(exponent=items[0], subscript=items[1])
+
     def frac(self, items):
         return elements.Frac(numerator=items[0], denominator=items[1])
 
@@ -93,12 +96,13 @@ list : element*
          | sum
          | prod
          | subscriptsuperscript
+         | superscriptsubscript
 
 GREEK : "α".."ω" | "Α".."Ω"
 SYMBOL : "." | "!"
 atom : LETTER | GREEK | DIGIT | SYMBOL
 
-TIMES : "\\times"
+TIMES : "\\times" | "*"
 binary : TIMES -> times
        | "+" -> plus
        | "-" -> minus
@@ -107,24 +111,31 @@ binary : TIMES -> times
 OPNAME : LETTER+
 operator : "\\operatorname{" OPNAME "}"
 
-subscriptsuperscript.2 : "_" blist "^" blist
-supersub : "_" blist -> subscript
-         | "^" blist -> superscript
+atomaslist.-1 : atom -> list
+?argument : blist | atomaslist
 
-frac.10 : "\\frac" blist blist
+subscriptsuperscript.2 : "_" argument "^" argument
+superscriptsubscript.2 : "^" argument "_" argument
+supersub : "_" argument -> subscript
+         | "^" argument -> superscript
 
-radical : "\\sqrt" blist -> sqrt
-        | "\\sqrt" "[" list "]" blist -> nthroot
+frac.10 : "\\frac" argument argument
 
-abs : "\\abs" blist
-floor : "\\floor" blist
-ceil : "\\ceil" blist
+radical : "\\sqrt" argument -> sqrt
+        | "\\sqrt" "[" list "]" argument -> nthroot
+
+abs : "\\abs" argument
+    | "\\left"? "|" list "\\right"? "|"
+floor : "\\floor" argument
+      | "\\left"? "\\lfloor" list "\\right"? "\\rfloor"
+ceil : "\\ceil" argument
+     | "\\left"? "\\lceil" list "\\right"? "\\rceil"
 
 PAREN : "(" | "[" | "\\{" | ")" | "]" | "\\}"
-paren : PAREN
+paren : ("\\left"|"\\right")? PAREN
 
-sum : "\\sum" "_" blist "^" blist
-prod : "\\prod" "_" blist "^" blist
+sum : "\\sum" "_" argument "^" argument
+prod : "\\prod" "_" argument "^" argument
 
 %import common.LETTER
 %import common.DIGIT

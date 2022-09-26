@@ -61,7 +61,7 @@ class BinaryOperatorAtom(BaseAtom):
         if self.name == "−":
             return "-"
         elif self.name == "×":
-            return "\\times"
+            return "\\times "
         else:
             return self.name
 
