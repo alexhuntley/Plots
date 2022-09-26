@@ -5,8 +5,8 @@
 
     <desc>e.g. |x|, ⌈x⌉, ⌊x⌋, sgn(x)</desc>
   </info>
-  <title>Ymse funksjoner</title>
-  <p>The modulus of <em>x</em> can be inserted by typing <keyseq><key>|</key><key>x</key></keyseq>.</p>
+  <title>Ytterligere funksjoner</title>
+  <p>The sign function sgn(x) can be inserted by typing <key>sign</key> or <key>sgn</key>.</p>
   <p>The floor function ⌊x⌋ can be inserted by typing <key>floor</key>.</p>
   <p>The ceiling function ⌈x⌉ can be inserted by typing <key>ceil</key>.</p>
   <p>The sign function sgn(x) can be inserted by typing <key>sign</key> or <key>sgn</key>.</p>
