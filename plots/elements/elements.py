@@ -77,7 +77,6 @@ class ElementList(abstractelement.AbstractElement):
 
     def draw_cursor(self, ctx, ascent, descent, cursor, widget_transform):
         if cursor.owner is self and cursor.visible:
-            #ctx.set_source_rgba(*element.Element.color)
             Gdk.cairo_set_source_rgba(ctx, element.Element.color)
             ctx.set_line_width(max(ctx.device_to_user_distance(cursor.WIDTH, cursor.WIDTH)))
             ctx.move_to(0, descent-2)

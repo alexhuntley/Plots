@@ -57,7 +57,6 @@ class Radical(element.Element):
             self.symbol.draw(ctx)
 
         ctx.translate(self.symbol.width, 0)
-        ctx.set_source_rgb(0,0,0)
         ctx.set_line_width(1)
         ctx.move_to(0, -self.main_ascent + ctx.get_line_width())
         ctx.rel_line_to(self.radicand.width, 0)
