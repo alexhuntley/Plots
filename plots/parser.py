@@ -111,27 +111,28 @@ binary : TIMES -> times
 OPNAME : LETTER+
 operator : "\\operatorname{" OPNAME "}"
 
-atomaslist.0 : atom -> list
+atomaslist.-1 : atom -> list
+?argument : blist | atomaslist
 
-subscriptsuperscript.2 : "_" (blist|atomaslist) "^" (blist|atomaslist)
-superscriptsubscript.2 : "^" (blist|atomaslist) "_" (blist|atomaslist)
-supersub : "_" (blist|atomaslist) -> subscript
-         | "^" (blist|atomaslist) -> superscript
+subscriptsuperscript.2 : "_" argument "^" argument
+superscriptsubscript.2 : "^" argument "_" argument
+supersub : "_" argument -> subscript
+         | "^" argument -> superscript
 
-frac.10 : "\\frac" blist blist
+frac.10 : "\\frac" argument argument
 
-radical : "\\sqrt" blist -> sqrt
-        | "\\sqrt" "[" list "]" blist -> nthroot
+radical : "\\sqrt" argument -> sqrt
+        | "\\sqrt" "[" list "]" argument -> nthroot
 
-abs : "\\abs" blist
-floor : "\\floor" blist
-ceil : "\\ceil" blist
+abs : "\\abs" argument
+floor : "\\floor" argument
+ceil : "\\ceil" argument
 
 PAREN : "(" | "[" | "\\{" | ")" | "]" | "\\}"
 paren : PAREN
 
-sum : "\\sum" "_" blist "^" blist
-prod : "\\prod" "_" blist "^" blist
+sum : "\\sum" "_" argument "^" argument
+prod : "\\prod" "_" argument "^" argument
 
 %import common.LETTER
 %import common.DIGIT
