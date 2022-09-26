@@ -105,6 +105,7 @@ class Cursor():
             self.backspace(None)
         self.owner.insert_elementlist(elements, self, self.pos)
         self.editor.queue_draw()
+        self.editor.emit("edit")
 
     def mouse_select(self, element, direction, drag=False):
         if drag:

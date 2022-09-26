@@ -144,7 +144,7 @@ class Editor(Gtk.DrawingArea):
                 return True
             elif char == "v":
                 self.cursor.paste()
-                self.emit("edit")
+                # cursor will emit("edit")
                 return True
             else:
                 return False
