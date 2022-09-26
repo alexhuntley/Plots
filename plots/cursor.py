@@ -98,7 +98,7 @@ class Cursor():
         text = self.clipboard.read_text_finish(res)
         try:
             elements = parser.from_latex(text)
-        except lark.exceptions.UnexpectedInput:
+        except lark.exceptions.LarkError:
             return
         if self.selecting:
             self.backspace(None)
