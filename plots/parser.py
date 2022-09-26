@@ -108,8 +108,8 @@ OPNAME : LETTER+
 operator : "\\operatorname{" OPNAME "}"
 
 subscriptsuperscript.2 : "_" blist "^" blist
-supersub : "_" (blist|atom) -> subscript
-         | "^" (blist|atom) -> superscript
+supersub : "_" blist -> subscript
+         | "^" blist -> superscript
 
 frac.10 : "\\frac" blist blist
 
