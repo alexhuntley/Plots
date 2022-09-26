@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-26 21:53+0100\n"
+"POT-Creation-Date: 2022-09-26 22:02+0100\n"
 "PO-Revision-Date: 2022-09-19 17:22+0000\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/plots/plots/fi/"
@@ -115,7 +115,7 @@ msgid "Redo"
 msgstr ""
 
 #: plots/ui/plots.ui:73
-msgid "Open application menu"
+msgid "Menu"
 msgstr ""
 
 #: plots/ui/plots.ui:152

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-26 21:53+0100\n"
+"POT-Creation-Date: 2022-09-26 22:02+0100\n"
 "PO-Revision-Date: 2022-09-24 06:23+0000\n"
 "Last-Translator: ovari <ovari123@zoho.com>\n"
 "Language-Team: Hungarian <https://hosted.weblate.org/projects/plots/plots/hu/"
@@ -116,7 +116,7 @@ msgid "Redo"
 msgstr ""
 
 #: plots/ui/plots.ui:73
-msgid "Open application menu"
+msgid "Menu"
 msgstr ""
 
 #: plots/ui/plots.ui:152
