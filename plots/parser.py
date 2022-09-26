@@ -127,12 +127,12 @@ radical : "\\sqrt" argument -> sqrt
 abs : "\\abs" argument
     | "\\left"? "|" list "\\right"? "|"
 floor : "\\floor" argument
-      | "\\lfloor" list "\\rfloor"
+      | "\\left"? "\\lfloor" list "\\right"? "\\rfloor"
 ceil : "\\ceil" argument
-     | "\\lceil" list "\\rceil"
+     | "\\left"? "\\lceil" list "\\right"? "\\rceil"
 
-PAREN : "(" | "[" | "\\{" | ")" | "]" | "\\}"
-paren : PAREN
+PAREN : ("(" | "[" | "\\{" | ")" | "]" | "\\}")
+paren : ("\\left"|"\\right")? PAREN
 
 sum : "\\sum" "_" argument "^" argument
 prod : "\\prod" "_" argument "^" argument
