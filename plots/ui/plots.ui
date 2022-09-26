@@ -70,7 +70,7 @@
             <property name="focus_on_click">0</property>
             <property name="receives_default">1</property>
             <property name="halign">end</property>
-            <property name="tooltip-text" translatable="yes">Open application menu</property>
+            <property name="tooltip-text" translatable="yes">Menu</property>
             <child>
               <object class="GtkImage">
                 <property name="icon_name">open-menu-symbolic</property>
