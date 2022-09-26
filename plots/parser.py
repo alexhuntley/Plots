@@ -131,7 +131,7 @@ floor : "\\floor" argument
 ceil : "\\ceil" argument
      | "\\left"? "\\lceil" list "\\right"? "\\rceil"
 
-PAREN : ("(" | "[" | "\\{" | ")" | "]" | "\\}")
+PAREN : "(" | "[" | "\\{" | ")" | "]" | "\\}"
 paren : ("\\left"|"\\right")? PAREN
 
 sum : "\\sum" "_" argument "^" argument
