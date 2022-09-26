@@ -17,6 +17,7 @@
 
 import gi
 from gi.repository import Gtk, GObject, Gdk
+from gettext import gettext as _
 
 class PopoverColorPicker(Gtk.Button):
     __gtype_name__ = "PopoverColorPicker"
@@ -27,6 +28,8 @@ class PopoverColorPicker(Gtk.Button):
 
     def __init__(self):
         super().__init__()
+
+        self.set_tooltip_text(_("Pick a color"))
 
         self.chooser = Gtk.ColorChooserWidget.new()
         self.chooser.show()

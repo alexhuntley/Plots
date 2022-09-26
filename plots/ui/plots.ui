@@ -11,6 +11,7 @@
               <object class="GtkButton" id="add_equation">
                 <property name="focusable">1</property>
                 <property name="receives_default">1</property>
+				<property name="tooltip-text" translatable="yes">Add an equation</property>
                 <style>
                   <class name="flat"/>
                 </style>
@@ -33,6 +34,7 @@
                   <object class="GtkButton" id="undo">
                     <property name="focusable">1</property>
                     <property name="receives_default">1</property>
+					<property name="tooltip-text" translatable="yes">Undo</property>
                     <style>
                       <class name="flat"/>
                     </style>
@@ -47,6 +49,7 @@
                   <object class="GtkButton" id="redo">
                     <property name="focusable">1</property>
                     <property name="receives_default">1</property>
+					<property name="tooltip-text" translatable="yes">Redo</property>
                     <style>
                       <class name="flat"/>
                     </style>
@@ -67,6 +70,7 @@
             <property name="focus_on_click">0</property>
             <property name="receives_default">1</property>
             <property name="halign">end</property>
+			<property name="tooltip-text" translatable="yes">Open application menu</property>
             <child>
               <object class="GtkImage">
                 <property name="icon_name">open-menu-symbolic</property>
@@ -145,6 +149,7 @@
                               <object class="GtkButton" id="zoom_in">
                                 <property name="focusable">1</property>
                                 <property name="receives_default">1</property>
+								<property name="tooltip-text" translatable="yes">Zoom in</property>
                                 <child>
                                   <object class="GtkImage">
                                     <property name="icon_name">zoom-in-symbolic</property>
@@ -161,6 +166,7 @@
                               <object class="GtkButton" id="zoom_out">
                                 <property name="focusable">1</property>
                                 <property name="receives_default">1</property>
+								<property name="tooltip-text" translatable="yes">Zoom out</property>
                                 <child>
                                   <object class="GtkImage">
                                     <property name="icon_name">zoom-out-symbolic</property>
@@ -189,6 +195,7 @@
                                 <property name="receives_default">1</property>
                                 <property name="halign">end</property>
                                 <property name="valign">start</property>
+								<property name="tooltip-text" translatable="yes">Reset zoom and panning</property>
                                 <child>
                                   <object class="GtkImage">
                                     <property name="icon_name">zoom-original-symbolic</property>
