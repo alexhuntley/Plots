@@ -17,7 +17,7 @@
 
 import gi
 from gi.repository import Gtk, GObject, Gdk
-from gettext import gettext as _
+from plots.i18n import _
 
 class PopoverColorPicker(Gtk.Button):
     __gtype_name__ = "PopoverColorPicker"
