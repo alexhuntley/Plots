@@ -5,10 +5,10 @@
 
     <desc>Explicit formulae for <em>x</em></desc>
   </info>
-  <title>Formule nella forma <em>x = f(y)</em></title>
+  <title>Formule del tipo <em>x = f(y)</em></title>
 
   <p>
-    Queste formule possono essere inserite nel box delle formule solo nella forma <code>x = f(y)</code>.
+    Possono essere inserite nella casella delle formule solo come <code>x = f(y)</code>.
   </p>
 
 </page>

@@ -6,18 +6,18 @@
     <desc>e.g. exp, log</desc>
   </info>
 <title>Funzioni esponenziali e logaritmiche</title>
-<p>Le seguenti funzioni possono essere inserite digitando semplicemente il loro nome:</p>
+<p>Le seguenti funzioni possono essere inserite semplicemente digitando il loro nome:</p>
 
   <list>
     <title>Funzioni supportate</title>
     <item>
-      <p>ln, log, lg</p>
-      <p>ln e log sono logaritmi naturali. lg è il logaritmo in base 2.</p>
+      <p>exp, e</p>
+      <p>e è il numero di Eulero. Può essere usato come funzione quando è seguito da un esponente (da inserire con ^).</p>
     </item>
     <item>
       <p>ln, log, lg</p>
       <p>ln e log sono logaritmi naturali. lg è il logaritmo in base 2.</p>
-      <p>log può essere seguito da un numero a pedice (inserito usando un trattino basso), che denota la base del logaritmo.</p>
+      <p>log può essere seguito da un pedice (inserito usando un trattino basso), che denota la base del logaritmo.</p>
     </item>
   </list>
 

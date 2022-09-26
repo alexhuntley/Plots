@@ -6,8 +6,8 @@
     <desc>e.g. |x|, ⌈x⌉, ⌊x⌋, sgn(x)</desc>
   </info>
   <title>Altre funzioni</title>
-  <p>Il modulo (o valore assoluto) di <em>x</em> può essere inserito digitando <keyseq><key>|</key><key>x</key></keyseq>.</p>
+  <p>La funzione segno sgn(x) può essere inserita digitando <key>sign</key> o <key>sgn</key>.</p>
   <p>La funzione parte intera ⌊x⌋ può essere inserita digitando <key>floor</key>.</p>
   <p>La funzione parte intera superiore ⌈x⌉ può essere inserita digitando <key>ceil</key>.</p>
-  <p>La funzione segno sgn(x) può essere inserita digitando <key>sign</key> o <key>sgn</key>.</p>
+  <p>La funzione segno sgn(x) può essere inserita digitando <key>sign</key> oppure <key>sgn</key>.</p>
 </page>

@@ -5,10 +5,10 @@
 
     <desc>Explicit formulae for <em>y</em></desc>
   </info>
-  <title>Az <em>y = f(x)</em> alakú képletek</title>
+  <title><em>y = f(x)</em> alakú képletek</title>
 
   <p>
-    Ezeket beírhatjuk a képletszerkesztő mezőbe <code>y = f(x)</code> vagy egyszerűen <code>f(x)</code> formában.
+    Ezeket beírhatjuk a képletszerkesztő mezőbe <code>y = f(x)</code> vagy egyszerűen <code>f(x)</code> alakúban.
   </p>
 
 </page>

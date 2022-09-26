@@ -5,10 +5,10 @@
 
     <desc>Explicit formulae for <em>θ</em> (polar equations)</desc>
   </info>
-  <title>Formule nella forma <em>θ = f(r)</em></title>
+  <title>Formule del tipo <em>θ = f(r)</em></title>
 
   <p>
-    Queste formule possono essere inserite nel box solo nella forma <code>θ = f(r)</code>.
+    Possono essere inserite nella casella solo nella forma <code>θ = f(r)</code>.
   </p>
 
 </page>
