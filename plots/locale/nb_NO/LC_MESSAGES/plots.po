@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-26 22:02+0100\n"
-"PO-Revision-Date: 2021-09-19 11:56+0000\n"
+"PO-Revision-Date: 2022-09-27 23:21+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/plots/"
 "plots/nb_NO/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9-dev\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #: plots/graph.py:121
 msgid ""
@@ -26,7 +26,7 @@ msgstr "Advarsel: OpenGL {} støttes ikke. Kun OpenGL 3.3 eller nyere."
 
 #: plots/colorpicker.py:32
 msgid "Pick a color"
-msgstr ""
+msgstr "Velg en farge"
 
 #: plots/plots.py:64
 msgid "Plots"
@@ -34,11 +34,11 @@ msgstr "Plots"
 
 #: plots/plots.py:102
 msgid "_Export…"
-msgstr ""
+msgstr "_Eksporter …"
 
 #: plots/plots.py:103
 msgid "_Preferences"
-msgstr ""
+msgstr "_Innstillinger"
 
 #: plots/plots.py:104
 msgid "Help"
@@ -50,25 +50,23 @@ msgstr "Om"
 
 #: plots/plots.py:258
 msgid "Export image"
-msgstr ""
+msgstr "Eksporter bilde"
 
 #: plots/plots.py:261
 msgid "_Export"
-msgstr ""
+msgstr "_Eksporter"
 
 #: plots/plots.py:262
 msgid "_Cancel"
-msgstr ""
+msgstr "_Avbryt"
 
 #: plots/plots.py:264
 msgid "Untitled plot"
-msgstr ""
+msgstr "Plott uten navn"
 
 #: plots/ui/about.ui:7
-#, fuzzy
-#| msgid "Copyright © 2021 Alexander Huntley"
 msgid "Copyright © 2021-2022 Alexander Huntley"
-msgstr "Opphavsrett © 2021 Alexander Huntley"
+msgstr "Opphavsrett © 2021–2022 Alexander Huntley"
 
 #: plots/ui/about.ui:8
 msgid "A graph plotter for GNOME."
@@ -76,59 +74,59 @@ msgstr "En grafplotter for GNOME"
 
 #: plots/ui/formula_box.ui:43
 msgid "Remove"
-msgstr ""
+msgstr "Fjern"
 
 #: plots/ui/preferences.ui:19
 msgid "Preferences affecting graph rendering"
-msgstr ""
+msgstr "Innstillinger som har innvirkning på grafopptegning"
 
 #: plots/ui/preferences.ui:20
 msgid "Rendering"
-msgstr ""
+msgstr "Opptegning"
 
 #: plots/ui/preferences.ui:25
 msgid "Line thickness"
-msgstr ""
+msgstr "Linjetykkelse"
 
 #: plots/ui/preferences.ui:26
 msgid "Approximate thickness of the graphs"
-msgstr ""
+msgstr "Omtrentlig tykkelse for grafene"
 
 #: plots/ui/preferences.ui:40
 msgid "Samples per pixel"
-msgstr ""
+msgstr "Samplinger per piksel"
 
 #: plots/ui/preferences.ui:41
 msgid "Reduce to improve performance"
-msgstr ""
+msgstr "Reduser for å forbedre ytelsen"
 
 #: plots/ui/plots.ui:14
 msgid "Add an equation"
-msgstr ""
+msgstr "Legg til en ligning"
 
 #: plots/ui/plots.ui:37
 msgid "Undo"
-msgstr ""
+msgstr "Angre"
 
 #: plots/ui/plots.ui:52
 msgid "Redo"
-msgstr ""
+msgstr "Gjenta"
 
 #: plots/ui/plots.ui:73
 msgid "Menu"
-msgstr ""
+msgstr "Meny"
 
 #: plots/ui/plots.ui:152
 msgid "Zoom in"
-msgstr ""
+msgstr "Forstørr"
 
 #: plots/ui/plots.ui:169
 msgid "Zoom out"
-msgstr ""
+msgstr "Forminsk"
 
 #: plots/ui/plots.ui:198
 msgid "Reset zoom and panning"
-msgstr ""
+msgstr "Tilbakestill forstørrelse og panorering"
 
 #: plots/ui/plots.ui:233
 msgid "Error:"
