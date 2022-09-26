@@ -83,9 +83,10 @@ class Cursor():
         self.selection_bounds, self.selection_ancestor = self.calculate_selection()
 
     def copy_selection(self):
-        elements = self.selection_ancestor.elements[self.selection_slice]
-        text = "".join(e.to_latex() for e in elements)
-        self.clipboard.set(text)
+        if self.selecting:
+            elements = self.selection_ancestor.elements[self.selection_slice]
+            text = "".join(e.to_latex() for e in elements)
+            self.clipboard.set(text)
 
     def cut_selection(self):
         self.copy_selection()
