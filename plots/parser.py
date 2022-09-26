@@ -50,6 +50,9 @@ class LatexTransformer(Transformer):
     def subscriptsuperscript(self, items):
         return elements.SuperscriptSubscript(subscript=items[0], exponent=items[1])
 
+    def superscriptsubscript(self, items):
+        return elements.SuperscriptSubscript(exponent=items[0], subscript=items[1])
+
     def frac(self, items):
         return elements.Frac(numerator=items[0], denominator=items[1])
 
@@ -93,6 +96,7 @@ list : element*
          | sum
          | prod
          | subscriptsuperscript
+         | superscriptsubscript
 
 GREEK : "α".."ω" | "Α".."Ω"
 SYMBOL : "." | "!"
@@ -107,9 +111,12 @@ binary : TIMES -> times
 OPNAME : LETTER+
 operator : "\\operatorname{" OPNAME "}"
 
-subscriptsuperscript.2 : "_" blist "^" blist
-supersub : "_" blist -> subscript
-         | "^" blist -> superscript
+atomaslist.0 : atom -> list
+
+subscriptsuperscript.2 : "_" (blist|atomaslist) "^" (blist|atomaslist)
+superscriptsubscript.2 : "^" (blist|atomaslist) "_" (blist|atomaslist)
+supersub : "_" (blist|atomaslist) -> subscript
+         | "^" (blist|atomaslist) -> superscript
 
 frac.10 : "\\frac" blist blist
 
