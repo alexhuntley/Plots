@@ -125,6 +125,7 @@ radical : "\\sqrt" argument -> sqrt
         | "\\sqrt" "[" list "]" argument -> nthroot
 
 abs : "\\abs" argument
+    | "\\left"? "|" list "\\right"? "|"
 floor : "\\floor" argument
       | "\\lfloor" list "\\rfloor"
 ceil : "\\ceil" argument
