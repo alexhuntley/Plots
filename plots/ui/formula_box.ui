@@ -40,6 +40,7 @@
               <object class="GtkButton" id="delete_button">
                 <property name="focusable">1</property>
                 <property name="receives-default">1</property>
+                <property name="tooltip-text" translatable="yes">Remove</property>
                 <child>
                   <object class="GtkImage">
                     <property name="halign">center</property>
