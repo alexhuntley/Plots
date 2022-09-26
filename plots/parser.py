@@ -126,7 +126,9 @@ radical : "\\sqrt" argument -> sqrt
 
 abs : "\\abs" argument
 floor : "\\floor" argument
+      | "\\lfloor" list "\\rfloor"
 ceil : "\\ceil" argument
+     | "\\lceil" list "\\rceil"
 
 PAREN : "(" | "[" | "\\{" | ")" | "]" | "\\}"
 paren : PAREN
