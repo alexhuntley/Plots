@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-14 16:38+0100\n"
+"POT-Creation-Date: 2022-09-26 21:53+0100\n"
 "PO-Revision-Date: 2022-08-13 15:14+0000\n"
 "Last-Translator: liu lizhi <kz-xy@163.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -19,81 +19,117 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.14-dev\n"
 
-#: plots/plots.py:142
-msgid "_Export…"
-msgstr ""
-
-#: plots/plots.py:143
-msgid "_Preferences"
-msgstr ""
-
-#: plots/plots.py:144
-msgid "Help"
-msgstr "帮助"
-
-#: plots/plots.py:145
-msgid "About Plots"
-msgstr "关于 Plots"
-
-#: plots/plots.py:322
+#: plots/graph.py:121
 msgid ""
 "Warning: OpenGL {} is unsupported. Plots supports OpenGL 3.3 or greater."
 msgstr "警告：不支持 OpenGL {}。 Plots 支持 OpenGL 3.3 及更高版本。"
 
-#: plots/plots.py:477
+#: plots/colorpicker.py:32
+msgid "Pick a color"
+msgstr ""
+
+#: plots/plots.py:64
+msgid "Plots"
+msgstr "Plots"
+
+#: plots/plots.py:102
+msgid "_Export…"
+msgstr ""
+
+#: plots/plots.py:103
+msgid "_Preferences"
+msgstr ""
+
+#: plots/plots.py:104
+msgid "Help"
+msgstr "帮助"
+
+#: plots/plots.py:105
+msgid "About Plots"
+msgstr "关于 Plots"
+
+#: plots/plots.py:258
 msgid "Export image"
 msgstr ""
 
-#: plots/plots.py:480
+#: plots/plots.py:261
 msgid "_Export"
 msgstr ""
 
-#: plots/plots.py:481
+#: plots/plots.py:262
 msgid "_Cancel"
 msgstr ""
 
-#: plots/plots.py:484
+#: plots/plots.py:264
 msgid "Untitled plot"
 msgstr ""
 
-#: plots/ui/about.glade.h:1
+#: plots/ui/about.ui:7
 #, fuzzy
 #| msgid "Copyright © 2021 Alexander Huntley"
 msgid "Copyright © 2021-2022 Alexander Huntley"
 msgstr "版权所有 © 2021 Alexander Huntley"
 
-#: plots/ui/about.glade.h:2
+#: plots/ui/about.ui:8
 msgid "A graph plotter for GNOME."
 msgstr "GNOME 桌面的绘图软件。"
 
-#: plots/ui/plots.glade.h:1
-msgid "Plots"
-msgstr "Plots"
+#: plots/ui/formula_box.ui:43
+msgid "Remove"
+msgstr ""
 
-#: plots/ui/plots.glade.h:2
-msgid "Error:"
-msgstr "错误："
-
-#: plots/ui/preferences.glade.h:1
+#: plots/ui/preferences.ui:19
 msgid "Preferences affecting graph rendering"
 msgstr ""
 
-#: plots/ui/preferences.glade.h:2
+#: plots/ui/preferences.ui:20
 msgid "Rendering"
 msgstr ""
 
-#: plots/ui/preferences.glade.h:3
+#: plots/ui/preferences.ui:25
 msgid "Line thickness"
 msgstr ""
 
-#: plots/ui/preferences.glade.h:4
+#: plots/ui/preferences.ui:26
 msgid "Approximate thickness of the graphs"
 msgstr ""
 
-#: plots/ui/preferences.glade.h:5
+#: plots/ui/preferences.ui:40
 msgid "Samples per pixel"
 msgstr ""
 
-#: plots/ui/preferences.glade.h:6
+#: plots/ui/preferences.ui:41
 msgid "Reduce to improve performance"
 msgstr ""
+
+#: plots/ui/plots.ui:14
+msgid "Add an equation"
+msgstr ""
+
+#: plots/ui/plots.ui:37
+msgid "Undo"
+msgstr ""
+
+#: plots/ui/plots.ui:52
+msgid "Redo"
+msgstr ""
+
+#: plots/ui/plots.ui:73
+msgid "Open application menu"
+msgstr ""
+
+#: plots/ui/plots.ui:152
+msgid "Zoom in"
+msgstr ""
+
+#: plots/ui/plots.ui:169
+msgid "Zoom out"
+msgstr ""
+
+#: plots/ui/plots.ui:198
+msgid "Reset zoom and panning"
+msgstr ""
+
+#: plots/ui/plots.ui:233
+msgid "Error:"
+msgstr "错误："

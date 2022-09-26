@@ -7,11 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-14 16:38+0100\n"
+"POT-Creation-Date: 2022-09-26 21:53+0100\n"
 "PO-Revision-Date: 2022-09-15 11:38+0000\n"
 "Last-Translator: Óscar Fernández Díaz <oscfdezdz@tuta.io>\n"
-"Language-Team: Spanish <https://hosted.weblate.org/projects/plots/plots/es/>"
-"\n"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/plots/plots/es/"
+">\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,81 +19,117 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.14.1-dev\n"
 
-#: plots/plots.py:142
-msgid "_Export…"
-msgstr "_Exportar…"
-
-#: plots/plots.py:143
-msgid "_Preferences"
-msgstr "_Preferencias"
-
-#: plots/plots.py:144
-msgid "Help"
-msgstr "Ayuda"
-
-#: plots/plots.py:145
-msgid "About Plots"
-msgstr "Acerca de Gráfico"
-
-#: plots/plots.py:322
+#: plots/graph.py:121
 msgid ""
 "Warning: OpenGL {} is unsupported. Plots supports OpenGL 3.3 or greater."
 msgstr ""
 "Advertencia: OpenGL {} no está soportado. Gráfico soporta OpenGL 3.3 o "
 "superior."
 
-#: plots/plots.py:477
-msgid "Export image"
-msgstr "Exportar imagen"
+#: plots/colorpicker.py:32
+msgid "Pick a color"
+msgstr ""
 
-#: plots/plots.py:480
-msgid "_Export"
-msgstr "_Exportar"
-
-#: plots/plots.py:481
-msgid "_Cancel"
-msgstr "_Cancelar"
-
-#: plots/plots.py:484
-msgid "Untitled plot"
-msgstr "Gráfico sin título"
-
-#: plots/ui/about.glade.h:1
-msgid "Copyright © 2021-2022 Alexander Huntley"
-msgstr "Copyright © 2021-2022 Alexander Huntley"
-
-#: plots/ui/about.glade.h:2
-msgid "A graph plotter for GNOME."
-msgstr "Un trazador de gráficos para GNOME."
-
-#: plots/ui/plots.glade.h:1
+#: plots/plots.py:64
 msgid "Plots"
 msgstr "Gráfico"
 
-#: plots/ui/plots.glade.h:2
-msgid "Error:"
-msgstr "Error:"
+#: plots/plots.py:102
+msgid "_Export…"
+msgstr "_Exportar…"
 
-#: plots/ui/preferences.glade.h:1
+#: plots/plots.py:103
+msgid "_Preferences"
+msgstr "_Preferencias"
+
+#: plots/plots.py:104
+msgid "Help"
+msgstr "Ayuda"
+
+#: plots/plots.py:105
+msgid "About Plots"
+msgstr "Acerca de Gráfico"
+
+#: plots/plots.py:258
+msgid "Export image"
+msgstr "Exportar imagen"
+
+#: plots/plots.py:261
+msgid "_Export"
+msgstr "_Exportar"
+
+#: plots/plots.py:262
+msgid "_Cancel"
+msgstr "_Cancelar"
+
+#: plots/plots.py:264
+msgid "Untitled plot"
+msgstr "Gráfico sin título"
+
+#: plots/ui/about.ui:7
+msgid "Copyright © 2021-2022 Alexander Huntley"
+msgstr "Copyright © 2021-2022 Alexander Huntley"
+
+#: plots/ui/about.ui:8
+msgid "A graph plotter for GNOME."
+msgstr "Un trazador de gráficos para GNOME."
+
+#: plots/ui/formula_box.ui:43
+msgid "Remove"
+msgstr ""
+
+#: plots/ui/preferences.ui:19
 msgid "Preferences affecting graph rendering"
 msgstr "Preferencias que afectan a la representación de gráficos"
 
-#: plots/ui/preferences.glade.h:2
+#: plots/ui/preferences.ui:20
 msgid "Rendering"
 msgstr "Renderizado"
 
-#: plots/ui/preferences.glade.h:3
+#: plots/ui/preferences.ui:25
 msgid "Line thickness"
 msgstr "Grosor de la línea"
 
-#: plots/ui/preferences.glade.h:4
+#: plots/ui/preferences.ui:26
 msgid "Approximate thickness of the graphs"
 msgstr "Grosor aproximado de los gráficos"
 
-#: plots/ui/preferences.glade.h:5
+#: plots/ui/preferences.ui:40
 msgid "Samples per pixel"
 msgstr "Muestras por píxel"
 
-#: plots/ui/preferences.glade.h:6
+#: plots/ui/preferences.ui:41
 msgid "Reduce to improve performance"
 msgstr "Reducir para mejorar el rendimiento"
+
+#: plots/ui/plots.ui:14
+msgid "Add an equation"
+msgstr ""
+
+#: plots/ui/plots.ui:37
+msgid "Undo"
+msgstr ""
+
+#: plots/ui/plots.ui:52
+msgid "Redo"
+msgstr ""
+
+#: plots/ui/plots.ui:73
+msgid "Open application menu"
+msgstr ""
+
+#: plots/ui/plots.ui:152
+msgid "Zoom in"
+msgstr ""
+
+#: plots/ui/plots.ui:169
+msgid "Zoom out"
+msgstr ""
+
+#: plots/ui/plots.ui:198
+msgid "Reset zoom and panning"
+msgstr ""
+
+#: plots/ui/plots.ui:233
+msgid "Error:"
+msgstr "Error:"
