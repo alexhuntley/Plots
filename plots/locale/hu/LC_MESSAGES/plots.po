@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-26 22:02+0100\n"
-"PO-Revision-Date: 2022-09-24 06:23+0000\n"
+"PO-Revision-Date: 2022-09-27 23:21+0000\n"
 "Last-Translator: ovari <ovari123@zoho.com>\n"
 "Language-Team: Hungarian <https://hosted.weblate.org/projects/plots/plots/hu/"
 ">\n"
@@ -29,7 +29,7 @@ msgstr ""
 
 #: plots/colorpicker.py:32
 msgid "Pick a color"
-msgstr ""
+msgstr "Szín kijelölése"
 
 #: plots/plots.py:64
 msgid "Plots"
@@ -77,7 +77,7 @@ msgstr "Ábrák rajzolásai a GNOME számára."
 
 #: plots/ui/formula_box.ui:43
 msgid "Remove"
-msgstr ""
+msgstr "Eltávolítás"
 
 #: plots/ui/preferences.ui:19
 msgid "Preferences affecting graph rendering"
@@ -105,31 +105,31 @@ msgstr "Csökkentse a teljesítmény javítása érdekében"
 
 #: plots/ui/plots.ui:14
 msgid "Add an equation"
-msgstr ""
+msgstr "Egyenlet hozzáadása"
 
 #: plots/ui/plots.ui:37
 msgid "Undo"
-msgstr ""
+msgstr "Visszavonás"
 
 #: plots/ui/plots.ui:52
 msgid "Redo"
-msgstr ""
+msgstr "Újra"
 
 #: plots/ui/plots.ui:73
 msgid "Menu"
-msgstr ""
+msgstr "Menü"
 
 #: plots/ui/plots.ui:152
 msgid "Zoom in"
-msgstr ""
+msgstr "Nagyítás"
 
 #: plots/ui/plots.ui:169
 msgid "Zoom out"
-msgstr ""
+msgstr "Kicsinyítés"
 
 #: plots/ui/plots.ui:198
 msgid "Reset zoom and panning"
-msgstr ""
+msgstr "Nagyítás és pásztázás alaphelyzetbe állítása"
 
 #: plots/ui/plots.ui:233
 msgid "Error:"
