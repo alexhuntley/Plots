@@ -9,10 +9,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-26 22:02+0100\n"
-"PO-Revision-Date: 2022-09-26 20:41+0000\n"
-"Last-Translator: Davide <davide.ferracin@protonmail.com>\n"
-"Language-Team: Italian <https://hosted.weblate.org/projects/plots/plots/it/"
-">\n"
+"PO-Revision-Date: 2022-09-27 23:21+0000\n"
+"Last-Translator: Michael Moroni <michaelmoroni@disroot.org>\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/plots/plots/it/>"
+"\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +29,7 @@ msgstr ""
 
 #: plots/colorpicker.py:32
 msgid "Pick a color"
-msgstr ""
+msgstr "Scegli un colore"
 
 #: plots/plots.py:64
 msgid "Plots"
@@ -77,7 +77,7 @@ msgstr "Un tracciatore di grafici per GNOME."
 
 #: plots/ui/formula_box.ui:43
 msgid "Remove"
-msgstr ""
+msgstr "Rimuovi"
 
 #: plots/ui/preferences.ui:19
 msgid "Preferences affecting graph rendering"
@@ -105,31 +105,31 @@ msgstr "Ridurre per migliorare le prestazioni"
 
 #: plots/ui/plots.ui:14
 msgid "Add an equation"
-msgstr ""
+msgstr "Aggiungi un'equazione"
 
 #: plots/ui/plots.ui:37
 msgid "Undo"
-msgstr ""
+msgstr "Annulla"
 
 #: plots/ui/plots.ui:52
 msgid "Redo"
-msgstr ""
+msgstr "Rifai"
 
 #: plots/ui/plots.ui:73
 msgid "Menu"
-msgstr ""
+msgstr "Menù"
 
 #: plots/ui/plots.ui:152
 msgid "Zoom in"
-msgstr ""
+msgstr "Ingrandisci"
 
 #: plots/ui/plots.ui:169
 msgid "Zoom out"
-msgstr ""
+msgstr "Rimpicciolisci"
 
 #: plots/ui/plots.ui:198
 msgid "Reset zoom and panning"
-msgstr ""
+msgstr "Ripristina ingrandimento"
 
 #: plots/ui/plots.ui:233
 msgid "Error:"
