@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-26 22:02+0100\n"
-"PO-Revision-Date: 2022-09-15 11:38+0000\n"
-"Last-Translator: Philip Goto <philip.goto@gmail.com>\n"
+"PO-Revision-Date: 2022-09-27 23:21+0000\n"
+"Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/plots/plots/nl/>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1-dev\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #: plots/graph.py:121
 msgid ""
@@ -27,7 +27,7 @@ msgstr ""
 
 #: plots/colorpicker.py:32
 msgid "Pick a color"
-msgstr ""
+msgstr "Kies een kleur"
 
 #: plots/plots.py:64
 msgid "Plots"
@@ -75,7 +75,7 @@ msgstr "Een grafische plotter voor GNOME."
 
 #: plots/ui/formula_box.ui:43
 msgid "Remove"
-msgstr ""
+msgstr "Verwijderen"
 
 #: plots/ui/preferences.ui:19
 msgid "Preferences affecting graph rendering"
@@ -103,31 +103,31 @@ msgstr "Verminder om prestaties te verbeteren"
 
 #: plots/ui/plots.ui:14
 msgid "Add an equation"
-msgstr ""
+msgstr "Voeg een formule toe"
 
 #: plots/ui/plots.ui:37
 msgid "Undo"
-msgstr ""
+msgstr "Ongedaan maken"
 
 #: plots/ui/plots.ui:52
 msgid "Redo"
-msgstr ""
+msgstr "Opnieuw uitvoeren"
 
 #: plots/ui/plots.ui:73
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: plots/ui/plots.ui:152
 msgid "Zoom in"
-msgstr ""
+msgstr "Inzoomen"
 
 #: plots/ui/plots.ui:169
 msgid "Zoom out"
-msgstr ""
+msgstr "Uitzoomen"
 
 #: plots/ui/plots.ui:198
 msgid "Reset zoom and panning"
-msgstr ""
+msgstr "Oorspronkelijk zoomniveau"
 
 #: plots/ui/plots.ui:233
 msgid "Error:"
