@@ -59,6 +59,7 @@ GREEK_LETTERS = {
     'omega': 'ω',
     'omicron': 'ο',
     'phi': 'φ',
+    "varphi": "φ",
     'pi': 'π',
     'psi': 'ψ',
     'rho': 'ρ',
