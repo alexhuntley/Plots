@@ -18,23 +18,16 @@
 from lark import Lark, Transformer
 
 from plots import elements
+from plots.data import GREEK_LETTERS
 
 class LatexTransformer(Transformer):
-    greek_letters = { "Alpha": "Α", "Beta": "Β", "Gamma": "Γ", "Delta": "Δ", "Epsilon": "Ε", "Zeta": "Ζ",
-                      "Eta": "Η", "Theta": "Θ", "Iota": "Ι", "Kappa": "Κ", "Lambda": "Λ", "Mu": "Μ",
-                      "Nu": "Ν", "Xi": "Ξ", "Omicron": "Ο", "Pi": "Π", "Rho": "Ρ", "Sigma": "Σ",
-                      "Tau": "Τ", "Upsilon": "Υ", "Phi": "Φ", "Chi": "Χ", "Psi": "Ψ", "Omega": "Ω",
-                      "alpha": "α", "beta": "β", "gamma": "γ", "delta": "δ", "epsilon": "ε", "zeta": "ζ",
-                      "eta": "η", "theta": "θ", "iota": "ι", "kappa": "κ", "lambda": "λ", "mu": "μ",
-                      "nu": "ν", "xi": "ξ", "omicron": "ο", "pi": "π", "rho": "ρ", "sigma": "σ", "varsigma": "ς",
-                      "tau": "τ", "upsilon": "υ", "phi": "φ", "varphi": "φ", "chi": "χ", "psi": "ψ", "omega": "ω" }
 
     def list(self, items):
         return elements.ElementList(elements=items)
         
     def greek2(self, items):
         name = items[0][1:]
-        return self.greek_letters[name]  # the letter will be wrapped by atom(...)
+        return GREEK_LETTERS[name]  # the letter will be wrapped by atom(...)
 
     def atom(self, items):
         return elements.Atom(items[0])
@@ -117,7 +110,7 @@ GREEK_LETTER_NAME : "\\Alpha" | "\\Beta" | "\\Gamma" | "\\Delta" | "\\Epsilon" |
                   | "\\Tau" | "\\Upsilon" | "\\Phi" | "\\Chi" | "\\Psi" | "\\Omega"
                   | "\\alpha" | "\\beta" | "\\gamma" | "\\delta" | "\\epsilon" | "\\zeta"
                   | "\\eta" | "\\theta" | "\\iota" | "\\kappa" | "\\lambda" | "\\mu"
-                  | "\\nu" | "\\xi" | "\\omicron" | "\\pi" | "\\rho" | "\\sigma" | "\\varsigma"
+                  | "\\nu" | "\\xi" | "\\omicron" | "\\pi" | "\\rho" | "\\sigma"
                   | "\\tau" | "\\upsilon" | "\\phi" | "\\varphi" | "\\chi" | "\\psi" | "\\omega"
 greek2 : GREEK_LETTER_NAME
 GREEK : "α".."ω" | "Α".."Ω"
