@@ -86,9 +86,9 @@ class LatexTransformer(Transformer):
     def prod(self, items):
         return elements.Sum(char="∏", bottom=items[0], top=items[1])
 
-latex_parser = Lark(r"""
+latex_parser = Lark(fr"""
 list : element*
-?blist : "{" list "}"
+?blist : "{{" list "}}"
 ?element : atom
          | binary
          | operator
@@ -104,14 +104,7 @@ list : element*
          | subscriptsuperscript
          | superscriptsubscript
 
-GREEK_LETTER_NAME : "\\Alpha" | "\\Beta" | "\\Gamma" | "\\Delta" | "\\Epsilon" | "\\Zeta"
-                  | "\\Eta" | "\\Theta" | "\\Iota" | "\\Kappa" | "\\Lambda" | "\\Mu"
-                  | "\\Nu" | "\\Xi" | "\\Omicron" | "\\Pi" | "\\Rho" | "\\Sigma"
-                  | "\\Tau" | "\\Upsilon" | "\\Phi" | "\\Chi" | "\\Psi" | "\\Omega"
-                  | "\\alpha" | "\\beta" | "\\gamma" | "\\delta" | "\\epsilon" | "\\zeta"
-                  | "\\eta" | "\\theta" | "\\iota" | "\\kappa" | "\\lambda" | "\\mu"
-                  | "\\nu" | "\\xi" | "\\omicron" | "\\pi" | "\\rho" | "\\sigma"
-                  | "\\tau" | "\\upsilon" | "\\phi" | "\\varphi" | "\\chi" | "\\psi" | "\\omega"
+GREEK_LETTER_NAME : "\\" ( {" | ".join(['"'+letter+'"' for letter in GREEK_LETTERS])} )
 greek2 : GREEK_LETTER_NAME
 GREEK : "α".."ω" | "Α".."Ω"
 SYMBOL : "." | "!"
@@ -124,7 +117,7 @@ binary : TIMES -> times
        | "=" -> equals
 
 OPNAME : LETTER+
-operator : "\\operatorname{" OPNAME "}"
+operator : "\\operatorname{{" OPNAME "}}"
 
 atomaslist.-1 : atom -> list
 ?argument : blist | atomaslist
@@ -146,7 +139,7 @@ floor : "\\floor" argument
 ceil : "\\ceil" argument
      | "\\left"? "\\lceil" list "\\right"? "\\rceil"
 
-PAREN : "(" | "[" | "\\{" | ")" | "]" | "\\}"
+PAREN : "(" | "[" | "\\{{" | ")" | "]" | "\\}}"
 paren : ("\\left"|"\\right")? PAREN
 
 sum : "\\sum" "_" argument "^" argument
