@@ -8,10 +8,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-26 22:02+0100\n"
-"PO-Revision-Date: 2022-09-19 17:22+0000\n"
+"PO-Revision-Date: 2022-09-30 13:21+0000\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
-"Language-Team: Finnish <https://hosted.weblate.org/projects/plots/plots/fi/"
-">\n"
+"Language-Team: Finnish <https://hosted.weblate.org/projects/plots/plots/fi/>"
+"\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,7 +28,7 @@ msgstr ""
 
 #: plots/colorpicker.py:32
 msgid "Pick a color"
-msgstr ""
+msgstr "Valitse väri"
 
 #: plots/plots.py:64
 msgid "Plots"
@@ -76,7 +76,7 @@ msgstr "Plottaussovellus Gnomelle."
 
 #: plots/ui/formula_box.ui:43
 msgid "Remove"
-msgstr ""
+msgstr "Poista"
 
 #: plots/ui/preferences.ui:19
 msgid "Preferences affecting graph rendering"
@@ -104,31 +104,31 @@ msgstr "Vähennä parantaaksesi suorituskykyä"
 
 #: plots/ui/plots.ui:14
 msgid "Add an equation"
-msgstr ""
+msgstr "Lisää yhtälö"
 
 #: plots/ui/plots.ui:37
 msgid "Undo"
-msgstr ""
+msgstr "Kumoa"
 
 #: plots/ui/plots.ui:52
 msgid "Redo"
-msgstr ""
+msgstr "Tee uudelleen"
 
 #: plots/ui/plots.ui:73
 msgid "Menu"
-msgstr ""
+msgstr "Valikko"
 
 #: plots/ui/plots.ui:152
 msgid "Zoom in"
-msgstr ""
+msgstr "Lähennä"
 
 #: plots/ui/plots.ui:169
 msgid "Zoom out"
-msgstr ""
+msgstr "Loitonna"
 
 #: plots/ui/plots.ui:198
 msgid "Reset zoom and panning"
-msgstr ""
+msgstr "Nollaa lähennys ja panorointi"
 
 #: plots/ui/plots.ui:233
 msgid "Error:"
