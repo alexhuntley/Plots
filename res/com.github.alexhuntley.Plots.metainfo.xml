@@ -156,6 +156,17 @@
   </provides>
 
   <releases>
+    <release version="0.8.4" date="2022-09-30">
+      <description>
+        <ul>
+          <li>Improved copy &amp; paste compatibility with LaTeX and Unicode formulae</li>
+          <li>New tooltip text on the toolbar buttons</li>
+          <li>The formula editor now supports the Home and End keys</li>
+          <li>Bug fixes</li>
+          <li>Updated translations</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.8.3" date="2022-09-24">
       <description>
         <ul>
