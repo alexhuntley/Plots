@@ -224,10 +224,18 @@ class Plots(Adw.Application):
             try:
                 attempt(good + unknown)
             except RuntimeError:
-                attempt(good)
+                try:
+                    attempt(good)
+                except RuntimeError:
+                    attempt([])
+
+    def dependency_changed(self, row):
+        for r in self.rows:
+            r.row_status = formularow.RowStatus.UNKNOWN
 
     def add_equation(self, _, record=True):
         row = formularow.FormulaBox(self)
+        row.connect("dependency_changed", self.dependency_changed)
         self.rows.append(row)
         self.formula_box.append(row)
         row.editor.grab_focus()

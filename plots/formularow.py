@@ -16,7 +16,7 @@
 # along with Plots.  If not, see <https://www.gnu.org/licenses/>.
 
 import gi
-from gi.repository import Gtk, Gdk, Gio, GdkPixbuf, Adw
+from gi.repository import Gtk, Gdk, Gio, GdkPixbuf, Adw, GObject
 
 from plots import formula, plots, rowcommands, colorpicker, utils
 from plots.data import jinja_env
@@ -228,6 +228,9 @@ class RowStatus(Enum):
 @Gtk.Template(string=utils.read_ui_file("formula_box.ui"))
 class FormulaBox(Gtk.Box):
     __gtype_name__ = "FormulaBox"
+    __gsignals__ = {
+        "dependency_changed": (GObject.SIGNAL_RUN_FIRST, None, ())
+    }
 
     PALETTE      = "blue_5 green_5 yellow_5 orange_5 red_5 purple_5 brown_5 dark_5".split()
     DARK_PALETTE = "blue_1 green_1 yellow_1 orange_1 red_1 purple_1 brown_1 light_2".split()
@@ -280,6 +283,7 @@ class FormulaBox(Gtk.Box):
         self.app.formula_box.remove(self)
         if not self.app.rows and replace_if_last:
             self.app.add_equation(None, record=False)
+        self.emit("dependency_changed")
         self.app.update_shader()
 
     def cursor_position(self, widget, x, y):
@@ -298,6 +302,7 @@ class FormulaBox(Gtk.Box):
         body, expr = self.editor.expr.to_glsl()
         rgba = utils.rgba_to_tuple(self.color_picker.get_rgba())
 
+        old_data = self.data
         for cls in [Formula, XFormula, RFormula, ThetaFormula,
                     Slider, Variable, ImplicitFormula, Empty]:
             if cls.accepts(expr):
@@ -334,6 +339,9 @@ class FormulaBox(Gtk.Box):
             self.app.add_to_history(command)
         self.old = mem
         self.row_status = RowStatus.UNKNOWN
+        if isinstance(self.data, (Slider, Variable)) \
+           or isinstance(old_data, (Slider, Variable)):
+            self.emit("dependency_changed")
         self.app.update_shader()
 
     def construct_memory(self):
