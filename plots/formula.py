@@ -115,18 +115,31 @@ class Editor(Gtk.DrawingArea):
     def on_key_press(self, event_cont, keyval, keycode, state):
         self.restart_blink_sequence()
         modifiers = state & Gtk.accelerator_get_default_mod_mask()
+        select = bool(modifiers & Gdk.ModifierType.SHIFT_MASK)
         if DEBUG:
             print(Gdk.keyval_name(keyval))
         if modifiers & (Gdk.ModifierType.ALT_MASK | Gdk.ModifierType.SUPER_MASK):
             return False
         try:
             direction = Direction(keyval)
-            select = bool(modifiers & Gdk.ModifierType.SHIFT_MASK)
             res = self.cursor.handle_movement(direction, select=select)
             self.queue_draw()
             return res
         except ValueError:
             pass
+        if keyval in (Gdk.KEY_Home, Gdk.KEY_End):
+            if not select:
+                self.cursor.cancel_selection()
+            if select and not self.cursor.selecting:
+                self.cursor.secondary_pos = self.cursor.pos
+                self.cursor.secondary_owner = self.cursor.owner
+                self.cursor.selecting = True
+            new_pos = 0 if keyval == Gdk.KEY_Home else -1
+            self.cursor.reparent(self.expr, new_pos)
+            if select:
+               self.cursor.selection_bounds, self.cursor.selection_ancestor = self.cursor.calculate_selection()
+            self.queue_draw()
+            return True
 
         char = chr(Gdk.keyval_to_unicode(keyval))
         if modifiers & Gdk.ModifierType.CONTROL_MASK:
