@@ -18,7 +18,7 @@
 from lark import Lark, Transformer
 
 from plots import elements
-from plots.data import GREEK_LETTERS
+from plots.data import GREEK_LETTERS, SUP_ATOMS, SUB_ATOMS, SUP_TRAFO, SUB_TRAFO
 
 class LatexTransformer(Transformer):
 
@@ -59,6 +59,18 @@ class LatexTransformer(Transformer):
     def superscriptsubscript(self, items):
         return elements.SuperscriptSubscript(exponent=items[0], subscript=items[1])
 
+    def supatom(self, items):
+        return elements.Atom(items[0].translate(SUP_TRAFO))
+
+    def subatom(self, items):
+        return elements.Atom(items[0].translate(SUB_TRAFO))
+
+    def supparen(self, items):
+        return elements.Paren(items[0].translate(SUP_TRAFO))
+
+    def subparen(self, items):
+        return elements.Paren(items[0].translate(SUB_TRAFO))
+
     def frac(self, items):
         return elements.Frac(numerator=items[0], denominator=items[1])
 
@@ -87,7 +99,7 @@ class LatexTransformer(Transformer):
         return elements.Sum(char="∏", bottom=items[0], top=items[1])
 
 latex_parser = Lark(fr"""
-list : element*
+list : (element | ( element supersubpostfix ))*  //allowing two consecutive supersubpostfix-tokens leads to ambiguous parser-results
 ?blist : "{{" list "}}"
 ?element : atom
          | binary
@@ -126,6 +138,28 @@ subscriptsuperscript.2 : "_" argument "^" argument
 superscriptsubscript.2 : "^" argument "_" argument
 supersub : "_" argument -> subscript
          | "^" argument -> superscript
+
+SUP_ATOM : {" | ".join(['"'+atom+'"' for atom in SUP_ATOMS])}
+SUB_ATOM : {" | ".join(['"'+atom+'"' for atom in SUB_ATOMS])}
+supatom : SUP_ATOM
+subatom : SUB_ATOM
+supop : "⁺" -> plus
+      | "⁻" -> minus
+subop : "₊" -> plus
+      | "₋" -> minus
+SUP_PAREN : "⁽" | "⁾"
+SUB_PAREN : "₍" | "₎"
+supparen : SUP_PAREN
+subparen : SUB_PAREN
+?supelement : supatom | supop | supparen
+?subelement : subatom | subop | subparen
+suplist : supelement+ -> list
+sublist : subelement+ -> list
+supersubpostfix : suplist -> superscript
+              | sublist -> subscript
+              | ( sublist suplist ) -> subscriptsuperscript
+              | ( suplist sublist ) -> superscriptsubscript
+
 
 frac.10 : "\\frac" argument argument
 

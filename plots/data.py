@@ -78,3 +78,11 @@ GREEK_REGEXES['(?<![EUeu])psi'] = GREEK_REGEXES.pop('psi')
 # substrings must go second for regex to work
 FUNCTIONS = "asech acsch acosech acoth sech csch cosech coth asec acsc acosec acot arcsec arccsc arccosec arccot sec csc cosec cot asinh acosh atanh sinh cosh tanh asin acos atan arcsin arccos arctan sinc sin cos tan exp log ln lg sign sgn".split()
 BINARY_OPERATORS = ("+", "-", "*", "=")
+
+SUP_ATOMS = "⁰¹²³⁴⁵⁶⁷⁸⁹ⁱⁿ"
+SUP_CHARS = SUP_ATOMS + "⁺⁻⁽⁾"
+SUP_TRAFO = str.maketrans(SUP_CHARS, "0123456789in+-()")
+SUB_ATOMS = "₀₁₂₃₄₅₆₇₈₉ₐₑₒₓₕₖₗₘₙₚₛₜ"
+SUB_CHARS = SUB_ATOMS + "₊₋₍₎"
+SUB_TRAFO = str.maketrans(SUB_CHARS, "0123456789aeoxhklmnpst+-()")
+

@@ -29,6 +29,7 @@ from plots.elements import Element, ElementList, BaseAtom, Atom, \
 from plots.utils import Direction, MetricContext, Text
 from plots.data import BINARY_OPERATORS
 from plots.cursor import Cursor
+from plots.data import SUP_ATOMS, SUP_TRAFO
 
 DEBUG = False
 
@@ -148,10 +149,9 @@ class Editor(Gtk.DrawingArea):
                 return True
             else:
                 return False
-        if char in "⁰¹²³⁴⁵⁶⁷⁸⁹":
+        if char in SUP_ATOMS:
             self.cursor.insert_superscript_subscript(superscript=True)
-            translation = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹", "0123456789")
-            self.cursor.insert(Atom(char.translate(translation)))
+            self.cursor.insert(Atom(char.translate(SUP_TRAFO)))
             self.cursor.handle_movement(Direction(Gdk.KEY_Right), select=False) # reset cursor level
             self.queue_draw()
             self.emit("edit")
