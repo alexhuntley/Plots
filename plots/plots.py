@@ -86,6 +86,7 @@ class Plots(Adw.Application):
         self.redo_button.connect("clicked", self.redo)
 
         self.osd_revealer = builder.get_object("osd_revealer")
+        self.osd_box = builder.get_object("osd_box")
         self.zoom_reset_revealer = builder.get_object("zoom_reset_revealer")
         self.graph_overlay = builder.get_object("graph_overlay")
         self.zoom_in_button = builder.get_object("zoom_in")
@@ -168,10 +169,11 @@ class Plots(Adw.Application):
 
         motion_ctl = Gtk.EventControllerMotion()
         motion_ctl.connect("motion", self.motion_cb)
+        self._old_motion = None
         self.gl_area.add_controller(motion_ctl)
         overlay_motion_ctl = Gtk.EventControllerMotion()
         overlay_motion_ctl.connect("enter", self.enter_overlay_cb)
-        self.graph_overlay.add_controller(overlay_motion_ctl)
+        self.osd_box.add_controller(overlay_motion_ctl)
         self.refresh_history_buttons()
         self.window.show()
 
@@ -189,9 +191,12 @@ class Plots(Adw.Application):
         self.overlay_source = None
 
     def motion_cb(self, ctl, x, y):
+        if (x, y) == self._old_motion:
+            return False
         if not self.osd_revealer.get_reveal_child():
             self.osd_revealer.set_reveal_child(True)
         self.set_overlay_timeout()
+        self._old_motion = (x, y)
         return False
 
     def enter_overlay_cb(self, ctl, x, y):
