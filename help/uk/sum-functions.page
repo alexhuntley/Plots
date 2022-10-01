@@ -1,31 +1,28 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="sum-functions">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="sum-functions">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#functions" />
 
     <desc>in Σ and Π notation</desc>
   </info>
-<title>Sums and Products</title>
+<title>Суми і добутки</title>
 <steps>
-<title>How to insert a sum or product</title>
+<title>Як вставити суму або добуток</title>
 <item>
-<p>Type <key>sum</key> or <key>prod</key> to insert the operator</p>
+<p>Введіть <key>sum</key> або <key>prod</key>, щоб вставити оператор</p>
 </item>
 <item>
-<p>Type a variable name and initial value into the bottom of the Σ or Π, e.g. i = 0</p>
+<p>Введіть назву змінної та початкове значення внизу Σ або Π, наприклад. i = 0</p>
 </item>
 <item>
-<p>Use the arrow keys to move to the upper box of the Σ or Π</p>
+<p>Використовуйте клавіші зі стрілками, щоб перейти до верхнього поля Σ або Π</p>
 </item>
 <item>
-<p>Type the maximum value for the variable in the upper box</p>
+<p>Введіть максимальне значення для змінної у верхньому полі</p>
 </item>
 <item>
-<p>Use the arrow keys to move to the right of the operator, and insert the body of the sum/product.</p>
+<p>За допомогою клавіш зі стрілками перейдіть праворуч від оператора та вставте тіло суми/добутку.</p>
 </item>
 </steps>
-<p>The variable being iterated over should only be referred to inside the sum/product body.</p>
+<p>Змінна, яку повторюють, має посилатися лише всередині тіла суми/добутку.</p>
 </page>
