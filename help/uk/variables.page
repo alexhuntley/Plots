@@ -1,27 +1,17 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="variables">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="variables">
 
   <info>
-    <link type="guide" xref="index#formulae"/>
+    <link type="guide" xref="index#formulae" />
 
     <desc>Easily adjustable parameters</desc>
   </info>
-  <title>Variables and sliders</title>
+  <title>Змінні і слайдери</title>
 
   <p>
-    To declare a variable, type an equation of the form
-    <code><em>variable</em> = <em>value</em></code> into an empty formula box, where
-    <code><em>variable</em></code> is a single Latin or Greek letter, and
-    <code><em>value</em></code> is an expression which must not depend on position, but
-    may depend on preceding variables.
+    Щоб оголосити змінну, введіть рівняння у вигляді <code><em>variable</em> = <em>value</em></code> у пусте поле формули, де <code><em>variable</em></code> — це одна латинська або грецька літера, а <code><em>value</em></code> — це вираз, який не повинен залежати від позиції, але може залежати від попередніх змінних.
   </p>
 
   <p>
-    If <code><em>value</em></code> is a literal integer or decimal number, Plots will
-    display an adjustable slider control, allowing the variable to be adjusted
-    interactively. The upper and lower limits of the slider can be edited using the
-    adjacent fields.
+    Якщо <code><em>value</em></code> є літеральним цілим чи десятковим числом, у Plots відображатиметься регульований повзунок, що дає змогу інтерактивно коригувати змінну. Верхню та нижню межі повзунка можна редагувати за допомогою сусідніх полів.
   </p>
 </page>
