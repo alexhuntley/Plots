@@ -5,10 +5,10 @@
 
     <desc>Implicit formulae for <em>x</em> and <em>y</em></desc>
   </info>
-  <title>Implicit formulae of the form <em>f(x,y) = g(x,y)</em></title>
+  <title>Неявні формули виду <em>f(x,y) = g(x,y)</em></title>
 
   <p>
-    These can be entered into any regular formula box. They are the most general type of formula. <em>x</em> and <em>y</em> may appear anywhere in the equation.
+    Їх можна ввести в будь-яке звичайне вікно формули. Вони є найбільш загальним типом формул. <em>x</em> і <em>y</em> можуть з’явитися будь-де в рівнянні.
   </p>
 
 </page>
