@@ -14,6 +14,7 @@
   <name xml:lang="it">Grafici</name>
   <name xml:lang="nl">Plots</name>
   <name xml:lang="pt_BR">Plots</name>
+  <name xml:lang="uk">Plots</name>
   <developer_name>Alex Huntley</developer_name>
   <summary>Simple graph plotting</summary>
   <summary xml:lang="eo">Simpla grafikaĵilo</summary>
@@ -25,6 +26,7 @@
   <summary xml:lang="it">Semplice disegnatore di grafici</summary>
   <summary xml:lang="nl">Eenvoudig grafieken plotten</summary>
   <summary xml:lang="pt_BR">Simples traçador de gráficos</summary>
+  <summary xml:lang="uk">Простий побудовник графіків</summary>
 
   <description>
     <p>
@@ -127,6 +129,17 @@
     <p xml:lang="pt_BR">
       Plots foi projetado para integrar-se bem com o ambiente GNOME e tirar proveito
       de hardware moderno usando OpenGL.
+    </p>
+   
+    <p xml:lang="uk">
+      Plots дозволяє легко візуалізувати математичні формули. Окрім основних 
+      арифметичних операцій, підтримує тригонометричні, гіперболічні, експоненціальні та 
+      логарифмічні функції, а також довільні суми та добутки. Також може відображати 
+      полярні рівняння і неявні та явні декартові рівняння.
+    </p>
+    <p xml:lang="uk">
+      Plots розроблено для гарної інтеграції з робочим столом GNOME.Та використовує 
+      переваги сучасного апаратного забезпечення, що використовує OpenGL.
     </p>
 
   </description>
