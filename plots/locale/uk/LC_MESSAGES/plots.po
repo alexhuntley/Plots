@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-26 22:02+0100\n"
-"PO-Revision-Date: 2022-10-02 12:03+0000\n"
+"PO-Revision-Date: 2022-10-10 18:51+0000\n"
 "Last-Translator: Mihail Nikiforov <azaone_m@proton.me>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/plots/plots/uk/"
 ">\n"
@@ -33,15 +33,15 @@ msgstr "Вибрати колір"
 
 #: plots/plots.py:64
 msgid "Plots"
-msgstr "Графіки"
+msgstr "Plots"
 
 #: plots/plots.py:102
 msgid "_Export…"
-msgstr "_Export…"
+msgstr "_Експорт…"
 
 #: plots/plots.py:103
 msgid "_Preferences"
-msgstr "_Preferences"
+msgstr "_Налаштування"
 
 #: plots/plots.py:104
 msgid "Help"
@@ -61,7 +61,7 @@ msgstr "_Export"
 
 #: plots/plots.py:262
 msgid "_Cancel"
-msgstr "_Cancel"
+msgstr "_Скасувати"
 
 #: plots/plots.py:264
 msgid "Untitled plot"
