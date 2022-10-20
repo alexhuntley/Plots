@@ -37,7 +37,8 @@ class Editor(Gtk.DrawingArea):
     padding = 4
     __gsignals__ = {
         'edit': (GObject.SignalFlags.RUN_LAST, None, ()),
-        'cursor_position': (GObject.SignalFlags.RUN_FIRST, None, (float, float)),
+        'start_edit': (GObject.SignalFlags.RUN_LAST, None, ()),
+        'cursor_position': (GObject.SignalFlags.RUN_FIRST, None, (float, float))
     }
     def __init__(self, expression=None):
         super().__init__()
@@ -91,6 +92,7 @@ class Editor(Gtk.DrawingArea):
             self.cursor.position_changed = False
 
     def focus_in(self, ctl):
+        self.emit("start_edit")
         self.restart_blink_sequence()
 
     def focus_out(self, ctl):
@@ -235,6 +237,7 @@ class Editor(Gtk.DrawingArea):
                 return e, e.half_containing(x, y)
 
     def on_button_press(self, ctl, n_press, x, y):
+        self.emit("start_edit")
         if n_press > 1:
             self.cursor.select_all(self.expr)
         else:
@@ -246,6 +249,7 @@ class Editor(Gtk.DrawingArea):
         return True
 
     def on_drag_begin(self, ctl, start_x, start_y):
+        self.emit("start_edit")
         self.drag_start_x = start_x
         self.drag_start_y = start_y
 
