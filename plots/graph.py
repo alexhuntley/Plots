@@ -32,6 +32,8 @@ class GraphArea(Gtk.GLArea):
 
     INIT_SCALE = 10
     ZOOM_BUTTON_FACTOR = 0.3
+    ZOOM_MINIMUM = 5e-34
+    ZOOM_MAXIMUM = 1e+38
 
     def __init__(self):
         super().__init__()
@@ -244,6 +246,12 @@ class GraphArea(Gtk.GLArea):
 
     def smooth_scroll(self, translate_to=None):
         speed = 0.3
+
+        if self.target_scale > self.ZOOM_MAXIMUM:
+            self.target_scale = self.ZOOM_MAXIMUM
+        if self.target_scale < self.ZOOM_MINIMUM:
+            self.target_scale = self.ZOOM_MINIMUM
+
         self.scale = speed*self.target_scale + (1-speed)*self.scale
         if translate_to is not None:
             self.translation = speed*translate_to + (1-speed)*self.translation
