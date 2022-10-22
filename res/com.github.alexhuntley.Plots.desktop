@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Plots
+Name[bn]=লেখচিত্র
 Name[eo]=Grafikaĵoj
 Name[es]=Gráfico
 Name[fa]=نمودارها
@@ -10,6 +11,7 @@ Name[it]=Grafici
 Name[nl]=Plots
 Name[pt_BR]=Plots
 Comment=Simple graph plotting
+Comment[bn]=সরল লেখচিত্র অঙ্কন
 Comment[eo]=Simpla grafikaĵilo
 Comment[es]=Trazado sencillo de funciones
 Comment[fa]=رسم نمودار ساده
