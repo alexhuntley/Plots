@@ -5,6 +5,7 @@
   <metadata_license>FSFAP</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <name>Plots</name>
+  <name xml:lang="bn">লেখচিত্র</name>
   <name xml:lang="eo">Grafikaĵoj</name>
   <name xml:lang="es">Gráfico</name>
   <name xml:lang="fa">نمودارها</name>
@@ -16,6 +17,7 @@
   <name xml:lang="pt_BR">Plots</name>
   <developer_name>Alex Huntley</developer_name>
   <summary>Simple graph plotting</summary>
+  <summary xml:lang="bn">সরল লেখচিত্র অঙ্কন</summary>
   <summary xml:lang="eo">Simpla grafikaĵilo</summary>
   <summary xml:lang="es">Trazado sencillo de funciones</summary>
   <summary xml:lang="fa">رسم نمودار ساده</summary>
@@ -36,6 +38,16 @@
     <p>
       Plots is designed to integrate well with the GNOME desktop and takes advantage
       of modern hardware using OpenGL.
+    </p>
+    
+    <p xml:lang="bn">
+      লেখচিত্র গাণিতিক সূত্রগুলিকে কল্পনা করা সহজ করে তোলে। মৌলিক বীজগাণিতিক
+      ক্রিয়াকলাপ ছাড়াও, এটি ত্রিকোণমিতিক, হাইপারবোলিক, সূচকীয় এবং
+      লগারিদমিক আপেক্ষক সমর্থন করে, সেইসাথে ইচ্ছামত যোগফল এবং গুণফল ও করতে পারে। এটি প্রদর্শন করতে পারে
+      পোলার সমীকরণ, এবং উভয় অন্তর্নিহিত এবং বহির্নিহিত কার্টেসিয়ান সমীকরণ।
+    </p>
+    <p xml:lang="bn">
+      লেখচিত্র GNOME ডেস্কটপএর সাথে ভালভাবে সংহত করার জন্য ডিজাইন করা হয়েছে এবং এটি আধুনিক হার্ডয়ারের সুযোগ পায় OpenGL ব্যবহার করে।
     </p>
 
     <p xml:lang="es">
