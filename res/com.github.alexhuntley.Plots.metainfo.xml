@@ -9,6 +9,7 @@
   <name xml:lang="es">Gráfico</name>
   <name xml:lang="fa">نمودارها</name>
   <name xml:lang="fr">Plots</name>
+  <name xml:lang="he">גרפים</name>
   <name xml:lang="hr">Grafikoni</name>
   <name xml:lang="hu">Ábrák</name>
   <name xml:lang="it">Grafici</name>
@@ -21,6 +22,7 @@
   <summary xml:lang="es">Trazado sencillo de funciones</summary>
   <summary xml:lang="fa">رسم نمودار ساده</summary>
   <summary xml:lang="fr">Traceur de fonction simple</summary>
+  <summary xml:lang="he">מייצר גרפים פשוט</summary>
   <summary xml:lang="hr">Jednostavno crtanje grafikona</summary>
   <summary xml:lang="hu">Egyszerű ábrákrajzolás</summary>
   <summary xml:lang="it">Semplice disegnatore di grafici</summary>
@@ -73,6 +75,15 @@
     <p xml:lang="fr">
       Plots est conçu pour bien s'intégrer au bureau GNOME et exploite le matériel
       moderne en utilisant OpenGL.
+    </p>
+    
+    <p xml:lang="he">
+      גרפים מאפשר לדמות בצורה קלה נוסחאות מתמטיות. בנוסף לפעולות חשבון בסיסיות, הוא תומך בפונקציות טריגונומטריות,
+      היפרבוליות, מעריכיות ולוגריתמיות, כמו גם סכומים ומכפלות מרובי איברים. הוא גם מאפשר להציג משוואות במערכת 
+      קואורדינטות קוטביות ומשוואות מפורשות או לא־מפורשות של משוואות במערכת צירים קַרְטֶזית.
+    </p>
+    <p>
+      גרפים תוכנן לשילוב מיטבי עם שולחן העבודה GNOME ומנצל חָמְרה מודרנית באמצעות OpenGL.
     </p>
 
     <p xml:lang="hr">
