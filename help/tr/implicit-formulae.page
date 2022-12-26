@@ -5,10 +5,10 @@
 
     <desc>Implicit formulae for <em>x</em> and <em>y</em></desc>
   </info>
-  <title>Implicit formulae of the form <em>f(x,y) = g(x,y)</em></title>
+  <title><em>f(x,y) = g(x,y)</em> formunun örtük formülleri</title>
 
   <p>
-    These can be entered into any regular formula box. They are the most general type of formula. <em>x</em> and <em>y</em> may appear anywhere in the equation.
+    Bunlar herhangi bir normal formül kutusuna girilebilir. En genel formül türüdür. <em>x</em> ve <em>y</em> denklemin herhangi bir yerinde görünebilir.
   </p>
 
 </page>
