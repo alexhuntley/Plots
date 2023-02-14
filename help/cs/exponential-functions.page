@@ -1,26 +1,23 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="exponential-functions">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="exponential-functions">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#functions" />
 
     <desc>e.g. exp, log</desc>
   </info>
-<title>Exponential and logarithmic functions</title>
-<p>The following functions can be inserted simply by typing their name:</p>
+<title>Exponenciální a logaritmické funkce</title>
+<p>Následující funkce lze vložit jednoduše zadáním jejich názvu:</p>
 
   <list>
-    <title>Supported functions</title>
+    <title>Podporované funkce</title>
     <item>
       <p>exp, e</p>
-      <p>e is Euler's number. It can be used as a function when followed by an exponent (entered using ^).</p>
+      <p>e je Eulerovo číslo. Lze jej použít jako funkci, pokud za ním následuje exponent (zadává se pomocí ^).</p>
     </item>
     <item>
       <p>ln, log, lg</p>
-      <p>ln and log are natural logarithms. lg is the base-2 logarithm.</p>
-      <p>log may be followed by a subscript (entered using an underscore), denoting the base of the logarithm.</p>
+      <p>ln a log jsou přirozené logaritmy. lg je logaritmus o základu 2.</p>
+      <p>log může být následován dolním indexem (zadaným pomocí podtržítka), který označuje základ logaritmu.</p>
     </item>
   </list>
 
