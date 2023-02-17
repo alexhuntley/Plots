@@ -1,17 +1,14 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="theta-formulae">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="theta-formulae">
 
   <info>
-    <link type="guide" xref="index#formulae"/>
+    <link type="guide" xref="index#formulae" />
 
     <desc>Explicit formulae for <em>θ</em> (polar equations)</desc>
   </info>
-  <title>Formulae of the form <em>θ = f(r)</em></title>
+  <title>Vzorce ve tvaru <em>θ = f(r)</em></title>
 
   <p>
-    These can be entered into a formula box only in the form <code>θ = f(r)</code>.
+    Ty lze do pole vzorců zadat pouze ve tvaru <code>θ = f(r)</code>.
   </p>
 
 </page>
