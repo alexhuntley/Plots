@@ -1,16 +1,13 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="misc-functions">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="misc-functions">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#functions" />
 
     <desc>e.g. |x|, ⌈x⌉, ⌊x⌋, sgn(x)</desc>
   </info>
-  <title>Miscellaneous functions</title>
-  <p>The modulus of <em>x</em> can be inserted by typing <keyseq><key>|</key><key>x</key></keyseq>.</p>
-  <p>The floor function ⌊x⌋ can be inserted by typing <key>floor</key>.</p>
-  <p>The ceiling function ⌈x⌉ can be inserted by typing <key>ceil</key>.</p>
-  <p>The sign function sgn(x) can be inserted by typing <key>sign</key> or <key>sgn</key>.</p>
+  <title>Různé funkce</title>
+  <p>Absolutní hodnotu <em>x</em> lze vložit zadáním <keyseq><key>|</key><key>x</key></keyseq>.</p>
+  <p>Funkci zaokrouhlování dolů ⌊x⌋ lze vložit zadáním <key>floor</key>.</p>
+  <p>Funkci zaokrouhlování nahoru ⌈x⌉ lze vložit zadáním <key>ceil</key>.</p>
+  <p>Funkci signum sgn(x) lze vložit zadáním <key>sign</key> nebo <key>sgn</key>.</p>
 </page>
