@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-26 22:02+0100\n"
 "PO-Revision-Date: 2023-02-20 17:35+0000\n"
-"Last-Translator: Cacozelia <cacozelia@pm.me>\n"
+"Last-Translator: gregorni <gregorniehl@web.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/plots/plots/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -79,7 +79,7 @@ msgstr "Entfernen"
 
 #: plots/ui/preferences.ui:19
 msgid "Preferences affecting graph rendering"
-msgstr "Einstellungen, die die Darstellung der Graphen beeinflussen"
+msgstr "Einstellungen zur Darstellung der Graphen"
 
 #: plots/ui/preferences.ui:20
 msgid "Rendering"
@@ -127,7 +127,7 @@ msgstr "Hinauszoomen"
 
 #: plots/ui/plots.ui:198
 msgid "Reset zoom and panning"
-msgstr ""
+msgstr "Vergrößerung und Position zurücksetzen"
 
 #: plots/ui/plots.ui:233
 msgid "Error:"
