@@ -13,6 +13,7 @@
   <name xml:lang="hu">Ábrák</name>
   <name xml:lang="it">Grafici</name>
   <name xml:lang="nl">Plots</name>
+  <name xml:lang="sv">Grafer</name>
   <name xml:lang="pt_BR">Plots</name>
   <developer_name>Alex Huntley</developer_name>
   <summary>Simple graph plotting</summary>
@@ -24,8 +25,9 @@
   <summary xml:lang="hu">Egyszerű ábrákrajzolás</summary>
   <summary xml:lang="it">Semplice disegnatore di grafici</summary>
   <summary xml:lang="nl">Eenvoudig grafieken plotten</summary>
+  <summary xml:lang="sv">Enkel grafritning</summary>
   <summary xml:lang="pt_BR">Simples traçador de gráficos</summary>
-
+  
   <description>
     <p>
       Plots makes it easy to visualise mathematical formulae. In addition to basic
@@ -117,6 +119,19 @@
       Plots is ontworpen om goed te integreren met Gnome en maakt gebruik van van moderne hardware
       via OpenGL.
     </p>
+    
+    <p xml:lang="sv">
+    Grafer gör det enkelt att visualisera matematiska formler. Förutom aritmetiken
+       grundläggande operationer, det stödjer trigonometriska, hyperboliska, exponentiella och
+       logaritmiska funktioner, samt godtyckliga summor och produkter. Det kan vara polärt
+       ekvationer och visar både implicita och explicita kartesiska ekvationer.
+    </p>
+                 
+    <p xml:lang="sv">
+     Grafer är utformad för att integreras väl med Gnome och använder modern hårdvara
+       genom OpenGL.
+    </p>
+
 
     <p xml:lang="pt_BR">
       Plots permite a fácil visualização de fórmulas matemáticas. Além das operações
