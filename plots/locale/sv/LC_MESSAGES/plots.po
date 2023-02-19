@@ -8,123 +8,126 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-26 22:02+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2023-02-20 17:35+0000\n"
+"Last-Translator: Luna Jernberg <droidbittin@gmail.com>\n"
+"Language-Team: Swedish <https://hosted.weblate.org/projects/plots/plots/sv/>"
+"\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.16-dev\n"
 
 #: plots/graph.py:121
 msgid ""
 "Warning: OpenGL {} is unsupported. Plots supports OpenGL 3.3 or greater."
-msgstr ""
+msgstr "Varning: OpenGL {} stöds inte. Grafer stöder OpenGL 3.3 eller senare."
 
 #: plots/colorpicker.py:32
 msgid "Pick a color"
-msgstr ""
+msgstr "Välj en färg"
 
 #: plots/plots.py:64
 msgid "Plots"
-msgstr ""
+msgstr "Grafer"
 
 #: plots/plots.py:102
 msgid "_Export…"
-msgstr ""
+msgstr "_Exportera…"
 
 #: plots/plots.py:103
 msgid "_Preferences"
-msgstr ""
+msgstr "_Inställningar"
 
 #: plots/plots.py:104
 msgid "Help"
-msgstr ""
+msgstr "Hjälp"
 
 #: plots/plots.py:105
 msgid "About Plots"
-msgstr ""
+msgstr "Om Grafer"
 
 #: plots/plots.py:258
 msgid "Export image"
-msgstr ""
+msgstr "Exportera bild"
 
 #: plots/plots.py:261
 msgid "_Export"
-msgstr ""
+msgstr "_Exportera"
 
 #: plots/plots.py:262
 msgid "_Cancel"
-msgstr ""
+msgstr "_Avbryt"
 
 #: plots/plots.py:264
 msgid "Untitled plot"
-msgstr ""
+msgstr "Namnlös graf"
 
 #: plots/ui/about.ui:7
 msgid "Copyright © 2021-2022 Alexander Huntley"
-msgstr ""
+msgstr "Copyright © 2021-2022 Alexander Huntley"
 
 #: plots/ui/about.ui:8
 msgid "A graph plotter for GNOME."
-msgstr ""
+msgstr "En grafplotter för GNOME."
 
 #: plots/ui/formula_box.ui:43
 msgid "Remove"
-msgstr ""
+msgstr "Ta bort"
 
 #: plots/ui/preferences.ui:19
 msgid "Preferences affecting graph rendering"
-msgstr ""
+msgstr "Inställningar som påverkar grafrenderingen"
 
 #: plots/ui/preferences.ui:20
 msgid "Rendering"
-msgstr ""
+msgstr "Rendering"
 
 #: plots/ui/preferences.ui:25
 msgid "Line thickness"
-msgstr ""
+msgstr "Linjetjocklek"
 
 #: plots/ui/preferences.ui:26
 msgid "Approximate thickness of the graphs"
-msgstr ""
+msgstr "Ungefärlig tjocklek på graferna"
 
 #: plots/ui/preferences.ui:40
 msgid "Samples per pixel"
-msgstr ""
+msgstr "Prover per pixel"
 
 #: plots/ui/preferences.ui:41
 msgid "Reduce to improve performance"
-msgstr ""
+msgstr "Minska för att förbättra prestanda"
 
 #: plots/ui/plots.ui:14
 msgid "Add an equation"
-msgstr ""
+msgstr "Lägg till en ekvation"
 
 #: plots/ui/plots.ui:37
 msgid "Undo"
-msgstr ""
+msgstr "Ångra"
 
 #: plots/ui/plots.ui:52
 msgid "Redo"
-msgstr ""
+msgstr "Gör om"
 
 #: plots/ui/plots.ui:73
 msgid "Menu"
-msgstr ""
+msgstr "Meny"
 
 #: plots/ui/plots.ui:152
 msgid "Zoom in"
-msgstr ""
+msgstr "Zooma in"
 
 #: plots/ui/plots.ui:169
 msgid "Zoom out"
-msgstr ""
+msgstr "Zooma ut"
 
 #: plots/ui/plots.ui:198
 msgid "Reset zoom and panning"
-msgstr ""
+msgstr "Återställ zoom och panorering"
 
 #: plots/ui/plots.ui:233
 msgid "Error:"
-msgstr ""
+msgstr "Fel:"
