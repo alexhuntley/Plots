@@ -1,39 +1,15 @@
-name: plots
-base: core18
-version: '0.4.0'
-license: GPL-3.0+
-summary: A simple graph plotter for GNOME
+name: plots # you probably want to 'snapcraft register <name>'
+base: core22 # the base snap is the execution environment for this snap
+version: '0.8.4' # just for humans, typically '1.2+git' or '1.3.2'
+summary: Single-line elevator pitch for your amazing snap # 79 char long summary
 description: |
-  Plots makes it easy to visualise mathematical formulae. In addition to basic
-  arithmetic operations, it supports trigonometric, hyperbolic, exponential and
-  logarithmic functions, as well as arbitrary sums and products. Plots is
-  designed to integrate well with the GNOME desktop and takes advantage of
-  modern hardware using OpenGL.
+  This is my-snap's description. You have a paragraph or two to tell the
+  most important story about your snap. Keep it under 100 words though,
+  we live in tweetspace and your description wants to look good in the snap
+  store.
 
 grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: strict # use 'strict' once you have the right plugs and slots
-
-parts:
-  plots:
-    plugin: python
-    python-version: python3
-    source: .
-    stage-packages:
-      - fonts-lmodern
-      - python3-numpy
-      - python3-jinja2
-      - python3-gi
-      - python3-gi-cairo
-      - python3-opengl
-      - python3-pip
-      - libglu1-mesa
-    python-packages:
-      - lark-parser == 0.9.0
-      - importlib_resources
-    override-build: |
-      snapcraftctl build
-      install -D -t $SNAPCRAFT_PART_INSTALL/usr/share/help/C/plots/ $SNAPCRAFT_PART_SRC/help/C/*
-      install $SNAPCRAFT_PART_INSTALL/usr/share/texmf/fonts/opentype/public/lm-math/latinmodern-math.otf $SNAPCRAFT_PART_INSTALL/usr/share/fonts/
 
 slots:
   dbus-svc:
@@ -41,16 +17,45 @@ slots:
     bus: session
     name: com.github.alexhuntley.Plots
 
+environment:
+  # WORKAROUND: Add python modules in Snap to search path
+  PYTHONPATH: ${SNAP}/lib/python3.10/site-packages:${SNAP}/usr/lib/python3/dist-packages
+parts:
+  plots:
+    # See 'snapcraft plugins'
+    plugin: python
+    source: .
+    source-tag: v${SNAPCRAFT_PROJECT_VERSION}
+    build-environment:
+      # WORKAROUND: The python plugin is broken with gnome extension
+      - PATH: ${CRAFT_PART_INSTALL}/bin:${PATH}
+      - PYTHONPATH: ""
+    stage:
+      # WORKAROUND: Skip venv from python plugin
+      - -bin/activate
+      - -bin/activate.csh
+      - -bin/activate.fish
+      - -bin/Activate.ps1
+      - -bin/python
+      - -bin/python3
+      - -bin/python3.10
+      - -bin/pip
+      - -bin/pip3
+      - -pyvenv.cfg
+    python-packages:
+      - PyOpenGL
+      - numpy
+      - lark
+      - PyGLM
+      - freetype-py
+    build-packages:
+      - python3-jinja2
 apps:
   plots:
     command: bin/plots
-    extensions: [gnome-3-28]
+    extensions: [gnome]
     common-id: com.github.alexhuntley.Plots
+    desktop: plots.desktop
     plugs:
-      - opengl
-      - desktop
-      - desktop-legacy
-      - wayland
-      - x11
-      - unity7
+      - home
     slots: [ dbus-svc ]
