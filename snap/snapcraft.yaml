@@ -55,7 +55,7 @@ apps:
     command: bin/plots
     extensions: [gnome]
     common-id: com.github.alexhuntley.Plots
-    desktop: plots.desktop
+    desktop: snap/gui/plots.desktop
     plugs:
       - home
     slots: [ dbus-svc ]
