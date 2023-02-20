@@ -2,5 +2,6 @@
 Name=Plots
 Exec=plots
 Type=Application
+version=0.8.4
 Icon=${SNAP}/meta/gui/plots.svg
 Categories=GNOME;GTK;Science;Math;Education
