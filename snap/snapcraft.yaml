@@ -39,18 +39,18 @@ parts:
       craftctl default
       install -D -t $SNAPCRAFT_PART_INSTALL/usr/share/help/C/plots/ $SNAPCRAFT_PART_SRC/help/C/*
   cleanup:
-  after:  # Make this part run last; list all your other parts here
-    - plots
-  plugin: nil
-  build-snaps:  # List all content-snaps and base snaps you're using here
-    - core22
-    - gnome-42-2204
-    - gnome-42-2204-sdk
-  override-prime: |
-    set -eux
-    for snap in "<CORE-SNAP>" "<CONTENT-SNAP-1>" "<CONTENT-SNAP-2>"; do  # List all content-snaps and base snaps you're using here
-        cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" \;
-    done
+    after:  # Make this part run last; list all your other parts here
+      - plots
+    plugin: nil
+    build-snaps:  # List all content-snaps and base snaps you're using here
+      - core22
+      - gnome-42-2204
+      - gnome-42-2204-sdk
+    override-prime: |
+      set -eux
+      for snap in "<CORE-SNAP>" "<CONTENT-SNAP-1>" "<CONTENT-SNAP-2>"; do  # List all content-snaps and base snaps you're using here
+          cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" \;
+      done
 apps:
   plots:
     command: bin/plots
