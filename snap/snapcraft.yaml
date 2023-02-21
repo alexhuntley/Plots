@@ -37,7 +37,7 @@ parts:
       - python3-jinja2
     override-stage: |
       craftctl default
-      install -D -t $SNAPCRAFT_PART_INSTALL/usr/share/help/C/plots/ $SNAPCRAFT_PART_SRC/help/C/*
+      install -D -t $SNAPCRAFT_PRIME/usr/share/help/C/plots/ $SNAPCRAFT_PART_SRC/help/C/*
   cleanup:
     after:  # Make this part run last; list all your other parts here
       - plots
