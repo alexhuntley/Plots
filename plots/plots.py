@@ -20,7 +20,7 @@
 import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf, cairo, Adw
+from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf, Adw
 
 from plots import formula, formularow, rowcommands, preferences, utils, graph
 from plots.i18n import _
