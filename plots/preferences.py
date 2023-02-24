@@ -42,6 +42,7 @@ class Preferences(GObject.GObject):
         "rendering": {
             "line_thickness": 2.0,
             "samples": 32,
+            "grid_opacity": .5,
         }
     }
     CONFIG_DIR = "plots"
@@ -95,6 +96,7 @@ class PreferencesWindow(Adw.PreferencesWindow):
 
     line_thickness_scale = Gtk.Template.Child()
     samples_scale = Gtk.Template.Child()
+    grid_opacity = Gtk.Template.Child()
 
     def __init__(self, prefs, parent_window):
         super().__init__()
@@ -113,7 +115,12 @@ class PreferencesWindow(Adw.PreferencesWindow):
         self.samples_scale.set_digits(0)
         self.samples_scale.set_increments(1, 10)
 
+        self.grid_opacity.set_range(0, 1)
+        self.grid_opacity.set_value(prefs["rendering"]["grid_opacity"])
+        self.grid_opacity.set_increments(0.5, 3)
+
     def delete_cb(self, window):
         r = self.prefs["rendering"]
         r["line_thickness"] = self.line_thickness_scale.get_value()
         r["samples"] = int(self.samples_scale.get_value())
+        r["grid_opacity"] = self.grid_opacity.get_value()
