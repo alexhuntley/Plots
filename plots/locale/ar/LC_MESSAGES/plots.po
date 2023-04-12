@@ -8,123 +8,126 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-26 22:02+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2023-04-13 12:55+0000\n"
+"Last-Translator: Ali Aljishi <ahj696@hotmail.com>\n"
+"Language-Team: Arabic <https://hosted.weblate.org/projects/plots/plots/ar/>\n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+"X-Generator: Weblate 4.17-dev\n"
 
 #: plots/graph.py:121
 msgid ""
 "Warning: OpenGL {} is unsupported. Plots supports OpenGL 3.3 or greater."
-msgstr ""
+msgstr "تحذير: أوبن‌جي‌إل {} ليس مدعومًا، يدعم «رسمات» أوبن‌جي‌إل ٣٫٣ فأجدد."
 
 #: plots/colorpicker.py:32
 msgid "Pick a color"
-msgstr ""
+msgstr "انتقِ لونًا"
 
 #: plots/plots.py:64
 msgid "Plots"
-msgstr ""
+msgstr "رسمات"
 
 #: plots/plots.py:102
 msgid "_Export…"
-msgstr ""
+msgstr "_صدِّر…"
 
 #: plots/plots.py:103
 msgid "_Preferences"
-msgstr ""
+msgstr "التف_ضيلات"
 
 #: plots/plots.py:104
 msgid "Help"
-msgstr ""
+msgstr "مساعدة"
 
 #: plots/plots.py:105
 msgid "About Plots"
-msgstr ""
+msgstr "عن رسمات"
 
 #: plots/plots.py:258
 msgid "Export image"
-msgstr ""
+msgstr "صدِّر صورةً"
 
 #: plots/plots.py:261
 msgid "_Export"
-msgstr ""
+msgstr "صدِّر"
 
 #: plots/plots.py:262
 msgid "_Cancel"
-msgstr ""
+msgstr "أل_غِ"
 
 #: plots/plots.py:264
 msgid "Untitled plot"
-msgstr ""
+msgstr "رسمة ليس لها اسم"
 
 #: plots/ui/about.ui:7
 msgid "Copyright © 2021-2022 Alexander Huntley"
-msgstr ""
+msgstr "حقوق النشر © ٢٠٢١-٢٠٢٢ ألكسندر هنتلي"
 
 #: plots/ui/about.ui:8
 msgid "A graph plotter for GNOME."
-msgstr ""
+msgstr "رسَّام رسوم بيانية لجنوم."
 
 #: plots/ui/formula_box.ui:43
 msgid "Remove"
-msgstr ""
+msgstr "أزل"
 
 #: plots/ui/preferences.ui:19
 msgid "Preferences affecting graph rendering"
-msgstr ""
+msgstr "التفضيلات المؤثِّرة على تصيير الرسم"
 
 #: plots/ui/preferences.ui:20
 msgid "Rendering"
-msgstr ""
+msgstr "التصيير"
 
 #: plots/ui/preferences.ui:25
 msgid "Line thickness"
-msgstr ""
+msgstr "سمك الخطِّ"
 
 #: plots/ui/preferences.ui:26
 msgid "Approximate thickness of the graphs"
-msgstr ""
+msgstr "السمك التقريبي للرسمات"
 
 #: plots/ui/preferences.ui:40
 msgid "Samples per pixel"
-msgstr ""
+msgstr "العيِّنات لكلِّ بكسل"
 
 #: plots/ui/preferences.ui:41
 msgid "Reduce to improve performance"
-msgstr ""
+msgstr "قلِّله لتحسِّن الأداء"
 
 #: plots/ui/plots.ui:14
 msgid "Add an equation"
-msgstr ""
+msgstr "أضف معادلةً"
 
 #: plots/ui/plots.ui:37
 msgid "Undo"
-msgstr ""
+msgstr "تراجع"
 
 #: plots/ui/plots.ui:52
 msgid "Redo"
-msgstr ""
+msgstr "أعد"
 
 #: plots/ui/plots.ui:73
 msgid "Menu"
-msgstr ""
+msgstr "القائمة"
 
 #: plots/ui/plots.ui:152
 msgid "Zoom in"
-msgstr ""
+msgstr "كبِّر"
 
 #: plots/ui/plots.ui:169
 msgid "Zoom out"
-msgstr ""
+msgstr "صغِّر"
 
 #: plots/ui/plots.ui:198
 msgid "Reset zoom and panning"
-msgstr ""
+msgstr "صفِّر التكبير والموضع"
 
 #: plots/ui/plots.ui:233
 msgid "Error:"
-msgstr ""
+msgstr "خطأ:"
