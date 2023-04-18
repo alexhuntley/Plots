@@ -29,6 +29,7 @@ uniform float samples;
 uniform float line_thickness;
 uniform vec3 fg_color;
 uniform vec3 bg_color;
+uniform float grid_opacity;
 
 #define pi 3.141592653589793
 #define e 2.718281828459045
@@ -100,13 +101,13 @@ void main() {
     float jitter = .4;
 
     float axis_width = pixel_extent.x;
-    vec3 minor_color = mix(fg_color, bg_color, 0.6);
+    vec3 minor_color = mix(bg_color, fg_color, grid_opacity * 0.25);
     color = mix(minor_color, color, smoothstep(axis_width*.4, axis_width*.6, abs(zmod(graph_pos.x, minor_grid))));
     color = mix(minor_color, color, smoothstep(axis_width*.4, axis_width*.6, abs(zmod(graph_pos.y, minor_grid))));
-    vec3 major_color = mix(fg_color, bg_color, 0.4);
+    vec3 major_color = mix(bg_color, fg_color, grid_opacity * 0.5);
     color = mix(major_color, color, smoothstep(axis_width, axis_width*1.05, abs(zmod(graph_pos.x, major_grid))));
     color = mix(major_color, color, smoothstep(axis_width, axis_width*1.05, abs(zmod(graph_pos.y, major_grid))));
-    vec3 axis_color = fg_color;
+    vec3 axis_color = mix(bg_color, fg_color, grid_opacity);
     color = mix(axis_color, color, smoothstep(axis_width*.6, axis_width*.65, abs(graph_pos.x)));
     color = mix(axis_color, color, smoothstep(axis_width*.6, axis_width*.65, abs(graph_pos.y)));
 

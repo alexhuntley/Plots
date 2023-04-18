@@ -189,13 +189,20 @@ class GraphArea(Gtk.GLArea):
         gl.glUniform1f(self.uniform("line_thickness"), self.app.prefs["rendering"]["line_thickness"])
         gl.glUniform3f(self.uniform("fg_color"), *self.fg_color)
         gl.glUniform3f(self.uniform("bg_color"), *self.bg_color)
+        gl.glUniform1f(self.uniform("grid_opacity"), self.app.prefs["rendering"]["grid_opacity"])
         for slider in self.app.slider_rows:
             gl.glUniform1f(self.uniform(slider.name), slider.value)
         gl.glBindVertexArray(self.vao)
         gl.glDrawArrays(gl.GL_TRIANGLES, 0, 18)
         gl.glBindVertexArray(0)
 
+        grid_opacity = self.app.prefs["rendering"]["grid_opacity"]
+        if grid_opacity <= 0:
+            return
+        
         with self.text_renderer.render(w, h) as r:
+            text_color = tuple(a+(b-a)*grid_opacity for a,b in zip(self.bg_color, self.fg_color))
+
             low = major_grid * np.floor(
                 self.device_to_graph(np.array([0, h]))/major_grid)
             high = major_grid * np.ceil(
@@ -208,7 +215,7 @@ class GraphArea(Gtk.GLArea):
                 pos[1] = np.clip(pos[1] + pad, pad, self.viewport[1] - r.top_bearing - pad)
                 if x:
                     r.render_text("%g" % x, pos, valign='top', halign='center',
-                                  text_color=self.fg_color, bg_color=self.bg_color)
+                                text_color=text_color, bg_color=self.bg_color)
             for j in range(round(n[1])+1):
                 y = low[1] + j*major_grid
                 label = "%g" % y
@@ -216,9 +223,9 @@ class GraphArea(Gtk.GLArea):
                 pos[0] = np.clip(pos[0] - pad, r.width_of(label) + pad, self.viewport[0] - pad)
                 if y:
                     r.render_text(label, pos, valign='center', halign='right',
-                                  text_color=self.fg_color, bg_color=self.bg_color)
+                                text_color=text_color, bg_color=self.bg_color)
             r.render_text("0", self.graph_to_device(np.zeros(2)) + np.array([-pad, pad]),
-                          valign='top', halign='right', text_color=self.fg_color, bg_color=self.bg_color)
+                        valign='top', halign='right', text_color=text_color, bg_color=self.bg_color)
 
 
     def style_cb(self, widget):
