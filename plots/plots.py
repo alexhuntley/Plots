@@ -161,7 +161,7 @@ class Plots(Adw.Application):
 }
 '''
         css_provider = Gtk.CssProvider()
-        css_provider.load_from_data(css.encode())
+        css_provider.load_from_data(css, len(css))
         context = self.window.get_style_context()
         display = self.window.get_display()
         context.add_provider_for_display(display, css_provider,
