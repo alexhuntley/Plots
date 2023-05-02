@@ -1,0 +1,133 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-09-26 22:02+0100\n"
+"PO-Revision-Date: 2022-12-20 10:48+0000\n"
+"Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
+"Language-Team: Hebrew <https://hosted.weblate.org/projects/plots/plots/he/>\n"
+"Language: he\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
+"n % 10 == 0) ? 2 : 3));\n"
+"X-Generator: Weblate 4.15.1-dev\n"
+
+#: plots/graph.py:121
+msgid ""
+"Warning: OpenGL {} is unsupported. Plots supports OpenGL 3.3 or greater."
+msgstr "אזהרה: OpenGL ‏{} אינו נתמך. גרפים תומך ב־OpenGL גרסה 3.3 ומעלה."
+
+#: plots/colorpicker.py:32
+msgid "Pick a color"
+msgstr "בחירת צבע"
+
+#: plots/plots.py:64
+msgid "Plots"
+msgstr "גרפים"
+
+#: plots/plots.py:102
+msgid "_Export…"
+msgstr "_ייצוא…"
+
+#: plots/plots.py:103
+msgid "_Preferences"
+msgstr "_העדפות"
+
+#: plots/plots.py:104
+msgid "Help"
+msgstr "עזרה"
+
+#: plots/plots.py:105
+msgid "About Plots"
+msgstr "על אודות גרפים"
+
+#: plots/plots.py:258
+msgid "Export image"
+msgstr "ייצוא תמונה"
+
+#: plots/plots.py:261
+msgid "_Export"
+msgstr "_ייצוא"
+
+#: plots/plots.py:262
+msgid "_Cancel"
+msgstr "_ביטול"
+
+#: plots/plots.py:264
+msgid "Untitled plot"
+msgstr "גרף ללא שם"
+
+#: plots/ui/about.ui:7
+msgid "Copyright © 2021-2022 Alexander Huntley"
+msgstr "כל הזכויות שמורות © 2021-2022 Alexander Huntley"
+
+#: plots/ui/about.ui:8
+msgid "A graph plotter for GNOME."
+msgstr "מייצר גרפים עבור GNOME."
+
+#: plots/ui/formula_box.ui:43
+msgid "Remove"
+msgstr "הסרה"
+
+#: plots/ui/preferences.ui:19
+msgid "Preferences affecting graph rendering"
+msgstr "העדפות משפיעות על עיבוד הגרף"
+
+#: plots/ui/preferences.ui:20
+msgid "Rendering"
+msgstr "עיבוד"
+
+#: plots/ui/preferences.ui:25
+msgid "Line thickness"
+msgstr "עובי קו"
+
+#: plots/ui/preferences.ui:26
+msgid "Approximate thickness of the graphs"
+msgstr "עובי משוער של הגרפים"
+
+#: plots/ui/preferences.ui:40
+msgid "Samples per pixel"
+msgstr "נקודות לפיקסל"
+
+#: plots/ui/preferences.ui:41
+msgid "Reduce to improve performance"
+msgstr "הפחתה תשפר את הביצועים"
+
+#: plots/ui/plots.ui:14
+msgid "Add an equation"
+msgstr "הוספת משוואה"
+
+#: plots/ui/plots.ui:37
+msgid "Undo"
+msgstr "ביטול"
+
+#: plots/ui/plots.ui:52
+msgid "Redo"
+msgstr "ביצוע חוזר"
+
+#: plots/ui/plots.ui:73
+msgid "Menu"
+msgstr "תפריט"
+
+#: plots/ui/plots.ui:152
+msgid "Zoom in"
+msgstr "התקרבות"
+
+#: plots/ui/plots.ui:169
+msgid "Zoom out"
+msgstr "התרחקות"
+
+#: plots/ui/plots.ui:198
+msgid "Reset zoom and panning"
+msgstr "איפוס התקריב והתזוזה"
+
+#: plots/ui/plots.ui:233
+msgid "Error:"
+msgstr "שגיאה:"

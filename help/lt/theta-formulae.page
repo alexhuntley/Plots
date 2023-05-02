@@ -1,0 +1,14 @@
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="theta-formulae">
+
+  <info>
+    <link type="guide" xref="index#formulae" />
+
+    <desc>Explicit formulae for <em>θ</em> (polar equations)</desc>
+  </info>
+  <title>Formulės, kurių forma <em>θ = f(r)</em></title>
+
+  <p>
+    Jas į formulės langelį galima įrašyti tik tokia forma <code>θ = f(r)</code>.
+  </p>
+
+</page>

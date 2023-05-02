@@ -1,0 +1,28 @@
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="hyperbolic-functions">
+
+  <info>
+    <link type="guide" xref="index#functions" />
+
+    <desc>e.g. sinh, cosh, tanh</desc>
+  </info>
+<title>Hiperbolinės funkcijos</title>
+<p>Šias hiperbolines funkcijas galima įterpti tiesiog įvedus jų pavadinimą:</p>
+
+  <list>
+    <title>Palaikomos hiperbolinės funkcijos</title>
+    <item>
+      <p>sinh, cosh, tanh</p>
+    </item>
+    <item>
+      <p>asinh, acosh, atanh</p>
+    </item>
+    <item>
+      <p>sech, cosech, csch, coth</p>
+    </item>
+    <item>
+      <p>asech, acosech, acsch, acoth</p>
+    </item>
+  </list>
+
+
+</page>

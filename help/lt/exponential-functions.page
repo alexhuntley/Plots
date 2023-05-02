@@ -1,0 +1,25 @@
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="exponential-functions">
+
+  <info>
+    <link type="guide" xref="index#functions" />
+
+    <desc>e.g. exp, log</desc>
+  </info>
+<title>Eksponentinė ir logaritminė funkcijos</title>
+<p>Šias funkcijas galima įterpti tiesiog įvedus jų pavadinimą:</p>
+
+  <list>
+    <title>Palaikomos funkcijos</title>
+    <item>
+      <p>eksp, e</p>
+      <p>e yra Eulerio skaičius. Jį galima naudoti kaip funkciją, kai po jo eina eksponentas (įvedamas naudojant ^).</p>
+    </item>
+    <item>
+      <p>ln, log, lg</p>
+      <p>ln ir log yra natūralieji logaritmai. lg yra bazės 2 logaritmas.</p>
+      <p>po log gali sekti indeksas (įvedamas naudojant pabraukiamąjį simbolį), reiškiantis logaritmo pagrindą.</p>
+    </item>
+  </list>
+
+
+</page>

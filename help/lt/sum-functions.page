@@ -1,0 +1,28 @@
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="sum-functions">
+
+  <info>
+    <link type="guide" xref="index#functions" />
+
+    <desc>in Σ and Π notation</desc>
+  </info>
+<title>Sumos ir produktai</title>
+<steps>
+<title>Kaip įterpti sumą arba produktą</title>
+<item>
+<p>Įveskite <key>sum</key> arba <key>prod</key>, kad įterptumėte operatorių</p>
+</item>
+<item>
+<p>Įveskite kintamojo pavadinimą ir pradinę reikšmę Σ arba Π apačioje, pvz. i = 0</p>
+</item>
+<item>
+<p>Rodyklių klavišais pereikite į viršutinį Σ arba Π lauką</p>
+</item>
+<item>
+<p>Viršutiniame laukelyje įveskite didžiausią kintamojo reikšmę</p>
+</item>
+<item>
+<p>Naudokite rodyklių klavišus, kad pereitumėte į dešinę nuo operatoriaus, ir įdėkite sumos / produkto tekstą.</p>
+</item>
+</steps>
+<p>Iteruojamas kintamasis turėtų būti nurodytas tik sumos / produkto turinyje.</p>
+</page>

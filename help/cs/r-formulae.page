@@ -1,0 +1,14 @@
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="r-formulae">
+
+  <info>
+    <link type="guide" xref="index#formulae" />
+
+    <desc>Explicit formulae for <em>r</em> (polar equations)</desc>
+  </info>
+  <title>Vzorce ve tvaru <em>r = f(θ)</em></title>
+
+  <p>
+    Ty lze do pole vzorců zadat pouze ve tvaru <code>r = f(θ)</code>.
+  </p>
+
+</page>

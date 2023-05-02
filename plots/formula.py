@@ -27,9 +27,8 @@ from plots.elements import Element, ElementList, BaseAtom, Atom, \
     BinaryOperatorAtom, OperatorAtom, SuperscriptSubscript, Frac, Radical, \
     Abs, Paren, Sum
 from plots.utils import Direction, MetricContext, Text
-from plots.data import BINARY_OPERATORS
+from plots.data import BINARY_OPERATORS, SUP_ATOMS, SUP_TRAFO
 from plots.cursor import Cursor
-from plots.data import SUP_ATOMS, SUP_TRAFO
 
 DEBUG = False
 

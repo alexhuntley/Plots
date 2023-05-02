@@ -1,0 +1,31 @@
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="trig-functions">
+
+  <info>
+    <link type="guide" xref="index#functions" />
+
+    <desc>e.g. sin, cos, tan</desc>
+  </info>
+  <title>Goniometrické funkce</title>
+  <p>Následující goniometrické funkce lze vložit jednoduše zadáním jejich názvu:</p>
+
+  <list>
+    <title>Podporované goniometrické funkce</title>
+    <item>
+      <p>sin, cos, tan</p>
+    </item>
+    <item>
+      <p>asin, arcsin, acos, arccos, atan, arctan</p>
+    </item>
+    <item>
+      <p>sec, cosec, csc, tan</p>
+    </item>
+    <item>
+      <p>asec, arcsec, acosec, arccosec, acsc, arccsc, acot, arccot</p>
+    </item>
+    <item>
+      <p>sinc</p>
+    </item>
+  </list>
+
+
+</page>

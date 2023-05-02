@@ -1,0 +1,31 @@
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="trig-functions">
+
+  <info>
+    <link type="guide" xref="index#functions" />
+
+    <desc>e.g. sin, cos, tan</desc>
+  </info>
+  <title>Trigonometrinės funkcijos</title>
+  <p>Šias trigonometrines funkcijas galima įterpti tiesiog įvedus jų pavadinimą:</p>
+
+  <list>
+    <title>Palaikomos trigonometrinės funkcijos</title>
+    <item>
+      <p>sin, cos, tan</p>
+    </item>
+    <item>
+      <p>asin, arcsin, acos, arccos, atan, arctan</p>
+    </item>
+    <item>
+      <p>sec, cosec, csc, tan</p>
+    </item>
+    <item>
+      <p>asec, arcsec, acosec, arccosec, acsc, arccsc, acot, arccot</p>
+    </item>
+    <item>
+      <p>sinc</p>
+    </item>
+  </list>
+
+
+</page>

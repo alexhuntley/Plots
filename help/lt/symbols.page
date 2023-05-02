@@ -1,0 +1,13 @@
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="symbols">
+
+  <info>
+    <link type="guide" xref="index#functions" />
+
+    <desc>Symbols with special meaning</desc>
+  </info>
+  <title>Simboliai</title>
+  <p>Graikiškas raides galima įterpti įvedant jų anglišką pavadinimą.</p>
+  <p>Konstantos <em>π</em> ir <em>e</em> turi įprastas vertes.</p>
+  <p>Kintamasis <em>x</em> gali būti naudojamas bet kurioje formulės vietoje.</p>
+
+</page>

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-26 22:02+0100\n"
-"PO-Revision-Date: 2021-09-19 11:56+0000\n"
+"PO-Revision-Date: 2022-10-24 19:40+0000\n"
 "Last-Translator: Gediminas Murauskas <muziejusinfo@gmail.com>\n"
 "Language-Team: Lithuanian <https://hosted.weblate.org/projects/plots/plots/"
 "lt/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n % 10 == 1 && (n % 100 < 11 || n % 100 > "
 "19)) ? 0 : ((n % 10 >= 2 && n % 10 <= 9 && (n % 100 < 11 || n % 100 > 19)) ? "
 "1 : 2);\n"
-"X-Generator: Weblate 4.9-dev\n"
+"X-Generator: Weblate 4.14.2-dev\n"
 
 #: plots/graph.py:121
 msgid ""
@@ -30,7 +30,7 @@ msgstr ""
 
 #: plots/colorpicker.py:32
 msgid "Pick a color"
-msgstr ""
+msgstr "Pasirinkti spalvą"
 
 #: plots/plots.py:64
 msgid "Plots"
@@ -38,11 +38,11 @@ msgstr "Grafikai"
 
 #: plots/plots.py:102
 msgid "_Export…"
-msgstr ""
+msgstr "_Eksportuoti…"
 
 #: plots/plots.py:103
 msgid "_Preferences"
-msgstr ""
+msgstr "_Nustatymai"
 
 #: plots/plots.py:104
 msgid "Help"
@@ -54,25 +54,23 @@ msgstr "Apie Grafikus"
 
 #: plots/plots.py:258
 msgid "Export image"
-msgstr ""
+msgstr "Eksportuoti vaizdą"
 
 #: plots/plots.py:261
 msgid "_Export"
-msgstr ""
+msgstr "_Eksportuoti"
 
 #: plots/plots.py:262
 msgid "_Cancel"
-msgstr ""
+msgstr "_Atšaukti"
 
 #: plots/plots.py:264
 msgid "Untitled plot"
-msgstr ""
+msgstr "Grafikas be pavadinimo"
 
 #: plots/ui/about.ui:7
-#, fuzzy
-#| msgid "Copyright © 2021 Alexander Huntley"
 msgid "Copyright © 2021-2022 Alexander Huntley"
-msgstr "Autorių teisės © 2021 Alexander Huntley"
+msgstr "Autorių teisės © 2021-2022 Alexander Huntley"
 
 #: plots/ui/about.ui:8
 msgid "A graph plotter for GNOME."
@@ -80,59 +78,59 @@ msgstr "Grafikų braižytuvas skirtas GNOME."
 
 #: plots/ui/formula_box.ui:43
 msgid "Remove"
-msgstr ""
+msgstr "Šalinti"
 
 #: plots/ui/preferences.ui:19
 msgid "Preferences affecting graph rendering"
-msgstr ""
+msgstr "Nustatymai, darantys įtaką grafiko atvaizdavimui"
 
 #: plots/ui/preferences.ui:20
 msgid "Rendering"
-msgstr ""
+msgstr "Atvaizdavimas"
 
 #: plots/ui/preferences.ui:25
 msgid "Line thickness"
-msgstr ""
+msgstr "Linijos storis"
 
 #: plots/ui/preferences.ui:26
 msgid "Approximate thickness of the graphs"
-msgstr ""
+msgstr "Apytikslis grafikų storis"
 
 #: plots/ui/preferences.ui:40
 msgid "Samples per pixel"
-msgstr ""
+msgstr "Pavyzdžiai viename pikselyje"
 
 #: plots/ui/preferences.ui:41
 msgid "Reduce to improve performance"
-msgstr ""
+msgstr "Sumažinkite, kad pagerintumėte našumą"
 
 #: plots/ui/plots.ui:14
 msgid "Add an equation"
-msgstr ""
+msgstr "Pridėti lygtį"
 
 #: plots/ui/plots.ui:37
 msgid "Undo"
-msgstr ""
+msgstr "Atstatyti"
 
 #: plots/ui/plots.ui:52
 msgid "Redo"
-msgstr ""
+msgstr "Gražinti"
 
 #: plots/ui/plots.ui:73
 msgid "Menu"
-msgstr ""
+msgstr "Meniu"
 
 #: plots/ui/plots.ui:152
 msgid "Zoom in"
-msgstr ""
+msgstr "Pritraukti"
 
 #: plots/ui/plots.ui:169
 msgid "Zoom out"
-msgstr ""
+msgstr "Atitolinti"
 
 #: plots/ui/plots.ui:198
 msgid "Reset zoom and panning"
-msgstr ""
+msgstr "Iš naujo nustatyti priartinimą slinkimą"
 
 #: plots/ui/plots.ui:233
 msgid "Error:"

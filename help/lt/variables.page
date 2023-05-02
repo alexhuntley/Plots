@@ -1,0 +1,17 @@
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="variables">
+
+  <info>
+    <link type="guide" xref="index#formulae" />
+
+    <desc>Easily adjustable parameters</desc>
+  </info>
+  <title>Kintamieji ir slankikliai</title>
+
+  <p>
+    Norėdami deklaruoti kintamąjį, į tuščią formulės laukelį įveskite <code><em>variable</em> = <em>value</em></code> formos lygtį, kur <code><em>variable</em></code> yra viena lotyniška arba graikiška raidė, o <code><em>value</em></code> yra išraiška, kuri neturi priklausyti nuo padėties, bet gali priklausyti nuo ankstesnių kintamųjų.
+  </p>
+
+  <p>
+    Jei <code><em>value</em></code> yra tiesioginis sveikasis arba dešimtainis skaičius, Grafikai parodys reguliuojamą slankiklio valdiklį, leidžiantį interaktyviai reguliuoti kintamąjį. Viršutinę ir apatinę slankiklio ribas galima redaguoti naudojant gretimus laukus.
+  </p>
+</page>

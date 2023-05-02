@@ -1,0 +1,17 @@
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="variables">
+
+  <info>
+    <link type="guide" xref="index#formulae" />
+
+    <desc>Easily adjustable parameters</desc>
+  </info>
+  <title>Proměnné a posuvníky</title>
+
+  <p>
+    Chcete-li deklarovat proměnnou, zadejte do prázdného pole vzorců rovnici ve tvaru <code><em>proměnná</em> = <em>hodnota</em></code>, kde <code><em>proměnná</em></code> je jedno latinské nebo řecké písmeno a <code><em>hodnota</em></code> je výraz, který nesmí záviset na pozici, ale může záviset na předchozích proměnných.
+  </p>
+
+  <p>
+    Pokud je <code><em>hodnota</em></code> doslovné celé číslo nebo desetinné číslo, zobrazí Grafy nastavitelný posuvný ovládací prvek, který umožňuje interaktivní úpravu proměnné. Horní a dolní mez posuvníku lze upravovat pomocí sousedních polí.
+  </p>
+</page>

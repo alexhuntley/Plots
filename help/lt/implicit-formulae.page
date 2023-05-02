@@ -1,0 +1,14 @@
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="implicit-formulae">
+
+  <info>
+    <link type="guide" xref="index#formulae" />
+
+    <desc>Implicit formulae for <em>x</em> and <em>y</em></desc>
+  </info>
+  <title>Netiesioginės formulės, kurių forma <em>f(x,y) = g(x,y)</em></title>
+
+  <p>
+    Jas galima įrašyti į bet kurį įprastą formulės langelį. Tai bendriausias formulių tipas. <em>x</em> ir <em>y</em> gali atsirasti bet kurioje lygties vietoje.
+  </p>
+
+</page>

@@ -20,7 +20,7 @@
 import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf, cairo, Adw
+from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf, Adw
 
 from plots import formula, formularow, rowcommands, preferences, utils, graph
 from plots.i18n import _
@@ -161,7 +161,7 @@ class Plots(Adw.Application):
 }
 '''
         css_provider = Gtk.CssProvider()
-        css_provider.load_from_data(css.encode())
+        css_provider.load_from_data(css, len(css))
         context = self.window.get_style_context()
         display = self.window.get_display()
         context.add_provider_for_display(display, css_provider,

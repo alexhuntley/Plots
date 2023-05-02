@@ -1,0 +1,13 @@
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="symbols">
+
+  <info>
+    <link type="guide" xref="index#functions" />
+
+    <desc>Symbols with special meaning</desc>
+  </info>
+  <title>Symboly</title>
+  <p>Řecká písmena lze vložit zadáním jejich anglického názvu.</p>
+  <p>Konstanty <em>π</em> a <em>e</em> mají své obvyklé hodnoty.</p>
+  <p>Proměnnou <em>x</em> lze použít kdekoli ve vzorci.</p>
+
+</page>
