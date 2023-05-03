@@ -39,6 +39,7 @@
         "install -D res/com.github.alexhuntley.Plots.svg -t /app/share/icons/hicolor/scalable/apps/",
         "install -D res/com.github.alexhuntley.Plots-symbolic.svg -t /app/share/icons/hicolor/symbolic/apps/",
         "install -D -t /app/share/help/C/plots/ help/C/*",
+        "install -D -t /app/share/help/cs/plots/ help/cs/*",
         "install -D -t /app/share/help/de/plots/ help/de/*",
         "install -D -t /app/share/help/es/plots/ help/es/*",
         "install -D -t /app/share/help/fa/plots/ help/fa/*",
@@ -46,9 +47,12 @@
         "install -D -t /app/share/help/hr/plots/ help/hr/*",
         "install -D -t /app/share/help/hu/plots/ help/hu/*",
         "install -D -t /app/share/help/it/plots/ help/it/*",
+        "install -D -t /app/share/help/lt/plots/ help/lt/*",
         "install -D -t /app/share/help/nb_NO/plots/ help/nb_NO/*",
         "install -D -t /app/share/help/nl/plots/ help/nl/*",
         "install -D -t /app/share/help/pt_BR/plots/ help/pt_BR/*",
+        "install -D -t /app/share/help/tr/plots/ help/tr/*",
+        "install -D -t /app/share/help/uk/plots/ help/uk/*",
         "install -D -t /app/share/help/zh_Hans/plots/ help/zh_Hans/*"
       ],
       "sources": [
