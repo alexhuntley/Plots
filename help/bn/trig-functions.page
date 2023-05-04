@@ -1,18 +1,15 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="trig-functions">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="trig-functions">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#functions" />
 
     <desc>e.g. sin, cos, tan</desc>
   </info>
-  <title>Trigonometric functions</title>
-  <p>The following trigonometric functions can be inserted simply by typing their name:</p>
+  <title>ত্রিকোণমিতিক অপেক্ষক</title>
+  <p>নিম্নলিখিত ত্রিকোণমিতিক অপেক্ষকগুলি কেবল তাদের নাম টাইপ করে সন্নিবেশ করা যেতে পারে:</p>
 
   <list>
-    <title>Supported trigonometric functions</title>
+    <title>সমর্থিত ত্রিকোণমিতিক অপেক্ষক</title>
     <item>
       <p>sin, cos, tan</p>
     </item>
