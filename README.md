@@ -58,6 +58,10 @@ Then build and install the Flatpak using
 $ flatpak-builder --user --install build --force-clean com.github.alexhuntley.Plots.json
 ```
 ### Translations
+<a href="https://hosted.weblate.org/engage/plots/">
+<img src="https://hosted.weblate.org/widgets/plots/-/glossary/multi-auto.svg" alt="Translation status" />
+</a>
+
 Would you like to see Plots in your own language? We welcome translators' contributions to Plots.
 
 We recommend you use [Weblate](https://hosted.weblate.org/engage/plots/).
