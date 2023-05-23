@@ -120,6 +120,7 @@ class Plots(Adw.Application):
         self.menu = Gio.Menu()
         self.menu.append(_("_Export…"), "app.export")
         self.menu.append(_("_Preferences"), "app.preferences")
+        self.menu.append(_("Keyboard Shortcuts"), "win.show-help-overlay")
         self.menu.append(_("Help"), "app.help")
         self.menu.append(_("About Plots"), "app.about")
         menu_button.set_menu_model(self.menu)
@@ -136,6 +137,12 @@ class Plots(Adw.Application):
         self.about_dialog.set_transient_for(self.window)
         self.about_dialog.set_modal(True)
         self.about_dialog.connect("close-request", self.about_close)
+
+        shortcuts_builder = Gtk.Builder()
+        shortcuts_builder.add_from_string(utils.read_ui_file("shortcuts.ui"))
+        shortcuts_dialog = shortcuts_builder.get_object("shortcuts_dialog")
+        self.window.set_help_overlay(shortcuts_dialog)
+        self.set_accels_for_action("win.show-help-overlay", ["<primary>question"])
 
         with resources.path("plots.res", "com.github.alexhuntley.Plotter.svg") as p:
             texture = Gdk.Texture.new_from_filename(str(p))
