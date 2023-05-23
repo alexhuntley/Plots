@@ -41,20 +41,6 @@ class Plots(Adw.Application):
         utils.install_excepthook()
         plots.i18n.bind()
 
-    def key_pressed(self, ctl, keyval, keycode, state):
-        modifiers = state & Gtk.accelerator_get_default_mod_mask()
-        char = chr(Gdk.keyval_to_unicode(keyval))
-        if keyval == Gdk.KEY_Return:
-            self.add_equation(None)
-            return True
-        elif modifiers & Gdk.ModifierType.CONTROL_MASK:
-            if char == "z":
-                self.undo(None)
-                return True
-            elif char == "y" or char == "Z" and modifiers & Gdk.ModifierType.SHIFT_MASK:
-                self.redo(None)
-                return True
-
     def do_activate(self):
         builder = Gtk.Builder()
         builder.add_from_string(utils.read_ui_file("plots.ui"))
@@ -67,9 +53,6 @@ class Plots(Adw.Application):
         self.add_equation_button = builder.get_object("add_equation")
         self.undo_button = builder.get_object("undo")
         self.redo_button = builder.get_object("redo")
-        self.key_ctl = Gtk.EventControllerKey()
-        self.key_ctl.connect("key-pressed", self.key_pressed)
-        self.window.add_controller(self.key_ctl)
         self.window.connect("close-request", self.delete_cb)
 
         self.gl_area = builder.get_object("gl")
@@ -81,9 +64,26 @@ class Plots(Adw.Application):
         self.errorbar.props.revealed = False
         self.errorlabel = builder.get_object("errorlabel")
 
-        self.add_equation_button.connect("clicked", self.add_equation)
-        self.undo_button.connect("clicked", self.undo)
-        self.redo_button.connect("clicked", self.redo)
+        add_equation_action = Gio.SimpleAction.new("add-equation", None)
+        add_equation_action.connect("activate", lambda _, __: self.add_equation(None))
+        add_equation_action.set_enabled(True)
+        self.add_action(add_equation_action)
+        self.set_accels_for_action("app.add-equation", ["Return"])
+        self.add_equation_button.set_action_name("app.add-equation")
+
+        undo_action = Gio.SimpleAction.new("undo", None)
+        undo_action.connect("activate", lambda _, __: self.undo(None))
+        undo_action.set_enabled(True)
+        self.add_action(undo_action)
+        self.set_accels_for_action("app.undo", ["<primary>z"])
+        self.undo_button.set_action_name("app.undo")
+
+        redo_action = Gio.SimpleAction.new("redo", None)
+        redo_action.connect("activate", lambda _, __: self.redo(None))
+        redo_action.set_enabled(True)
+        self.add_action(redo_action)
+        self.set_accels_for_action("app.redo", ["<primary>y", "<primary><shift>z"])
+        self.redo_button.set_action_name("app.redo")
 
         self.osd_revealer = builder.get_object("osd_revealer")
         self.osd_box = builder.get_object("osd_box")
