@@ -127,16 +127,19 @@ class Plots(Adw.Application):
         help_action.connect("activate", self.help_cb)
         help_action.set_enabled(True)
         self.add_action(help_action)
+        self.set_accels_for_action("app.help", ["F1"])
 
         export_action = Gio.SimpleAction.new("export", None)
         export_action.connect("activate", self.export_cb)
         export_action.set_enabled(True)
         self.add_action(export_action)
+        self.set_accels_for_action("app.export", ["<primary>s"])
 
         prefs_action = Gio.SimpleAction.new("preferences", None)
         prefs_action.connect("activate", self.prefs_cb)
         prefs_action.set_enabled(True)
         self.add_action(prefs_action)
+        self.set_accels_for_action("app.preferences", ["<primary>comma"])
         self.prefs = preferences.Preferences(self.window)
         self.prefs.connect("updated", self.prefs_updated)
 
