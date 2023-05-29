@@ -111,17 +111,16 @@ class Plots(Adw.Application):
         self.about_action.set_enabled(True)
         self.add_action(self.about_action)
 
-        about_builder = Gtk.Builder()
-        about_builder.add_from_string(utils.read_ui_file("about.ui"))
-        self.about_dialog = about_builder.get_object("about_dialog")
-        self.about_dialog.props.modal = True
-        self.about_dialog.set_transient_for(self.window)
-        self.about_dialog.set_modal(True)
-        self.about_dialog.connect("close-request", self.about_close)
-
-        with resources.path("plots.res", "com.github.alexhuntley.Plotter.svg") as p:
-            texture = Gdk.Texture.new_from_filename(str(p))
-            self.about_dialog.set_logo(texture)
+        self.about_dialog = Adw.AboutWindow(transient_for=self.props.active_window,
+                                application_name='Plots',
+                                application_icon = 'com.github.alexhuntley.Plots',
+                                issue_url='https://github.com/alexhuntley/Plots/issues/new',
+                                website='https://github.com/alexhuntley/Plots',
+                                developer_name='Alex Huntley',
+                                version='0.8.5',
+                                license_type = Gtk.License.GPL_3_0,
+                                developers=['Alex Huntley'],
+                                copyright='© 2021-2022 Alex Huntley')
 
         help_action = Gio.SimpleAction.new("help", None)
         help_action.connect("activate", self.help_cb)
