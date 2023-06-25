@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-26 22:02+0100\n"
-"PO-Revision-Date: 2023-04-03 09:38+0000\n"
-"Last-Translator: Haolin Huang <yellowsiumai@gmail.com>\n"
+"PO-Revision-Date: 2023-06-26 06:52+0000\n"
+"Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "plots/plots/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.17-dev\n"
+"X-Generator: Weblate 4.18.1\n"
 
 #: plots/graph.py:121
 msgid ""
@@ -65,10 +65,8 @@ msgid "Untitled plot"
 msgstr "未命名图表"
 
 #: plots/ui/about.ui:7
-#, fuzzy
-#| msgid "Copyright © 2021 Alexander Huntley"
 msgid "Copyright © 2021-2022 Alexander Huntley"
-msgstr "版权所有 © 2021 Alexander Huntley"
+msgstr "版权所有 © 2021-2022 Alexander Huntley"
 
 #: plots/ui/about.ui:8
 msgid "A graph plotter for GNOME."
@@ -84,7 +82,7 @@ msgstr "您的设置将会影响图表的形成"
 
 #: plots/ui/preferences.ui:20
 msgid "Rendering"
-msgstr "形成中"
+msgstr "渲染中"
 
 #: plots/ui/preferences.ui:25
 msgid "Line thickness"
@@ -96,7 +94,7 @@ msgstr "图表的大致粗度"
 
 #: plots/ui/preferences.ui:40
 msgid "Samples per pixel"
-msgstr ""
+msgstr "像素采样数"
 
 #: plots/ui/preferences.ui:41
 msgid "Reduce to improve performance"
@@ -104,7 +102,7 @@ msgstr "删减会增加性能"
 
 #: plots/ui/plots.ui:14
 msgid "Add an equation"
-msgstr "增加一道方程式"
+msgstr "添加一道方程式"
 
 #: plots/ui/plots.ui:37
 msgid "Undo"
@@ -112,7 +110,7 @@ msgstr "撤回"
 
 #: plots/ui/plots.ui:52
 msgid "Redo"
-msgstr "重来"
+msgstr "重做"
 
 #: plots/ui/plots.ui:73
 msgid "Menu"
@@ -128,7 +126,7 @@ msgstr "缩小"
 
 #: plots/ui/plots.ui:198
 msgid "Reset zoom and panning"
-msgstr "重置放大度"
+msgstr "重置缩放和平移"
 
 #: plots/ui/plots.ui:233
 msgid "Error:"
