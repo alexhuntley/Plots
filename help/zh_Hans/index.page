@@ -16,14 +16,14 @@
     Plots
   </title>
 
-  <p>简单的一款 GNOME 图形绘制应用。</p>
+  <p>A simple graph plotting app for GNOME.</p>
 
   <section id="formulae" style="2column">
-    <title>支持的公式类型</title>
+    <title>Supported formula types</title>
   </section>
 
   <section id="functions" style="2column">
-    <title>可用函数</title>
+    <title>Available functions</title>
   </section>
 
 
