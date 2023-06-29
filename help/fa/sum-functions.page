@@ -5,12 +5,9 @@
 
     <desc>in Σ and Π notation</desc>
   </info>
-<title>حاصل‌جمع‌ها و حاصل‌ضرب‌ها</title>
+<title>Sums and Products</title>
 <steps>
-<title>چگونگی افزودن یک حاصل‌جمع یا حاصل‌ضرب</title>
-<item>
-<p>یک نام متغیر و مقدار اولیه پایین Σ یا Π بنویسید؛ مثلاً i = 0</p>
-</item>
+<title>How to insert a sum or product</title>
 <item>
 <p>از کلیدهای پیکان برای انتقال به جعبهٔ بالایی Σ یا Π استفاده کنید</p>
 </item>
@@ -18,11 +15,14 @@
 <p>بیشینهٔ مقدار متغیر را در جعبهٔ بالایی بنویسید</p>
 </item>
 <item>
-<p>بیشینهٔ مقدار متغیر را در جعبهٔ بالایی بنویسید</p>
+<p>برای جابه‌جا شدن به جعبهٔ بالایی Σ یا Π از کلیدهای پیکان استفاده کنید</p>
 </item>
 <item>
 <p>با استفاده از کلیدهای پیکان به سمت راست عملگر منتقل شوید، و بدنهٔ حاصل‌جمع/حاصل‌ضرب را اضافه کنید.</p>
 </item>
+<item>
+<p>Use the arrow keys to move to the right of the operator, and insert the body of the sum/product.</p>
+</item>
 </steps>
-<p>متغیری که در حال تکرار است، فقط باید در داخل بدنهٔ حاصل‌جمع/حاصل‌ضرب ارجاع داده شود.</p>
+<p>The variable being iterated over should only be referred to inside the sum/product body.</p>
 </page>
