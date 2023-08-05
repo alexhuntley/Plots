@@ -158,7 +158,7 @@ class Plots(Adw.Application):
         export_action.connect("activate", self.export_cb)
         export_action.set_enabled(True)
         self.add_action(export_action)
-        self.set_accels_for_action("app.export", ["<primary>s"])
+        self.set_accels_for_action("app.export", ["<primary>e"])
 
         prefs_action = Gio.SimpleAction.new("preferences", None)
         prefs_action.connect("activate", self.prefs_cb)
