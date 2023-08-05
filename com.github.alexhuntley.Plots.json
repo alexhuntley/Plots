@@ -1,7 +1,7 @@
 {
   "app-id": "com.github.alexhuntley.Plots",
   "runtime": "org.gnome.Platform",
-  "runtime-version": "43",
+  "runtime-version": "42",
   "sdk": "org.gnome.Sdk",
   "command": "plots",
   "finish-args": [
