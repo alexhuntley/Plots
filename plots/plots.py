@@ -130,24 +130,6 @@ class Plots(Adw.Application):
         self.about_action.set_enabled(True)
         self.add_action(self.about_action)
 
-        about_builder = Gtk.Builder()
-        about_builder.add_from_string(utils.read_ui_file("about.ui"))
-        self.about_dialog = about_builder.get_object("about_dialog")
-        self.about_dialog.props.modal = True
-        self.about_dialog.set_transient_for(self.window)
-        self.about_dialog.set_modal(True)
-        self.about_dialog.connect("close-request", self.about_close)
-
-        shortcuts_builder = Gtk.Builder()
-        shortcuts_builder.add_from_string(utils.read_ui_file("shortcuts.ui"))
-        shortcuts_dialog = shortcuts_builder.get_object("shortcuts_dialog")
-        self.window.set_help_overlay(shortcuts_dialog)
-        self.set_accels_for_action("win.show-help-overlay", ["<primary>question"])
-
-        with resources.path("plots.res", "com.github.alexhuntley.Plotter.svg") as p:
-            texture = Gdk.Texture.new_from_filename(str(p))
-            self.about_dialog.set_logo(texture)
-
         help_action = Gio.SimpleAction.new("help", None)
         help_action.connect("activate", self.help_cb)
         help_action.set_enabled(True)
@@ -281,12 +263,14 @@ class Plots(Adw.Application):
         self.formula_box.insert_child_after(row, prev)
         row.editor.grab_focus()
 
-    def about_cb(self, action, _):
-        self.about_dialog.present()
-
-    def about_close(self, window):
-        window.hide()
-        return True
+    def about_cb(self, action, _param):
+        builder = Gtk.Builder.new_from_string(
+            utils.read_ui_file("about.ui"),
+            -1
+        )
+        about_window = builder.get_object("about_window")
+        about_window.set_transient_for(self.window)
+        about_window.present()
 
     def prefs_cb(self, action, param):
         self.prefs.show()
