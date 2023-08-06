@@ -9,23 +9,28 @@
   <name xml:lang="es">Gráfico</name>
   <name xml:lang="fa">نمودارها</name>
   <name xml:lang="fr">Plots</name>
+  <name xml:lang="he">גרפים</name>
   <name xml:lang="hr">Grafikoni</name>
   <name xml:lang="hu">Ábrák</name>
   <name xml:lang="it">Grafici</name>
   <name xml:lang="nl">Plots</name>
+  <name xml:lang="sv">Grafer</name>
   <name xml:lang="pt_BR">Plots</name>
+  <name xml:lang="uk">Plots</name>
   <developer_name>Alex Huntley</developer_name>
   <summary>Simple graph plotting</summary>
   <summary xml:lang="eo">Simpla grafikaĵilo</summary>
   <summary xml:lang="es">Trazado sencillo de funciones</summary>
   <summary xml:lang="fa">رسم نمودار ساده</summary>
   <summary xml:lang="fr">Traceur de fonction simple</summary>
+  <summary xml:lang="he">מייצר גרפים פשוט</summary>
   <summary xml:lang="hr">Jednostavno crtanje grafikona</summary>
   <summary xml:lang="hu">Egyszerű ábrákrajzolás</summary>
   <summary xml:lang="it">Semplice disegnatore di grafici</summary>
   <summary xml:lang="nl">Eenvoudig grafieken plotten</summary>
+  <summary xml:lang="sv">Enkel grafritning</summary>
   <summary xml:lang="pt_BR">Simples traçador de gráficos</summary>
-
+  <summary xml:lang="uk">Простий побудовник графіків</summary>
   <description>
     <p>
       Plots makes it easy to visualise mathematical formulae. In addition to basic
@@ -73,6 +78,15 @@
       moderne en utilisant OpenGL.
     </p>
 
+    <p xml:lang="he">
+      גרפים מאפשר לדמות בצורה קלה נוסחאות מתמטיות. בנוסף לפעולות חשבון בסיסיות, הוא תומך בפונקציות טריגונומטריות,
+      היפרבוליות, מעריכיות ולוגריתמיות, כמו גם סכומים ומכפלות מרובי איברים. הוא גם מאפשר להציג משוואות במערכת
+      קואורדינטות קוטביות ומשוואות מפורשות או לא־מפורשות של משוואות במערכת צירים קַרְטֶזית.
+    </p>
+    <p>
+      גרפים תוכנן לשילוב מיטבי עם שולחן העבודה GNOME ומנצל חָמְרה מודרנית באמצעות OpenGL.
+    </p>
+
     <p xml:lang="hr">
       Program Grafikoni olakšava vizualizaciju matematičkih formula. Osim osnovnih
       aritmetičkih operacija, podržava trigonometrijske, hiperboličke, eksponencijalne i
@@ -118,6 +132,19 @@
       via OpenGL.
     </p>
 
+    <p xml:lang="sv">
+    Grafer gör det enkelt att visualisera matematiska formler. Förutom aritmetiken
+       grundläggande operationer, det stödjer trigonometriska, hyperboliska, exponentiella och
+       logaritmiska funktioner, samt godtyckliga summor och produkter. Det kan vara polärt
+       ekvationer och visar både implicita och explicita kartesiska ekvationer.
+    </p>
+
+    <p xml:lang="sv">
+     Grafer är utformad för att integreras väl med Gnome och använder modern hårdvara
+       genom OpenGL.
+    </p>
+
+
     <p xml:lang="pt_BR">
       Plots permite a fácil visualização de fórmulas matemáticas. Além das operações
       aritméticas básicas, suporta funções trigonométricas, hiperbólicas, exponenciais
@@ -127,6 +154,16 @@
     <p xml:lang="pt_BR">
       Plots foi projetado para integrar-se bem com o ambiente GNOME e tirar proveito
       de hardware moderno usando OpenGL.
+    </p>
+    <p xml:lang="uk">
+      Plots дозволяє легко візуалізувати математичні формули. Окрім основних
+      арифметичних операцій, підтримує тригонометричні, гіперболічні, експоненціальні та
+      логарифмічні функції, а також довільні суми і добутки. Також може відображати
+      полярні рівняння і неявні та явні декартові рівняння.
+    </p>
+    <p xml:lang="uk">
+      Plots розроблено для гарної інтеграції з робочим столом GNOME.Та він має
+      переваги сучасного апаратного забезпечення, що використовує OpenGL.
     </p>
 
   </description>
@@ -156,6 +193,11 @@
   </provides>
 
   <releases>
+    <release version="0.8.5" date="2023-05-03">
+      <description>
+        <p>Bug fixes, runtime and dependency updates, and updated translations.</p>
+      </description>
+    </release>
     <release version="0.8.4" date="2022-09-30">
       <description>
         <ul>

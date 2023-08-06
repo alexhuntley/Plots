@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-26 22:02+0100\n"
-"PO-Revision-Date: 2022-09-25 07:34+0200\n"
-"Last-Translator: Cacozelia <cacozelia@pm.me>\n"
+"PO-Revision-Date: 2023-02-20 17:35+0000\n"
+"Last-Translator: gregorni <gregorniehl@web.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/plots/plots/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Weblate 4.16-dev\n"
 
 #: plots/graph.py:121
 msgid ""
@@ -27,7 +27,7 @@ msgstr ""
 
 #: plots/colorpicker.py:32
 msgid "Pick a color"
-msgstr ""
+msgstr "Farbe auswählen"
 
 #: plots/plots.py:64
 msgid "Plots"
@@ -66,22 +66,20 @@ msgid "Untitled plot"
 msgstr "Unbenanntes Diagramm"
 
 #: plots/ui/about.ui:7
-#, fuzzy
-#| msgid "Copyright © 2021 Alexander Huntley"
 msgid "Copyright © 2021-2022 Alexander Huntley"
-msgstr "Copyright © 2021 Alexander Huntley"
+msgstr "Copyright © 2021-2022 Alexander Huntley"
 
 #: plots/ui/about.ui:8
 msgid "A graph plotter for GNOME."
-msgstr "Ein Graphenplotter für GNOME."
+msgstr "Ein Graphen-Plotter für GNOME."
 
 #: plots/ui/formula_box.ui:43
 msgid "Remove"
-msgstr ""
+msgstr "Entfernen"
 
 #: plots/ui/preferences.ui:19
 msgid "Preferences affecting graph rendering"
-msgstr "Einstellungen, die die Darstellung der Graphen beeinflussen"
+msgstr "Einstellungen zur Darstellung der Graphen"
 
 #: plots/ui/preferences.ui:20
 msgid "Rendering"
@@ -105,31 +103,31 @@ msgstr "Verringern, um die Leistung zu verbessern"
 
 #: plots/ui/plots.ui:14
 msgid "Add an equation"
-msgstr ""
+msgstr "Gleichung hinzufügen"
 
 #: plots/ui/plots.ui:37
 msgid "Undo"
-msgstr ""
+msgstr "Rückgängig"
 
 #: plots/ui/plots.ui:52
 msgid "Redo"
-msgstr ""
+msgstr "Wiederherstellen"
 
 #: plots/ui/plots.ui:73
 msgid "Menu"
-msgstr ""
+msgstr "Menü"
 
 #: plots/ui/plots.ui:152
 msgid "Zoom in"
-msgstr ""
+msgstr "Hineinzoomen"
 
 #: plots/ui/plots.ui:169
 msgid "Zoom out"
-msgstr ""
+msgstr "Hinauszoomen"
 
 #: plots/ui/plots.ui:198
 msgid "Reset zoom and panning"
-msgstr ""
+msgstr "Vergrößerung und Position zurücksetzen"
 
 #: plots/ui/plots.ui:233
 msgid "Error:"

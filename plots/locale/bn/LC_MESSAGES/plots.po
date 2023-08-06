@@ -1,0 +1,135 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-09-26 22:02+0100\n"
+"PO-Revision-Date: 2023-05-04 04:49+0000\n"
+"Last-Translator: Ritam Saha <ritamsaha00@gmail.com>\n"
+"Language-Team: Bengali <https://hosted.weblate.org/projects/plots/plots/bn/>"
+"\n"
+"Language: bn\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.18-dev\n"
+
+#: plots/graph.py:121
+#, fuzzy
+msgid ""
+"Warning: OpenGL {} is unsupported. Plots supports OpenGL 3.3 or greater."
+msgstr ""
+"সতর্কীকরণ: OpenGL {} সমর্থিত নয়। প্লটস OpenGL 3.3 বা তার বেশি সমর্থন করে।"
+
+#: plots/colorpicker.py:32
+msgid "Pick a color"
+msgstr "একটি রং বেছে নিন"
+
+#: plots/plots.py:64
+msgid "Plots"
+msgstr "প্লটস"
+
+#: plots/plots.py:102
+msgid "_Export…"
+msgstr "_রপ্তানি…"
+
+#: plots/plots.py:103
+msgid "_Preferences"
+msgstr "_অগ্রাধিকার"
+
+#: plots/plots.py:104
+msgid "Help"
+msgstr "সাহায্য"
+
+#: plots/plots.py:105
+msgid "About Plots"
+msgstr "প্লটস সম্পর্কে"
+
+#: plots/plots.py:258
+msgid "Export image"
+msgstr "ছবি রপ্তানি করুন"
+
+#: plots/plots.py:261
+msgid "_Export"
+msgstr "_রপ্তানি"
+
+#: plots/plots.py:262
+msgid "_Cancel"
+msgstr "_বাতিল"
+
+#: plots/plots.py:264
+msgid "Untitled plot"
+msgstr "শিরোনামহীন প্লট"
+
+#: plots/ui/about.ui:7
+msgid "Copyright © 2021-2022 Alexander Huntley"
+msgstr "কপিরাইট © ২০২১-২০২২ আলেকজান্ডার হান্টলি"
+
+#: plots/ui/about.ui:8
+msgid "A graph plotter for GNOME."
+msgstr ""
+
+#: plots/ui/formula_box.ui:43
+msgid "Remove"
+msgstr "অপসারণ"
+
+#: plots/ui/preferences.ui:19
+msgid "Preferences affecting graph rendering"
+msgstr "অগ্রাধিকার প্রভাবিত লেখচিত্র রেন্ডারিং"
+
+#: plots/ui/preferences.ui:20
+msgid "Rendering"
+msgstr "রেন্ডারিং"
+
+#: plots/ui/preferences.ui:25
+msgid "Line thickness"
+msgstr "লাইন বেধ"
+
+#: plots/ui/preferences.ui:26
+msgid "Approximate thickness of the graphs"
+msgstr "লেখচিত্রের আনুমানিক বেধ"
+
+#: plots/ui/preferences.ui:40
+msgid "Samples per pixel"
+msgstr "পিক্সেল প্রতি নমুনা"
+
+#: plots/ui/preferences.ui:41
+msgid "Reduce to improve performance"
+msgstr "কর্মক্ষমতা উন্নত করতে হ্রাস করুন"
+
+#: plots/ui/plots.ui:14
+msgid "Add an equation"
+msgstr "একটি সমীকরণ যোগ করুন"
+
+#: plots/ui/plots.ui:37
+msgid "Undo"
+msgstr "পূর্বাবস্থায় ফিরুন"
+
+#: plots/ui/plots.ui:52
+msgid "Redo"
+msgstr "পুনঃকরণ"
+
+#: plots/ui/plots.ui:73
+msgid "Menu"
+msgstr "তালিকা"
+
+#: plots/ui/plots.ui:152
+msgid "Zoom in"
+msgstr "প্রসারিত করুন"
+
+#: plots/ui/plots.ui:169
+msgid "Zoom out"
+msgstr "ছোট করুন"
+
+#: plots/ui/plots.ui:198
+msgid "Reset zoom and panning"
+msgstr "প্রসারণ এবং প্যানিং পুনরায় সেট করুন"
+
+#: plots/ui/plots.ui:233
+msgid "Error:"
+msgstr "ত্রুটি:"

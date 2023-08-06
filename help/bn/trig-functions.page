@@ -1,0 +1,31 @@
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="trig-functions">
+
+  <info>
+    <link type="guide" xref="index#functions" />
+
+    <desc>e.g. sin, cos, tan</desc>
+  </info>
+  <title>ত্রিকোণমিতিক অপেক্ষক</title>
+  <p>নিম্নলিখিত ত্রিকোণমিতিক অপেক্ষকগুলি কেবল তাদের নাম টাইপ করে সন্নিবেশ করা যেতে পারে:</p>
+
+  <list>
+    <title>সমর্থিত ত্রিকোণমিতিক অপেক্ষক</title>
+    <item>
+      <p>sin, cos, tan</p>
+    </item>
+    <item>
+      <p>asin, arcsin, acos, arccos, atan, arctan</p>
+    </item>
+    <item>
+      <p>sec, cosec, csc, tan</p>
+    </item>
+    <item>
+      <p>asec, arcsec, acosec, arccosec, acsc, arccsc, acot, arccot</p>
+    </item>
+    <item>
+      <p>sinc</p>
+    </item>
+  </list>
+
+
+</page>

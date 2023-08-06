@@ -1,0 +1,28 @@
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="sum-functions">
+
+  <info>
+    <link type="guide" xref="index#functions" />
+
+    <desc>in Σ and Π notation</desc>
+  </info>
+<title>Součty a součiny</title>
+<steps>
+<title>Jak vložit součet nebo součin</title>
+<item>
+<p>Pro vložení operátoru zadejte <key>sum</key> nebo <key>prod</key></p>
+</item>
+<item>
+<p>Do spodní části Σ nebo Π zadejte název proměnné a počáteční hodnotu, např. i = 0</p>
+</item>
+<item>
+<p>Pomocí kláves se šipkami se přesuňte do horního pole Σ nebo Π</p>
+</item>
+<item>
+<p>Do horního pole zadejte maximální hodnotu proměnné</p>
+</item>
+<item>
+<p>Pomocí kláves se šipkami se přesuňte vpravo od operátoru a vložte tělo součtu/součinu.</p>
+</item>
+</steps>
+<p>Na iterovanou proměnnou by se mělo odkazovat pouze uvnitř těla součtu/součinu.</p>
+</page>

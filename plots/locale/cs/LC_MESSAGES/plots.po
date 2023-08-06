@@ -8,38 +8,38 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-26 22:02+0100\n"
-"PO-Revision-Date: 2021-09-18 22:02+0000\n"
-"Last-Translator: Ondřej Sluka <ondras12345@gmail.com>\n"
+"PO-Revision-Date: 2023-02-15 16:35+0000\n"
+"Last-Translator: Vojtěch Perník <translations@pervoj.cz>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/plots/plots/cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.9-dev\n"
+"X-Generator: Weblate 4.16-dev\n"
 
 #: plots/graph.py:121
 msgid ""
 "Warning: OpenGL {} is unsupported. Plots supports OpenGL 3.3 or greater."
 msgstr ""
-"Varování: OpenGL {} není podporován. Plots podporuje OpenGL verze 3.3 nebo "
-"vyšší."
+"Varování: OpenGL {} není podporováno. Aplikace Grafy podporuje OpenGL verze "
+"3.3 nebo vyšší."
 
 #: plots/colorpicker.py:32
 msgid "Pick a color"
-msgstr ""
+msgstr "Vybrat barvu"
 
 #: plots/plots.py:64
 msgid "Plots"
-msgstr "Plots"
+msgstr "Grafy"
 
 #: plots/plots.py:102
 msgid "_Export…"
-msgstr ""
+msgstr "_Exportovat…"
 
 #: plots/plots.py:103
 msgid "_Preferences"
-msgstr ""
+msgstr "_Předvolby"
 
 #: plots/plots.py:104
 msgid "Help"
@@ -47,89 +47,87 @@ msgstr "Nápověda"
 
 #: plots/plots.py:105
 msgid "About Plots"
-msgstr "O aplikaci Plots"
+msgstr "O aplikaci Grafy"
 
 #: plots/plots.py:258
 msgid "Export image"
-msgstr ""
+msgstr "Exportovat obrázek"
 
 #: plots/plots.py:261
 msgid "_Export"
-msgstr ""
+msgstr "_Exportovat"
 
 #: plots/plots.py:262
 msgid "_Cancel"
-msgstr ""
+msgstr "_Zrušit"
 
 #: plots/plots.py:264
 msgid "Untitled plot"
-msgstr ""
+msgstr "Nepojmenovaný graf"
 
 #: plots/ui/about.ui:7
-#, fuzzy
-#| msgid "Copyright © 2021 Alexander Huntley"
 msgid "Copyright © 2021-2022 Alexander Huntley"
-msgstr "Copyright © 2021 Alexander Huntley"
+msgstr "Copyright © 2021-2022 Alexander Huntley"
 
 #: plots/ui/about.ui:8
 msgid "A graph plotter for GNOME."
-msgstr "Software pro kreslení grafů pro GNOME."
+msgstr "Software pro vykreslování grafů pro GNOME."
 
 #: plots/ui/formula_box.ui:43
 msgid "Remove"
-msgstr ""
+msgstr "Odebrat"
 
 #: plots/ui/preferences.ui:19
 msgid "Preferences affecting graph rendering"
-msgstr ""
+msgstr "Předvolby upravující renderování grafů"
 
 #: plots/ui/preferences.ui:20
 msgid "Rendering"
-msgstr ""
+msgstr "Renderování"
 
 #: plots/ui/preferences.ui:25
 msgid "Line thickness"
-msgstr ""
+msgstr "Tloušťka čáry"
 
 #: plots/ui/preferences.ui:26
 msgid "Approximate thickness of the graphs"
-msgstr ""
+msgstr "Přibližná tloušťka grafů"
 
 #: plots/ui/preferences.ui:40
 msgid "Samples per pixel"
-msgstr ""
+msgstr "Počet vzorků na pixel"
 
 #: plots/ui/preferences.ui:41
 msgid "Reduce to improve performance"
-msgstr ""
+msgstr "Snižte pro zlepšení výkonu"
 
 #: plots/ui/plots.ui:14
 msgid "Add an equation"
-msgstr ""
+msgstr "Přidat rovnici"
 
 #: plots/ui/plots.ui:37
 msgid "Undo"
-msgstr ""
+msgstr "Zpět"
 
 #: plots/ui/plots.ui:52
 msgid "Redo"
-msgstr ""
+msgstr "Znovu"
 
 #: plots/ui/plots.ui:73
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: plots/ui/plots.ui:152
 msgid "Zoom in"
-msgstr ""
+msgstr "Přiblížit"
 
 #: plots/ui/plots.ui:169
 msgid "Zoom out"
-msgstr ""
+msgstr "Oddálit"
 
 #: plots/ui/plots.ui:198
 msgid "Reset zoom and panning"
-msgstr ""
+msgstr "Resetovat přiblížení a posouvání"
 
 #: plots/ui/plots.ui:233
 msgid "Error:"

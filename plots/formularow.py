@@ -202,7 +202,7 @@ class ImplicitFormula(RowData):
         m = re.match(r'^([^=]+)=([^=]+)$', expr)
         self.body = body
         self.rgba = rgba
-        self.expr = "{} - {}".format(m.group(1), m.group(2));
+        self.expr = "({}) - ({})".format(m.group(1), m.group(2));
 
     @staticmethod
     def accepts(expr):

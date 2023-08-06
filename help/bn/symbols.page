@@ -1,0 +1,13 @@
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="symbols">
+
+  <info>
+    <link type="guide" xref="index#functions" />
+
+    <desc>Symbols with special meaning</desc>
+  </info>
+  <title>Symbols</title>
+  <p>Greek letters can be inserted by typing their English name.</p>
+  <p>ধ্রুবক <em>π</em> এবং <em>e</em> তাদের স্বাভাবিক মান আছে।</p>
+  <p>The variable <em>x</em> can be used anywhere in a formula.</p>
+
+</page>

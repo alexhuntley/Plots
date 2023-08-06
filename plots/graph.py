@@ -32,6 +32,8 @@ class GraphArea(Gtk.GLArea):
 
     INIT_SCALE = 10
     ZOOM_BUTTON_FACTOR = 0.3
+    ZOOM_MINIMUM = 5e-34
+    ZOOM_MAXIMUM = 1e+38
 
     def __init__(self):
         super().__init__()
@@ -82,7 +84,10 @@ class GraphArea(Gtk.GLArea):
     @staticmethod
     def major_grid(pixel_extent):
         min_extent = 100*pixel_extent
-        exponent = math.floor(math.log10(abs(min_extent)))
+        try:
+            exponent = math.floor(math.log10(abs(min_extent)))
+        except OverflowError:
+            return 0, 0
         mantissa = min_extent/10**exponent
         major = 1.0
         for m in (2.0, 5.0, 10.0):
@@ -195,6 +200,8 @@ class GraphArea(Gtk.GLArea):
         gl.glDrawArrays(gl.GL_TRIANGLES, 0, 18)
         gl.glBindVertexArray(0)
 
+        if major_grid <= 0:
+            return
         with self.text_renderer.render(w, h) as r:
             low = major_grid * np.floor(
                 self.device_to_graph(np.array([0, h]))/major_grid)
@@ -239,6 +246,12 @@ class GraphArea(Gtk.GLArea):
 
     def smooth_scroll(self, translate_to=None):
         speed = 0.3
+
+        if self.target_scale > self.ZOOM_MAXIMUM:
+            self.target_scale = self.ZOOM_MAXIMUM
+        if self.target_scale < self.ZOOM_MINIMUM:
+            self.target_scale = self.ZOOM_MINIMUM
+
         self.scale = speed*self.target_scale + (1-speed)*self.scale
         if translate_to is not None:
             self.translation = speed*translate_to + (1-speed)*self.translation
@@ -262,6 +275,8 @@ class GraphArea(Gtk.GLArea):
 
     def reset_zoom(self, button):
         self.target_scale = self.INIT_SCALE
+        if not math.isfinite(self.scale):
+            self.scale = self.target_scale
         self.smooth_scroll(translate_to=np.array([0, 0], 'f'))
 
     def update_zoom_reset(self):

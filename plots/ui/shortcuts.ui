@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkShortcutsWindow" id="shortcuts_dialog">
+    <property name="modal">True</property>
+    <child>
+      <object class="GtkShortcutsSection">
+        <property name="section-name">shortcuts</property>
+        <property name="max-height">10</property>
+	<child>
+	  <object class="GtkShortcutsGroup">
+	    <property name="title" translatable="yes" context="shortcut window">Zoom</property>
+	    <child>
+	      <object class="GtkShortcutsShortcut">
+		<property name="title" translatable="yes">Zoom In</property>
+		<property name="action-name">app.zoom-in</property>
+              </object>
+	    </child>
+	    <child>
+	      <object class="GtkShortcutsShortcut">
+		<property name="title" translatable="yes">Zoom Out</property>
+		<property name="action-name">app.zoom-out</property>
+              </object>
+	    </child>
+	    <child>
+	      <object class="GtkShortcutsShortcut">
+		<property name="title" translatable="yes">Reset Zoom</property>
+		<property name="action-name">app.zoom-reset</property>
+              </object>
+	    </child>
+	  </object>
+        </child>
+        <child>
+          <object class="GtkShortcutsGroup">
+            <property name="title" translatable="yes" context="shortcut window">General</property>
+	    <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes">Keyboard Shortcuts</property>
+                <property name="action-name">win.show-help-overlay</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes">Preferences</property>
+                <property name="action-name">app.preferences</property>
+              </object>
+            </child>
+	    <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes">Help</property>
+                <property name="action-name">app.help</property>
+              </object>
+            </child>
+	    <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes">Export Image</property>
+                <property name="action-name">app.export</property>
+              </object>
+            </child>
+          </object>
+	</child>
+	<child>
+	  <object class="GtkShortcutsGroup">
+	    <property name="title" translatable="yes" context="shortcut window">Equations</property>
+	    <child>
+	      <object class="GtkShortcutsShortcut">
+		<property name="title" translatable="yes">Add an equation</property>
+		<property name="action-name">app.add-equation</property>
+              </object>
+	    </child>
+	    <child>
+	      <object class="GtkShortcutsShortcut">
+		<property name="title" translatable="yes">Undo</property>
+		<property name="action-name">app.undo</property>
+              </object>
+	    </child>
+	    <child>
+	      <object class="GtkShortcutsShortcut">
+		<property name="title" translatable="yes">Redo</property>
+		<property name="action-name">app.redo</property>
+              </object>
+	    </child>
+	  </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

@@ -1,0 +1,14 @@
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="x-formulae">
+
+  <info>
+    <link type="guide" xref="index#formulae" />
+
+    <desc>Explicit formulae for <em>x</em></desc>
+  </info>
+  <title><em>x = f(y)</em> formunun formülleri</title>
+
+  <p>
+    Bunlar formül kutusuna yalnızca <code>x = f(y)</code> biçiminde girilebilir.
+  </p>
+
+</page>

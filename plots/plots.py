@@ -20,7 +20,7 @@
 import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf, cairo, Adw
+from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf, Adw
 
 from plots import formula, formularow, rowcommands, preferences, utils, graph
 from plots.i18n import _
@@ -41,20 +41,6 @@ class Plots(Adw.Application):
         utils.install_excepthook()
         plots.i18n.bind()
 
-    def key_pressed(self, ctl, keyval, keycode, state):
-        modifiers = state & Gtk.accelerator_get_default_mod_mask()
-        char = chr(Gdk.keyval_to_unicode(keyval))
-        if keyval == Gdk.KEY_Return:
-            self.add_equation(None)
-            return True
-        elif modifiers & Gdk.ModifierType.CONTROL_MASK:
-            if char == "z":
-                self.undo(None)
-                return True
-            elif char == "y" or char == "Z" and modifiers & Gdk.ModifierType.SHIFT_MASK:
-                self.redo(None)
-                return True
-
     def do_activate(self):
         builder = Gtk.Builder()
         builder.add_from_string(utils.read_ui_file("plots.ui"))
@@ -67,9 +53,6 @@ class Plots(Adw.Application):
         self.add_equation_button = builder.get_object("add_equation")
         self.undo_button = builder.get_object("undo")
         self.redo_button = builder.get_object("redo")
-        self.key_ctl = Gtk.EventControllerKey()
-        self.key_ctl.connect("key-pressed", self.key_pressed)
-        self.window.add_controller(self.key_ctl)
         self.window.connect("close-request", self.delete_cb)
 
         self.gl_area = builder.get_object("gl")
@@ -81,20 +64,55 @@ class Plots(Adw.Application):
         self.errorbar.props.revealed = False
         self.errorlabel = builder.get_object("errorlabel")
 
-        self.add_equation_button.connect("clicked", self.add_equation)
-        self.undo_button.connect("clicked", self.undo)
-        self.redo_button.connect("clicked", self.redo)
+        add_equation_action = Gio.SimpleAction.new("add-equation", None)
+        add_equation_action.connect("activate", lambda _, __: self.add_equation(None))
+        add_equation_action.set_enabled(True)
+        self.add_action(add_equation_action)
+        self.set_accels_for_action("app.add-equation", ["Return"])
+        self.add_equation_button.set_action_name("app.add-equation")
+
+        undo_action = Gio.SimpleAction.new("undo", None)
+        undo_action.connect("activate", lambda _, __: self.undo(None))
+        undo_action.set_enabled(True)
+        self.add_action(undo_action)
+        self.set_accels_for_action("app.undo", ["<primary>z"])
+        self.undo_button.set_action_name("app.undo")
+
+        redo_action = Gio.SimpleAction.new("redo", None)
+        redo_action.connect("activate", lambda _, __: self.redo(None))
+        redo_action.set_enabled(True)
+        self.add_action(redo_action)
+        self.set_accels_for_action("app.redo", ["<primary>y", "<primary><shift>z"])
+        self.redo_button.set_action_name("app.redo")
 
         self.osd_revealer = builder.get_object("osd_revealer")
         self.osd_box = builder.get_object("osd_box")
         self.zoom_reset_revealer = builder.get_object("zoom_reset_revealer")
         self.graph_overlay = builder.get_object("graph_overlay")
         self.zoom_in_button = builder.get_object("zoom_in")
-        self.zoom_in_button.connect("clicked", self.gl_area.zoom, -1)
         self.zoom_out_button = builder.get_object("zoom_out")
-        self.zoom_out_button.connect("clicked", self.gl_area.zoom, 1)
         self.zoom_reset_button = builder.get_object("zoom_reset")
-        self.zoom_reset_button.connect("clicked", self.gl_area.reset_zoom)
+
+        zoom_in_action = Gio.SimpleAction.new("zoom-in", None)
+        zoom_in_action.connect("activate", lambda _, __: self.gl_area.zoom(_, -1))
+        zoom_in_action.set_enabled(True)
+        self.add_action(zoom_in_action)
+        self.set_accels_for_action("app.zoom-in", ["<primary>plus"])
+        self.zoom_in_button.set_action_name("app.zoom-in")
+
+        zoom_out_action = Gio.SimpleAction.new("zoom-out", None)
+        zoom_out_action.connect("activate", lambda _, __: self.gl_area.zoom(_, 1))
+        zoom_out_action.set_enabled(True)
+        self.add_action(zoom_out_action)
+        self.set_accels_for_action("app.zoom-out", ["<primary>minus"])
+        self.zoom_out_button.set_action_name("app.zoom-out")
+
+        zoom_reset_action = Gio.SimpleAction.new("zoom-reset", None)
+        zoom_reset_action.connect("activate", lambda _, __: self.gl_area.reset_zoom(_))
+        zoom_reset_action.set_enabled(True)
+        self.add_action(zoom_reset_action)
+        self.set_accels_for_action("app.zoom-reset", ["<primary>0"])
+        self.zoom_reset_button.set_action_name("app.zoom-reset")
         self.gl_area.update_zoom_reset()
 
         menu_button = builder.get_object("menu_button")
@@ -102,6 +120,7 @@ class Plots(Adw.Application):
         self.menu = Gio.Menu()
         self.menu.append(_("_Export…"), "app.export")
         self.menu.append(_("_Preferences"), "app.preferences")
+        self.menu.append(_("Keyboard Shortcuts"), "win.show-help-overlay")
         self.menu.append(_("Help"), "app.help")
         self.menu.append(_("About Plots"), "app.about")
         menu_button.set_menu_model(self.menu)
@@ -115,16 +134,19 @@ class Plots(Adw.Application):
         help_action.connect("activate", self.help_cb)
         help_action.set_enabled(True)
         self.add_action(help_action)
+        self.set_accels_for_action("app.help", ["F1"])
 
         export_action = Gio.SimpleAction.new("export", None)
         export_action.connect("activate", self.export_cb)
         export_action.set_enabled(True)
         self.add_action(export_action)
+        self.set_accels_for_action("app.export", ["<primary>e"])
 
         prefs_action = Gio.SimpleAction.new("preferences", None)
         prefs_action.connect("activate", self.prefs_cb)
         prefs_action.set_enabled(True)
         self.add_action(prefs_action)
+        self.set_accels_for_action("app.preferences", ["<primary>comma"])
         self.prefs = preferences.Preferences(self.window)
         self.prefs.connect("updated", self.prefs_updated)
 
@@ -149,7 +171,7 @@ class Plots(Adw.Application):
 }
 '''
         css_provider = Gtk.CssProvider()
-        css_provider.load_from_data(css.encode())
+        css_provider.load_from_data(css, len(css))
         context = self.window.get_style_context()
         display = self.window.get_display()
         context.add_provider_for_display(display, css_provider,

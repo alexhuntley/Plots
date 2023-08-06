@@ -1,0 +1,14 @@
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="implicit-formulae">
+
+  <info>
+    <link type="guide" xref="index#formulae" />
+
+    <desc>Implicit formulae for <em>x</em> and <em>y</em></desc>
+  </info>
+  <title><em>f(x,y) = g(x,y)</em> formunun örtük formülleri</title>
+
+  <p>
+    Bunlar herhangi bir normal formül kutusuna girilebilir. En genel formül türüdür. <em>x</em> ve <em>y</em> denklemin herhangi bir yerinde görünebilir.
+  </p>
+
+</page>

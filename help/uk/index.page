@@ -1,8 +1,8 @@
 <page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" id="index">
 
   <info>
-    <title type="link">Графіки</title>
-    <title type="text">Графіки</title>
+    <title type="link">Plots</title>
+    <title type="text">Plots</title>
 
     <credit type="author">
       <name>Alexander Huntley</name>
@@ -13,17 +13,17 @@
   </info>
 
   <title>
-    Графіки
+    Plots
   </title>
 
-  <p>Проста програма для побудови графіків для GNOME.</p>
+  <p>Простий застосунок для побудови графіків для GNOME.</p>
 
   <section id="formulae" style="2column">
-    <title>Підтримувані типи формул</title>
+    <title>Supported formula types</title>
   </section>
 
   <section id="functions" style="2column">
-    <title>Доступні функції</title>
+    <title>Available functions</title>
   </section>
 
 
