@@ -68,13 +68,19 @@
             "name": "python3-PyGLM",
             "buildsystem": "simple",
             "build-commands": [
-                "pip3 install --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"PyGLM==2.5.7\" --no-build-isolation"
+                "pip3 install --exists-action=i --no-index . --prefix=${FLATPAK_DEST} --no-build-isolation"
             ],
             "sources": [
                 {
-                    "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/a8/93/763c85038d18665b0ebab8cfb7a27fd14f38bdd5ad7e8d4b5aed4bf835bd/PyGLM-2.5.7.tar.gz",
-                    "sha256": "38fdff84e6416decffe1c5874632807d58b98c5508cca3579bb2f5332e099fd8"
+                    "type": "archive",
+                    "url": "https://files.pythonhosted.org/packages/4e/4c/ca1a71217c4ac5b0f9ef56681ebe9eae14b5bb0d3ac8bb58f392bad445a5/PyGLM-2.7.0.tar.gz",
+                    "sha256": "06964435d08d8d1fbf6f5a72d7d5f5dcf2b3151fab2e7785cbee7b907ff35023"
+                },
+                {
+                    "type": "archive",
+                    "dest": "pyglm-typing",
+                    "url": "https://files.pythonhosted.org/packages/06/98/8cc1b73a37bdfe7b1e7831520b57a0e22a3ce5c3c4297d98e5858989cab5/pyglm-typing-0.2.1.tar.gz",
+                    "sha256": "eb118715757599a0304a75d74dcb8c88529ebbf6b915067397e79dd8e1357816"
                 }
             ]
         },
