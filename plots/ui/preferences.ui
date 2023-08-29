@@ -10,7 +10,7 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="icon-name">preferences-window-layout-symbolic</property>
-        <property name="title">General</property>
+        <property name="title" translatable="yes">General</property>
         <child>
           <object class="AdwPreferencesGroup">
             <property name="visible">True</property>
