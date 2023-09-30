@@ -194,12 +194,12 @@
 
   <releases>
     <release version="0.8.5" date="2023-05-03">
-      <description>
+      <description translatable="no">
         <p>Bug fixes, runtime and dependency updates, and updated translations.</p>
       </description>
     </release>
     <release version="0.8.4" date="2022-09-30">
-      <description>
+      <description translatable="no">
         <ul>
           <li>Improved copy &amp; paste compatibility with LaTeX and Unicode formulae</li>
           <li>New tooltip text on the toolbar buttons</li>
@@ -210,7 +210,7 @@
       </description>
     </release>
     <release version="0.8.3" date="2022-09-24">
-      <description>
+      <description translatable="no">
         <ul>
           <li>Tweaked the color palette for graphs</li>
           <li>Dark mode now has a distinct color palette</li>
@@ -220,7 +220,7 @@
       </description>
     </release>
     <release version="0.8.2" date="2022-09-23">
-      <description>
+      <description translatable="no">
         <ul>
           <li>Bug fixes</li>
           <li>Updated translations</li>
@@ -228,7 +228,7 @@
       </description>
     </release>
     <release version="0.8.1" date="2022-09-21">
-      <description>
+      <description translatable="no">
         <ul>
           <li>Bug fixes</li>
           <li>Updated translations</li>
@@ -236,7 +236,7 @@
       </description>
     </release>
     <release version="0.8.0" date="2022-09-20">
-      <description>
+      <description translatable="no">
         <ul>
           <li>Port to GTK 4 and Libadwaita, for improved performance and a cleaner look</li>
           <li>Bug fixes</li>
@@ -245,7 +245,7 @@
       </description>
     </release>
     <release version="0.7.0" date="2022-09-18">
-      <description>
+      <description translatable="no">
         <ul>
           <li>New image export feature;</li>
           <li>New, more convenient color picker;</li>
@@ -259,7 +259,7 @@
       </description>
     </release>
     <release version="0.6.2" date="2022-04-04">
-      <description>
+      <description translatable="no">
         <ul>
           <li>Bug fixes;</li>
           <li>Runtime and dependency updates;</li>
@@ -269,7 +269,7 @@
       </description>
     </release>
     <release version="0.6.1" date="2021-09-21">
-      <description>
+      <description translatable="no">
         <ul>
           <li>New feature: implicit equations in x and y;</li>
           <li>Added Czech, Hungarian, Italian, Lithuanian, Norwegian and Turkish translations.</li>
@@ -277,7 +277,7 @@
       </description>
     </release>
     <release version="0.6.0" date="2021-09-18">
-      <description>
+      <description translatable="no">
         <ul>
           <li>Added support for equations of the form x = f(y);</li>
           <li>Added support for polar equations of the forms r = f(θ) and θ = f(r);</li>
@@ -290,12 +290,12 @@
       </description>
     </release>
     <release version="0.5.1" date="2021-01-28">
-      <description>
+      <description translatable="no">
         <p>Fix help missing in Flatpak</p>
       </description>
     </release>
     <release version="0.5.0" date="2021-01-25">
-      <description>
+      <description translatable="no">
         <ul>
           <li>UI and styling improvements;</li>
           <li>Added zoom in, out and reset buttons;</li>
@@ -305,32 +305,32 @@
       </description>
     </release>
     <release version="0.4.4" date="2021-01-24">
-      <description>
+      <description translatable="no">
         <p>Added floor and ceiling functions. Bugfixes and refactoring.</p>
       </description>
     </release>
     <release version="0.4.3" date="2021-01-23">
-      <description>
+      <description translatable="no">
         <p>Various bugfixes and code improvements. Added missing cosech, asech, acsch, acosech and acoth functions.</p>
       </description>
     </release>
     <release version="0.4.2" date="2021-01-21">
-      <description>
+      <description translatable="no">
         <p>Added keyboard shortcuts for undo and redo</p>
       </description>
     </release>
     <release version="0.4.1" date="2021-01-21">
-      <description>
+      <description translatable="no">
         <p>New feature: undo/redo. Various bugfixes.</p>
       </description>
     </release>
     <release version="0.4.0" date="2021-01-19">
-      <description>
+      <description translatable="no">
         <p>New feature: cut, copy and paste of formulae!</p>
       </description>
     </release>
     <release version="0.3.0" date="2021-01-18">
-      <description>
+      <description translatable="no">
         <p>New feature: variables and sliders. Easily modify the parameters
         in your equations with just a click!</p>
         <p>Also added a shortcut to select all the contents of a formula box,
@@ -338,12 +338,12 @@
       </description>
     </release>
     <release version="0.2.0" date="2021-01-16">
-      <description>
+      <description translatable="no">
         <p>Improved the UI and added coloured graphs!</p>
       </description>
     </release>
     <release version="0.1.6" date="2021-01-14">
-      <description>
+      <description translatable="no">
         <p>UI improvements to formula editors:</p>
         <ul>
           <li>Flatter delete button;</li>
@@ -354,32 +354,32 @@
       </description>
     </release>
     <release version="0.1.5" date="2021-01-11">
-      <description>
+      <description translatable="no">
         <p>Added Help to menu, wrote manual pages describing available functions</p>
       </description>
     </release>
     <release version="0.1.4" date="2021-01-10">
-      <description>
+      <description translatable="no">
         <p>Fix superscript insertion on AZERTY keyboards</p>
       </description>
     </release>
     <release version="0.1.3" date="2021-01-09">
-      <description>
+      <description translatable="no">
         <p>Fix graph rendering on hidpi displays</p>
       </description>
     </release>
     <release version="0.1.2" date="2021-01-08">
-      <description>
+      <description translatable="no">
         <p>Fix AppStream data</p>
       </description>
     </release>
     <release version="0.1.1" date="2021-01-08">
-      <description>
+      <description translatable="no">
         <p>Remove sympy dependency</p>
       </description>
     </release>
     <release version="0.1.0" date="2020-12-31">
-      <description>
+      <description translatable="no">
         <p>Initial release</p>
       </description>
     </release>
