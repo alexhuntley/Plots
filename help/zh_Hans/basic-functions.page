@@ -1,15 +1,12 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="basic-functions">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="basic-functions">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#functions" />
 
     <desc>Simple operators</desc>
   </info>
-<title>Basic arithmetic operators</title>
-<p>Simple operators can be inserted using the following keystrokes:</p>
+<title>基本算术运算符</title>
+<p>可以使用以下按键插入简单的运算符：</p>
     <table>
     <tr>
     <td><p>×</p></td>
