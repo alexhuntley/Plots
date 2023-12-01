@@ -1,31 +1,28 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="sum-functions">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="sum-functions">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#functions" />
 
     <desc>in Σ and Π notation</desc>
   </info>
-<title>Sums and Products</title>
+<title>Суммы и произведения</title>
 <steps>
-<title>How to insert a sum or product</title>
+<title>Как вставить сумму или произведение</title>
 <item>
-<p>Type <key>sum</key> or <key>prod</key> to insert the operator</p>
+<p>Введите <key>sum</key> или <key>prod</key>, чтобы вставить оператор</p>
 </item>
 <item>
-<p>Type a variable name and initial value into the bottom of the Σ or Π, e.g. i = 0</p>
+<p>Введите название переменной и начальное значение внизу Σ или Π, например, i = 0</p>
 </item>
 <item>
-<p>Use the arrow keys to move to the upper box of the Σ or Π</p>
+<p>Используйте клавиши со стрелками, чтобы перейти к верхнему полю Σ или Π</p>
 </item>
 <item>
-<p>Type the maximum value for the variable in the upper box</p>
+<p>Введите максимальное значение переменной в верхнем поле</p>
 </item>
 <item>
-<p>Use the arrow keys to move to the right of the operator, and insert the body of the sum/product.</p>
+<p>С помощью клавиш со стрелками перейдите вправо от оператора и вставьте тело суммы/произведения.</p>
 </item>
 </steps>
-<p>The variable being iterated over should only be referred to inside the sum/product body.</p>
+<p>Переменная, по которой выполняется итерация, должна упоминаться только внутри тела суммы/продукта.</p>
 </page>
