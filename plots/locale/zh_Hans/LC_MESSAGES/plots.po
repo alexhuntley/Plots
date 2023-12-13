@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-26 22:02+0100\n"
-"PO-Revision-Date: 2023-06-26 06:52+0000\n"
-"Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
+"PO-Revision-Date: 2023-12-14 13:08+0000\n"
+"Last-Translator: D XC <hello_cmd@outlook.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "plots/plots/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.18.1\n"
+"X-Generator: Weblate 5.3\n"
 
 #: plots/graph.py:121
 msgid ""
@@ -26,7 +26,7 @@ msgstr "警告：不支持 OpenGL {}。 Plots 支持 OpenGL 3.3 及更高版本�
 
 #: plots/colorpicker.py:32
 msgid "Pick a color"
-msgstr "请选择一种颜色"
+msgstr "选择一种颜色"
 
 #: plots/plots.py:64
 msgid "Plots"
@@ -70,7 +70,7 @@ msgstr "版权所有 © 2021-2022 Alexander Huntley"
 
 #: plots/ui/about.ui:8
 msgid "A graph plotter for GNOME."
-msgstr "GNOME 桌面的绘图软件。"
+msgstr "GNOME 桌面的画函数图工具。"
 
 #: plots/ui/formula_box.ui:43
 msgid "Remove"
@@ -86,19 +86,20 @@ msgstr "渲染中"
 
 #: plots/ui/preferences.ui:25
 msgid "Line thickness"
-msgstr "线条粗度"
+msgstr "线条粗细"
 
 #: plots/ui/preferences.ui:26
 msgid "Approximate thickness of the graphs"
-msgstr "图表的大致粗度"
+msgstr "函数图像上线条的大致粗细程度"
 
 #: plots/ui/preferences.ui:40
 msgid "Samples per pixel"
-msgstr "像素采样数"
+msgstr "单像素采样数"
 
 #: plots/ui/preferences.ui:41
+#, fuzzy
 msgid "Reduce to improve performance"
-msgstr "删减会增加性能"
+msgstr "降低单像素采样数会增加性能"
 
 #: plots/ui/plots.ui:14
 msgid "Add an equation"
