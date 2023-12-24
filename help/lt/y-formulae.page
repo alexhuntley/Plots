@@ -5,7 +5,7 @@
 
     <desc>Explicit formulae for <em>y</em></desc>
   </info>
-  <title>Formulės, kurių forma <em>x = f(y)</em></title>
+  <title>Formos <em>y = f(x)</em> formulės</title>
 
   <p>
     Juos galima įrašyti į formulės langelį forma <code>y = f(x)</code> arba tiesiog forma <code>f(x)</code>.
