@@ -7,10 +7,7 @@
   </info>
 <title>Somas e Produtos</title>
 <steps>
-<title>Como inserir uma soma ou um produto</title>
-<item>
-<p>Digite <key>sum</key> ou <key>prod</key> para inserir o operador</p>
-</item>
+<title>Como inserir uma soma ou produto</title>
 <item>
 <p>Digite o nome de uma variável e um valor inicial na parte inferior do Σ ou Π, por exemplo i = 0</p>
 </item>
@@ -18,11 +15,14 @@
 <p>Use as setas do teclado para mover-se para a caixa superior do Σ ou Π</p>
 </item>
 <item>
+<p>Use as teclas de seta para ir para a caixa superior de Σ ou Π</p>
+</item>
+<item>
 <p>Digite o valor máximo para a variável na caixa superior</p>
 </item>
 <item>
-<p>Use as setas do teclado para mover-se à direita do operador, e insira o corpo da soma/produto.</p>
+<p>Use as teclas de seta para mover para a direita do operador e insira o corpo da soma/produto.</p>
 </item>
 </steps>
-<p>A variável sendo iterada deve ser referenciada apenas dentro do corpo da soma/produto.</p>
+<p>A variável que está sendo iterada só deve ser referida dentro do corpo da soma/produto.</p>
 </page>
