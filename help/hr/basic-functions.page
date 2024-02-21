@@ -14,19 +14,27 @@
     </tr>
     <tr>
     <td><p>÷</p></td>
-    <td><p><key>√</key></p></td>
+    <td><p><key>/</key></p></td>
+    </tr>
+    <tr>
+    <td><p>^</p></td>
+    <td><p><key>^</key></p></td>
     </tr>
     <tr>
     <td><p>√</p></td>
-    <td><p><key>√</key></p></td>
-    </tr>
-    <tr>
-    <td><p>√</p></td>
-    <td><p><keyseq><key>³√</key></keyseq></p></td>
+    <td><p><keyseq><key>kvadratni korijen</key></keyseq></p></td>
     </tr>
     <tr>
     <td><p>³√</p></td>
-    <td><p><keyseq>)</keyseq></p></td>
+    <td><p><keyseq><key>Treći</key><key>korijen</key></keyseq></p></td>
+    </tr>
+    <tr>
+    <td><p>(</p></td>
+    <td><p><key>(</key></p></td>
+    </tr>
+    <tr>
+    <td><p>)</p></td>
+    <td><p><key>)</key></p></td>
     </tr>
     <tr>
     <td><p>[</p></td>
@@ -39,14 +47,6 @@
     <tr>
     <td><p>{</p></td>
     <td><p><key>{</key></p></td>
-    </tr>
-    <tr>
-    <td><p>}</p></td>
-    <td><p><key>}</key></p></td>
-    </tr>
-    <tr>
-    <td><p>}</p></td>
-    <td><p><key>}</key></p></td>
     </tr>
     <tr>
     <td><p>}</p></td>
