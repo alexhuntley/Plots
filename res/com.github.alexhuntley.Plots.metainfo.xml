@@ -168,6 +168,10 @@
 
   </description>
 
+  <keywords>
+    <keyword>plotter</keyword>
+  </keywords>
+
   <launchable type="desktop-id">com.github.alexhuntley.Plots.desktop</launchable>
 
   <screenshots>
