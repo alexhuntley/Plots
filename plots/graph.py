@@ -23,9 +23,13 @@ from plots.data import jinja_env
 from plots.i18n import _
 import math
 import numpy as np
+import os
 
 from plots import utils
 from plots.text import TextRenderer
+
+os.environ["GDK_DEBUG"] = "gl-prefer-gl, gl-no-fractional"
+os.environ["GSK_RENDERER"] = "gl"
 
 class GraphArea(Gtk.GLArea):
     __gtype_name__ = "GraphArea"
