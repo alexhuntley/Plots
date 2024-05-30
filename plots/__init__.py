@@ -17,10 +17,6 @@
 
 from . import plots
 import sys
-import os
-
-os.environ["GDK_DEBUG"] = "gl-prefer-gl, gl-no-fractional"
-os.environ["GSK_RENDERER"] = "gl"
 
 def main():
     plots.Plots().run(sys.argv)
