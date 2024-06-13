@@ -8,123 +8,126 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-26 22:02+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2024-06-14 04:09+0000\n"
+"Last-Translator: hugoalh <hugoalh@users.noreply.hosted.weblate.org>\n"
+"Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
+"plots/plots/zh_Hant/>\n"
 "Language: zh_Hant\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.6-dev\n"
 
 #: plots/graph.py:121
 msgid ""
 "Warning: OpenGL {} is unsupported. Plots supports OpenGL 3.3 or greater."
-msgstr ""
+msgstr "警告：不支援 OpenGL {}。Plots 支援 OpenGL 3.3 或更高版本。"
 
 #: plots/colorpicker.py:32
 msgid "Pick a color"
-msgstr ""
+msgstr "選擇一種顏色"
 
 #: plots/plots.py:64
 msgid "Plots"
-msgstr ""
+msgstr "Plots"
 
 #: plots/plots.py:102
 msgid "_Export…"
-msgstr ""
+msgstr "匯出 (&E)…"
 
 #: plots/plots.py:103
 msgid "_Preferences"
-msgstr ""
+msgstr "偏好設定 (&P)"
 
 #: plots/plots.py:104
 msgid "Help"
-msgstr ""
+msgstr "幫助"
 
 #: plots/plots.py:105
 msgid "About Plots"
-msgstr ""
+msgstr "關於 Plots"
 
 #: plots/plots.py:258
 msgid "Export image"
-msgstr ""
+msgstr "匯出圖片"
 
 #: plots/plots.py:261
 msgid "_Export"
-msgstr ""
+msgstr "匯出 (&E)"
 
 #: plots/plots.py:262
 msgid "_Cancel"
-msgstr ""
+msgstr "取消 (&C)"
 
 #: plots/plots.py:264
 msgid "Untitled plot"
-msgstr ""
+msgstr "無標題繪製"
 
 #: plots/ui/about.ui:7
 msgid "Copyright © 2021-2022 Alexander Huntley"
-msgstr ""
+msgstr "版權所有 © 2021-2022 Alexander Huntley"
 
 #: plots/ui/about.ui:8
 msgid "A graph plotter for GNOME."
-msgstr ""
+msgstr "GNOME 的圖表繪製器。"
 
 #: plots/ui/formula_box.ui:43
 msgid "Remove"
-msgstr ""
+msgstr "移除"
 
 #: plots/ui/preferences.ui:19
 msgid "Preferences affecting graph rendering"
-msgstr ""
+msgstr "偏好設定影響圖形渲染"
 
 #: plots/ui/preferences.ui:20
 msgid "Rendering"
-msgstr ""
+msgstr "正在渲染"
 
 #: plots/ui/preferences.ui:25
 msgid "Line thickness"
-msgstr ""
+msgstr "線條粗細"
 
 #: plots/ui/preferences.ui:26
 msgid "Approximate thickness of the graphs"
-msgstr ""
+msgstr "圖表的大概粗細程度"
 
 #: plots/ui/preferences.ui:40
 msgid "Samples per pixel"
-msgstr ""
+msgstr "每像素樣本數"
 
 #: plots/ui/preferences.ui:41
 msgid "Reduce to improve performance"
-msgstr ""
+msgstr "減少以提高性能"
 
 #: plots/ui/plots.ui:14
 msgid "Add an equation"
-msgstr ""
+msgstr "新增一條方程式"
 
 #: plots/ui/plots.ui:37
 msgid "Undo"
-msgstr ""
+msgstr "復原"
 
 #: plots/ui/plots.ui:52
 msgid "Redo"
-msgstr ""
+msgstr "重做"
 
 #: plots/ui/plots.ui:73
 msgid "Menu"
-msgstr ""
+msgstr "選單"
 
 #: plots/ui/plots.ui:152
 msgid "Zoom in"
-msgstr ""
+msgstr "放大"
 
 #: plots/ui/plots.ui:169
 msgid "Zoom out"
-msgstr ""
+msgstr "縮小"
 
 #: plots/ui/plots.ui:198
 msgid "Reset zoom and panning"
-msgstr ""
+msgstr "重置縮放和平移"
 
 #: plots/ui/plots.ui:233
 msgid "Error:"
-msgstr ""
+msgstr "錯誤："
