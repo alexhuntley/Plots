@@ -16,7 +16,7 @@
 # along with Plots.  If not, see <https://www.gnu.org/licenses/>.
 
 import gi
-from gi.repository import Gtk, Gdk, Gio, GdkPixbuf, Adw, GObject
+from gi.repository import Gtk, Gdk, Gio, GdkPixbuf, Adw, GObject, GLib
 
 from plots import formula, plots, rowcommands, colorpicker, utils
 from plots.data import jinja_env
@@ -235,6 +235,9 @@ class FormulaBox(Gtk.Box):
     PALETTE      = "blue_5 green_5 yellow_5 orange_5 red_5 purple_5 brown_5 dark_5".split()
     DARK_PALETTE = "blue_1 green_1 yellow_1 orange_1 red_1 purple_1 brown_1 light_2".split()
     _palette_use_next = 0
+    
+    ANIMATION_DURATION = 3
+    ANIMATION_FRAME_DURATION = 30
 
     delete_button = Gtk.Template.Child()
     viewport = Gtk.Template.Child("editor_viewport")
@@ -243,6 +246,8 @@ class FormulaBox(Gtk.Box):
     slider_upper = Gtk.Template.Child()
     slider_lower = Gtk.Template.Child()
     slider_box = Gtk.Template.Child()
+    animate_button = Gtk.Template.Child()
+    animate_icon = Gtk.Template.Child()
 
     def __init__(self, app):
         super().__init__()
@@ -261,22 +266,27 @@ class FormulaBox(Gtk.Box):
         self.editor = formula.Editor()
         self.editor.connect("edit", self.edited)
         self.editor.connect("cursor_position", self.cursor_position)
+        self.editor.connect("start_edit", self.stop_animation)
         self.delete_button.connect("clicked", self.delete)
         self.color_picker.connect("color-activated", self.on_color_activated)
         self.slider.connect("value-changed", self.slider_changed)
         self.slider_upper.connect("changed", self.slider_limits_changed)
         self.slider_lower.connect("changed", self.slider_limits_changed)
+        self.animate_button.connect("clicked", self.toggle_animation)
         self.viewport.set_child(self.editor)
         self.connect("realize", self.on_realize)
         self.editor.grab_focus()
         self.old = self.construct_memory()
         self.use_dark_style = False
         self.row_status = RowStatus.UNKNOWN
+        self.animation_timer = None
+        self.reverse_animation = False
 
     def on_realize(self, widget):
         self.slider_box.hide()
 
     def delete(self, widget, record=True, replace_if_last=True):
+        self.stop_animation()
         if record:
             self.app.add_to_history(rowcommands.Delete(self, self.app.rows))
         self.app.rows.remove(self)
@@ -367,6 +377,33 @@ class FormulaBox(Gtk.Box):
                 self.editor.expr.insert(formula.Atom(char), cursor)
         self.editor.queue_draw()
         self.app.gl_area.queue_draw()
+    
+    def stop_animation(self, widget=None):
+        if self.animation_timer is not None:
+            GLib.source_remove(self.animation_timer)
+            self.animate_icon.set_from_icon_name("media-playback-start")
+            self.animation_timer = None
+    
+    def toggle_animation(self, widget):
+        if self.animation_timer is None:
+            self.animation_timer = GLib.timeout_add(self.ANIMATION_FRAME_DURATION, self.animate_step)
+            self.animate_icon.set_from_icon_name("media-playback-pause")
+        else:
+            self.stop_animation()
+    
+    def animate_step(self):
+        adj = self.slider.get_adjustment()
+        step_count = self.ANIMATION_DURATION / (self.ANIMATION_FRAME_DURATION / 1000)
+        step_size = (adj.get_upper() - adj.get_lower()) / step_count
+        current = self.slider.get_value()
+        if current >= adj.get_upper():
+            self.reverse_animation = True
+        elif current <= adj.get_lower():
+            self.reverse_animation = False
+        if self.reverse_animation:
+            step_size *= -1
+        self.slider.set_value(current + step_size)
+        return True
 
     def slider_limits_changed(self, widget):
         try:
