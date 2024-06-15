@@ -6,7 +6,54 @@
       <object class="GtkShortcutsSection">
         <property name="section-name">shortcuts</property>
         <property name="max-height">10</property>
-	<child>
+        <child>
+          <object class="GtkShortcutsGroup">
+            <property name="title" translatable="yes" context="shortcut window">General</property>
+	    <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes">Keyboard Shortcuts</property>
+                <property name="action-name">win.show-help-overlay</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes">Preferences</property>
+                <property name="action-name">app.preferences</property>
+              </object>
+            </child>
+	    <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes">Help</property>
+                <property name="action-name">app.help</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes">Main Menu</property>
+                <property name="accelerator">F10</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes">Close Window</property>
+                <property name="action-name">app.close</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes">Quit</property>
+                <property name="action-name">app.quit</property>
+              </object>
+            </child>
+	    <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes">Export Image</property>
+                <property name="action-name">app.export</property>
+              </object>
+            </child>
+          </object>
+	</child>
+        <child>
 	  <object class="GtkShortcutsGroup">
 	    <property name="title" translatable="yes" context="shortcut window">Zoom</property>
 	    <child>
@@ -29,41 +76,12 @@
 	    </child>
 	  </object>
         </child>
-        <child>
-          <object class="GtkShortcutsGroup">
-            <property name="title" translatable="yes" context="shortcut window">General</property>
-	    <child>
-              <object class="GtkShortcutsShortcut">
-                <property name="title" translatable="yes">Keyboard Shortcuts</property>
-                <property name="action-name">win.show-help-overlay</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkShortcutsShortcut">
-                <property name="title" translatable="yes">Preferences</property>
-                <property name="action-name">app.preferences</property>
-              </object>
-            </child>
-	    <child>
-              <object class="GtkShortcutsShortcut">
-                <property name="title" translatable="yes">Help</property>
-                <property name="action-name">app.help</property>
-              </object>
-            </child>
-	    <child>
-              <object class="GtkShortcutsShortcut">
-                <property name="title" translatable="yes">Export Image</property>
-                <property name="action-name">app.export</property>
-              </object>
-            </child>
-          </object>
-	</child>
 	<child>
 	  <object class="GtkShortcutsGroup">
 	    <property name="title" translatable="yes" context="shortcut window">Equations</property>
 	    <child>
 	      <object class="GtkShortcutsShortcut">
-		<property name="title" translatable="yes">Add an equation</property>
+		<property name="title" translatable="yes">Add an Equation</property>
 		<property name="action-name">app.add-equation</property>
               </object>
 	    </child>
