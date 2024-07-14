@@ -11,10 +11,10 @@
   <list>
     <title>Podržane hiperboličke funkcije</title>
     <item>
-      <p>asinh, acosh, atanh</p>
+      <p>sinh, cosh, tanh</p>
     </item>
     <item>
-      <p>sech, cosech, csch, coth</p>
+      <p>asinh, acosh, atanh</p>
     </item>
     <item>
       <p>sech, cosech, csch, coth</p>
