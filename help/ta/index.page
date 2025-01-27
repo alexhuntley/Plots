@@ -1,31 +1,29 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" id="index">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" id="index">
 
   <info>
-    <title type="link">Plots</title>
-    <title type="text">Plots</title>
+    <title type="link">அடுக்கு</title>
+    <title type="text">அடுக்கு</title>
 
     <credit type="author">
       <name>Alexander Huntley</name>
       <email its:translate="no">huntley.alexander@gmail.com</email>
       <years>2021</years>
     </credit>
-    <include href="legal.xml" xmlns="http://www.w3.org/2001/XInclude"/>
+    <include href="legal.xml" xmlns="http://www.w3.org/2001/XInclude" />
   </info>
 
   <title>
-    Plots
+    அடுக்கு
   </title>
 
-  <p>A simple graph plotting app for GNOME.</p>
+  <p>க்னோமுக்கான எளிய வரைபட சூழ்ச்சி பயன்பாடு.</p>
 
   <section id="formulae" style="2column">
-    <title>Supported formula types</title>
+    <title>உதவி சூத்திர வகைகள்</title>
   </section>
 
   <section id="functions" style="2column">
-    <title>Available functions</title>
+    <title>கிடைக்கும் செயல்பாடுகள்</title>
   </section>
 
 
