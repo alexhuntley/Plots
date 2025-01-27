@@ -1,16 +1,13 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="misc-functions">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="misc-functions">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#functions" />
 
     <desc>e.g. |x|, ⌈x⌉, ⌊x⌋, sgn(x)</desc>
   </info>
-  <title>Miscellaneous functions</title>
-  <p>The modulus of <em>x</em> can be inserted by typing <keyseq><key>|</key><key>x</key></keyseq>.</p>
-  <p>The floor function ⌊x⌋ can be inserted by typing <key>floor</key>.</p>
-  <p>The ceiling function ⌈x⌉ can be inserted by typing <key>ceil</key>.</p>
-  <p>The sign function sgn(x) can be inserted by typing <key>sign</key> or <key>sgn</key>.</p>
+  <title>இதர செயல்பாடுகள்</title>
+  <p><em> ஃச் </em> இன் மாடுலசை <keyseq> &lt;விசை&gt; |</keyseq></p>
+  <p>&lt;விசை&gt; மாடி  ஐ தட்டச்சு செய்வதன் மூலம் மாடி செயல்பாடு ⌊x⌋ செருகப்படலாம்.</p>
+  <p><key> சீல் </key> ஐ தட்டச்சு செய்வதன் மூலம் உச்சவரம்பு செயல்பாடு ⌈x⌉ செருகப்படலாம்.</p>
+  <p>&lt;விசை&gt; அடையாளம்  அல்லது <key> SGN </key> ஐ தட்டச்சு செய்வதன் மூலம் SGN (x) ஐச் செருகலாம்.</p>
 </page>
