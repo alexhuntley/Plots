@@ -1,15 +1,12 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="basic-functions">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="basic-functions">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#functions" />
 
     <desc>Simple operators</desc>
   </info>
-<title>Basic arithmetic operators</title>
-<p>Simple operators can be inserted using the following keystrokes:</p>
+<title>அடிப்படை எண்கணித ஆபரேட்டர்கள்</title>
+<p>பின்வரும் விசை அழுத்தங்களைப் பயன்படுத்தி எளிய ஆபரேட்டர்களை செருகலாம்:</p>
     <table>
     <tr>
     <td><p>×</p></td>
@@ -25,27 +22,27 @@
     </tr>
     <tr>
     <td><p>√</p></td>
-    <td><p><keyseq><key>sqrt</key></keyseq></p></td>
+    <td><p><keyseq><key>SQRT</key></keyseq></p></td>
     </tr>
     <tr>
     <td><p>³√</p></td>
-    <td><p><keyseq><key>nthroot</key><key>3</key></keyseq></p></td>
+    <td><p><keyseq><key> nthroot </key> <key> 3 </key></keyseq></p></td>
     </tr>
     <tr>
-    <td><p>(</p></td>
-    <td><p><key>(</key></p></td>
+    <td><p>((</p></td>
+    <td><p><key>((</key></p></td>
     </tr>
     <tr>
     <td><p>)</p></td>
     <td><p><key>)</key></p></td>
     </tr>
     <tr>
-    <td><p>[</p></td>
-    <td><p><key>[</key></p></td>
+    <td><p>[[</p></td>
+    <td><p><key>[[</key></p></td>
     </tr>
     <tr>
-    <td><p>]</p></td>
-    <td><p><key>]</key></p></td>
+    <td><p>]]</p></td>
+    <td><p><key>]]</key></p></td>
     </tr>
     <tr>
     <td><p>{</p></td>
