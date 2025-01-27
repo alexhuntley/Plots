@@ -1,18 +1,14 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="y-formulae">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="y-formulae">
 
   <info>
-    <link type="guide" xref="index#formulae"/>
+    <link type="guide" xref="index#formulae" />
 
     <desc>Explicit formulae for <em>y</em></desc>
   </info>
-  <title>Formulae of the form <em>y = f(x)</em></title>
+  <title>வடிவத்தின் சூத்திரங்கள் <em> ஒய் = f (x) </em></title>
 
   <p>
-    These can be entered into a formula box either in the form <code>y = f(x)</code>
-    or simply in the form <code>f(x)</code>.
+    இவற்றை ஒரு சூத்திர பெட்டியில் <code> ஒய் = f (x) </code> அல்லது <code> f (x) </code> வடிவத்தில் உள்ளிடலாம்.
   </p>
 
 </page>
