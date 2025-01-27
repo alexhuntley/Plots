@@ -1,27 +1,17 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="variables">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="variables">
 
   <info>
-    <link type="guide" xref="index#formulae"/>
+    <link type="guide" xref="index#formulae" />
 
     <desc>Easily adjustable parameters</desc>
   </info>
-  <title>Variables and sliders</title>
+  <title>மாறிகள் மற்றும் ச்லைடர்கள்</title>
 
   <p>
-    To declare a variable, type an equation of the form
-    <code><em>variable</em> = <em>value</em></code> into an empty formula box, where
-    <code><em>variable</em></code> is a single Latin or Greek letter, and
-    <code><em>value</em></code> is an expression which must not depend on position, but
-    may depend on preceding variables.
+    ஒரு மாறியை அறிவிக்க, <code> <em> மாறி </em> = <em> மதிப்பு </em> </code> ஐ ஒரு வெற்று சூத்திர பெட்டியில் வடிவத்தின் சமன்பாட்டைத் தட்டச்சு செய்க /em&gt;  என்பது ஒரு லத்தீன் அல்லது கிரேக்க கடிதம், மற்றும் <code> <em> மதிப்பு </em> </code> என்பது ஒரு வெளிப்பாடாகும், இது நிலையைப் பொறுத்தது அல்ல, ஆனால் முந்தைய மாறிகள் சார்ந்தது.
   </p>
 
   <p>
-    If <code><em>value</em></code> is a literal integer or decimal number, Plots will
-    display an adjustable slider control, allowing the variable to be adjusted
-    interactively. The upper and lower limits of the slider can be edited using the
-    adjacent fields.
+    <code> <em> மதிப்பு </em> </code> ஒரு நேரடி முழு எண் அல்லது தசம எண்ணாக இருந்தால், அடுக்குகள் சரிசெய்யக்கூடிய ச்லைடர் கட்டுப்பாட்டைக் காண்பிக்கும், இதனால் மாறியை ஊடாடும் வகையில் சரிசெய்ய அனுமதிக்கிறது. ச்லைடரின் மேல் மற்றும் கீழ் வரம்புகளை அருகிலுள்ள புலங்களைப் பயன்படுத்தி திருத்தலாம்.
   </p>
 </page>
