@@ -1,29 +1,26 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="trig-functions">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="trig-functions">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#functions" />
 
     <desc>e.g. sin, cos, tan</desc>
   </info>
-  <title>Trigonometric functions</title>
-  <p>The following trigonometric functions can be inserted simply by typing their name:</p>
+  <title>முக்கோணவியல் செயல்பாடுகள்</title>
+  <p>பின்வரும் முக்கோணவியல் செயல்பாடுகளை அவற்றின் பெயரைத் தட்டச்சு செய்வதன் மூலம் செருகலாம்:</p>
 
   <list>
-    <title>Supported trigonometric functions</title>
+    <title>ஆதரிக்கப்பட்ட முக்கோணவியல் செயல்பாடுகள்</title>
     <item>
-      <p>sin, cos, tan</p>
+      <p>ஊழ்கம், காச், எனவே</p>
     </item>
     <item>
-      <p>asin, arcsin, acos, arccos, atan, arctan</p>
+      <p>அசின், ஆர்க்சின், ஏ.சி.ஓ.எச், ஆர்கோச், அதான், ஆர்கான்</p>
     </item>
     <item>
-      <p>sec, cosec, csc, tan</p>
+      <p>உலர், கோசெக், சி.எச்.சி, டான்</p>
     </item>
     <item>
-      <p>asec, arcsec, acosec, arccosec, acsc, arccsc, acot, arccot</p>
+      <p>ASEC, ARCSEC, ACOSEC, ARCCOSEC, ACSC, ARCCSC, ACOT, ARCCOT</p>
     </item>
     <item>
       <p>sinc</p>
