@@ -1,26 +1,23 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="exponential-functions">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="exponential-functions">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#functions" />
 
     <desc>e.g. exp, log</desc>
   </info>
-<title>Exponential and logarithmic functions</title>
-<p>The following functions can be inserted simply by typing their name:</p>
+<title>அதிவேக மற்றும் மடக்கை செயல்பாடுகள்</title>
+<p>பின்வரும் செயல்பாடுகளை அவற்றின் பெயரைத் தட்டச்சு செய்வதன் மூலம் செருகலாம்:</p>
 
   <list>
-    <title>Supported functions</title>
+    <title>உதவி செயல்பாடுகள்</title>
     <item>
-      <p>exp, e</p>
-      <p>e is Euler's number. It can be used as a function when followed by an exponent (entered using ^).</p>
+      <p>எக்ச்ப், இ</p>
+      <p>இ என்பது யூலரின் எண். ஒரு அதிவேகத்தைப் பின்பற்றும்போது இது ஒரு செயல்பாடாகப் பயன்படுத்தப்படலாம் ( ^பயன்படுத்தி நுழைந்தது).</p>
     </item>
     <item>
       <p>ln, log, lg</p>
-      <p>ln and log are natural logarithms. lg is the base-2 logarithm.</p>
-      <p>log may be followed by a subscript (entered using an underscore), denoting the base of the logarithm.</p>
+      <p>எல்.என் மற்றும் பதிவு இயற்கையான மடக்கைகள். எல்சி என்பது அடிப்படை -2 மடக்கை.</p>
+      <p>பதிவைப் பின்பற்றி ஒரு சந்தா (அடிக்கோடிட்டுப் பயன்படுத்தி உள்ளிடப்பட்டது), மடக்கையின் தளத்தைக் குறிக்கிறது.</p>
     </item>
   </list>
 
