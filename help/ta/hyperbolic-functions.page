@@ -1,29 +1,26 @@
-<page xmlns="http://projectmallard.org/1.0/"
-      xmlns:its="http://www.w3.org/2005/11/its"
-      type="guide" style="2column task"
-      id="hyperbolic-functions">
+<page xmlns="http://projectmallard.org/1.0/" xmlns:its="http://www.w3.org/2005/11/its" type="guide" style="2column task" id="hyperbolic-functions">
 
   <info>
-    <link type="guide" xref="index#functions"/>
+    <link type="guide" xref="index#functions" />
 
     <desc>e.g. sinh, cosh, tanh</desc>
   </info>
-<title>Hyperbolic functions</title>
-<p>The following hyperbolic functions can be inserted simply by typing their name:</p>
+<title>ஐபர்போலிக் செயல்பாடுகள்</title>
+<p>பின்வரும் ஐபர்போலிக் செயல்பாடுகளை அவற்றின் பெயரைத் தட்டச்சு செய்வதன் மூலம் செருகலாம்:</p>
 
   <list>
-    <title>Supported hyperbolic functions</title>
+    <title>ஆதரிக்கப்பட்ட ஐபர்போலிக் செயல்பாடுகள்</title>
     <item>
-      <p>sinh, cosh, tanh</p>
+      <p>பிறப்பு, கோச், மீன்</p>
     </item>
     <item>
-      <p>asinh, acosh, atanh</p>
+      <p>Siny, அச்சு, எனவே</p>
     </item>
     <item>
-      <p>sech, cosech, csch, coth</p>
+      <p>ஐ.எச், கோச், சி.எச்.சி.எச், கோத்</p>
     </item>
     <item>
-      <p>asech, acosech, acsch, acoth</p>
+      <p>ASECH, ACOSECH, ACSCH, ACOTH</p>
     </item>
   </list>
 
