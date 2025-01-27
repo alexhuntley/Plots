@@ -5,10 +5,10 @@
 
     <desc>Implicit formulae for <em>x</em> and <em>y</em></desc>
   </info>
-  <title>Implicit formulae of the form <em>f(x,y) = g(x,y)</em></title>
+  <title><em> f (x, y) = g (x, y) </em> வடிவத்தின் மறைமுக சூத்திரங்கள்</title>
 
   <p>
-    These can be entered into any regular formula box. They are the most general type of formula. <em>x</em> and <em>y</em> may appear anywhere in the equation.
+    எந்தவொரு வழக்கமான சூத்திர பெட்டியிலும் இவற்றை உள்ளிடலாம். அவை மிகவும் பொதுவான வகை தேற்றம். <em> ஃச் </em> மற்றும் <em> ஒய் </em> சமன்பாட்டில் எங்கும் தோன்றக்கூடும்.
   </p>
 
 </page>
