@@ -8,54 +8,59 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-26 22:02+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2025-02-02 21:47+0000\n"
+"Last-Translator: \"Emilio S.\" <emism.translations@gmail.com>\n"
+"Language-Team: Interlingua <https://hosted.weblate.org/projects/plots/plots/"
+"ia/>\n"
 "Language: ia\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #: plots/graph.py:121
 msgid ""
 "Warning: OpenGL {} is unsupported. Plots supports OpenGL 3.3 or greater."
 msgstr ""
+"Advertimento: OpenGL {} non es supportate. Plots supporta le version OpenGL "
+"3.3 o superior."
 
 #: plots/colorpicker.py:32
 msgid "Pick a color"
-msgstr ""
+msgstr "Elige un color"
 
 #: plots/plots.py:64
 msgid "Plots"
-msgstr ""
+msgstr "Plots"
 
 #: plots/plots.py:102
 msgid "_Export…"
-msgstr ""
+msgstr "_Exportar…"
 
 #: plots/plots.py:103
 msgid "_Preferences"
-msgstr ""
+msgstr "_Preferentias"
 
 #: plots/plots.py:104
 msgid "Help"
-msgstr ""
+msgstr "Adjuta"
 
 #: plots/plots.py:105
 msgid "About Plots"
-msgstr ""
+msgstr "A proposito de Plots"
 
 #: plots/plots.py:258
 msgid "Export image"
-msgstr ""
+msgstr "Exportar imagine"
 
 #: plots/plots.py:261
 msgid "_Export"
-msgstr ""
+msgstr "_Exportar"
 
 #: plots/plots.py:262
 msgid "_Cancel"
-msgstr ""
+msgstr "_Cancellar"
 
 #: plots/plots.py:264
 msgid "Untitled plot"
@@ -63,7 +68,7 @@ msgstr ""
 
 #: plots/ui/about.ui:7
 msgid "Copyright © 2021-2022 Alexander Huntley"
-msgstr ""
+msgstr "Copyright © 2021-2022 Alexander Huntley"
 
 #: plots/ui/about.ui:8
 msgid "A graph plotter for GNOME."
@@ -71,7 +76,7 @@ msgstr ""
 
 #: plots/ui/formula_box.ui:43
 msgid "Remove"
-msgstr ""
+msgstr "Remover"
 
 #: plots/ui/preferences.ui:19
 msgid "Preferences affecting graph rendering"
@@ -103,15 +108,15 @@ msgstr ""
 
 #: plots/ui/plots.ui:37
 msgid "Undo"
-msgstr ""
+msgstr "Disfacer"
 
 #: plots/ui/plots.ui:52
 msgid "Redo"
-msgstr ""
+msgstr "Refacer"
 
 #: plots/ui/plots.ui:73
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: plots/ui/plots.ui:152
 msgid "Zoom in"
