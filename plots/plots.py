@@ -125,6 +125,12 @@ class Plots(Adw.Application):
         self.menu.append(_("About Plots"), "app.about")
         menu_button.set_menu_model(self.menu)
 
+        shortcuts_builder = Gtk.Builder()
+        shortcuts_builder.add_from_string(utils.read_ui_file("shortcuts.ui"))
+        shortcuts_dialog = shortcuts_builder.get_object("shortcuts_dialog")
+        self.window.set_help_overlay(shortcuts_dialog)
+        self.set_accels_for_action("win.show-help-overlay", ["<primary>question"])
+
         self.about_action = Gio.SimpleAction.new("about", None)
         self.about_action.connect("activate", self.about_cb)
         self.about_action.set_enabled(True)
@@ -141,6 +147,18 @@ class Plots(Adw.Application):
         export_action.set_enabled(True)
         self.add_action(export_action)
         self.set_accels_for_action("app.export", ["<primary>e"])
+
+        quit_action = Gio.SimpleAction.new("quit", None)
+        quit_action.connect("activate", self.quit_cb)
+        quit_action.set_enabled(True)
+        self.add_action(quit_action)
+        self.set_accels_for_action("app.quit", ["<primary>q"])
+
+        close_action = Gio.SimpleAction.new("close", None)
+        close_action.connect("activate", self.close_cb)
+        close_action.set_enabled(True)
+        self.add_action(close_action)
+        self.set_accels_for_action("app.close", ["<primary>w"])
 
         prefs_action = Gio.SimpleAction.new("preferences", None)
         prefs_action.connect("activate", self.prefs_cb)
@@ -271,6 +289,12 @@ class Plots(Adw.Application):
         about_window = builder.get_object("about_window")
         about_window.set_transient_for(self.window)
         about_window.present()
+
+    def quit_cb(self, action, param):
+        self.quit()
+
+    def close_cb(self, action, param):
+        self.window.close()
 
     def prefs_cb(self, action, param):
         self.prefs.show()
