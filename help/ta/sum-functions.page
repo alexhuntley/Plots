@@ -5,24 +5,24 @@
 
     <desc>in Σ and Π notation</desc>
   </info>
-<title>Sums and Products</title>
+<title>கூட்டல்கள் மற்றும் பெருக்கல்கள்</title>
 <steps>
-<title>How to insert a sum or product</title>
+<title>ஒரு தொகை அல்லது பெருக்கல் எவ்வாறு செருகுவது</title>
 <item>
-<p>Type <key>sum</key> or <key>prod</key> to insert the operator</p>
+<p>ஆபரேட்டரைச் செருக <key>sum</key> அல்லது <key>prod</key> ஐத் தட்டச்சு செய்க</p>
 </item>
 <item>
-<p>Type a variable name and initial value into the bottom of the Σ or Π, e.g. i = 0</p>
+<p>Σ அல்லது Π இன் கீழே ஒரு மாறிப் பெயர் மற்றும் ஆரம்ப மதிப்பைத் தட்டச்சு செய்க, எ.கா. i = 0</p>
 </item>
 <item>
-<p>Use the arrow keys to move to the upper box of the Σ or Π</p>
+<p>Σ அல்லது Π இன் மேல் பெட்டிக்குச் செல்ல அம்பு விசைகளைப் பயன்படுத்தவும்</p>
 </item>
 <item>
-<p>Type the maximum value for the variable in the upper box</p>
+<p>மேல் பெட்டியில் மாறிக்கான மிகைஅளவு மதிப்பைத் தட்டச்சு செய்க</p>
 </item>
 <item>
-<p>Use the arrow keys to move to the right of the operator, and insert the body of the sum/product.</p>
+<p>ஆபரேட்டரின் வலது புறம் செல்ல அம்பு விசைகளைப் பயன்படுத்தி, தொகை/உற்பத்தியின் உடலைச் செருகவும்.</p>
 </item>
 </steps>
-<p>The variable being iterated over should only be referred to inside the sum/product body.</p>
+<p>மறுபரிசீலனை செய்யப்படுவது தொகை/தயாரிப்பு உடலுக்குள் மட்டுமே குறிப்பிடப்பட வேண்டும்.</p>
 </page>
