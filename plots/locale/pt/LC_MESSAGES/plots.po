@@ -8,124 +8,126 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-26 22:02+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2025-08-15 18:01+0000\n"
+"Last-Translator: ssantos <ssantos@web.de>\n"
+"Language-Team: Portuguese <https://hosted.weblate.org/projects/plots/plots/"
+"pt/>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.13\n"
 
 #: plots/graph.py:121
 msgid ""
 "Warning: OpenGL {} is unsupported. Plots supports OpenGL 3.3 or greater."
-msgstr ""
+msgstr "Aviso: OpenGL {} não tem apoio. Plots apoia o OpenGL 3.3 ou superior."
 
 #: plots/colorpicker.py:32
 msgid "Pick a color"
-msgstr ""
+msgstr "Escolha uma cor"
 
 #: plots/plots.py:64
 msgid "Plots"
-msgstr ""
+msgstr "Plots"
 
 #: plots/plots.py:102
 msgid "_Export…"
-msgstr ""
+msgstr "_Exportar…"
 
 #: plots/plots.py:103
 msgid "_Preferences"
-msgstr ""
+msgstr "_Preferências"
 
 #: plots/plots.py:104
 msgid "Help"
-msgstr ""
+msgstr "Ajuda"
 
 #: plots/plots.py:105
 msgid "About Plots"
-msgstr ""
+msgstr "Sobre o Plots"
 
 #: plots/plots.py:258
 msgid "Export image"
-msgstr ""
+msgstr "Exportar imagem"
 
 #: plots/plots.py:261
 msgid "_Export"
-msgstr ""
+msgstr "_Exportar"
 
 #: plots/plots.py:262
 msgid "_Cancel"
-msgstr ""
+msgstr "_Cancelar"
 
 #: plots/plots.py:264
 msgid "Untitled plot"
-msgstr ""
+msgstr "Enredo sem título"
 
 #: plots/ui/about.ui:7
 msgid "Copyright © 2021-2022 Alexander Huntley"
-msgstr ""
+msgstr "Direitos autorais © 2021 Alexander Huntley"
 
 #: plots/ui/about.ui:8
 msgid "A graph plotter for GNOME."
-msgstr ""
+msgstr "Um traçador de gráficos para o GNOME."
 
 #: plots/ui/formula_box.ui:43
 msgid "Remove"
-msgstr ""
+msgstr "Remover"
 
 #: plots/ui/preferences.ui:19
 msgid "Preferences affecting graph rendering"
-msgstr ""
+msgstr "Preferências que afetam a renderização do gráfico"
 
 #: plots/ui/preferences.ui:20
 msgid "Rendering"
-msgstr ""
+msgstr "Renderização"
 
 #: plots/ui/preferences.ui:25
 msgid "Line thickness"
-msgstr ""
+msgstr "Espessura da linha"
 
 #: plots/ui/preferences.ui:26
 msgid "Approximate thickness of the graphs"
-msgstr ""
+msgstr "Espessura aproximada dos gráficos"
 
 #: plots/ui/preferences.ui:40
 msgid "Samples per pixel"
-msgstr ""
+msgstr "Amostras por pixel"
 
 #: plots/ui/preferences.ui:41
 msgid "Reduce to improve performance"
-msgstr ""
+msgstr "Reduza para melhorar o desempenho"
 
 #: plots/ui/plots.ui:14
 msgid "Add an equation"
-msgstr ""
+msgstr "Adicionar uma equação"
 
 #: plots/ui/plots.ui:37
 msgid "Undo"
-msgstr ""
+msgstr "Desfazer"
 
 #: plots/ui/plots.ui:52
 msgid "Redo"
-msgstr ""
+msgstr "Refazer"
 
 #: plots/ui/plots.ui:73
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: plots/ui/plots.ui:152
 msgid "Zoom in"
-msgstr ""
+msgstr "Aumentar ampliação"
 
 #: plots/ui/plots.ui:169
 msgid "Zoom out"
-msgstr ""
+msgstr "Reduzir ampliação"
 
 #: plots/ui/plots.ui:198
 msgid "Reset zoom and panning"
-msgstr ""
+msgstr "Redefinir ampliação e panorâmica"
 
 #: plots/ui/plots.ui:233
 msgid "Error:"
-msgstr ""
+msgstr "Erro:"
