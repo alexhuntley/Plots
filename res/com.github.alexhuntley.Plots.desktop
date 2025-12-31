@@ -25,7 +25,7 @@ Comment[nl]=Eenvoudig grafieken plotten
 Comment[sv]=Enkel grafritning
 Comment[pt_BR]=Simples traçador de gráficos
 Comment[uk]=Простий побудовник графіків
-Exec=plots
+Exec=env GDK_DEBUG=gl-prefer-gl,gl-no-fractional GSK_RENDERER=gl plots
 Type=Application
 Icon=com.github.alexhuntley.Plots
 Categories=GNOME;GTK;Science;Math;Education
