@@ -87,7 +87,7 @@
       <object class="GtkPaned" id="paned">
         <property name="resize-start-child">0</property>
         <property name="focusable">1</property>
-        <property name="position">240</property>
+        <property name="position">280</property>
         <child>
           <object class="GtkScrolledWindow" id="equation_scroll">
             <property name="focusable">1</property>

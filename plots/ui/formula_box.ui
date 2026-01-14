@@ -87,6 +87,21 @@
 
           </object>
         </child>
+        <child>
+          <object class="GtkButton" id="animate_button">
+            <property name="focusable">1</property>
+            <property name="receives_default">1</property>
+            <property name="tooltip-text" translatable="yes">Animate Variable</property>
+            <property name="hexpand">0</property>
+            <property name="margin-start">4</property>
+            
+            <child>
+              <object class="GtkImage" id="animate_icon">
+                <property name="icon_name">media-playback-start</property>
+              </object>
+            </child>
+          </object>
+        </child>
       </object>
     </child>
     <style>
