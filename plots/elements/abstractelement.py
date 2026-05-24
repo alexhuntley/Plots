@@ -5,12 +5,18 @@ class AbstractElement():
     """
     def __init__(self, parent):
         self.parent = parent
+        self.top_left = None
+        self.bottom_right = None
 
     def contains_device_point(self, x, y):
+        if self.top_left is None or self.bottom_right is None:
+            return False
         return self.top_left[0] <= x <= self.bottom_right[0] and \
             self.top_left[1] <= y <= self.bottom_right[1]
 
     def half_containing(self, x, y):
+        if self.top_left is None or self.bottom_right is None:
+            return Direction.RIGHT
         x_mid = (self.bottom_right[0] + self.top_left[0])/2
         if x < x_mid:
             return Direction.LEFT
