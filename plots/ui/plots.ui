@@ -1,248 +1,192 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <object class="GtkApplicationWindow" id="main_window">
-    <child type="titlebar">
-      <object class="GtkHeaderBar" id="headerbar">
-        <child>
-          <object class="GtkBox">
-            <property name="spacing">4</property>
-            <child>
-              <object class="GtkButton" id="add_equation">
-                <property name="focusable">1</property>
-                <property name="receives_default">1</property>
-                <property name="tooltip-text" translatable="yes">Add an equation</property>
-                <style>
-                  <class name="flat"/>
-                </style>
-                <child>
-                  <object class="GtkImage">
-                    <property name="icon_name">list-add-symbolic</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
+  <object class="AdwApplicationWindow" id="main_window">
+    <property name="content">
+      <object class="AdwToolbarView">
+        <property name="top-bar-style">raised</property>
+        <child type="top">
+          <object class="AdwHeaderBar" id="headerbar">
+            <child type="start">
               <object class="GtkBox">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">GTK_ALIGN_FILL</property>
-                <style>
-                  <class name="linked"/>
-                </style>
+                <property name="spacing">4</property>
                 <child>
-                  <object class="GtkButton" id="undo">
-                    <property name="focusable">1</property>
-                    <property name="receives_default">1</property>
-                    <property name="tooltip-text" translatable="yes">Undo</property>
-                    <style>
-                      <class name="flat"/>
-                    </style>
-                    <child>
-                      <object class="GtkImage">
-                        <property name="icon_name">edit-undo-symbolic</property>
-                      </object>
-                    </child>
+                  <object class="GtkButton" id="add_equation">
+                    <property name="tooltip-text" translatable="yes">Add an equation</property>
+                    <property name="icon-name">list-add-symbolic</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkButton" id="redo">
-                    <property name="focusable">1</property>
-                    <property name="receives_default">1</property>
-                    <property name="tooltip-text" translatable="yes">Redo</property>
-                    <style>
-                      <class name="flat"/>
-                    </style>
+                  <object class="GtkBox">
+                    <property name="halign">fill</property>
                     <child>
-                      <object class="GtkImage">
-                        <property name="icon_name">edit-redo-symbolic</property>
+                      <object class="GtkButton" id="undo">
+                        <property name="tooltip-text" translatable="yes">Undo</property>
+                        <property name="icon-name">edit-undo-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="redo">
+                        <property name="tooltip-text" translatable="yes">Redo</property>
+                        <property name="icon-name">edit-redo-symbolic</property>
                       </object>
                     </child>
                   </object>
                 </child>
               </object>
             </child>
-          </object>
-        </child>
-        <child type="end">
-          <object class="GtkMenuButton" id="menu_button">
-            <property name="focusable">1</property>
-            <property name="focus_on_click">0</property>
-            <property name="receives_default">1</property>
-            <property name="halign">end</property>
-            <property name="tooltip-text" translatable="yes">Main Menu</property>
-            <child>
-              <object class="GtkImage">
-                <property name="icon_name">open-menu-symbolic</property>
+            <child type="end">
+              <object class="GtkMenuButton" id="menu_button">
+                <property name="tooltip-text" translatable="yes">Main Menu</property>
+                <property name="icon-name">open-menu-symbolic</property>
               </object>
             </child>
-            <style>
-              <class name="image-button"/>
-            </style>
           </object>
         </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkPaned" id="paned">
-        <property name="resize-start-child">0</property>
-        <property name="focusable">1</property>
-        <property name="position">240</property>
-        <child>
-          <object class="GtkScrolledWindow" id="equation_scroll">
-            <property name="focusable">1</property>
-            <property name="hscrollbar_policy">never</property>
-            <property name="min_content_width">200</property>
-            <property name="child">
-              <object class="GtkViewport">
-                <property name="child">
-                  <object class="GtkBox" id="equation_box">
-                    <property name="orientation">vertical</property>
-                    <child>
-                      <placeholder/>
-                    </child>
-                  </object>
-                </property>
-              </object>
-            </property>
-          </object>
-        </child>
-        <child>
-          <object class="GtkBox">
-            <property name="orientation">vertical</property>
+        <property name="content">
+          <object class="GtkPaned" id="paned">
+            <property name="resize-start-child">false</property>
+            <property name="focusable">true</property>
+            <property name="position">240</property>
             <child>
-              <object class="GtkOverlay" id="graph_overlay">
-                <property name="vexpand">1</property>
+              <object class="GtkScrolledWindow" id="equation_scroll">
+                <property name="focusable">true</property>
+                <property name="hscrollbar-policy">never</property>
+                <property name="min-content-width">200</property>
                 <property name="child">
-                  <object class="GraphArea" id="gl">
-                    <!-- <property name="app_paintable">True</property> -->
-                  </object>
-                </property>
-                <child type="overlay">
-                  <object class="GtkRevealer" id="osd_revealer">
-                    <property name="halign">end</property>
-                    <property name="valign">start</property>
-                    <property name="transition_type">crossfade</property>
-                    <property name="transition_duration">500</property>
-                    <property name="reveal_child">1</property>
+                  <object class="GtkViewport">
                     <property name="child">
-                      <object class="GtkBox" id="osd_box">
-                        <property name="halign">end</property>
-                        <property name="valign">start</property>
-                        <property name="margin_end">8</property>
-                        <property name="margin_top">8</property>
+                      <object class="GtkBox" id="equation_box">
                         <property name="orientation">vertical</property>
-                        <property name="spacing">4</property>
                         <child>
-                          <object class="GtkBox">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">end</property>
-                            <property name="valign">start</property>
-                            <property name="orientation">vertical</property>
-                            <property name="homogeneous">True</property>
-                            <property name="valign">GTK_ALIGN_FILL</property>
-                            <style>
-                              <class name="linked"/>
-                            </style>
-                            <child>
-                              <object class="GtkButton" id="zoom_in">
-                                <property name="focusable">1</property>
-                                <property name="receives_default">1</property>
-                                <property name="tooltip-text" translatable="yes">Zoom In</property>
-                                <child>
-                                  <object class="GtkImage">
-                                    <property name="icon_name">zoom-in-symbolic</property>
-                                  </object>
-                                </child>
-                                <style>
-                                  <class name="osd"/>
-                                  <class name="zoom-button"/>
-                                  <class name="linked"/>
-                                </style>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="zoom_out">
-                                <property name="focusable">1</property>
-                                <property name="receives_default">1</property>
-                                <property name="tooltip-text" translatable="yes">Zoom Out</property>
-                                <child>
-                                  <object class="GtkImage">
-                                    <property name="icon_name">zoom-out-symbolic</property>
-                                  </object>
-                                </child>
-                                <style>
-                                  <class name="osd"/>
-                                  <class name="zoom-button"/>
-                                  <class name="linked"/>
-                                </style>
-                              </object>
-                            </child>
-                            <style>
-                              <class name="osd"/>
-                              <class name="zoom-box"/>
-                            </style>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkRevealer" id="zoom_reset_revealer">
-                            <property name="transition_type">crossfade</property>
-                            <property name="reveal_child">1</property>
-                            <property name="child">
-                              <object class="GtkButton" id="zoom_reset">
-                                <property name="focusable">1</property>
-                                <property name="receives_default">1</property>
-                                <property name="halign">end</property>
-                                <property name="valign">start</property>
-                                <property name="tooltip-text" translatable="yes">Reset Zoom and Panning</property>
-                                <child>
-                                  <object class="GtkImage">
-                                    <property name="icon_name">zoom-original-symbolic</property>
-                                  </object>
-                                </child>
-                                <style>
-                                  <class name="osd"/>
-                                  <class name="zoom-button"/>
-                                </style>
-                              </object>
-                            </property>
-                          </object>
+                          <placeholder/>
                         </child>
                       </object>
                     </property>
                   </object>
-                </child>
+                </property>
               </object>
             </child>
             <child>
-              <object class="GtkInfoBar" id="errorbar">
-                <property name="message_type">error</property>
-                <property name="show_close_button">1</property>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkBox">
-                    <property name="valign">center</property>
-                    <property name="orientation">vertical</property>
-                    <property name="spacing">16</property>
-                    <property name="baseline_position">bottom</property>
-                    <child>
-                      <object class="GtkLabel" id="errorlabel">
-                        <property name="halign">start</property>
-                        <property name="valign">center</property>
-                        <property name="vexpand">0</property>
-                        <property name="label" translatable="yes">Error:</property>
+                  <object class="GtkOverlay" id="graph_overlay">
+                    <property name="vexpand">true</property>
+                    <property name="child">
+                      <object class="GraphArea" id="gl">
+                        <!-- <property name="app_paintable">True</property> -->
+                      </object>
+                    </property>
+                    <child type="overlay">
+                      <object class="GtkRevealer" id="osd_revealer">
+                        <property name="halign">end</property>
+                        <property name="valign">start</property>
+                        <property name="transition-type">crossfade</property>
+                        <property name="transition-duration">500</property>
+                        <property name="reveal-child">true</property>
+                        <property name="child">
+                          <object class="GtkBox" id="osd_box">
+                            <property name="halign">end</property>
+                            <property name="valign">start</property>
+                            <property name="margin-end">8</property>
+                            <property name="margin-top">8</property>
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">4</property>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">true</property>
+                                <property name="can-focus">false</property>
+                                <property name="halign">end</property>
+                                <property name="valign">start</property>
+                                <property name="orientation">vertical</property>
+                                <property name="homogeneous">True</property>
+                                <property name="valign">fill</property>
+                                <style>
+                                  <class name="linked"/>
+                                </style>
+                                <child>
+                                  <object class="GtkButton" id="zoom_in">
+                                    <property name="tooltip-text" translatable="yes">Zoom In</property>
+                                    <property name="icon-name">zoom-in-symbolic</property>
+                                    <style>
+                                      <class name="osd"/>
+                                      <class name="zoom-button"/>
+                                      <class name="linked"/>
+                                    </style>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="zoom_out">
+                                    <property name="tooltip-text" translatable="yes">Zoom Out</property>
+                                    <property name="icon-name">zoom-out-symbolic</property>
+                                    <style>
+                                      <class name="osd"/>
+                                      <class name="zoom-button"/>
+                                      <class name="linked"/>
+                                    </style>
+                                  </object>
+                                </child>
+                                <style>
+                                  <class name="osd"/>
+                                  <class name="zoom-box"/>
+                                </style>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkRevealer" id="zoom_reset_revealer">
+                                <property name="transition-type">crossfade</property>
+                                <property name="reveal-child">true</property>
+                                <property name="child">
+                                  <object class="GtkButton" id="zoom_reset">
+                                    <property name="halign">end</property>
+                                    <property name="valign">start</property>
+                                    <property name="tooltip-text" translatable="yes">Reset Zoom and Panning</property>
+                                    <property name="icon-name">zoom-original-symbolic</property>
+                                    <style>
+                                      <class name="osd"/>
+                                      <class name="zoom-button"/>
+                                    </style>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
+                          </object>
+                        </property>
                       </object>
                     </child>
                   </object>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkInfoBar" id="errorbar">
+                    <property name="message-type">error</property>
+                    <property name="show-close-button">true</property>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="valign">center</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">16</property>
+                        <property name="baseline-position">bottom</property>
+                        <child>
+                          <object class="GtkLabel" id="errorlabel">
+                            <property name="halign">start</property>
+                            <property name="valign">center</property>
+                            <property name="vexpand">0</property>
+                            <property name="label" translatable="yes">Error:</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
                 </child>
               </object>
             </child>
           </object>
-        </child>
+        </property>
       </object>
-    </child>
+    </property>
   </object>
 </interface>
